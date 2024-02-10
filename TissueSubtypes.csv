@@ -1,0 +1,45 @@
+Tissue,Abbreviation,Category,Subtype
+Amygdala,Amygdala,Nervous,Amygdala
+BLA,BLA,Nervous,Amygdala
+CMA,CMA,Nervous,Amygdala
+Lymphoblastoid cell lines,Lympho,Blood,Blood
+Whole blood,Blood,Blood,Blood
+LC,LC,Nervous,Brainstem
+Nts/SNT,SNT,Nervous,Brainstem
+Raphe,Raphe,Nervous,Brainstem
+PAG,PAG,Nervous,Brainstem
+VTA,VTA,Nervous,Brainstem
+Anterior cingulate cortex,ACC,Nervous,Cortical
+CGC,CGC,Nervous,Cortical
+Cortex,Cortex,Nervous,Cortical
+Glt25d2 cortical cells,GLt25d2,Nervous,Cortical
+ILC,ILC,Nervous,Cortical
+InsularC,InsularCortex,Nervous,Cortical
+PLC,PLC,Nervous,Cortical
+Prefrontal cortex,PFC,Nervous,Cortical
+S100a10 cortical cells,S100a10,Nervous,Cortical
+S100a10 cortical cells,Cell,Nervous,Cortical
+S100a10 cortical cells,TRAP,Nervous,Cortical
+Dentate gyrus,DG,Nervous,Hippocampus
+Dorsal Dentate gyrus,DDG,Nervous,Hippocampus
+Ventral Dentate gyrus,VDG,Nervous,Hippocampus
+dorCA1,dorCA1,Nervous,Hippocampus
+dorDG,dorDG,Nervous,Hippocampus
+Hippocampus,Hippocampus,Nervous,Hippocampus
+venCA1,venCA1,Nervous,Hippocampus
+venDG,venDG,Nervous,Hippocampus
+ARC,Arc,Nervous,Hypothalamus
+LH,LH,Nervous,Hypothalamus
+mPoA,MPOA,Nervous,Hypothalamus
+VMH,VMH,Nervous,Hypothalamus
+PVN,PVN,Nervous,Hypothalamus
+C6 glioma cells (model of astrocytes),Glioma,Nervous,Other
+Pituitary gland,Brain,Nervous,Other
+HB,HB,Nervous,Other
+MDT,MDT,Nervous,Other
+LS,LS,Nervous,Septal
+MS,MS,Nervous,Septal
+BNST,BNST,Nervous,Striatal
+NAcC,NaCcore,Nervous,Striatal
+NAcSh,NaCshell,Nervous,Striatal
+Striatum,Striatum,Nervous,Striatal

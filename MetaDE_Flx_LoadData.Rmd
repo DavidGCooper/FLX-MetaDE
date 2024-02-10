@@ -1,0 +1,2052 @@
+---
+title: "MetaDE_Flx_LoadData"
+author: "David Cooper"
+date: "2022-1-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(limma)
+library(DESeq2)
+library(AnnotationDbi)
+library(org.Hs.eg.db)
+library(org.Rn.eg.db)
+library(org.Mm.eg.db)
+
+```
+
+## Comparisons Organized by Type
+
+Total Comparisons: [82] 
+
+Responders vs. Non-Responders: [9] 
+  Human: [1] 
+    GSE83386 (1 – Lymphoblastoid cell lines) 
+  Mouse: [8] 
+    GSE202172 (2 – S100a10 cortical whole cell & TRAP) 
+    GSE43261 (2 – Dorsal DG & Ventral DG) 
+    GSE28644 (1 – Cortex)
+    GSE84184 (1 – Whole Blood) 
+    GSE84183 (2 – DG & Anterior cingulate cortex) 
+  Rat: [0] 
+
+Treated vs. Untreated: [55] 
+  Human: [2] 
+    Stress or MDD Diagnosis: [2] 
+      GSE128387 (1 – Whole blood) 
+      GSE83386 (1 – Lymphoblastoid cell lines) 
+    No Stress or MDD Diagnosis: [0] 
+  Mouse: [20] 
+    Stress or MDD Diagnosis: [7] 
+      GSE202172 (2 – S100a10 cortical whole cell & TRAP) 
+      GSE84184 (1 – Whole Blood) 
+      GSE84183 (2 – DG & Anterior cingulate cortex) 
+      GSE43261 (2 – Dorsal DG & Ventral DG) 
+    No Stress or MDD Diagnosis: [13] 
+      GSE150431 (1 – Amygdala) 
+      GSE118669 (1 – DG) 
+      GSE118668 (1 – PFC) 
+      GSE84184 (1 – Whole Blood) 
+      GSE84183 (2 – DG & Anterior cingulate cortex) 
+      GSE48951 (4 – Striatum [Different time-points]) 
+      GSE35763 (1 – GLt25d2 cortical cells) 
+      GSE35761 (1 – S100a10 cortical cells) 
+      GSE28644 (1 – Cortex) 
+  Rat: [33] 
+    Stress or MDD Diagnosis: [4] 
+      GSE205325 (1 – Hippocampus) 
+      GSE109445 (1 – Hippocampus) 
+      GSE86392 (1 – Brain) or (3 – Brain regions) 
+      GSE56028 (1 – DG) 
+    No Stress or MDD Diagnosis: [29] 
+      GSE194289 (27 – Brain regions) 
+      GSE89873 (1 – C6 glioma cell line) 
+      GSE42940 (1 – Hippocampus) 
+
+Treated vs. Untreated Response Groups: [18] 
+  Treatment of Responders: [9] 
+    Human: [1] 
+      GSE83386 (1 – Lymphoblastoid cell lines) 
+    Mouse: [8] 
+      GSE202172 (2 – S100a10 cortical whole cell & TRAP) 
+      GSE43261 (2 – Dorsal DG & Ventral DG) 
+      GSE28644 (1 – Cortex)
+      GSE84184 (1 – Whole Blood) 
+      GSE84183 (2 – DG & Anterior cingulate cortex) 
+    Rat: [0] 
+  Treatment of Non-Responders: [9] 
+    Human: [1] 
+      GSE83386 (1 – Lymphoblastoid cell lines) 
+    Mouse: [8] 
+      GSE202172 (2 – S100a10 cortical whole cell & TRAP) 
+      GSE43261 (2 – Dorsal DG & Ventral DG) 
+      GSE28644 (1 – Cortex)
+      GSE84184 (1 – Whole Blood) 
+      GSE84183 (2 – DG & Anterior cingulate cortex) 
+    Rat: [0] 
+
+## Comparisons Reorganized by Organism
+
+Total Comparisons: [82] 
+  Human: [5]
+    GSE128387_Blood_DFTUxx
+    GSE83386_Lympho_DFTUxx 
+    GSE83386_Lympho_DFRNxx
+    GSE83386_Lympho_DFRCxx
+    GSE83386_Lympho_DFNCxx
+  
+  Mouse: [44]
+    GSE202172_Cell_SFTUXX
+    GSE202172_TRAP_SFTUXX
+    GSE202172_Cell_SFRNXX
+    GSE202172_TRAP_SFRNXX
+    GSE202172_Cell_SFRCXX
+    GSE202172_TRAP_SFRCXX
+    GSE202172_Cell_SFNCXX
+    GSE202172_TRAP_SFNCXX
+    GSE43261_DDG_SFTUXX
+    GSE43261_VDG_SFTUXX
+    GSE43261_DDG_SFRNXX
+    GSE43261_VDG_SFRNXX
+    GSE43261_DDG_SFRCXX
+    GSE43261_VDG_SFRCXX
+    GSE43261_DDG_SFNCXX
+    GSE43261_VDG_SFNCXX
+    GSE28644_Cortex_XFTUXX
+    GSE28644_Cortex_XFRNXX
+    GSE28644_Cortex_XFRCXX
+    GSE28644_Cortex_XFNCXX
+    GSE118668_PFC_XFTUXX
+    GSE118669_DG_XFTUXX
+    GSE35761_S100a10_XFTUXX
+    GSE35763_GLt25d2_XFTUXX
+    GSE150431_Amygdala_XFTUXX
+    GSE48951_Striatum_XFTU1X
+    GSE48951_Striatum_XFTU2X
+    GSE48951_Striatum_XFTU4X
+    GSE48951_Striatum_XFTU8X
+    GSE84183_ACC_SFTUXX
+    GSE84183_DG_SFTUXX
+    GSE84183_ACC_XFTUXX
+    GSE84183_DG_XFTUXX
+    GSE84183_ACC_SFRNXX
+    GSE84183_DG_SFRNXX
+    GSE84183_ACC_SFRCXX
+    GSE84183_DG_SFRCXX
+    GSE84183_ACC_SFNCXX
+    GSE84183_DG_SFNCXX
+    GSE84184_Blood_SFTUXX
+    GSE84184_Blood_XFTUXX
+    GSE84184_Blood_SFRNXX
+    GSE84184_Blood_SFRCXX
+    GSE84184_Blood_SFNCXX
+
+  Rat: [33]
+    GSE205325_Hippocampus_SFTUXX
+    GSE109445_Hippocampus_SFTUXX
+    GSE86392_Brain_SFTUXX
+    GSE56028_DG_SFTUXX 
+    GSE89873_Glioma_XFTUXX
+    GSE42940_Hippocampus_XFTUXX
+    GSE194289_Arc_XFTUXX
+    GSE194289_BLA_XFTUXX
+    GSE194289_BNST_XFTUXX
+    GSE194289_CGC_XFTUXX
+    GSE194289_CMA_XFTUXX
+    GSE194289_dorCA1_XFTUXX
+    GSE194289_dorDG_XFTUXX
+    GSE194289_HB_XFTUXX
+    GSE194289_ILC_XFTUXX
+    GSE194289_InsularCortex_XFTUXX
+    GSE194289_LC_XFTUXX
+    GSE194289_LH_XFTUXX
+    GSE194289_LS_XFTUXX
+    GSE194289_MDT_XFTUXX
+    GSE194289_MPOA_XFTUXX
+    GSE194289_MS_XFTUXX
+    GSE194289_NaCcore_XFTUXX
+    GSE194289_NaCshell_XFTUXX
+    GSE194289_PAG_XFTUXX
+    GSE194289_PLC_XFTUXX
+    GSE194289_PVN_XFTUXX
+    GSE194289_Raphe_XFTUXX
+    GSE194289_SNT_XFTUXX
+    GSE194289_venCA1_XFTUXX
+    GSE194289_venDG_XFTUXX
+    GSE194289_VMH_XFTUXX
+    GSE194289_VTA_XFTUXX
+
+## DE Comparisons
+
+```{r Human Comparisons DE}
+#Clear Environment of All objects
+rm(list = objects())
+
+#GSE128387_Blood_DFTUxx
+GSE128387_Blood_DFTUXX_DE=readRDS("FLX_datasets/GSE128387/DE_GSE128387.rds")
+#colnames(GSE128387_Blood_DFTUXX_DE)
+GSE128387_Blood_DFTUXX_DE_df=topTable(GSE128387_Blood_DFTUXX_DE,coef = "Treatment_Timeinital",number = Inf)
+GSE128387_Blood_DFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Hs.eg.db, keys=GSE128387_Blood_DFTUXX_DE_df$GB_ACC , column="SYMBOL", keytype="REFSEQ"))
+GSE128387_Blood_DFTUXX_DE_df=GSE128387_Blood_DFTUXX_DE_df %>%
+  filter(Gene.Symbol!="NANA" & Gene.Symbol!="NULL") %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE128387_Blood_DFTUXX_DE_df)[colnames(GSE128387_Blood_DFTUXX_DE_df)=="P.Value"]="P.Value_GSE128387_Blood_DFTUXX"
+colnames(GSE128387_Blood_DFTUXX_DE_df)[colnames(GSE128387_Blood_DFTUXX_DE_df)=="logFC"]="logFC_GSE128387_Blood_DFTUXX"
+colnames(GSE128387_Blood_DFTUXX_DE_df)[colnames(GSE128387_Blood_DFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE128387_Blood_DFTUXX"
+rm(GSE128387_Blood_DFTUXX_DE)
+
+#GSE83386_Lympho_DFTUXX
+GSE83386_Lympho_DFTUXX_DE=readRDS("FLX_datasets/GSE83386/DE_All_GSE83386.rds")
+#colnames(GSE83386_Lympho_DFTUXX_DE)
+GSE83386_Lympho_DFTUXX_DE_df=topTable(GSE83386_Lympho_DFTUXX_DE,coef = "Treatmenttreatment: fluoxetine",number = Inf)
+GSE83386_Lympho_DFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Hs.eg.db, keys=GSE83386_Lympho_DFTUXX_DE_df$GB_ACC , column="SYMBOL", keytype="REFSEQ"))
+GSE83386_Lympho_DFTUXX_DE_df=GSE83386_Lympho_DFTUXX_DE_df %>%
+  filter(Gene.Symbol!="NANA" & Gene.Symbol!="NULL") %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE83386_Lympho_DFTUXX_DE_df)[colnames(GSE83386_Lympho_DFTUXX_DE_df)=="P.Value"]="P.Value_GSE83386_Lympho_DFTUXX"
+colnames(GSE83386_Lympho_DFTUXX_DE_df)[colnames(GSE83386_Lympho_DFTUXX_DE_df)=="logFC"]="logFC_GSE83386_Lympho_DFTUXX"
+colnames(GSE83386_Lympho_DFTUXX_DE_df)[colnames(GSE83386_Lympho_DFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE83386_Lympho_DFTUXX"
+rm(GSE83386_Lympho_DFTUXX_DE)
+
+#GSE83386_Lympho_DFRNXX
+GSE83386_Lympho_DFRNXX_DE=readRDS("FLX_datasets/GSE83386/DE_ResVNon_GSE83386.rds")
+#colnames(GSE83386_Lympho_DFRNXX_DE)
+GSE83386_Lympho_DFRNXX_DE_df=topTable(GSE83386_Lympho_DFRNXX_DE,coef = "FR - FNR",number = Inf)
+GSE83386_Lympho_DFRNXX_DE_df$Gene.Symbol=as.character(mapIds(org.Hs.eg.db, keys=GSE83386_Lympho_DFRNXX_DE_df$GB_ACC , column="SYMBOL", keytype="REFSEQ"))
+GSE83386_Lympho_DFRNXX_DE_df=GSE83386_Lympho_DFRNXX_DE_df %>%
+  filter(Gene.Symbol!="NANA" & Gene.Symbol!="NULL") %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE83386_Lympho_DFRNXX_DE_df)[colnames(GSE83386_Lympho_DFRNXX_DE_df)=="P.Value"]="P.Value_GSE83386_Lympho_DFRNXX"
+colnames(GSE83386_Lympho_DFRNXX_DE_df)[colnames(GSE83386_Lympho_DFRNXX_DE_df)=="logFC"]="logFC_GSE83386_Lympho_DFRNXX"
+colnames(GSE83386_Lympho_DFRNXX_DE_df)[colnames(GSE83386_Lympho_DFRNXX_DE_df)=="adj.P.Val"]="AdjP_GSE83386_Lympho_DFRNXX"
+rm(GSE83386_Lympho_DFRNXX_DE)
+
+#GSE83386_Lympho_DFRCXX
+GSE83386_Lympho_DFRCXX_DE=readRDS("FLX_datasets/GSE83386/DE_Res_GSE83386.rds")
+#colnames(GSE83386_Lympho_DFRCXX_DE)
+GSE83386_Lympho_DFRCXX_DE_df=topTable(GSE83386_Lympho_DFRCXX_DE,coef = "rTreatmenttreatment: fluoxetine",number = Inf)
+GSE83386_Lympho_DFRCXX_DE_df$Gene.Symbol=as.character(mapIds(org.Hs.eg.db, keys=GSE83386_Lympho_DFRCXX_DE_df$GB_ACC , column="SYMBOL", keytype="REFSEQ"))
+GSE83386_Lympho_DFRCXX_DE_df=GSE83386_Lympho_DFRCXX_DE_df %>%
+  filter(Gene.Symbol!="NANA" & Gene.Symbol!="NULL") %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE83386_Lympho_DFRCXX_DE_df)[colnames(GSE83386_Lympho_DFRCXX_DE_df)=="P.Value"]="P.Value_GSE83386_Lympho_DFRCXX"
+colnames(GSE83386_Lympho_DFRCXX_DE_df)[colnames(GSE83386_Lympho_DFRCXX_DE_df)=="logFC"]="logFC_GSE83386_Lympho_DFRCXX"
+colnames(GSE83386_Lympho_DFRCXX_DE_df)[colnames(GSE83386_Lympho_DFRCXX_DE_df)=="adj.P.Val"]="AdjP_GSE83386_Lympho_DFRCXX"
+rm(GSE83386_Lympho_DFRCXX_DE)
+
+#GSE83386_Lympho_DFNCXX
+GSE83386_Lympho_DFNCXX_DE=readRDS("FLX_datasets/GSE83386/DE_Non_GSE83386.rds")
+#colnames(GSE83386_Lympho_DFNCXX_DE)
+GSE83386_Lympho_DFNCXX_DE_df=topTable(GSE83386_Lympho_DFNCXX_DE,coef = "nTreatmenttreatment: fluoxetine",number = Inf)
+GSE83386_Lympho_DFNCXX_DE_df$Gene.Symbol=as.character(mapIds(org.Hs.eg.db, keys=GSE83386_Lympho_DFNCXX_DE_df$GB_ACC , column="SYMBOL", keytype="REFSEQ"))
+GSE83386_Lympho_DFNCXX_DE_df=GSE83386_Lympho_DFNCXX_DE_df %>%
+  filter(Gene.Symbol!="NANA" & Gene.Symbol!="NULL") %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE83386_Lympho_DFNCXX_DE_df)[colnames(GSE83386_Lympho_DFNCXX_DE_df)=="P.Value"]="P.Value_GSE83386_Lympho_DFNCXX"
+colnames(GSE83386_Lympho_DFNCXX_DE_df)[colnames(GSE83386_Lympho_DFNCXX_DE_df)=="logFC"]="logFC_GSE83386_Lympho_DFNCXX"
+colnames(GSE83386_Lympho_DFNCXX_DE_df)[colnames(GSE83386_Lympho_DFNCXX_DE_df)=="adj.P.Val"]="AdjP_GSE83386_Lympho_DFNCXX"
+rm(GSE83386_Lympho_DFNCXX_DE)
+
+SetList=as.list(mget(objects()))
+saveRDS(SetList,"Input RDS/Human_All_DE_List.rds")
+
+```
+
+```{r Mouse Comparisons DE}
+#Clear Environment of All objects
+rm(list = objects())
+
+#GSE150431_Amygdala_XFTUXX
+GSE150431_Amygdala_XFTUXX_DE=readRDS("FLX_datasets/GSE150431/DESeqResGSE150431.rds")
+GSE150431_Amygdala_XFTUXX_DE_df=data.frame(Gene.ID=GSE150431_Amygdala_XFTUXX_DE@rownames,
+                           P.Value=GSE150431_Amygdala_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE150431_Amygdala_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE150431_Amygdala_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE150431_Amygdala_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE150431_Amygdala_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Mm.eg.db, keys=GSE150431_Amygdala_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBL"))
+GSE150431_Amygdala_XFTUXX_DE_df=arrange(GSE150431_Amygdala_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE150431_Amygdala_XFTUXX_DE_df)[colnames(GSE150431_Amygdala_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE150431_Amygdala_XFTUXX"
+colnames(GSE150431_Amygdala_XFTUXX_DE_df)[colnames(GSE150431_Amygdala_XFTUXX_DE_df)=="logFC"]="logFC_GSE150431_Amygdala_XFTUXX"
+colnames(GSE150431_Amygdala_XFTUXX_DE_df)[colnames(GSE150431_Amygdala_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE150431_Amygdala_XFTUXX"
+rm(GSE150431_Amygdala_XFTUXX_DE)
+
+#GSE202172_Cell_SFTUXX
+GSE202172_Cell_SFTUXX_DE=readRDS("FLX_datasets/GSE202172/DESeqINPUT.Flx.vs.Veh_GSE202172.rds")
+GSE202172_Cell_SFTUXX_DE_df=data.frame(Gene.Symbol=GSE202172_Cell_SFTUXX_DE@rownames,
+                                    P.Value=GSE202172_Cell_SFTUXX_DE@listData$pvalue,
+                                    logFC=GSE202172_Cell_SFTUXX_DE@listData$log2FoldChange,
+                                    ADJ=GSE202172_Cell_SFTUXX_DE@listData$padj) %>% 
+  filter(!is.na(ADJ)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE202172_Cell_SFTUXX_DE_df)[colnames(GSE202172_Cell_SFTUXX_DE_df)=="P.Value"]="P.Value_GSE202172_Cell_SFTUXX"
+colnames(GSE202172_Cell_SFTUXX_DE_df)[colnames(GSE202172_Cell_SFTUXX_DE_df)=="logFC"]="logFC_GSE202172_Cell_SFTUXX"
+colnames(GSE202172_Cell_SFTUXX_DE_df)[colnames(GSE202172_Cell_SFTUXX_DE_df)=="ADJ"]="AdjP_GSE202172_Cell_SFTUXX"
+rm(GSE202172_Cell_SFTUXX_DE)
+
+#GSE202172_TRAP_SFTUXX
+GSE202172_TRAP_SFTUXX_DE=readRDS("FLX_datasets/GSE202172/DESeqTRAP.Flx.vs.Veh_GSE202172.rds")
+GSE202172_TRAP_SFTUXX_DE_df=data.frame(Gene.Symbol=GSE202172_TRAP_SFTUXX_DE@rownames,
+                                    P.Value=GSE202172_TRAP_SFTUXX_DE@listData$pvalue,
+                                    logFC=GSE202172_TRAP_SFTUXX_DE@listData$log2FoldChange,
+                                    ADJ=GSE202172_TRAP_SFTUXX_DE@listData$padj) %>% 
+  filter(!is.na(ADJ)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE202172_TRAP_SFTUXX_DE_df)[colnames(GSE202172_TRAP_SFTUXX_DE_df)=="P.Value"]="P.Value_GSE202172_TRAP_SFTUXX"
+colnames(GSE202172_TRAP_SFTUXX_DE_df)[colnames(GSE202172_TRAP_SFTUXX_DE_df)=="logFC"]="logFC_GSE202172_TRAP_SFTUXX"
+colnames(GSE202172_TRAP_SFTUXX_DE_df)[colnames(GSE202172_TRAP_SFTUXX_DE_df)=="ADJ"]="AdjP_GSE202172_TRAP_SFTUXX"
+rm(GSE202172_TRAP_SFTUXX_DE)
+
+#GSE202172_Cell_SFRNXX
+GSE202172_Cell_SFRNXX_DE=readRDS("FLX_datasets/GSE202172/DESeqINPUT.Flx_Norm.vs.Flx_Anx_GSE202172.rds")
+GSE202172_Cell_SFRNXX_DE_df=data.frame(Gene.Symbol=GSE202172_Cell_SFRNXX_DE@rownames,
+                                    P.Value=GSE202172_Cell_SFRNXX_DE@listData$pvalue,
+                                    logFC=GSE202172_Cell_SFRNXX_DE@listData$log2FoldChange,
+                                    ADJ=GSE202172_Cell_SFRNXX_DE@listData$padj) %>% 
+  filter(!is.na(ADJ)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE202172_Cell_SFRNXX_DE_df)[colnames(GSE202172_Cell_SFRNXX_DE_df)=="P.Value"]="P.Value_GSE202172_Cell_SFRNXX"
+colnames(GSE202172_Cell_SFRNXX_DE_df)[colnames(GSE202172_Cell_SFRNXX_DE_df)=="logFC"]="logFC_GSE202172_Cell_SFRNXX"
+colnames(GSE202172_Cell_SFRNXX_DE_df)[colnames(GSE202172_Cell_SFRNXX_DE_df)=="ADJ"]="AdjP_GSE202172_Cell_SFRNXX"
+rm(GSE202172_Cell_SFRNXX_DE)
+
+#GSE202172_TRAP_SFRNXX
+GSE202172_TRAP_SFRNXX_DE=readRDS("FLX_datasets/GSE202172/DESeqTRAP.Flx_Norm.vs.Flx_Anx_GSE202172.rds")
+GSE202172_TRAP_SFRNXX_DE_df=data.frame(Gene.Symbol=GSE202172_TRAP_SFRNXX_DE@rownames,
+                                    P.Value=GSE202172_TRAP_SFRNXX_DE@listData$pvalue,
+                                    logFC=GSE202172_TRAP_SFRNXX_DE@listData$log2FoldChange,
+                                    ADJ=GSE202172_TRAP_SFRNXX_DE@listData$padj) %>% 
+  filter(!is.na(ADJ)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE202172_TRAP_SFRNXX_DE_df)[colnames(GSE202172_TRAP_SFRNXX_DE_df)=="P.Value"]="P.Value_GSE202172_TRAP_SFRNXX"
+colnames(GSE202172_TRAP_SFRNXX_DE_df)[colnames(GSE202172_TRAP_SFRNXX_DE_df)=="logFC"]="logFC_GSE202172_TRAP_SFRNXX"
+colnames(GSE202172_TRAP_SFRNXX_DE_df)[colnames(GSE202172_TRAP_SFRNXX_DE_df)=="ADJ"]="AdjP_GSE202172_TRAP_SFRNXX"
+rm(GSE202172_TRAP_SFRNXX_DE)
+
+#GSE202172_Cell_SFRCXX
+GSE202172_Cell_SFRCXX_DE=readRDS("FLX_datasets/GSE202172/DESeqINPUT.Flx_Sh.vs.SH_Veh_GSE202172.rds")
+GSE202172_Cell_SFRCXX_DE_df=data.frame(Gene.Symbol=GSE202172_Cell_SFRCXX_DE@rownames,
+                                    P.Value=GSE202172_Cell_SFRCXX_DE@listData$pvalue,
+                                    logFC=GSE202172_Cell_SFRCXX_DE@listData$log2FoldChange,
+                                    ADJ=GSE202172_Cell_SFRCXX_DE@listData$padj) %>% 
+  filter(!is.na(ADJ)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE202172_Cell_SFRCXX_DE_df)[colnames(GSE202172_Cell_SFRCXX_DE_df)=="P.Value"]="P.Value_GSE202172_Cell_SFRCXX"
+colnames(GSE202172_Cell_SFRCXX_DE_df)[colnames(GSE202172_Cell_SFRCXX_DE_df)=="logFC"]="logFC_GSE202172_Cell_SFRCXX"
+colnames(GSE202172_Cell_SFRCXX_DE_df)[colnames(GSE202172_Cell_SFRCXX_DE_df)=="ADJ"]="AdjP_GSE202172_Cell_SFRCXX"
+rm(GSE202172_Cell_SFRCXX_DE)
+
+#GSE202172_TRAP_SFRCXX
+GSE202172_TRAP_SFRCXX_DE=readRDS("FLX_datasets/GSE202172/DESeqTRAP.Flx_Sh.vs.SH_Veh_GSE202172.rds")
+GSE202172_TRAP_SFRCXX_DE_df=data.frame(Gene.Symbol=GSE202172_TRAP_SFRCXX_DE@rownames,
+                                    P.Value=GSE202172_TRAP_SFRCXX_DE@listData$pvalue,
+                                    logFC=GSE202172_TRAP_SFRCXX_DE@listData$log2FoldChange,
+                                    ADJ=GSE202172_TRAP_SFRCXX_DE@listData$padj) %>% 
+  filter(!is.na(ADJ)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE202172_TRAP_SFRCXX_DE_df)[colnames(GSE202172_TRAP_SFRCXX_DE_df)=="P.Value"]="P.Value_GSE202172_TRAP_SFRCXX"
+colnames(GSE202172_TRAP_SFRCXX_DE_df)[colnames(GSE202172_TRAP_SFRCXX_DE_df)=="logFC"]="logFC_GSE202172_TRAP_SFRCXX"
+colnames(GSE202172_TRAP_SFRCXX_DE_df)[colnames(GSE202172_TRAP_SFRCXX_DE_df)=="ADJ"]="AdjP_GSE202172_TRAP_SFRCXX"
+rm(GSE202172_TRAP_SFRCXX_DE)
+
+#GSE202172_Cell_SFNCXX
+GSE202172_Cell_SFNCXX_DE=readRDS("FLX_datasets/GSE202172/DESeqINPUT.Flx_Anx.vs.SH_Veh_GSE202172.rds")
+GSE202172_Cell_SFNCXX_DE_df=data.frame(Gene.Symbol=GSE202172_Cell_SFNCXX_DE@rownames,
+                                    P.Value=GSE202172_Cell_SFNCXX_DE@listData$pvalue,
+                                    logFC=GSE202172_Cell_SFNCXX_DE@listData$log2FoldChange,
+                                    ADJ=GSE202172_Cell_SFNCXX_DE@listData$padj) %>% 
+  filter(!is.na(ADJ)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE202172_Cell_SFNCXX_DE_df)[colnames(GSE202172_Cell_SFNCXX_DE_df)=="P.Value"]="P.Value_GSE202172_Cell_SFNCXX"
+colnames(GSE202172_Cell_SFNCXX_DE_df)[colnames(GSE202172_Cell_SFNCXX_DE_df)=="logFC"]="logFC_GSE202172_Cell_SFNCXX"
+colnames(GSE202172_Cell_SFNCXX_DE_df)[colnames(GSE202172_Cell_SFNCXX_DE_df)=="ADJ"]="AdjP_GSE202172_Cell_SFNCXX"
+rm(GSE202172_Cell_SFNCXX_DE)
+
+#GSE202172_TRAP_SFNCXX
+GSE202172_TRAP_SFNCXX_DE=readRDS("FLX_datasets/GSE202172/DESeqTRAP.Flx_Anx.vs.SH_Veh_GSE202172.rds")
+GSE202172_TRAP_SFNCXX_DE_df=data.frame(Gene.Symbol=GSE202172_TRAP_SFNCXX_DE@rownames,
+                                    P.Value=GSE202172_TRAP_SFNCXX_DE@listData$pvalue,
+                                    logFC=GSE202172_TRAP_SFNCXX_DE@listData$log2FoldChange,
+                                    ADJ=GSE202172_TRAP_SFNCXX_DE@listData$padj) %>% 
+  filter(!is.na(ADJ)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE202172_TRAP_SFNCXX_DE_df)[colnames(GSE202172_TRAP_SFNCXX_DE_df)=="P.Value"]="P.Value_GSE202172_TRAP_SFNCXX"
+colnames(GSE202172_TRAP_SFNCXX_DE_df)[colnames(GSE202172_TRAP_SFNCXX_DE_df)=="logFC"]="logFC_GSE202172_TRAP_SFNCXX"
+colnames(GSE202172_TRAP_SFNCXX_DE_df)[colnames(GSE202172_TRAP_SFNCXX_DE_df)=="ADJ"]="AdjP_GSE202172_TRAP_SFNCXX"
+rm(GSE202172_TRAP_SFNCXX_DE)
+
+#GSE43261_DDG_SFTUXX
+GSE43261_DDG_SFTUXX_DE=readRDS("FLX_datasets/GSE43261/DE_PooledDDG_GSE43261.rds")
+#colnames(GSE43261_DDG_SFTUXX_DE)
+GSE43261_DDG_SFTUXX_DE_df=topTable(GSE43261_DDG_SFTUXX_DE,coef = "sampledata_DDG$TreatmentFluoxetine",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE43261_DDG_SFTUXX_DE_df)[colnames(GSE43261_DDG_SFTUXX_DE_df)=="P.Value"]="P.Value_GSE43261_DDG_SFTUXX"
+colnames(GSE43261_DDG_SFTUXX_DE_df)[colnames(GSE43261_DDG_SFTUXX_DE_df)=="logFC"]="logFC_GSE43261_DDG_SFTUXX"
+colnames(GSE43261_DDG_SFTUXX_DE_df)[colnames(GSE43261_DDG_SFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE43261_DDG_SFTUXX"
+rm(GSE43261_DDG_SFTUXX_DE)
+
+#GSE43261_VDG_SFTUXX
+GSE43261_VDG_SFTUXX_DE=readRDS("FLX_datasets/GSE43261/DE_PooledVDG_GSE43261.rds")
+#colnames(GSE43261_VDG_SFTUXX_DE)
+GSE43261_VDG_SFTUXX_DE_df=topTable(GSE43261_VDG_SFTUXX_DE,coef = "sampledata_VDG$TreatmentFluoxetine",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE43261_VDG_SFTUXX_DE_df)[colnames(GSE43261_VDG_SFTUXX_DE_df)=="P.Value"]="P.Value_GSE43261_VDG_SFTUXX"
+colnames(GSE43261_VDG_SFTUXX_DE_df)[colnames(GSE43261_VDG_SFTUXX_DE_df)=="logFC"]="logFC_GSE43261_VDG_SFTUXX"
+colnames(GSE43261_VDG_SFTUXX_DE_df)[colnames(GSE43261_VDG_SFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE43261_VDG_SFTUXX"
+rm(GSE43261_VDG_SFTUXX_DE)
+
+#GSE43261_DDG_SFRNXX
+GSE43261_DDG_SFRNXX_DE=readRDS("FLX_datasets/GSE43261/DE_ResponseDDG_GSE43261.rds")
+#colnames(GSE43261_DDG_SFRNXX_DE)
+GSE43261_DDG_SFRNXX_DE_df=topTable(GSE43261_DDG_SFRNXX_DE,coef = "Responder - Resistant",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE43261_DDG_SFRNXX_DE_df)[colnames(GSE43261_DDG_SFRNXX_DE_df)=="P.Value"]="P.Value_GSE43261_DDG_SFRNXX"
+colnames(GSE43261_DDG_SFRNXX_DE_df)[colnames(GSE43261_DDG_SFRNXX_DE_df)=="logFC"]="logFC_GSE43261_DDG_SFRNXX"
+colnames(GSE43261_DDG_SFRNXX_DE_df)[colnames(GSE43261_DDG_SFRNXX_DE_df)=="adj.P.Val"]="AdjP_GSE43261_DDG_SFRNXX"
+rm(GSE43261_DDG_SFRNXX_DE)
+
+#GSE43261_VDG_SFRNXX
+GSE43261_VDG_SFRNXX_DE=readRDS("FLX_datasets/GSE43261/DE_ResponseVDG_GSE43261.rds")
+#colnames(GSE43261_VDG_SFRNXX_DE)
+GSE43261_VDG_SFRNXX_DE_df=topTable(GSE43261_VDG_SFRNXX_DE,coef = "Responder - Resistant",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE43261_VDG_SFRNXX_DE_df)[colnames(GSE43261_VDG_SFRNXX_DE_df)=="P.Value"]="P.Value_GSE43261_VDG_SFRNXX"
+colnames(GSE43261_VDG_SFRNXX_DE_df)[colnames(GSE43261_VDG_SFRNXX_DE_df)=="logFC"]="logFC_GSE43261_VDG_SFRNXX"
+colnames(GSE43261_VDG_SFRNXX_DE_df)[colnames(GSE43261_VDG_SFRNXX_DE_df)=="adj.P.Val"]="AdjP_GSE43261_VDG_SFRNXX"
+rm(GSE43261_VDG_SFRNXX_DE)
+
+#GSE43261_DDG_SFRCXX
+GSE43261_DDG_SFRCXX_DE=readRDS("FLX_datasets/GSE43261/DE_ResponseDDG_GSE43261.rds")
+#colnames(GSE43261_DDG_SFRCXX_DE)
+GSE43261_DDG_SFRCXX_DE_df=topTable(GSE43261_DDG_SFRCXX_DE,coef = "Responder - Control",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE43261_DDG_SFRCXX_DE_df)[colnames(GSE43261_DDG_SFRCXX_DE_df)=="P.Value"]="P.Value_GSE43261_DDG_SFRCXX"
+colnames(GSE43261_DDG_SFRCXX_DE_df)[colnames(GSE43261_DDG_SFRCXX_DE_df)=="logFC"]="logFC_GSE43261_DDG_SFRCXX"
+colnames(GSE43261_DDG_SFRCXX_DE_df)[colnames(GSE43261_DDG_SFRCXX_DE_df)=="adj.P.Val"]="AdjP_GSE43261_DDG_SFRCXX"
+rm(GSE43261_DDG_SFRCXX_DE)
+
+#GSE43261_VDG_SFRCXX
+GSE43261_VDG_SFRCXX_DE=readRDS("FLX_datasets/GSE43261/DE_ResponseVDG_GSE43261.rds")
+#colnames(GSE43261_VDG_SFRCXX_DE)
+GSE43261_VDG_SFRCXX_DE_df=topTable(GSE43261_VDG_SFRCXX_DE,coef = "Responder - Control",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE43261_VDG_SFRCXX_DE_df)[colnames(GSE43261_VDG_SFRCXX_DE_df)=="P.Value"]="P.Value_GSE43261_VDG_SFRCXX"
+colnames(GSE43261_VDG_SFRCXX_DE_df)[colnames(GSE43261_VDG_SFRCXX_DE_df)=="logFC"]="logFC_GSE43261_VDG_SFRCXX"
+colnames(GSE43261_VDG_SFRCXX_DE_df)[colnames(GSE43261_VDG_SFRCXX_DE_df)=="adj.P.Val"]="AdjP_GSE43261_VDG_SFRCXX"
+rm(GSE43261_VDG_SFRCXX_DE)
+
+#GSE43261_DDG_SFNCXX
+GSE43261_DDG_SFNCXX_DE=readRDS("FLX_datasets/GSE43261/DE_ResponseDDG_GSE43261.rds")
+#colnames(GSE43261_DDG_SFNCXX_DE)
+GSE43261_DDG_SFNCXX_DE_df=topTable(GSE43261_DDG_SFNCXX_DE,coef = "Resistant - Control",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE43261_DDG_SFNCXX_DE_df)[colnames(GSE43261_DDG_SFNCXX_DE_df)=="P.Value"]="P.Value_GSE43261_DDG_SFNCXX"
+colnames(GSE43261_DDG_SFNCXX_DE_df)[colnames(GSE43261_DDG_SFNCXX_DE_df)=="logFC"]="logFC_GSE43261_DDG_SFNCXX"
+colnames(GSE43261_DDG_SFNCXX_DE_df)[colnames(GSE43261_DDG_SFNCXX_DE_df)=="adj.P.Val"]="AdjP_GSE43261_DDG_SFNCXX"
+rm(GSE43261_DDG_SFNCXX_DE)
+
+#GSE43261_VDG_SFNCXX
+GSE43261_VDG_SFNCXX_DE=readRDS("FLX_datasets/GSE43261/DE_ResponseVDG_GSE43261.rds")
+#colnames(GSE43261_VDG_SFNCXX_DE)
+GSE43261_VDG_SFNCXX_DE_df=topTable(GSE43261_VDG_SFNCXX_DE,coef = "Resistant - Control",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE43261_VDG_SFNCXX_DE_df)[colnames(GSE43261_VDG_SFNCXX_DE_df)=="P.Value"]="P.Value_GSE43261_VDG_SFNCXX"
+colnames(GSE43261_VDG_SFNCXX_DE_df)[colnames(GSE43261_VDG_SFNCXX_DE_df)=="logFC"]="logFC_GSE43261_VDG_SFNCXX"
+colnames(GSE43261_VDG_SFNCXX_DE_df)[colnames(GSE43261_VDG_SFNCXX_DE_df)=="adj.P.Val"]="AdjP_GSE43261_VDG_SFNCXX"
+rm(GSE43261_VDG_SFNCXX_DE)
+
+#GSE28644_Cortex_XFTUXX
+GSE28644_Cortex_XFTUXX_DE=readRDS("FLX_datasets/GSE28644/DE_GSE28644.rds")
+#colnames(GSE28644_Cortex_XFTUXX_DE)
+GSE28644_Cortex_XFTUXX_DE_df=topTable(GSE28644_Cortex_XFTUXX_DE,coef = "Treatmenttreatment group (fluoxetine)",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE28644_Cortex_XFTUXX_DE_df)[colnames(GSE28644_Cortex_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE28644_Cortex_XFTUXX"
+colnames(GSE28644_Cortex_XFTUXX_DE_df)[colnames(GSE28644_Cortex_XFTUXX_DE_df)=="logFC"]="logFC_GSE28644_Cortex_XFTUXX"
+colnames(GSE28644_Cortex_XFTUXX_DE_df)[colnames(GSE28644_Cortex_XFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE28644_Cortex_XFTUXX"
+rm(GSE28644_Cortex_XFTUXX_DE)
+
+#GSE28644_Cortex_XFRNXX
+GSE28644_Cortex_XFRNXX_DE=readRDS("FLX_datasets/GSE28644/DE_ResVNon_GSE28644.rds")
+#colnames(GSE28644_Cortex_XFRNXX_DE)
+GSE28644_Cortex_XFRNXX_DE_df=topTable(GSE28644_Cortex_XFRNXX_DE,coef = "FR - FNR",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE28644_Cortex_XFRNXX_DE_df)[colnames(GSE28644_Cortex_XFRNXX_DE_df)=="P.Value"]="P.Value_GSE28644_Cortex_XFRNXX"
+colnames(GSE28644_Cortex_XFRNXX_DE_df)[colnames(GSE28644_Cortex_XFRNXX_DE_df)=="logFC"]="logFC_GSE28644_Cortex_XFRNXX"
+colnames(GSE28644_Cortex_XFRNXX_DE_df)[colnames(GSE28644_Cortex_XFRNXX_DE_df)=="adj.P.Val"]="AdjP_GSE28644_Cortex_XFRNXX"
+rm(GSE28644_Cortex_XFRNXX_DE)
+
+#GSE28644_Cortex_XFRCXX
+GSE28644_Cortex_XFRCXX_DE=readRDS("FLX_datasets/GSE28644/DE_Res_GSE28644.rds")
+#colnames(GSE28644_Cortex_XFRCXX_DE)
+GSE28644_Cortex_XFRCXX_DE_df=topTable(GSE28644_Cortex_XFRCXX_DE,coef = "rTreatmenttreatment group (fluoxetine)",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE28644_Cortex_XFRCXX_DE_df)[colnames(GSE28644_Cortex_XFRCXX_DE_df)=="P.Value"]="P.Value_GSE28644_Cortex_XFRCXX"
+colnames(GSE28644_Cortex_XFRCXX_DE_df)[colnames(GSE28644_Cortex_XFRCXX_DE_df)=="logFC"]="logFC_GSE28644_Cortex_XFRCXX"
+colnames(GSE28644_Cortex_XFRCXX_DE_df)[colnames(GSE28644_Cortex_XFRCXX_DE_df)=="adj.P.Val"]="AdjP_GSE28644_Cortex_XFRCXX"
+rm(GSE28644_Cortex_XFRCXX_DE)
+
+#GSE28644_Cortex_XFNCXX
+GSE28644_Cortex_XFNCXX_DE=readRDS("FLX_datasets/GSE28644/DE_Non_GSE28644.rds")
+#colnames(GSE28644_Cortex_XFNCXX_DE)
+GSE28644_Cortex_XFNCXX_DE_df=topTable(GSE28644_Cortex_XFNCXX_DE,coef = "nTreatmenttreatment group (fluoxetine)",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE28644_Cortex_XFNCXX_DE_df)[colnames(GSE28644_Cortex_XFNCXX_DE_df)=="P.Value"]="P.Value_GSE28644_Cortex_XFNCXX"
+colnames(GSE28644_Cortex_XFNCXX_DE_df)[colnames(GSE28644_Cortex_XFNCXX_DE_df)=="logFC"]="logFC_GSE28644_Cortex_XFNCXX"
+colnames(GSE28644_Cortex_XFNCXX_DE_df)[colnames(GSE28644_Cortex_XFNCXX_DE_df)=="adj.P.Val"]="AdjP_GSE28644_Cortex_XFNCXX"
+rm(GSE28644_Cortex_XFNCXX_DE)
+
+#GSE118668_PFC_XFTUXX
+GSE118668_PFC_XFTUXX_DE=readRDS("FLX_datasets/GSE118668/DE_PFC_GSE118670.rds")
+#colnames(GSE118668_PFC_XFTUXX_DE)
+GSE118668_PFC_XFTUXX_DE_df=topTable(GSE118668_PFC_XFTUXX_DE,coef = "Treatmenttreatment: fluoxetine",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE118668_PFC_XFTUXX_DE_df)[colnames(GSE118668_PFC_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE118668_PFC_XFTUXX"
+colnames(GSE118668_PFC_XFTUXX_DE_df)[colnames(GSE118668_PFC_XFTUXX_DE_df)=="logFC"]="logFC_GSE118668_PFC_XFTUXX"
+colnames(GSE118668_PFC_XFTUXX_DE_df)[colnames(GSE118668_PFC_XFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE118668_PFC_XFTUXX"
+rm(GSE118668_PFC_XFTUXX_DE)
+
+#GSE118669_DG_XFTUXX
+GSE118669_DG_XFTUXX_DE=readRDS("FLX_datasets/GSE118669/DE_DG_GSE118670.rds")
+#colnames(GSE118669_DG_XFTUXX_DE)
+GSE118669_DG_XFTUXX_DE_df=topTable(GSE118669_DG_XFTUXX_DE,coef = "Treatmenttreatment: fluoxetine",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE118669_DG_XFTUXX_DE_df)[colnames(GSE118669_DG_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE118669_DG_XFTUXX"
+colnames(GSE118669_DG_XFTUXX_DE_df)[colnames(GSE118669_DG_XFTUXX_DE_df)=="logFC"]="logFC_GSE118669_DG_XFTUXX"
+colnames(GSE118669_DG_XFTUXX_DE_df)[colnames(GSE118669_DG_XFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE118669_DG_XFTUXX"
+rm(GSE118669_DG_XFTUXX_DE)
+
+#GSE35761_S100a10_XFTUXX
+GSE35761_S100a10_XFTUXX_DE=readRDS("FLX_datasets/GSE35761/DE_GSE35761.rds")
+#colnames(GSE35761_S100a10_XFTUXX_DE)
+GSE35761_S100a10_XFTUXX_DE_df=topTable(GSE35761_S100a10_XFTUXX_DE,coef = "Treatmenttreatment: fluoxetine",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE35761_S100a10_XFTUXX_DE_df)[colnames(GSE35761_S100a10_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE35761_S100a10_XFTUXX"
+colnames(GSE35761_S100a10_XFTUXX_DE_df)[colnames(GSE35761_S100a10_XFTUXX_DE_df)=="logFC"]="logFC_GSE35761_S100a10_XFTUXX"
+colnames(GSE35761_S100a10_XFTUXX_DE_df)[colnames(GSE35761_S100a10_XFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE35761_S100a10_XFTUXX"
+rm(GSE35761_S100a10_XFTUXX_DE)
+
+#GSE35763_GLt25d2_XFTUXX
+GSE35763_GLt25d2_XFTUXX_DE=readRDS("FLX_datasets/GSE35763/DE_GSE35763.rds")
+#colnames(GSE35763_GLt25d2_XFTUXX_DE)
+GSE35763_GLt25d2_XFTUXX_DE_df=topTable(GSE35763_GLt25d2_XFTUXX_DE,coef = "Treatmenttreatment: fluoxetine",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !grepl("///",Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE35763_GLt25d2_XFTUXX_DE_df)[colnames(GSE35763_GLt25d2_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE35763_GLt25d2_XFTUXX"
+colnames(GSE35763_GLt25d2_XFTUXX_DE_df)[colnames(GSE35763_GLt25d2_XFTUXX_DE_df)=="logFC"]="logFC_GSE35763_GLt25d2_XFTUXX"
+colnames(GSE35763_GLt25d2_XFTUXX_DE_df)[colnames(GSE35763_GLt25d2_XFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE35763_GLt25d2_XFTUXX"
+rm(GSE35763_GLt25d2_XFTUXX_DE)
+
+#GSE48951_Striatum_XFTU1X
+GSE48951_Striatum_XFTU1X_DE=readRDS("FLX_datasets/GSE48951/DE_h1_GSE48951.rds")
+#colnames(GSE48951_Striatum_XFTU1X_DE)
+GSE48951_Striatum_XFTU1X_DE_df=topTable(GSE48951_Striatum_XFTU1X_DE,coef = "h1TreatmentFluoxetine",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Symbol)) %>%
+  filter(Symbol!="" & !grepl("///",Symbol)) %>% 
+  dplyr::select(Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE48951_Striatum_XFTU1X_DE_df)[colnames(GSE48951_Striatum_XFTU1X_DE_df)=="P.Value"]="P.Value_GSE48951_Striatum_XFTU1X"
+colnames(GSE48951_Striatum_XFTU1X_DE_df)[colnames(GSE48951_Striatum_XFTU1X_DE_df)=="logFC"]="logFC_GSE48951_Striatum_XFTU1X"
+colnames(GSE48951_Striatum_XFTU1X_DE_df)[colnames(GSE48951_Striatum_XFTU1X_DE_df)=="Symbol"]="Gene.Symbol"
+colnames(GSE48951_Striatum_XFTU1X_DE_df)[colnames(GSE48951_Striatum_XFTU1X_DE_df)=="adj.P.Val"]="AdjP_GSE48951_Striatum_XFTU1X"
+rm(GSE48951_Striatum_XFTU1X_DE)
+
+#GSE48951_Striatum_XFTU2X
+GSE48951_Striatum_XFTU2X_DE=readRDS("FLX_datasets/GSE48951/DE_h2_GSE48951.rds")
+#colnames(GSE48951_Striatum_XFTU2X_DE)
+GSE48951_Striatum_XFTU2X_DE_df=topTable(GSE48951_Striatum_XFTU2X_DE,coef = "h2TreatmentFluoxetine",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Symbol)) %>%
+  filter(Symbol!="" & !grepl("///",Symbol)) %>% 
+  dplyr::select(Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE48951_Striatum_XFTU2X_DE_df)[colnames(GSE48951_Striatum_XFTU2X_DE_df)=="P.Value"]="P.Value_GSE48951_Striatum_XFTU2X"
+colnames(GSE48951_Striatum_XFTU2X_DE_df)[colnames(GSE48951_Striatum_XFTU2X_DE_df)=="logFC"]="logFC_GSE48951_Striatum_XFTU2X"
+colnames(GSE48951_Striatum_XFTU2X_DE_df)[colnames(GSE48951_Striatum_XFTU2X_DE_df)=="Symbol"]="Gene.Symbol"
+colnames(GSE48951_Striatum_XFTU2X_DE_df)[colnames(GSE48951_Striatum_XFTU2X_DE_df)=="adj.P.Val"]="AdjP_GSE48951_Striatum_XFTU2X"
+rm(GSE48951_Striatum_XFTU2X_DE)
+
+#GSE48951_Striatum_XFTU4X
+GSE48951_Striatum_XFTU4X_DE=readRDS("FLX_datasets/GSE48951/DE_h4_GSE48951.rds")
+#colnames(GSE48951_Striatum_XFTU4X_DE)
+GSE48951_Striatum_XFTU4X_DE_df=topTable(GSE48951_Striatum_XFTU4X_DE,coef = "h4TreatmentFluoxetine",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Symbol)) %>%
+  filter(Symbol!="" & !grepl("///",Symbol)) %>% 
+  dplyr::select(Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE48951_Striatum_XFTU4X_DE_df)[colnames(GSE48951_Striatum_XFTU4X_DE_df)=="P.Value"]="P.Value_GSE48951_Striatum_XFTU4X"
+colnames(GSE48951_Striatum_XFTU4X_DE_df)[colnames(GSE48951_Striatum_XFTU4X_DE_df)=="logFC"]="logFC_GSE48951_Striatum_XFTU4X"
+colnames(GSE48951_Striatum_XFTU4X_DE_df)[colnames(GSE48951_Striatum_XFTU4X_DE_df)=="Symbol"]="Gene.Symbol"
+colnames(GSE48951_Striatum_XFTU4X_DE_df)[colnames(GSE48951_Striatum_XFTU4X_DE_df)=="adj.P.Val"]="AdjP_GSE48951_Striatum_XFTU4X"
+rm(GSE48951_Striatum_XFTU4X_DE)
+
+#GSE48951_Striatum_XFTU8X
+GSE48951_Striatum_XFTU8X_DE=readRDS("FLX_datasets/GSE48951/DE_h8_GSE48951.rds")
+#colnames(GSE48951_Striatum_XFTU8X_DE)
+GSE48951_Striatum_XFTU8X_DE_df=topTable(GSE48951_Striatum_XFTU8X_DE,coef = "h8TreatmentFluoxetine",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Symbol)) %>%
+  filter(Symbol!="" & !grepl("///",Symbol)) %>% 
+  dplyr::select(Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE48951_Striatum_XFTU8X_DE_df)[colnames(GSE48951_Striatum_XFTU8X_DE_df)=="P.Value"]="P.Value_GSE48951_Striatum_XFTU8X"
+colnames(GSE48951_Striatum_XFTU8X_DE_df)[colnames(GSE48951_Striatum_XFTU8X_DE_df)=="logFC"]="logFC_GSE48951_Striatum_XFTU8X"
+colnames(GSE48951_Striatum_XFTU8X_DE_df)[colnames(GSE48951_Striatum_XFTU8X_DE_df)=="Symbol"]="Gene.Symbol"
+colnames(GSE48951_Striatum_XFTU8X_DE_df)[colnames(GSE48951_Striatum_XFTU8X_DE_df)=="adj.P.Val"]="AdjP_GSE48951_Striatum_XFTU8X"
+rm(GSE48951_Striatum_XFTU8X_DE)
+
+#GSE84183_ACC_SFTUXX
+GSE84183_ACC_SFTUXX_DE=readRDS("FLX_datasets/GSE84183/DE_CG_GSE84183.rds")
+#colnames(GSE84183_ACC_SFTUXX_DE)
+GSE84183_ACC_SFTUXX_DE_df=topTable(GSE84183_ACC_SFTUXX_DE,coef = "Stressed_Fluoxetine_Treated - Stressed",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84183_ACC_SFTUXX_DE_df)[colnames(GSE84183_ACC_SFTUXX_DE_df)=="P.Value"]="P.Value_GSE84183_ACC_SFTUXX"
+colnames(GSE84183_ACC_SFTUXX_DE_df)[colnames(GSE84183_ACC_SFTUXX_DE_df)=="logFC"]="logFC_GSE84183_ACC_SFTUXX"
+colnames(GSE84183_ACC_SFTUXX_DE_df)[colnames(GSE84183_ACC_SFTUXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84183_ACC_SFTUXX_DE_df)[colnames(GSE84183_ACC_SFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE84183_ACC_SFTUXX"
+rm(GSE84183_ACC_SFTUXX_DE)
+
+#GSE84183_DG_SFTUXX
+GSE84183_DG_SFTUXX_DE=readRDS("FLX_datasets/GSE84183/DE_DG_GSE84183.rds")
+#colnames(GSE84183_DG_SFTUXX_DE)
+GSE84183_DG_SFTUXX_DE_df=topTable(GSE84183_DG_SFTUXX_DE,coef = "Stressed_Fluoxetine_Treated - Stressed",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84183_DG_SFTUXX_DE_df)[colnames(GSE84183_DG_SFTUXX_DE_df)=="P.Value"]="P.Value_GSE84183_DG_SFTUXX"
+colnames(GSE84183_DG_SFTUXX_DE_df)[colnames(GSE84183_DG_SFTUXX_DE_df)=="logFC"]="logFC_GSE84183_DG_SFTUXX"
+colnames(GSE84183_DG_SFTUXX_DE_df)[colnames(GSE84183_DG_SFTUXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84183_DG_SFTUXX_DE_df)[colnames(GSE84183_DG_SFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE84183_DG_SFTUXX"
+rm(GSE84183_DG_SFTUXX_DE)
+
+#GSE84183_ACC_XFTUXX
+GSE84183_ACC_XFTUXX_DE=readRDS("FLX_datasets/GSE84183/DE_CG_GSE84183.rds")
+#colnames(GSE84183_ACC_XFTUXX_DE)
+GSE84183_ACC_XFTUXX_DE_df=topTable(GSE84183_ACC_XFTUXX_DE,coef = "Unstressed_Fluoxetine_Treated - Control",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84183_ACC_XFTUXX_DE_df)[colnames(GSE84183_ACC_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE84183_ACC_XFTUXX"
+colnames(GSE84183_ACC_XFTUXX_DE_df)[colnames(GSE84183_ACC_XFTUXX_DE_df)=="logFC"]="logFC_GSE84183_ACC_XFTUXX"
+colnames(GSE84183_ACC_XFTUXX_DE_df)[colnames(GSE84183_ACC_XFTUXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84183_ACC_XFTUXX_DE_df)[colnames(GSE84183_ACC_XFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE84183_ACC_XFTUXX"
+rm(GSE84183_ACC_XFTUXX_DE)
+
+#GSE84183_DG_XFTUXX
+GSE84183_DG_XFTUXX_DE=readRDS("FLX_datasets/GSE84183/DE_DG_GSE84183.rds")
+#colnames(GSE84183_DG_XFTUXX_DE)
+GSE84183_DG_XFTUXX_DE_df=topTable(GSE84183_DG_XFTUXX_DE,coef = "Unstressed_Fluoxetine_Treated - Control",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84183_DG_XFTUXX_DE_df)[colnames(GSE84183_DG_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE84183_DG_XFTUXX"
+colnames(GSE84183_DG_XFTUXX_DE_df)[colnames(GSE84183_DG_XFTUXX_DE_df)=="logFC"]="logFC_GSE84183_DG_XFTUXX"
+colnames(GSE84183_DG_XFTUXX_DE_df)[colnames(GSE84183_DG_XFTUXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84183_DG_XFTUXX_DE_df)[colnames(GSE84183_DG_XFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE84183_DG_XFTUXX"
+rm(GSE84183_DG_XFTUXX_DE)
+
+#GSE84184_Blood_SFTUXX
+GSE84184_Blood_SFTUXX_DE=readRDS("FLX_datasets/GSE84184/DE_Blood_GSE84184.rds")
+#colnames(GSE84184_Blood_SFTUXX_DE)
+GSE84184_Blood_SFTUXX_DE_df=topTable(GSE84184_Blood_SFTUXX_DE,coef = "Stressed_Fluoxetine_Treated - Stressed",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84184_Blood_SFTUXX_DE_df)[colnames(GSE84184_Blood_SFTUXX_DE_df)=="P.Value"]="P.Value_GSE84184_Blood_SFTUXX"
+colnames(GSE84184_Blood_SFTUXX_DE_df)[colnames(GSE84184_Blood_SFTUXX_DE_df)=="logFC"]="logFC_GSE84184_Blood_SFTUXX"
+colnames(GSE84184_Blood_SFTUXX_DE_df)[colnames(GSE84184_Blood_SFTUXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84184_Blood_SFTUXX_DE_df)[colnames(GSE84184_Blood_SFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE84184_Blood_SFTUXX"
+rm(GSE84184_Blood_SFTUXX_DE)
+
+#GSE84184_Blood_XFTUXX
+GSE84184_Blood_XFTUXX_DE=readRDS("FLX_datasets/GSE84184/DE_Blood_GSE84184.rds")
+#colnames(GSE84184_Blood_XFTUXX_DE)
+GSE84184_Blood_XFTUXX_DE_df=topTable(GSE84184_Blood_XFTUXX_DE,coef = "Unstressed_Fluoxetine_Treated - Control",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84184_Blood_XFTUXX_DE_df)[colnames(GSE84184_Blood_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE84184_Blood_XFTUXX"
+colnames(GSE84184_Blood_XFTUXX_DE_df)[colnames(GSE84184_Blood_XFTUXX_DE_df)=="logFC"]="logFC_GSE84184_Blood_XFTUXX"
+colnames(GSE84184_Blood_XFTUXX_DE_df)[colnames(GSE84184_Blood_XFTUXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84184_Blood_XFTUXX_DE_df)[colnames(GSE84184_Blood_XFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE84184_Blood_XFTUXX"
+rm(GSE84184_Blood_XFTUXX_DE)
+
+#GSE84183_ACC_SFRNXX
+GSE84183_ACC_SFRNXX_DE=readRDS("FLX_datasets/GSE84183/DE_CG_Stress_GSE84183.rds")
+#colnames(GSE84183_ACC_SFRNXX_DE)
+GSE84183_ACC_SFRNXX_DE_df=topTable(GSE84183_ACC_SFRNXX_DE,coef = "Responder - Resistant",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84183_ACC_SFRNXX_DE_df)[colnames(GSE84183_ACC_SFRNXX_DE_df)=="P.Value"]="P.Value_GSE84183_ACC_SFRNXX"
+colnames(GSE84183_ACC_SFRNXX_DE_df)[colnames(GSE84183_ACC_SFRNXX_DE_df)=="logFC"]="logFC_GSE84183_ACC_SFRNXX"
+colnames(GSE84183_ACC_SFRNXX_DE_df)[colnames(GSE84183_ACC_SFRNXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84183_ACC_SFRNXX_DE_df)[colnames(GSE84183_ACC_SFRNXX_DE_df)=="adj.P.Val"]="AdjP_GSE84183_ACC_SFRNXX"
+rm(GSE84183_ACC_SFRNXX_DE)
+
+#GSE84183_ACC_SFRCXX
+GSE84183_ACC_SFRCXX_DE=readRDS("FLX_datasets/GSE84183/DE_CG_Stress_GSE84183.rds")
+#colnames(GSE84183_ACC_SFRCXX_DE)
+GSE84183_ACC_SFRCXX_DE_df=topTable(GSE84183_ACC_SFRCXX_DE,coef = "Responder - Control",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84183_ACC_SFRCXX_DE_df)[colnames(GSE84183_ACC_SFRCXX_DE_df)=="P.Value"]="P.Value_GSE84183_ACC_SFRCXX"
+colnames(GSE84183_ACC_SFRCXX_DE_df)[colnames(GSE84183_ACC_SFRCXX_DE_df)=="logFC"]="logFC_GSE84183_ACC_SFRCXX"
+colnames(GSE84183_ACC_SFRCXX_DE_df)[colnames(GSE84183_ACC_SFRCXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84183_ACC_SFRCXX_DE_df)[colnames(GSE84183_ACC_SFRCXX_DE_df)=="adj.P.Val"]="AdjP_GSE84183_ACC_SFRCXX"
+rm(GSE84183_ACC_SFRCXX_DE)
+
+#GSE84183_ACC_SFNCXX
+GSE84183_ACC_SFNCXX_DE=readRDS("FLX_datasets/GSE84183/DE_CG_Stress_GSE84183.rds")
+#colnames(GSE84183_ACC_SFNCXX_DE)
+GSE84183_ACC_SFNCXX_DE_df=topTable(GSE84183_ACC_SFNCXX_DE,coef = "Resistant - Control",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84183_ACC_SFNCXX_DE_df)[colnames(GSE84183_ACC_SFNCXX_DE_df)=="P.Value"]="P.Value_GSE84183_ACC_SFNCXX"
+colnames(GSE84183_ACC_SFNCXX_DE_df)[colnames(GSE84183_ACC_SFNCXX_DE_df)=="logFC"]="logFC_GSE84183_ACC_SFNCXX"
+colnames(GSE84183_ACC_SFNCXX_DE_df)[colnames(GSE84183_ACC_SFNCXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84183_ACC_SFNCXX_DE_df)[colnames(GSE84183_ACC_SFNCXX_DE_df)=="adj.P.Val"]="AdjP_GSE84183_ACC_SFNCXX"
+rm(GSE84183_ACC_SFNCXX_DE)
+
+#GSE84183_DG_SFRNXX
+GSE84183_DG_SFRNXX_DE=readRDS("FLX_datasets/GSE84183/DE_DG_Stress_GSE84183.rds")
+#colnames(GSE84183_DG_SFRNXX_DE)
+GSE84183_DG_SFRNXX_DE_df=topTable(GSE84183_DG_SFRNXX_DE,coef = "Responder - Resistant",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84183_DG_SFRNXX_DE_df)[colnames(GSE84183_DG_SFRNXX_DE_df)=="P.Value"]="P.Value_GSE84183_DG_SFRNXX"
+colnames(GSE84183_DG_SFRNXX_DE_df)[colnames(GSE84183_DG_SFRNXX_DE_df)=="logFC"]="logFC_GSE84183_DG_SFRNXX"
+colnames(GSE84183_DG_SFRNXX_DE_df)[colnames(GSE84183_DG_SFRNXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84183_DG_SFRNXX_DE_df)[colnames(GSE84183_DG_SFRNXX_DE_df)=="adj.P.Val"]="AdjP_GSE84183_DG_SFRNXX"
+rm(GSE84183_DG_SFRNXX_DE)
+
+#GSE84183_DG_SFRCXX
+GSE84183_DG_SFRCXX_DE=readRDS("FLX_datasets/GSE84183/DE_DG_Stress_GSE84183.rds")
+#colnames(GSE84183_DG_SFRCXX_DE)
+GSE84183_DG_SFRCXX_DE_df=topTable(GSE84183_DG_SFRCXX_DE,coef = "Responder - Control",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84183_DG_SFRCXX_DE_df)[colnames(GSE84183_DG_SFRCXX_DE_df)=="P.Value"]="P.Value_GSE84183_DG_SFRCXX"
+colnames(GSE84183_DG_SFRCXX_DE_df)[colnames(GSE84183_DG_SFRCXX_DE_df)=="logFC"]="logFC_GSE84183_DG_SFRCXX"
+colnames(GSE84183_DG_SFRCXX_DE_df)[colnames(GSE84183_DG_SFRCXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84183_DG_SFRCXX_DE_df)[colnames(GSE84183_DG_SFRCXX_DE_df)=="adj.P.Val"]="AdjP_GSE84183_DG_SFRCXX"
+rm(GSE84183_DG_SFRCXX_DE)
+
+#GSE84183_DG_SFNCXX
+GSE84183_DG_SFNCXX_DE=readRDS("FLX_datasets/GSE84183/DE_DG_Stress_GSE84183.rds")
+#colnames(GSE84183_DG_SFNCXX_DE)
+GSE84183_DG_SFNCXX_DE_df=topTable(GSE84183_DG_SFNCXX_DE,coef = "Resistant - Control",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84183_DG_SFNCXX_DE_df)[colnames(GSE84183_DG_SFNCXX_DE_df)=="P.Value"]="P.Value_GSE84183_DG_SFNCXX"
+colnames(GSE84183_DG_SFNCXX_DE_df)[colnames(GSE84183_DG_SFNCXX_DE_df)=="logFC"]="logFC_GSE84183_DG_SFNCXX"
+colnames(GSE84183_DG_SFNCXX_DE_df)[colnames(GSE84183_DG_SFNCXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84183_DG_SFNCXX_DE_df)[colnames(GSE84183_DG_SFNCXX_DE_df)=="adj.P.Val"]="AdjP_GSE84183_DG_SFNCXX"
+rm(GSE84183_DG_SFNCXX_DE)
+
+#GSE84184_Blood_SFRNXX 
+GSE84184_Blood_SFRNXX_DE=readRDS("FLX_datasets/GSE84184/DE_Blood_Stress_GSE84184.rds")
+#colnames(GSE84184_Blood_SFRNXX_DE)
+GSE84184_Blood_SFRNXX_DE_df=topTable(GSE84184_Blood_SFRNXX_DE,coef = "Responder - Resistant",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84184_Blood_SFRNXX_DE_df)[colnames(GSE84184_Blood_SFRNXX_DE_df)=="P.Value"]="P.Value_GSE84184_Blood_SFRNXX"
+colnames(GSE84184_Blood_SFRNXX_DE_df)[colnames(GSE84184_Blood_SFRNXX_DE_df)=="logFC"]="logFC_GSE84184_Blood_SFRNXX"
+colnames(GSE84184_Blood_SFRNXX_DE_df)[colnames(GSE84184_Blood_SFRNXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84184_Blood_SFRNXX_DE_df)[colnames(GSE84184_Blood_SFRNXX_DE_df)=="adj.P.Val"]="AdjP_GSE84184_Blood_SFRNXX"
+rm(GSE84184_Blood_SFRNXX_DE)
+
+#GSE84184_Blood_SFRCXX
+GSE84184_Blood_SFRCXX_DE=readRDS("FLX_datasets/GSE84184/DE_Blood_Stress_GSE84184.rds")
+#colnames(GSE84184_Blood_SFRCXX_DE)
+GSE84184_Blood_SFRCXX_DE_df=topTable(GSE84184_Blood_SFRCXX_DE,coef = "Responder - Control",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84184_Blood_SFRCXX_DE_df)[colnames(GSE84184_Blood_SFRCXX_DE_df)=="P.Value"]="P.Value_GSE84184_Blood_SFRCXX"
+colnames(GSE84184_Blood_SFRCXX_DE_df)[colnames(GSE84184_Blood_SFRCXX_DE_df)=="logFC"]="logFC_GSE84184_Blood_SFRCXX"
+colnames(GSE84184_Blood_SFRCXX_DE_df)[colnames(GSE84184_Blood_SFRCXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84184_Blood_SFRCXX_DE_df)[colnames(GSE84184_Blood_SFRCXX_DE_df)=="adj.P.Val"]="AdjP_GSE84184_Blood_SFRCXX"
+rm(GSE84184_Blood_SFRCXX_DE)
+
+#GSE84184_Blood_SFNCXX
+GSE84184_Blood_SFNCXX_DE=readRDS("FLX_datasets/GSE84184/DE_Blood_Stress_GSE84184.rds")
+#colnames(GSE84184_Blood_SFNCXX_DE)
+GSE84184_Blood_SFNCXX_DE_df=topTable(GSE84184_Blood_SFNCXX_DE,coef = "Resistant - Control",number = Inf) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(GENE_SYMBOL)) %>%
+  filter(GENE_SYMBOL!="" & !grepl("///",GENE_SYMBOL)) %>% 
+  dplyr::select(GENE_SYMBOL,P.Value,logFC,adj.P.Val)
+colnames(GSE84184_Blood_SFNCXX_DE_df)[colnames(GSE84184_Blood_SFNCXX_DE_df)=="P.Value"]="P.Value_GSE84184_Blood_SFNCXX"
+colnames(GSE84184_Blood_SFNCXX_DE_df)[colnames(GSE84184_Blood_SFNCXX_DE_df)=="logFC"]="logFC_GSE84184_Blood_SFNCXX"
+colnames(GSE84184_Blood_SFNCXX_DE_df)[colnames(GSE84184_Blood_SFNCXX_DE_df)=="GENE_SYMBOL"]="Gene.Symbol"
+colnames(GSE84184_Blood_SFNCXX_DE_df)[colnames(GSE84184_Blood_SFNCXX_DE_df)=="adj.P.Val"]="AdjP_GSE84184_Blood_SFNCXX"
+rm(GSE84184_Blood_SFNCXX_DE)
+
+SetList=as.list(mget(objects()))
+saveRDS(SetList,"Input RDS/Mouse_All_DE_List.rds")
+
+```
+
+```{r Rat Comparisons DE}
+#Clear Environment of All objects
+rm(list = objects())
+
+#GSE56028_DG_SFTUXX 
+GSE56028_DG_SFTUXX_DE=readRDS("FLX_datasets/GSE56028/DE_GSE56028.rds")
+#colnames(GSE56028_DG_SFTUXX_DE)
+GSE56028_DG_SFTUXX_DE_df=topTable(GSE56028_DG_SFTUXX_DE,coef = "fluoxetine_ucms - untreated_ucms",number = Inf) 
+#GSE56028_DG_SFTUXX_DE_df$RefSeq=gsub(",.*","",GSE56028_DG_SFTUXX_DE_df$GB_LIST)
+GSE56028_DG_SFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=gsub(",.*","",GSE56028_DG_SFTUXX_DE_df$GB_LIST) , column="SYMBOL", keytype="REFSEQ"))
+GSE56028_DG_SFTUXX_DE_df=GSE56028_DG_SFTUXX_DE_df %>%
+  filter(Gene.Symbol!="NANA" & Gene.Symbol!="NULL") %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE56028_DG_SFTUXX_DE_df)[colnames(GSE56028_DG_SFTUXX_DE_df)=="P.Value"]="P.Value_GSE56028_DG_SFTUXX"
+colnames(GSE56028_DG_SFTUXX_DE_df)[colnames(GSE56028_DG_SFTUXX_DE_df)=="logFC"]="logFC_GSE56028_DG_SFTUXX"
+colnames(GSE56028_DG_SFTUXX_DE_df)[colnames(GSE56028_DG_SFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE56028_DG_SFTUXX"
+rm(GSE56028_DG_SFTUXX_DE)
+
+#GSE89873_Glioma_XFTUXX
+GSE89873_Glioma_XFTUXX_DE=readRDS("FLX_datasets/GSE89873/DE_GSE89873.rds")
+#colnames(GSE89873_Glioma_XFTUXX_DE)
+GSE89873_Glioma_XFTUXX_DE_df=topTable(GSE89873_Glioma_XFTUXX_DE,coef = "Treatmenttreatment: unteated",number = Inf) %>%
+  mutate(Gene.Symbol=gsub("_predicted","",Symbol)) %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="") %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE89873_Glioma_XFTUXX_DE_df)[colnames(GSE89873_Glioma_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE89873_Glioma_XFTUXX"
+colnames(GSE89873_Glioma_XFTUXX_DE_df)[colnames(GSE89873_Glioma_XFTUXX_DE_df)=="logFC"]="logFC_GSE89873_Glioma_XFTUXX"
+colnames(GSE89873_Glioma_XFTUXX_DE_df)[colnames(GSE89873_Glioma_XFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE89873_Glioma_XFTUXX"
+rm(GSE89873_Glioma_XFTUXX_DE)
+
+#GSE42940_Hippocampus_XFTUXX
+GSE42940_Hippocampus_XFTUXX_DE=readRDS("FLX_datasets/GSE42940/DE_GSE42940.rds")
+#colnames(GSE42940_Hippocampus_XFTUXX_DE)
+GSE42940_Hippocampus_XFTUXX_DE_df=topTable(GSE42940_Hippocampus_XFTUXX_DE,coef = "TreatmentPNFLX",number = Inf)
+GSE42940_Hippocampus_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE42940_Hippocampus_XFTUXX_DE_df$GB_ACC , column="SYMBOL", keytype="REFSEQ"))
+GSE42940_Hippocampus_XFTUXX_DE_df=GSE42940_Hippocampus_XFTUXX_DE_df %>%
+  filter(Gene.Symbol!="NANA" & Gene.Symbol!="NULL") %>%
+  arrange(desc(AveExpr)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  dplyr::select(Gene.Symbol,P.Value,logFC,adj.P.Val)
+colnames(GSE42940_Hippocampus_XFTUXX_DE_df)[colnames(GSE42940_Hippocampus_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE42940_Hippocampus_XFTUXX"
+colnames(GSE42940_Hippocampus_XFTUXX_DE_df)[colnames(GSE42940_Hippocampus_XFTUXX_DE_df)=="logFC"]="logFC_GSE42940_Hippocampus_XFTUXX"
+colnames(GSE42940_Hippocampus_XFTUXX_DE_df)[colnames(GSE42940_Hippocampus_XFTUXX_DE_df)=="adj.P.Val"]="AdjP_GSE42940_Hippocampus_XFTUXX"
+rm(GSE42940_Hippocampus_XFTUXX_DE)
+
+#GSE205325_Hippocampus_SFTUXX
+GSE205325_Hippocampus_SFTUXX_DE=readRDS("FLX_datasets/GSE205325/DESeq_Fl.v.Stress_GSE205325.RDS")
+GSE205325_Hippocampus_SFTUXX_DE_df=data.frame(Gene.ID=GSE205325_Hippocampus_SFTUXX_DE@rownames,
+                           P.Value=GSE205325_Hippocampus_SFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE205325_Hippocampus_SFTUXX_DE@listData$baseMean,
+                           logFC=GSE205325_Hippocampus_SFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE205325_Hippocampus_SFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE205325_Hippocampus_SFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE205325_Hippocampus_SFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBL"))
+GSE205325_Hippocampus_SFTUXX_DE_df=arrange(GSE205325_Hippocampus_SFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE205325_Hippocampus_SFTUXX_DE_df)[colnames(GSE205325_Hippocampus_SFTUXX_DE_df)=="P.Value"]="P.Value_GSE205325_Hippocampus_SFTUXX"
+colnames(GSE205325_Hippocampus_SFTUXX_DE_df)[colnames(GSE205325_Hippocampus_SFTUXX_DE_df)=="logFC"]="logFC_GSE205325_Hippocampus_SFTUXX"
+colnames(GSE205325_Hippocampus_SFTUXX_DE_df)[colnames(GSE205325_Hippocampus_SFTUXX_DE_df)=="ADJ"]="AdjP_GSE205325_Hippocampus_SFTUXX"
+rm(GSE205325_Hippocampus_SFTUXX_DE)
+
+#GSE109445_Hippocampus_SFTUXX
+GSE109445_Hippocampus_SFTUXX_DE=readRDS("FLX_datasets/GSE109445/Flx_DESeqResGSE109445.rds")
+GSE109445_Hippocampus_SFTUXX_DE_df=data.frame(Gene.ID=GSE109445_Hippocampus_SFTUXX_DE@rownames,
+                           P.Value=GSE109445_Hippocampus_SFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE109445_Hippocampus_SFTUXX_DE@listData$baseMean,
+                           logFC=GSE109445_Hippocampus_SFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE109445_Hippocampus_SFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE109445_Hippocampus_SFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE109445_Hippocampus_SFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBL"))
+GSE109445_Hippocampus_SFTUXX_DE_df=arrange(GSE109445_Hippocampus_SFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE109445_Hippocampus_SFTUXX_DE_df)[colnames(GSE109445_Hippocampus_SFTUXX_DE_df)=="P.Value"]="P.Value_GSE109445_Hippocampus_SFTUXX"
+colnames(GSE109445_Hippocampus_SFTUXX_DE_df)[colnames(GSE109445_Hippocampus_SFTUXX_DE_df)=="logFC"]="logFC_GSE109445_Hippocampus_SFTUXX"
+colnames(GSE109445_Hippocampus_SFTUXX_DE_df)[colnames(GSE109445_Hippocampus_SFTUXX_DE_df)=="ADJ"]="AdjP_GSE109445_Hippocampus_SFTUXX"
+rm(GSE109445_Hippocampus_SFTUXX_DE)
+
+#GSE86392_Brain_SFTUXX
+GSE86392_Brain_SFTUXX_DE=readRDS("FLX_datasets/GSE86392/Flx_DESeqRes_GSE86392.rds")
+GSE86392_Brain_SFTUXX_DE_df=data.frame(Gene.ID=GSE86392_Brain_SFTUXX_DE@rownames,
+                           P.Value=GSE86392_Brain_SFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE86392_Brain_SFTUXX_DE@listData$baseMean,
+                           logFC=GSE86392_Brain_SFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE86392_Brain_SFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE86392_Brain_SFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE86392_Brain_SFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBL"))
+GSE86392_Brain_SFTUXX_DE_df=arrange(GSE86392_Brain_SFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE86392_Brain_SFTUXX_DE_df)[colnames(GSE86392_Brain_SFTUXX_DE_df)=="P.Value"]="P.Value_GSE86392_Brain_SFTUXX"
+colnames(GSE86392_Brain_SFTUXX_DE_df)[colnames(GSE86392_Brain_SFTUXX_DE_df)=="logFC"]="logFC_GSE86392_Brain_SFTUXX"
+colnames(GSE86392_Brain_SFTUXX_DE_df)[colnames(GSE86392_Brain_SFTUXX_DE_df)=="ADJ"]="AdjP_GSE86392_Brain_SFTUXX"
+rm(GSE86392_Brain_SFTUXX_DE)
+
+#GSE194289_Arc_XFTUXX
+GSE194289_Arc_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/Arc_DESeqResGSE194289.rds")
+GSE194289_Arc_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_Arc_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_Arc_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_Arc_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_Arc_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_Arc_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_Arc_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_Arc_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_Arc_XFTUXX_DE_df=arrange(GSE194289_Arc_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_Arc_XFTUXX_DE_df)[colnames(GSE194289_Arc_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_Arc_XFTUXX"
+colnames(GSE194289_Arc_XFTUXX_DE_df)[colnames(GSE194289_Arc_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_Arc_XFTUXX"
+colnames(GSE194289_Arc_XFTUXX_DE_df)[colnames(GSE194289_Arc_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_Arc_XFTUXX"
+rm(GSE194289_Arc_XFTUXX_DE)
+
+#GSE194289_BLA_XFTUXX
+GSE194289_BLA_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/BLA_DESeqResGSE194289.rds")
+GSE194289_BLA_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_BLA_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_BLA_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_BLA_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_BLA_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_BLA_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_BLA_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_BLA_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_BLA_XFTUXX_DE_df=arrange(GSE194289_BLA_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_BLA_XFTUXX_DE_df)[colnames(GSE194289_BLA_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_BLA_XFTUXX"
+colnames(GSE194289_BLA_XFTUXX_DE_df)[colnames(GSE194289_BLA_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_BLA_XFTUXX"
+colnames(GSE194289_BLA_XFTUXX_DE_df)[colnames(GSE194289_BLA_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_BLA_XFTUXX"
+rm(GSE194289_BLA_XFTUXX_DE)
+
+#GSE194289_BNST_XFTUXX
+GSE194289_BNST_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/BNST_DESeqResGSE194289.rds")
+GSE194289_BNST_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_BNST_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_BNST_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_BNST_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_BNST_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_BNST_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_BNST_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_BNST_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_BNST_XFTUXX_DE_df=arrange(GSE194289_BNST_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_BNST_XFTUXX_DE_df)[colnames(GSE194289_BNST_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_BNST_XFTUXX"
+colnames(GSE194289_BNST_XFTUXX_DE_df)[colnames(GSE194289_BNST_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_BNST_XFTUXX"
+colnames(GSE194289_BNST_XFTUXX_DE_df)[colnames(GSE194289_BNST_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_BNST_XFTUXX"
+rm(GSE194289_BNST_XFTUXX_DE)
+
+#GSE194289_CGC_XFTUXX
+GSE194289_CGC_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/CGC_DESeqResGSE194289.rds")
+GSE194289_CGC_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_CGC_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_CGC_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_CGC_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_CGC_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_CGC_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_CGC_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_CGC_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_CGC_XFTUXX_DE_df=arrange(GSE194289_CGC_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_CGC_XFTUXX_DE_df)[colnames(GSE194289_CGC_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_CGC_XFTUXX"
+colnames(GSE194289_CGC_XFTUXX_DE_df)[colnames(GSE194289_CGC_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_CGC_XFTUXX"
+colnames(GSE194289_CGC_XFTUXX_DE_df)[colnames(GSE194289_CGC_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_CGC_XFTUXX"
+rm(GSE194289_CGC_XFTUXX_DE)
+
+#GSE194289_CMA_XFTUXX
+GSE194289_CMA_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/CMA_DESeqResGSE194289.rds")
+GSE194289_CMA_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_CMA_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_CMA_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_CMA_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_CMA_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_CMA_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_CMA_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_CMA_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_CMA_XFTUXX_DE_df=arrange(GSE194289_CMA_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_CMA_XFTUXX_DE_df)[colnames(GSE194289_CMA_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_CMA_XFTUXX"
+colnames(GSE194289_CMA_XFTUXX_DE_df)[colnames(GSE194289_CMA_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_CMA_XFTUXX"
+colnames(GSE194289_CMA_XFTUXX_DE_df)[colnames(GSE194289_CMA_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_CMA_XFTUXX"
+rm(GSE194289_CMA_XFTUXX_DE)
+
+#GSE194289_dorCA1_XFTUXX
+GSE194289_dorCA1_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/dorCA1_DESeqResGSE194289.rds")
+GSE194289_dorCA1_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_dorCA1_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_dorCA1_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_dorCA1_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_dorCA1_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_dorCA1_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_dorCA1_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_dorCA1_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_dorCA1_XFTUXX_DE_df=arrange(GSE194289_dorCA1_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_dorCA1_XFTUXX_DE_df)[colnames(GSE194289_dorCA1_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_dorCA1_XFTUXX"
+colnames(GSE194289_dorCA1_XFTUXX_DE_df)[colnames(GSE194289_dorCA1_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_dorCA1_XFTUXX"
+colnames(GSE194289_dorCA1_XFTUXX_DE_df)[colnames(GSE194289_dorCA1_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_dorCA1_XFTUXX"
+rm(GSE194289_dorCA1_XFTUXX_DE)
+
+#GSE194289_dorDG_XFTUXX
+GSE194289_dorDG_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/dorDG_DESeqResGSE194289.rds")
+GSE194289_dorDG_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_dorDG_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_dorDG_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_dorDG_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_dorDG_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_dorDG_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_dorDG_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_dorDG_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_dorDG_XFTUXX_DE_df=arrange(GSE194289_dorDG_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_dorDG_XFTUXX_DE_df)[colnames(GSE194289_dorDG_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_dorDG_XFTUXX"
+colnames(GSE194289_dorDG_XFTUXX_DE_df)[colnames(GSE194289_dorDG_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_dorDG_XFTUXX"
+colnames(GSE194289_dorDG_XFTUXX_DE_df)[colnames(GSE194289_dorDG_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_dorDG_XFTUXX"
+rm(GSE194289_dorDG_XFTUXX_DE)
+
+#GSE194289_HB_XFTUXX
+GSE194289_HB_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/HB_DESeqResGSE194289.rds")
+GSE194289_HB_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_HB_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_HB_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_HB_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_HB_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_HB_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_HB_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_HB_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_HB_XFTUXX_DE_df=arrange(GSE194289_HB_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_HB_XFTUXX_DE_df)[colnames(GSE194289_HB_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_HB_XFTUXX"
+colnames(GSE194289_HB_XFTUXX_DE_df)[colnames(GSE194289_HB_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_HB_XFTUXX"
+colnames(GSE194289_HB_XFTUXX_DE_df)[colnames(GSE194289_HB_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_HB_XFTUXX"
+rm(GSE194289_HB_XFTUXX_DE)
+
+#GSE194289_ILC_XFTUXX
+GSE194289_ILC_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/ILC_DESeqResGSE194289.rds")
+GSE194289_ILC_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_ILC_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_ILC_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_ILC_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_ILC_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_ILC_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_ILC_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_ILC_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_ILC_XFTUXX_DE_df=arrange(GSE194289_ILC_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_ILC_XFTUXX_DE_df)[colnames(GSE194289_ILC_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_ILC_XFTUXX"
+colnames(GSE194289_ILC_XFTUXX_DE_df)[colnames(GSE194289_ILC_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_ILC_XFTUXX"
+colnames(GSE194289_ILC_XFTUXX_DE_df)[colnames(GSE194289_ILC_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_ILC_XFTUXX"
+rm(GSE194289_ILC_XFTUXX_DE)
+
+#GSE194289_InsularCortex_XFTUXX
+GSE194289_InsularCortex_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/InsularCortex_DESeqResGSE194289.rds")
+GSE194289_InsularCortex_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_InsularCortex_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_InsularCortex_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_InsularCortex_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_InsularCortex_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_InsularCortex_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_InsularCortex_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_InsularCortex_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_InsularCortex_XFTUXX_DE_df=arrange(GSE194289_InsularCortex_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_InsularCortex_XFTUXX_DE_df)[colnames(GSE194289_InsularCortex_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_InsularCortex_XFTUXX"
+colnames(GSE194289_InsularCortex_XFTUXX_DE_df)[colnames(GSE194289_InsularCortex_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_InsularCortex_XFTUXX"
+colnames(GSE194289_InsularCortex_XFTUXX_DE_df)[colnames(GSE194289_InsularCortex_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_InsularCortex_XFTUXX"
+rm(GSE194289_InsularCortex_XFTUXX_DE)
+
+#GSE194289_LC_XFTUXX
+GSE194289_LC_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/LC_DESeqResGSE194289.rds")
+GSE194289_LC_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_LC_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_LC_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_LC_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_LC_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_LC_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_LC_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_LC_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_LC_XFTUXX_DE_df=arrange(GSE194289_LC_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_LC_XFTUXX_DE_df)[colnames(GSE194289_LC_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_LC_XFTUXX"
+colnames(GSE194289_LC_XFTUXX_DE_df)[colnames(GSE194289_LC_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_LC_XFTUXX"
+colnames(GSE194289_LC_XFTUXX_DE_df)[colnames(GSE194289_LC_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_LC_XFTUXX"
+rm(GSE194289_LC_XFTUXX_DE)
+
+#GSE194289_LH_XFTUXX
+GSE194289_LH_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/LH_DESeqResGSE194289.rds")
+GSE194289_LH_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_LH_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_LH_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_LH_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_LH_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_LH_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_LH_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_LH_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_LH_XFTUXX_DE_df=arrange(GSE194289_LH_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_LH_XFTUXX_DE_df)[colnames(GSE194289_LH_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_LH_XFTUXX"
+colnames(GSE194289_LH_XFTUXX_DE_df)[colnames(GSE194289_LH_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_LH_XFTUXX"
+colnames(GSE194289_LH_XFTUXX_DE_df)[colnames(GSE194289_LH_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_LH_XFTUXX"
+rm(GSE194289_LH_XFTUXX_DE)
+
+#GSE194289_LS_XFTUXX
+GSE194289_LS_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/LS_DESeqResGSE194289.rds")
+GSE194289_LS_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_LS_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_LS_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_LS_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_LS_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_LS_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_LS_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_LS_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_LS_XFTUXX_DE_df=arrange(GSE194289_LS_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_LS_XFTUXX_DE_df)[colnames(GSE194289_LS_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_LS_XFTUXX"
+colnames(GSE194289_LS_XFTUXX_DE_df)[colnames(GSE194289_LS_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_LS_XFTUXX"
+colnames(GSE194289_LS_XFTUXX_DE_df)[colnames(GSE194289_LS_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_LS_XFTUXX"
+rm(GSE194289_LS_XFTUXX_DE)
+
+#GSE194289_MDT_XFTUXX
+GSE194289_MDT_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/MDT_DESeqResGSE194289.rds")
+GSE194289_MDT_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_MDT_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_MDT_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_MDT_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_MDT_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_MDT_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_MDT_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_MDT_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_MDT_XFTUXX_DE_df=arrange(GSE194289_MDT_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_MDT_XFTUXX_DE_df)[colnames(GSE194289_MDT_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_MDT_XFTUXX"
+colnames(GSE194289_MDT_XFTUXX_DE_df)[colnames(GSE194289_MDT_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_MDT_XFTUXX"
+colnames(GSE194289_MDT_XFTUXX_DE_df)[colnames(GSE194289_MDT_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_MDT_XFTUXX"
+rm(GSE194289_MDT_XFTUXX_DE)
+
+#GSE194289_MPOA_XFTUXX
+GSE194289_MPOA_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/MPOA_DESeqResGSE194289.rds")
+GSE194289_MPOA_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_MPOA_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_MPOA_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_MPOA_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_MPOA_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_MPOA_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_MPOA_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_MPOA_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_MPOA_XFTUXX_DE_df=arrange(GSE194289_MPOA_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_MPOA_XFTUXX_DE_df)[colnames(GSE194289_MPOA_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_MPOA_XFTUXX"
+colnames(GSE194289_MPOA_XFTUXX_DE_df)[colnames(GSE194289_MPOA_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_MPOA_XFTUXX"
+colnames(GSE194289_MPOA_XFTUXX_DE_df)[colnames(GSE194289_MPOA_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_MPOA_XFTUXX"
+rm(GSE194289_MPOA_XFTUXX_DE)
+
+#GSE194289_MS_XFTUXX
+GSE194289_MS_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/MS_DESeqResGSE194289.rds")
+GSE194289_MS_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_MS_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_MS_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_MS_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_MS_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_MS_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_MS_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_MS_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_MS_XFTUXX_DE_df=arrange(GSE194289_MS_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_MS_XFTUXX_DE_df)[colnames(GSE194289_MS_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_MS_XFTUXX"
+colnames(GSE194289_MS_XFTUXX_DE_df)[colnames(GSE194289_MS_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_MS_XFTUXX"
+colnames(GSE194289_MS_XFTUXX_DE_df)[colnames(GSE194289_MS_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_MS_XFTUXX"
+rm(GSE194289_MS_XFTUXX_DE)
+
+#GSE194289_NaCcore_XFTUXX
+GSE194289_NaCcore_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/NaCcore_DESeqResGSE194289.rds")
+GSE194289_NaCcore_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_NaCcore_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_NaCcore_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_NaCcore_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_NaCcore_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_NaCcore_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_NaCcore_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_NaCcore_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_NaCcore_XFTUXX_DE_df=arrange(GSE194289_NaCcore_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_NaCcore_XFTUXX_DE_df)[colnames(GSE194289_NaCcore_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_NaCcore_XFTUXX"
+colnames(GSE194289_NaCcore_XFTUXX_DE_df)[colnames(GSE194289_NaCcore_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_NaCcore_XFTUXX"
+colnames(GSE194289_NaCcore_XFTUXX_DE_df)[colnames(GSE194289_NaCcore_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_NaCcore_XFTUXX"
+rm(GSE194289_NaCcore_XFTUXX_DE)
+
+#GSE194289_NaCshell_XFTUXX
+GSE194289_NaCshell_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/NaCshell_DESeqResGSE194289.rds")
+GSE194289_NaCshell_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_NaCshell_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_NaCshell_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_NaCshell_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_NaCshell_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_NaCshell_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_NaCshell_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_NaCshell_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_NaCshell_XFTUXX_DE_df=arrange(GSE194289_NaCshell_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_NaCshell_XFTUXX_DE_df)[colnames(GSE194289_NaCshell_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_NaCshell_XFTUXX"
+colnames(GSE194289_NaCshell_XFTUXX_DE_df)[colnames(GSE194289_NaCshell_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_NaCshell_XFTUXX"
+colnames(GSE194289_NaCshell_XFTUXX_DE_df)[colnames(GSE194289_NaCshell_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_NaCshell_XFTUXX"
+rm(GSE194289_NaCshell_XFTUXX_DE)
+
+#GSE194289_PAG_XFTUXX
+GSE194289_PAG_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/PAG_DESeqResGSE194289.rds")
+GSE194289_PAG_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_PAG_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_PAG_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_PAG_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_PAG_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_PAG_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_PAG_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_PAG_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_PAG_XFTUXX_DE_df=arrange(GSE194289_PAG_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_PAG_XFTUXX_DE_df)[colnames(GSE194289_PAG_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_PAG_XFTUXX"
+colnames(GSE194289_PAG_XFTUXX_DE_df)[colnames(GSE194289_PAG_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_PAG_XFTUXX"
+colnames(GSE194289_PAG_XFTUXX_DE_df)[colnames(GSE194289_PAG_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_PAG_XFTUXX"
+rm(GSE194289_PAG_XFTUXX_DE)
+
+#GSE194289_PLC_XFTUXX
+GSE194289_PLC_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/PLC_DESeqResGSE194289.rds")
+GSE194289_PLC_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_PLC_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_PLC_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_PLC_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_PLC_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_PLC_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_PLC_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_PLC_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_PLC_XFTUXX_DE_df=arrange(GSE194289_PLC_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_PLC_XFTUXX_DE_df)[colnames(GSE194289_PLC_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_PLC_XFTUXX"
+colnames(GSE194289_PLC_XFTUXX_DE_df)[colnames(GSE194289_PLC_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_PLC_XFTUXX"
+colnames(GSE194289_PLC_XFTUXX_DE_df)[colnames(GSE194289_PLC_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_PLC_XFTUXX"
+rm(GSE194289_PLC_XFTUXX_DE)
+
+#GSE194289_PVN_XFTUXX
+GSE194289_PVN_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/PVN_DESeqResGSE194289.rds")
+GSE194289_PVN_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_PVN_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_PVN_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_PVN_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_PVN_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_PVN_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_PVN_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_PVN_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_PVN_XFTUXX_DE_df=arrange(GSE194289_PVN_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_PVN_XFTUXX_DE_df)[colnames(GSE194289_PVN_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_PVN_XFTUXX"
+colnames(GSE194289_PVN_XFTUXX_DE_df)[colnames(GSE194289_PVN_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_PVN_XFTUXX"
+colnames(GSE194289_PVN_XFTUXX_DE_df)[colnames(GSE194289_PVN_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_PVN_XFTUXX"
+rm(GSE194289_PVN_XFTUXX_DE)
+
+#GSE194289_Raphe_XFTUXX
+GSE194289_Raphe_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/Raphe_DESeqResGSE194289.rds")
+GSE194289_Raphe_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_Raphe_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_Raphe_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_Raphe_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_Raphe_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_Raphe_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_Raphe_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_Raphe_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_Raphe_XFTUXX_DE_df=arrange(GSE194289_Raphe_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_Raphe_XFTUXX_DE_df)[colnames(GSE194289_Raphe_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_Raphe_XFTUXX"
+colnames(GSE194289_Raphe_XFTUXX_DE_df)[colnames(GSE194289_Raphe_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_Raphe_XFTUXX"
+colnames(GSE194289_Raphe_XFTUXX_DE_df)[colnames(GSE194289_Raphe_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_Raphe_XFTUXX"
+rm(GSE194289_Raphe_XFTUXX_DE)
+
+#GSE194289_SNT_XFTUXX
+GSE194289_SNT_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/SNT_DESeqResGSE194289.rds")
+GSE194289_SNT_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_SNT_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_SNT_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_SNT_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_SNT_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_SNT_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_SNT_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_SNT_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_SNT_XFTUXX_DE_df=arrange(GSE194289_SNT_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_SNT_XFTUXX_DE_df)[colnames(GSE194289_SNT_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_SNT_XFTUXX"
+colnames(GSE194289_SNT_XFTUXX_DE_df)[colnames(GSE194289_SNT_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_SNT_XFTUXX"
+colnames(GSE194289_SNT_XFTUXX_DE_df)[colnames(GSE194289_SNT_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_SNT_XFTUXX"
+rm(GSE194289_SNT_XFTUXX_DE)
+
+#GSE194289_venCA1_XFTUXX
+GSE194289_venCA1_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/venCA1_DESeqResGSE194289.rds")
+GSE194289_venCA1_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_venCA1_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_venCA1_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_venCA1_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_venCA1_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_venCA1_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_venCA1_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_venCA1_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_venCA1_XFTUXX_DE_df=arrange(GSE194289_venCA1_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_venCA1_XFTUXX_DE_df)[colnames(GSE194289_venCA1_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_venCA1_XFTUXX"
+colnames(GSE194289_venCA1_XFTUXX_DE_df)[colnames(GSE194289_venCA1_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_venCA1_XFTUXX"
+colnames(GSE194289_venCA1_XFTUXX_DE_df)[colnames(GSE194289_venCA1_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_venCA1_XFTUXX"
+rm(GSE194289_venCA1_XFTUXX_DE)
+
+#GSE194289_venDG_XFTUXX
+GSE194289_venDG_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/venDG_DESeqResGSE194289.rds")
+GSE194289_venDG_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_venDG_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_venDG_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_venDG_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_venDG_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_venDG_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_venDG_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_venDG_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_venDG_XFTUXX_DE_df=arrange(GSE194289_venDG_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_venDG_XFTUXX_DE_df)[colnames(GSE194289_venDG_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_venDG_XFTUXX"
+colnames(GSE194289_venDG_XFTUXX_DE_df)[colnames(GSE194289_venDG_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_venDG_XFTUXX"
+colnames(GSE194289_venDG_XFTUXX_DE_df)[colnames(GSE194289_venDG_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_venDG_XFTUXX"
+rm(GSE194289_venDG_XFTUXX_DE)
+
+#GSE194289_VMH_XFTUXX
+GSE194289_VMH_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/VMH_DESeqResGSE194289.rds")
+GSE194289_VMH_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_VMH_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_VMH_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_VMH_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_VMH_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_VMH_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_VMH_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_VMH_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_VMH_XFTUXX_DE_df=arrange(GSE194289_VMH_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_VMH_XFTUXX_DE_df)[colnames(GSE194289_VMH_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_VMH_XFTUXX"
+colnames(GSE194289_VMH_XFTUXX_DE_df)[colnames(GSE194289_VMH_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_VMH_XFTUXX"
+colnames(GSE194289_VMH_XFTUXX_DE_df)[colnames(GSE194289_VMH_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_VMH_XFTUXX"
+rm(GSE194289_VMH_XFTUXX_DE)
+
+#GSE194289_VTA_XFTUXX
+GSE194289_VTA_XFTUXX_DE=readRDS("FLX_datasets/GSE194289/VTA_DESeqResGSE194289.rds")
+GSE194289_VTA_XFTUXX_DE_df=data.frame(Gene.ID=GSE194289_VTA_XFTUXX_DE@rownames,
+                           P.Value=GSE194289_VTA_XFTUXX_DE@listData$pvalue,
+                           BaseMean=GSE194289_VTA_XFTUXX_DE@listData$baseMean,
+                           logFC=GSE194289_VTA_XFTUXX_DE@listData$log2FoldChange,
+                           ADJ=GSE194289_VTA_XFTUXX_DE@listData$padj) %>% filter(!is.na(ADJ))
+GSE194289_VTA_XFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Rn.eg.db, keys=GSE194289_VTA_XFTUXX_DE_df$Gene.ID , column="SYMBOL", keytype="ENSEMBLTRANS"))
+GSE194289_VTA_XFTUXX_DE_df=arrange(GSE194289_VTA_XFTUXX_DE_df,desc(BaseMean)) %>%
+  filter(!duplicated(Gene.Symbol)) %>%
+  filter(Gene.Symbol!="" & !is.na(Gene.Symbol)) %>% 
+  dplyr::select(Gene.Symbol,P.Value,logFC,ADJ)
+colnames(GSE194289_VTA_XFTUXX_DE_df)[colnames(GSE194289_VTA_XFTUXX_DE_df)=="P.Value"]="P.Value_GSE194289_VTA_XFTUXX"
+colnames(GSE194289_VTA_XFTUXX_DE_df)[colnames(GSE194289_VTA_XFTUXX_DE_df)=="logFC"]="logFC_GSE194289_VTA_XFTUXX"
+colnames(GSE194289_VTA_XFTUXX_DE_df)[colnames(GSE194289_VTA_XFTUXX_DE_df)=="ADJ"]="AdjP_GSE194289_VTA_XFTUXX"
+rm(GSE194289_VTA_XFTUXX_DE)
+
+SetList=as.list(mget(objects()))
+saveRDS(SetList,"Input RDS/Rat_All_DE_List.rds")
+
+```
+
+```{r Merge DE data}
+HumanDE=readRDS("Input RDS/Human_All_DE_List.rds")
+HumanDEDataMerge=purrr::reduce(HumanDE,full_join,by="Gene.Symbol")
+HumanDEDataMerge=filter(HumanDEDataMerge,rowSums(is.na(HumanDEDataMerge))<(ncol(HumanDEDataMerge)*.5))
+rownames(HumanDEDataMerge)=HumanDEDataMerge$Gene.Symbol
+saveRDS(HumanDEDataMerge,"Input RDS/Human_Merged_DE_df.rds")
+HumanDEDataList=list(p=HumanDEDataMerge[,seq(2,ncol(HumanDEDataMerge),3)],
+                     logFC=HumanDEDataMerge[,seq(3,ncol(HumanDEDataMerge),3)],
+                     AdjP=HumanDEDataMerge[,seq(4,ncol(HumanDEDataMerge),3)])
+saveRDS(HumanDEDataList,"Input RDS/Human_Merged_DE_List.rds")
+
+MouseDE=readRDS("Input RDS/Mouse_All_DE_List.rds")
+MouseDEDataMerge=purrr::reduce(MouseDE,full_join,by="Gene.Symbol")
+MouseDEDataMerge=filter(MouseDEDataMerge,rowSums(is.na(MouseDEDataMerge))<(ncol(MouseDEDataMerge)*.5))
+rownames(MouseDEDataMerge)=MouseDEDataMerge$Gene.Symbol
+saveRDS(MouseDEDataMerge,"Input RDS/Mouse_Merged_DE_df.rds")
+MouseDEDataList=list(p=MouseDEDataMerge[,seq(2,ncol(MouseDEDataMerge),3)],
+                     logFC=MouseDEDataMerge[,seq(3,ncol(MouseDEDataMerge),3)],
+                     AdjP=MouseDEDataMerge[,seq(4,ncol(MouseDEDataMerge),3)])
+saveRDS(MouseDEDataList,"Input RDS/Mouse_Merged_DE_List.rds")
+
+RatDE=readRDS("Input RDS/Rat_All_DE_List.rds")
+RatDEDataMerge=purrr::reduce(RatDE,full_join,by="Gene.Symbol")
+RatDEDataMerge=filter(RatDEDataMerge,rowSums(is.na(RatDEDataMerge))<(ncol(RatDEDataMerge)*.5))
+rownames(RatDEDataMerge)=RatDEDataMerge$Gene.Symbol
+saveRDS(RatDEDataMerge,"Input RDS/Rat_Merged_DE_df.rds")
+RatDEDataList=list(p=RatDEDataMerge[,seq(2,ncol(RatDEDataMerge),3)],
+                   logFC=RatDEDataMerge[,seq(3,ncol(RatDEDataMerge),3)],
+                   AdjP=RatDEDataMerge[,seq(4,ncol(RatDEDataMerge),3)])
+saveRDS(RatDEDataList,"Input RDS/Rat_Merged_DE_List.rds")
+
+```
+
+## GSEA Comparisons
+
+```{r Human Comparisons GSEA}
+#Clear Environment of All objects
+rm(list = objects())
+
+#GSE128387_Blood_DFTUxx
+GSE128387_Blood_DFTUXX_GSEA=readRDS("FLX_datasets/GSE128387/GSEA_GSE128387.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE128387_Blood_DFTUXX_GSEA)[colnames(GSE128387_Blood_DFTUXX_GSEA)=="pval"]="P.Value_GSE128387_Blood_DFTUXX"
+colnames(GSE128387_Blood_DFTUXX_GSEA)[colnames(GSE128387_Blood_DFTUXX_GSEA)=="NES"]="NES_GSE128387_Blood_DFTUXX"
+colnames(GSE128387_Blood_DFTUXX_GSEA)[colnames(GSE128387_Blood_DFTUXX_GSEA)=="padj"]="AdjP_GSE128387_Blood_DFTUXX"
+
+#GSE83386_Lympho_DFTUxx
+GSE83386_Lympho_DFTUXX_GSEA=readRDS("FLX_datasets/GSE83386/GSEA_Pooled_GSE83386.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE83386_Lympho_DFTUXX_GSEA)[colnames(GSE83386_Lympho_DFTUXX_GSEA)=="pval"]="P.Value_GSE83386_Lympho_DFTUXX"
+colnames(GSE83386_Lympho_DFTUXX_GSEA)[colnames(GSE83386_Lympho_DFTUXX_GSEA)=="NES"]="NES_GSE83386_Lympho_DFTUXX"
+colnames(GSE83386_Lympho_DFTUXX_GSEA)[colnames(GSE83386_Lympho_DFTUXX_GSEA)=="padj"]="AdjP_GSE83386_Lympho_DFTUXX"
+
+#GSE83386_Lympho_DFRNxx
+GSE83386_Lympho_DFRNXX_GSEA=readRDS("FLX_datasets/GSE83386/GSEA_ResVNon_GSE83386.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE83386_Lympho_DFRNXX_GSEA)[colnames(GSE83386_Lympho_DFRNXX_GSEA)=="pval"]="P.Value_GSE83386_Lympho_DFRNXX"
+colnames(GSE83386_Lympho_DFRNXX_GSEA)[colnames(GSE83386_Lympho_DFRNXX_GSEA)=="NES"]="NES_GSE83386_Lympho_DFRNXX"
+colnames(GSE83386_Lympho_DFRNXX_GSEA)[colnames(GSE83386_Lympho_DFRNXX_GSEA)=="padj"]="AdjP_GSE83386_Lympho_DFRNXX"
+
+#GSE83386_Lympho_DFRCxx
+GSE83386_Lympho_DFRCXX_GSEA=readRDS("FLX_datasets/GSE83386/GSEA_Res_GSE83386.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE83386_Lympho_DFRCXX_GSEA)[colnames(GSE83386_Lympho_DFRCXX_GSEA)=="pval"]="P.Value_GSE83386_Lympho_DFRCXX"
+colnames(GSE83386_Lympho_DFRCXX_GSEA)[colnames(GSE83386_Lympho_DFRCXX_GSEA)=="NES"]="NES_GSE83386_Lympho_DFRCXX"
+colnames(GSE83386_Lympho_DFRCXX_GSEA)[colnames(GSE83386_Lympho_DFRCXX_GSEA)=="padj"]="AdjP_GSE83386_Lympho_DFRCXX"
+
+#GSE83386_Lympho_DFNCxx
+GSE83386_Lympho_DFNCXX_GSEA=readRDS("FLX_datasets/GSE83386/GSEA_Non_GSE83386.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE83386_Lympho_DFNCXX_GSEA)[colnames(GSE83386_Lympho_DFNCXX_GSEA)=="pval"]="P.Value_GSE83386_Lympho_DFNCXX"
+colnames(GSE83386_Lympho_DFNCXX_GSEA)[colnames(GSE83386_Lympho_DFNCXX_GSEA)=="NES"]="NES_GSE83386_Lympho_DFNCXX"
+colnames(GSE83386_Lympho_DFNCXX_GSEA)[colnames(GSE83386_Lympho_DFNCXX_GSEA)=="padj"]="AdjP_GSE83386_Lympho_DFNCXX"
+
+GSEASetList=as.list(mget(objects()))
+saveRDS(GSEASetList,"Input RDS/Human_All_GSEA_List.rds")
+
+```
+
+```{r Mouse Comparisons GSEA}
+#Clear Environment of All objects
+rm(list = objects())
+
+#GSE202172_Cell_SFTUXX
+GSE202172_Cell_SFTUXX_GSEA=readRDS("FLX_datasets/GSE202172/IN.Flx.Sh.fgseaRES_GSE202172.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE202172_Cell_SFTUXX_GSEA)[colnames(GSE202172_Cell_SFTUXX_GSEA)=="pval"]="P.Value_GSE202172_Cell_SFTUXX"
+colnames(GSE202172_Cell_SFTUXX_GSEA)[colnames(GSE202172_Cell_SFTUXX_GSEA)=="NES"]="NES_GSE202172_Cell_SFTUXX"
+colnames(GSE202172_Cell_SFTUXX_GSEA)[colnames(GSE202172_Cell_SFTUXX_GSEA)=="padj"]="AdjP_GSE202172_Cell_SFTUXX"
+
+#GSE202172_TRAP_SFTUXX
+GSE202172_TRAP_SFTUXX_GSEA=readRDS("FLX_datasets/GSE202172/TRP.Flx.Sh.fgseaRES_GSE202172.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE202172_TRAP_SFTUXX_GSEA)[colnames(GSE202172_TRAP_SFTUXX_GSEA)=="pval"]="P.Value_GSE202172_TRAP_SFTUXX"
+colnames(GSE202172_TRAP_SFTUXX_GSEA)[colnames(GSE202172_TRAP_SFTUXX_GSEA)=="NES"]="NES_GSE202172_TRAP_SFTUXX"
+colnames(GSE202172_TRAP_SFTUXX_GSEA)[colnames(GSE202172_TRAP_SFTUXX_GSEA)=="padj"]="AdjP_GSE202172_TRAP_SFTUXX"
+
+#GSE202172_Cell_SFRNXX
+GSE202172_Cell_SFRNXX_GSEA=readRDS("FLX_datasets/GSE202172/IN.Norm.Anx.fgseaRES_GSE202172.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE202172_Cell_SFRNXX_GSEA)[colnames(GSE202172_Cell_SFRNXX_GSEA)=="pval"]="P.Value_GSE202172_Cell_SFRNXX"
+colnames(GSE202172_Cell_SFRNXX_GSEA)[colnames(GSE202172_Cell_SFRNXX_GSEA)=="NES"]="NES_GSE202172_Cell_SFRNXX"
+colnames(GSE202172_Cell_SFRNXX_GSEA)[colnames(GSE202172_Cell_SFRNXX_GSEA)=="padj"]="AdjP_GSE202172_Cell_SFRNXX"
+
+#GSE202172_TRAP_SFRNXX
+GSE202172_TRAP_SFRNXX_GSEA=readRDS("FLX_datasets/GSE202172/TRP.Norm.Anx.fgseaRES_GSE202172.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE202172_TRAP_SFRNXX_GSEA)[colnames(GSE202172_TRAP_SFRNXX_GSEA)=="pval"]="P.Value_GSE202172_TRAP_SFRNXX"
+colnames(GSE202172_TRAP_SFRNXX_GSEA)[colnames(GSE202172_TRAP_SFRNXX_GSEA)=="NES"]="NES_GSE202172_TRAP_SFRNXX"
+colnames(GSE202172_TRAP_SFRNXX_GSEA)[colnames(GSE202172_TRAP_SFRNXX_GSEA)=="padj"]="AdjP_GSE202172_TRAP_SFRNXX"
+
+#GSE202172_Cell_SFRCXX
+GSE202172_Cell_SFRCXX_GSEA=readRDS("FLX_datasets/GSE202172/IN.Norm.Sh.fgseaRES_GSE202172.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE202172_Cell_SFRCXX_GSEA)[colnames(GSE202172_Cell_SFRCXX_GSEA)=="pval"]="P.Value_GSE202172_Cell_SFRCXX"
+colnames(GSE202172_Cell_SFRCXX_GSEA)[colnames(GSE202172_Cell_SFRCXX_GSEA)=="NES"]="NES_GSE202172_Cell_SFRCXX"
+colnames(GSE202172_Cell_SFRCXX_GSEA)[colnames(GSE202172_Cell_SFRCXX_GSEA)=="padj"]="AdjP_GSE202172_Cell_SFRCXX"
+
+#GSE202172_TRAP_SFRCXX
+GSE202172_TRAP_SFRCXX_GSEA=readRDS("FLX_datasets/GSE202172/TRP.Norm.Sh.fgseaRES_GSE202172.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE202172_TRAP_SFRCXX_GSEA)[colnames(GSE202172_TRAP_SFRCXX_GSEA)=="pval"]="P.Value_GSE202172_TRAP_SFRCXX"
+colnames(GSE202172_TRAP_SFRCXX_GSEA)[colnames(GSE202172_TRAP_SFRCXX_GSEA)=="NES"]="NES_GSE202172_TRAP_SFRCXX"
+colnames(GSE202172_TRAP_SFRCXX_GSEA)[colnames(GSE202172_TRAP_SFRCXX_GSEA)=="padj"]="AdjP_GSE202172_TRAP_SFRCXX"
+
+#GSE202172_Cell_SFNCXX
+GSE202172_Cell_SFNCXX_GSEA=readRDS("FLX_datasets/GSE202172/IN.Anx.Sh.fgseaRES_GSE202172.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE202172_Cell_SFNCXX_GSEA)[colnames(GSE202172_Cell_SFNCXX_GSEA)=="pval"]="P.Value_GSE202172_Cell_SFNCXX"
+colnames(GSE202172_Cell_SFNCXX_GSEA)[colnames(GSE202172_Cell_SFNCXX_GSEA)=="NES"]="NES_GSE202172_Cell_SFNCXX"
+colnames(GSE202172_Cell_SFNCXX_GSEA)[colnames(GSE202172_Cell_SFNCXX_GSEA)=="padj"]="AdjP_GSE202172_Cell_SFNCXX"
+
+#GSE202172_TRAP_SFNCXX
+GSE202172_TRAP_SFNCXX_GSEA=readRDS("FLX_datasets/GSE202172/TRP.Anx.Sh.fgseaRES_GSE202172.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE202172_TRAP_SFNCXX_GSEA)[colnames(GSE202172_TRAP_SFNCXX_GSEA)=="pval"]="P.Value_GSE202172_TRAP_SFNCXX"
+colnames(GSE202172_TRAP_SFNCXX_GSEA)[colnames(GSE202172_TRAP_SFNCXX_GSEA)=="NES"]="NES_GSE202172_TRAP_SFNCXX"
+colnames(GSE202172_TRAP_SFNCXX_GSEA)[colnames(GSE202172_TRAP_SFNCXX_GSEA)=="padj"]="AdjP_GSE202172_TRAP_SFNCXX"
+
+#GSE43261_DDG_SFTUXX
+GSE43261_DDG_SFTUXX_GSEA=readRDS("FLX_datasets/GSE43261/GSEA_PooledDDG_GSE43261.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE43261_DDG_SFTUXX_GSEA)[colnames(GSE43261_DDG_SFTUXX_GSEA)=="pval"]="P.Value_GSE43261_DDG_SFTUXX"
+colnames(GSE43261_DDG_SFTUXX_GSEA)[colnames(GSE43261_DDG_SFTUXX_GSEA)=="NES"]="NES_GSE43261_DDG_SFTUXX"
+colnames(GSE43261_DDG_SFTUXX_GSEA)[colnames(GSE43261_DDG_SFTUXX_GSEA)=="padj"]="AdjP_GSE43261_DDG_SFTUXX"
+
+#GSE43261_VDG_SFTUXX
+GSE43261_VDG_SFTUXX_GSEA=readRDS("FLX_datasets/GSE43261/GSEA_PooledVDG_GSE43261.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE43261_VDG_SFTUXX_GSEA)[colnames(GSE43261_VDG_SFTUXX_GSEA)=="pval"]="P.Value_GSE43261_VDG_SFTUXX"
+colnames(GSE43261_VDG_SFTUXX_GSEA)[colnames(GSE43261_VDG_SFTUXX_GSEA)=="NES"]="NES_GSE43261_VDG_SFTUXX"
+colnames(GSE43261_VDG_SFTUXX_GSEA)[colnames(GSE43261_VDG_SFTUXX_GSEA)=="padj"]="AdjP_GSE43261_VDG_SFTUXX"
+
+#GSE43261_DDG_SFRNXX
+GSE43261_DDG_SFRNXX_GSEA=readRDS("FLX_datasets/GSE43261/GSEA_ResVResDDG_GSE43261.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE43261_DDG_SFRNXX_GSEA)[colnames(GSE43261_DDG_SFRNXX_GSEA)=="pval"]="P.Value_GSE43261_DDG_SFRNXX"
+colnames(GSE43261_DDG_SFRNXX_GSEA)[colnames(GSE43261_DDG_SFRNXX_GSEA)=="NES"]="NES_GSE43261_DDG_SFRNXX"
+colnames(GSE43261_DDG_SFRNXX_GSEA)[colnames(GSE43261_DDG_SFRNXX_GSEA)=="padj"]="AdjP_GSE43261_DDG_SFRNXX"
+
+#GSE43261_VDG_SFRNXX
+GSE43261_VDG_SFRNXX_GSEA=readRDS("FLX_datasets/GSE43261/GSEA_ResVResVDG_GSE43261.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE43261_VDG_SFRNXX_GSEA)[colnames(GSE43261_VDG_SFRNXX_GSEA)=="pval"]="P.Value_GSE43261_VDG_SFRNXX"
+colnames(GSE43261_VDG_SFRNXX_GSEA)[colnames(GSE43261_VDG_SFRNXX_GSEA)=="NES"]="NES_GSE43261_VDG_SFRNXX"
+colnames(GSE43261_VDG_SFRNXX_GSEA)[colnames(GSE43261_VDG_SFRNXX_GSEA)=="padj"]="AdjP_GSE43261_VDG_SFRNXX"
+
+#GSE43261_DDG_SFRCXX
+GSE43261_DDG_SFRCXX_GSEA=readRDS("FLX_datasets/GSE43261/GSEA_RespondDDG_GSE43261.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE43261_DDG_SFRCXX_GSEA)[colnames(GSE43261_DDG_SFRCXX_GSEA)=="pval"]="P.Value_GSE43261_DDG_SFRCXX"
+colnames(GSE43261_DDG_SFRCXX_GSEA)[colnames(GSE43261_DDG_SFRCXX_GSEA)=="NES"]="NES_GSE43261_DDG_SFRCXX"
+colnames(GSE43261_DDG_SFRCXX_GSEA)[colnames(GSE43261_DDG_SFRCXX_GSEA)=="padj"]="AdjP_GSE43261_DDG_SFRCXX"
+
+#GSE43261_VDG_SFRCXX
+GSE43261_VDG_SFRCXX_GSEA=readRDS("FLX_datasets/GSE43261/GSEA_RespondVDG_GSE43261.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE43261_VDG_SFRCXX_GSEA)[colnames(GSE43261_VDG_SFRCXX_GSEA)=="pval"]="P.Value_GSE43261_VDG_SFRCXX"
+colnames(GSE43261_VDG_SFRCXX_GSEA)[colnames(GSE43261_VDG_SFRCXX_GSEA)=="NES"]="NES_GSE43261_VDG_SFRCXX"
+colnames(GSE43261_VDG_SFRCXX_GSEA)[colnames(GSE43261_VDG_SFRCXX_GSEA)=="padj"]="AdjP_GSE43261_VDG_SFRCXX"
+
+#GSE43261_DDG_SFNCXX
+GSE43261_DDG_SFNCXX_GSEA=readRDS("FLX_datasets/GSE43261/GSEA_ResistantDDG_GSE43261.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE43261_DDG_SFNCXX_GSEA)[colnames(GSE43261_DDG_SFNCXX_GSEA)=="pval"]="P.Value_GSE43261_DDG_SFNCXX"
+colnames(GSE43261_DDG_SFNCXX_GSEA)[colnames(GSE43261_DDG_SFNCXX_GSEA)=="NES"]="NES_GSE43261_DDG_SFNCXX"
+colnames(GSE43261_DDG_SFNCXX_GSEA)[colnames(GSE43261_DDG_SFNCXX_GSEA)=="padj"]="AdjP_GSE43261_DDG_SFNCXX"
+
+#GSE43261_VDG_SFNCXX
+GSE43261_VDG_SFNCXX_GSEA=readRDS("FLX_datasets/GSE43261/GSEA_ResistantVDG_GSE43261.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE43261_VDG_SFNCXX_GSEA)[colnames(GSE43261_VDG_SFNCXX_GSEA)=="pval"]="P.Value_GSE43261_VDG_SFNCXX"
+colnames(GSE43261_VDG_SFNCXX_GSEA)[colnames(GSE43261_VDG_SFNCXX_GSEA)=="NES"]="NES_GSE43261_VDG_SFNCXX"
+colnames(GSE43261_VDG_SFNCXX_GSEA)[colnames(GSE43261_VDG_SFNCXX_GSEA)=="padj"]="AdjP_GSE43261_VDG_SFNCXX"
+
+#GSE28644_Cortex_XFTUXX
+GSE28644_Cortex_XFTUXX_GSEA=readRDS("FLX_datasets/GSE28644/GSEA_Pooled_GSE28644.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE28644_Cortex_XFTUXX_GSEA)[colnames(GSE28644_Cortex_XFTUXX_GSEA)=="pval"]="P.Value_GSE28644_Cortex_XFTUXX"
+colnames(GSE28644_Cortex_XFTUXX_GSEA)[colnames(GSE28644_Cortex_XFTUXX_GSEA)=="NES"]="NES_GSE28644_Cortex_XFTUXX"
+colnames(GSE28644_Cortex_XFTUXX_GSEA)[colnames(GSE28644_Cortex_XFTUXX_GSEA)=="padj"]="AdjP_GSE28644_Cortex_XFTUXX"
+
+#GSE28644_Cortex_XFRNXX
+GSE28644_Cortex_XFRNXX_GSEA=readRDS("FLX_datasets/GSE28644/GSEA_ResVNon_GSE28644.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE28644_Cortex_XFRNXX_GSEA)[colnames(GSE28644_Cortex_XFRNXX_GSEA)=="pval"]="P.Value_GSE28644_Cortex_XFRNXX"
+colnames(GSE28644_Cortex_XFRNXX_GSEA)[colnames(GSE28644_Cortex_XFRNXX_GSEA)=="NES"]="NES_GSE28644_Cortex_XFRNXX"
+colnames(GSE28644_Cortex_XFRNXX_GSEA)[colnames(GSE28644_Cortex_XFRNXX_GSEA)=="padj"]="AdjP_GSE28644_Cortex_XFRNXX"
+
+#GSE28644_Cortex_XFRCXX
+GSE28644_Cortex_XFRCXX_GSEA=readRDS("FLX_datasets/GSE28644/GSEA_Res_GSE28644.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE28644_Cortex_XFRCXX_GSEA)[colnames(GSE28644_Cortex_XFRCXX_GSEA)=="pval"]="P.Value_GSE28644_Cortex_XFRCXX"
+colnames(GSE28644_Cortex_XFRCXX_GSEA)[colnames(GSE28644_Cortex_XFRCXX_GSEA)=="NES"]="NES_GSE28644_Cortex_XFRCXX"
+colnames(GSE28644_Cortex_XFRCXX_GSEA)[colnames(GSE28644_Cortex_XFRCXX_GSEA)=="padj"]="AdjP_GSE28644_Cortex_XFRCXX"
+
+#GSE28644_Cortex_XFNCXX
+GSE28644_Cortex_XFNCXX_GSEA=readRDS("FLX_datasets/GSE28644/GSEA_Non_GSE28644.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE28644_Cortex_XFNCXX_GSEA)[colnames(GSE28644_Cortex_XFNCXX_GSEA)=="pval"]="P.Value_GSE28644_Cortex_XFNCXX"
+colnames(GSE28644_Cortex_XFNCXX_GSEA)[colnames(GSE28644_Cortex_XFNCXX_GSEA)=="NES"]="NES_GSE28644_Cortex_XFNCXX"
+colnames(GSE28644_Cortex_XFNCXX_GSEA)[colnames(GSE28644_Cortex_XFNCXX_GSEA)=="padj"]="AdjP_GSE28644_Cortex_XFNCXX"
+
+#GSE118668_PFC_XFTUXX
+GSE118668_PFC_XFTUXX_GSEA=readRDS("FLX_datasets/GSE118668/GSEA_PFC_GSE118670.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE118668_PFC_XFTUXX_GSEA)[colnames(GSE118668_PFC_XFTUXX_GSEA)=="pval"]="P.Value_GSE118668_PFC_XFTUXX"
+colnames(GSE118668_PFC_XFTUXX_GSEA)[colnames(GSE118668_PFC_XFTUXX_GSEA)=="NES"]="NES_GSE118668_PFC_XFTUXX"
+colnames(GSE118668_PFC_XFTUXX_GSEA)[colnames(GSE118668_PFC_XFTUXX_GSEA)=="padj"]="AdjP_GSE118668_PFC_XFTUXX"
+
+#GSE118669_DG_XFTUXX
+GSE118669_DG_XFTUXX_GSEA=readRDS("FLX_datasets/GSE118669/GSEA_DG_GSE118670.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE118669_DG_XFTUXX_GSEA)[colnames(GSE118669_DG_XFTUXX_GSEA)=="pval"]="P.Value_GSE118669_DG_XFTUXX"
+colnames(GSE118669_DG_XFTUXX_GSEA)[colnames(GSE118669_DG_XFTUXX_GSEA)=="NES"]="NES_GSE118669_DG_XFTUXX"
+colnames(GSE118669_DG_XFTUXX_GSEA)[colnames(GSE118669_DG_XFTUXX_GSEA)=="padj"]="AdjP_GSE118669_DG_XFTUXX"
+
+#GSE35761_S100a10_XFTUXX
+GSE35761_S100a10_XFTUXX_GSEA=readRDS("FLX_datasets/GSE35761/GSEA_GSE35761.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE35761_S100a10_XFTUXX_GSEA)[colnames(GSE35761_S100a10_XFTUXX_GSEA)=="pval"]="P.Value_GSE35761_S100a10_XFTUXX"
+colnames(GSE35761_S100a10_XFTUXX_GSEA)[colnames(GSE35761_S100a10_XFTUXX_GSEA)=="NES"]="NES_GSE35761_S100a10_XFTUXX"
+colnames(GSE35761_S100a10_XFTUXX_GSEA)[colnames(GSE35761_S100a10_XFTUXX_GSEA)=="padj"]="AdjP_GSE35761_S100a10_XFTUXX"
+
+#GSE35763_GLt25d2_XFTUXX
+GSE35763_GLt25d2_XFTUXX_GSEA=readRDS("FLX_datasets/GSE35763/GSEA_GSE35763.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE35763_GLt25d2_XFTUXX_GSEA)[colnames(GSE35763_GLt25d2_XFTUXX_GSEA)=="pval"]="P.Value_GSE35763_GLt25d2_XFTUXX"
+colnames(GSE35763_GLt25d2_XFTUXX_GSEA)[colnames(GSE35763_GLt25d2_XFTUXX_GSEA)=="NES"]="NES_GSE35763_GLt25d2_XFTUXX"
+colnames(GSE35763_GLt25d2_XFTUXX_GSEA)[colnames(GSE35763_GLt25d2_XFTUXX_GSEA)=="padj"]="AdjP_GSE35763_GLt25d2_XFTUXX"
+
+#GSE150431_Amygdala_XFTUXX
+GSE150431_Amygdala_XFTUXX_GSEA=readRDS("FLX_datasets/GSE150431/GSEA_GSE150431.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE150431_Amygdala_XFTUXX_GSEA)[colnames(GSE150431_Amygdala_XFTUXX_GSEA)=="pval"]="P.Value_GSE150431_Amygdala_XFTUXX"
+colnames(GSE150431_Amygdala_XFTUXX_GSEA)[colnames(GSE150431_Amygdala_XFTUXX_GSEA)=="NES"]="NES_GSE150431_Amygdala_XFTUXX"
+colnames(GSE150431_Amygdala_XFTUXX_GSEA)[colnames(GSE150431_Amygdala_XFTUXX_GSEA)=="padj"]="AdjP_GSE150431_Amygdala_XFTUXX"
+
+#GSE48951_Striatum_XFTU1X
+GSE48951_Striatum_XFTU1X_GSEA=readRDS("FLX_datasets/GSE48951/GSEA_h1_GSE48951.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE48951_Striatum_XFTU1X_GSEA)[colnames(GSE48951_Striatum_XFTU1X_GSEA)=="pval"]="P.Value_GSE48951_Striatum_XFTU1X"
+colnames(GSE48951_Striatum_XFTU1X_GSEA)[colnames(GSE48951_Striatum_XFTU1X_GSEA)=="NES"]="NES_GSE48951_Striatum_XFTU1X"
+colnames(GSE48951_Striatum_XFTU1X_GSEA)[colnames(GSE48951_Striatum_XFTU1X_GSEA)=="padj"]="AdjP_GSE48951_Striatum_XFTU1X"
+
+#GSE48951_Striatum_XFTU2X
+GSE48951_Striatum_XFTU2X_GSEA=readRDS("FLX_datasets/GSE48951/GSEA_h2_GSE48951.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE48951_Striatum_XFTU2X_GSEA)[colnames(GSE48951_Striatum_XFTU2X_GSEA)=="pval"]="P.Value_GSE48951_Striatum_XFTU2X"
+colnames(GSE48951_Striatum_XFTU2X_GSEA)[colnames(GSE48951_Striatum_XFTU2X_GSEA)=="NES"]="NES_GSE48951_Striatum_XFTU2X"
+colnames(GSE48951_Striatum_XFTU2X_GSEA)[colnames(GSE48951_Striatum_XFTU2X_GSEA)=="padj"]="AdjP_GSE48951_Striatum_XFTU2X"
+
+#GSE48951_Striatum_XFTU4X
+GSE48951_Striatum_XFTU4X_GSEA=readRDS("FLX_datasets/GSE48951/GSEA_h4_GSE48951.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE48951_Striatum_XFTU4X_GSEA)[colnames(GSE48951_Striatum_XFTU4X_GSEA)=="pval"]="P.Value_GSE48951_Striatum_XFTU4X"
+colnames(GSE48951_Striatum_XFTU4X_GSEA)[colnames(GSE48951_Striatum_XFTU4X_GSEA)=="NES"]="NES_GSE48951_Striatum_XFTU4X"
+colnames(GSE48951_Striatum_XFTU4X_GSEA)[colnames(GSE48951_Striatum_XFTU4X_GSEA)=="padj"]="AdjP_GSE48951_Striatum_XFTU4X"
+
+#GSE48951_Striatum_XFTU8X
+GSE48951_Striatum_XFTU8X_GSEA=readRDS("FLX_datasets/GSE48951/GSEA_h8_GSE48951.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE48951_Striatum_XFTU8X_GSEA)[colnames(GSE48951_Striatum_XFTU8X_GSEA)=="pval"]="P.Value_GSE48951_Striatum_XFTU8X"
+colnames(GSE48951_Striatum_XFTU8X_GSEA)[colnames(GSE48951_Striatum_XFTU8X_GSEA)=="NES"]="NES_GSE48951_Striatum_XFTU8X"
+colnames(GSE48951_Striatum_XFTU8X_GSEA)[colnames(GSE48951_Striatum_XFTU8X_GSEA)=="padj"]="AdjP_GSE48951_Striatum_XFTU8X"
+
+#GSE84183_ACC_SFTUXX
+GSE84183_ACC_SFTUXX_GSEA=readRDS("FLX_datasets/GSE84183/GSEA_CG_StressFlx_Stress_GSE84183.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84183_ACC_SFTUXX_GSEA)[colnames(GSE84183_ACC_SFTUXX_GSEA)=="pval"]="P.Value_GSE84183_ACC_SFTUXX"
+colnames(GSE84183_ACC_SFTUXX_GSEA)[colnames(GSE84183_ACC_SFTUXX_GSEA)=="NES"]="NES_GSE84183_ACC_SFTUXX"
+colnames(GSE84183_ACC_SFTUXX_GSEA)[colnames(GSE84183_ACC_SFTUXX_GSEA)=="padj"]="AdjP_GSE84183_ACC_SFTUXX"
+
+#GSE84183_DG_SFTUXX
+GSE84183_DG_SFTUXX_GSEA=readRDS("FLX_datasets/GSE84183/GSEA_DG_StressFlx_Stress_GSE84183.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84183_DG_SFTUXX_GSEA)[colnames(GSE84183_DG_SFTUXX_GSEA)=="pval"]="P.Value_GSE84183_DG_SFTUXX"
+colnames(GSE84183_DG_SFTUXX_GSEA)[colnames(GSE84183_DG_SFTUXX_GSEA)=="NES"]="NES_GSE84183_DG_SFTUXX"
+colnames(GSE84183_DG_SFTUXX_GSEA)[colnames(GSE84183_DG_SFTUXX_GSEA)=="padj"]="AdjP_GSE84183_DG_SFTUXX"
+
+#GSE84183_ACC_XFTUXX
+GSE84183_ACC_XFTUXX_GSEA=readRDS("FLX_datasets/GSE84183/GSEA_CG_NoStressFlx_Control_GSE84183.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84183_ACC_XFTUXX_GSEA)[colnames(GSE84183_ACC_XFTUXX_GSEA)=="pval"]="P.Value_GSE84183_ACC_XFTUXX"
+colnames(GSE84183_ACC_XFTUXX_GSEA)[colnames(GSE84183_ACC_XFTUXX_GSEA)=="NES"]="NES_GSE84183_ACC_XFTUXX"
+colnames(GSE84183_ACC_XFTUXX_GSEA)[colnames(GSE84183_ACC_XFTUXX_GSEA)=="padj"]="AdjP_GSE84183_ACC_XFTUXX"
+
+#GSE84183_DG_XFTUXX
+GSE84183_DG_XFTUXX_GSEA=readRDS("FLX_datasets/GSE84183/GSEA_DG_NoStressFlx_Control_GSE84183.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84183_DG_XFTUXX_GSEA)[colnames(GSE84183_DG_XFTUXX_GSEA)=="pval"]="P.Value_GSE84183_DG_XFTUXX"
+colnames(GSE84183_DG_XFTUXX_GSEA)[colnames(GSE84183_DG_XFTUXX_GSEA)=="NES"]="NES_GSE84183_DG_XFTUXX"
+colnames(GSE84183_DG_XFTUXX_GSEA)[colnames(GSE84183_DG_XFTUXX_GSEA)=="padj"]="AdjP_GSE84183_DG_XFTUXX"
+
+#GSE84183_ACC_SFRNXX
+GSE84183_ACC_SFRNXX_GSEA=readRDS("FLX_datasets/GSE84183/GSEA_CG_Responder_Resistant_GSE84183.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84183_ACC_SFRNXX_GSEA)[colnames(GSE84183_ACC_SFRNXX_GSEA)=="pval"]="P.Value_GSE84183_ACC_SFRNXX"
+colnames(GSE84183_ACC_SFRNXX_GSEA)[colnames(GSE84183_ACC_SFRNXX_GSEA)=="NES"]="NES_GSE84183_ACC_SFRNXX"
+colnames(GSE84183_ACC_SFRNXX_GSEA)[colnames(GSE84183_ACC_SFRNXX_GSEA)=="padj"]="AdjP_GSE84183_ACC_SFRNXX"
+
+#GSE84183_DG_SFRNXX
+GSE84183_DG_SFRNXX_GSEA=readRDS("FLX_datasets/GSE84183/GSEA_DG_Responder_Resistant_GSE84183.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84183_DG_SFRNXX_GSEA)[colnames(GSE84183_DG_SFRNXX_GSEA)=="pval"]="P.Value_GSE84183_DG_SFRNXX"
+colnames(GSE84183_DG_SFRNXX_GSEA)[colnames(GSE84183_DG_SFRNXX_GSEA)=="NES"]="NES_GSE84183_DG_SFRNXX"
+colnames(GSE84183_DG_SFRNXX_GSEA)[colnames(GSE84183_DG_SFRNXX_GSEA)=="padj"]="AdjP_GSE84183_DG_SFRNXX"
+
+#GSE84183_ACC_SFRCXX
+GSE84183_ACC_SFRCXX_GSEA=readRDS("FLX_datasets/GSE84183/GSEA_CG_Responder_Control_GSE84183.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84183_ACC_SFRCXX_GSEA)[colnames(GSE84183_ACC_SFRCXX_GSEA)=="pval"]="P.Value_GSE84183_ACC_SFRCXX"
+colnames(GSE84183_ACC_SFRCXX_GSEA)[colnames(GSE84183_ACC_SFRCXX_GSEA)=="NES"]="NES_GSE84183_ACC_SFRCXX"
+colnames(GSE84183_ACC_SFRCXX_GSEA)[colnames(GSE84183_ACC_SFRCXX_GSEA)=="padj"]="AdjP_GSE84183_ACC_SFRCXX"
+
+#GSE84183_DG_SFRCXX
+GSE84183_DG_SFRCXX_GSEA=readRDS("FLX_datasets/GSE84183/GSEA_DG_Responder_Control_GSE84183.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84183_DG_SFRCXX_GSEA)[colnames(GSE84183_DG_SFRCXX_GSEA)=="pval"]="P.Value_GSE84183_DG_SFRCXX"
+colnames(GSE84183_DG_SFRCXX_GSEA)[colnames(GSE84183_DG_SFRCXX_GSEA)=="NES"]="NES_GSE84183_DG_SFRCXX"
+colnames(GSE84183_DG_SFRCXX_GSEA)[colnames(GSE84183_DG_SFRCXX_GSEA)=="padj"]="AdjP_GSE84183_DG_SFRCXX"
+
+#GSE84183_ACC_SFNCXX
+GSE84183_ACC_SFNCXX_GSEA=readRDS("FLX_datasets/GSE84183/GSEA_CG_Resistant_Control_GSE84183.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84183_ACC_SFNCXX_GSEA)[colnames(GSE84183_ACC_SFNCXX_GSEA)=="pval"]="P.Value_GSE84183_ACC_SFNCXX"
+colnames(GSE84183_ACC_SFNCXX_GSEA)[colnames(GSE84183_ACC_SFNCXX_GSEA)=="NES"]="NES_GSE84183_ACC_SFNCXX"
+colnames(GSE84183_ACC_SFNCXX_GSEA)[colnames(GSE84183_ACC_SFNCXX_GSEA)=="padj"]="AdjP_GSE84183_ACC_SFNCXX"
+
+#GSE84183_DG_SFNCXX
+GSE84183_DG_SFNCXX_GSEA=readRDS("FLX_datasets/GSE84183/GSEA_DG_Resistant_Control_GSE84183.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84183_DG_SFNCXX_GSEA)[colnames(GSE84183_DG_SFNCXX_GSEA)=="pval"]="P.Value_GSE84183_DG_SFNCXX"
+colnames(GSE84183_DG_SFNCXX_GSEA)[colnames(GSE84183_DG_SFNCXX_GSEA)=="NES"]="NES_GSE84183_DG_SFNCXX"
+colnames(GSE84183_DG_SFNCXX_GSEA)[colnames(GSE84183_DG_SFNCXX_GSEA)=="padj"]="AdjP_GSE84183_DG_SFNCXX"
+
+#GSE84184_Blood_SFTUXX
+GSE84184_Blood_SFTUXX_GSEA=readRDS("FLX_datasets/GSE84184/GSEA_BL_StressFlx_Stress_GSE84184.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84184_Blood_SFTUXX_GSEA)[colnames(GSE84184_Blood_SFTUXX_GSEA)=="pval"]="P.Value_GSE84184_Blood_SFTUXX"
+colnames(GSE84184_Blood_SFTUXX_GSEA)[colnames(GSE84184_Blood_SFTUXX_GSEA)=="NES"]="NES_GSE84184_Blood_SFTUXX"
+colnames(GSE84184_Blood_SFTUXX_GSEA)[colnames(GSE84184_Blood_SFTUXX_GSEA)=="padj"]="AdjP_GSE84184_Blood_SFTUXX"
+
+#GSE84184_Blood_XFTUXX
+GSE84184_Blood_XFTUXX_GSEA=readRDS("FLX_datasets/GSE84184/GSEA_BL_NoStressFlx_Control_GSE84184.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84184_Blood_XFTUXX_GSEA)[colnames(GSE84184_Blood_XFTUXX_GSEA)=="pval"]="P.Value_GSE84184_Blood_XFTUXX"
+colnames(GSE84184_Blood_XFTUXX_GSEA)[colnames(GSE84184_Blood_XFTUXX_GSEA)=="NES"]="NES_GSE84184_Blood_XFTUXX"
+colnames(GSE84184_Blood_XFTUXX_GSEA)[colnames(GSE84184_Blood_XFTUXX_GSEA)=="padj"]="AdjP_GSE84184_Blood_XFTUXX"
+
+#GSE84184_Blood_SFRNXX
+GSE84184_Blood_SFRNXX_GSEA=readRDS("FLX_datasets/GSE84184/GSEA_BL_Responder_Resistant_GSE84184.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84184_Blood_SFRNXX_GSEA)[colnames(GSE84184_Blood_SFRNXX_GSEA)=="pval"]="P.Value_GSE84184_Blood_SFRNXX"
+colnames(GSE84184_Blood_SFRNXX_GSEA)[colnames(GSE84184_Blood_SFRNXX_GSEA)=="NES"]="NES_GSE84184_Blood_SFRNXX"
+colnames(GSE84184_Blood_SFRNXX_GSEA)[colnames(GSE84184_Blood_SFRNXX_GSEA)=="padj"]="AdjP_GSE84184_Blood_SFRNXX"
+
+#GSE84184_Blood_SFRCXX
+GSE84184_Blood_SFRCXX_GSEA=readRDS("FLX_datasets/GSE84184/GSEA_BL_Responder_Control_GSE84184.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84184_Blood_SFRCXX_GSEA)[colnames(GSE84184_Blood_SFRCXX_GSEA)=="pval"]="P.Value_GSE84184_Blood_SFRCXX"
+colnames(GSE84184_Blood_SFRCXX_GSEA)[colnames(GSE84184_Blood_SFRCXX_GSEA)=="NES"]="NES_GSE84184_Blood_SFRCXX"
+colnames(GSE84184_Blood_SFRCXX_GSEA)[colnames(GSE84184_Blood_SFRCXX_GSEA)=="padj"]="AdjP_GSE84184_Blood_SFRCXX"
+
+#GSE84184_Blood_SFNCXX
+GSE84184_Blood_SFNCXX_GSEA=readRDS("FLX_datasets/GSE84184/GSEA_BL_Resistant_Control_GSE84184.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE84184_Blood_SFNCXX_GSEA)[colnames(GSE84184_Blood_SFNCXX_GSEA)=="pval"]="P.Value_GSE84184_Blood_SFNCXX"
+colnames(GSE84184_Blood_SFNCXX_GSEA)[colnames(GSE84184_Blood_SFNCXX_GSEA)=="NES"]="NES_GSE84184_Blood_SFNCXX"
+colnames(GSE84184_Blood_SFNCXX_GSEA)[colnames(GSE84184_Blood_SFNCXX_GSEA)=="padj"]="AdjP_GSE84184_Blood_SFNCXX"
+
+GSEASetList=as.list(mget(objects()))
+saveRDS(GSEASetList,"Input RDS/Mouse_All_GSEA_List.rds")
+
+```
+
+```{r Rat Comparisons GSEA}
+#Clear Environment of All objects
+rm(list = objects())
+
+#GSE205325_Hippocampus_SFTUXX
+GSE205325_Hippocampus_SFTUXX_GSEA=readRDS("FLX_datasets/GSE205325/GSEA_FL.v.Stress_GSE205325.RDS")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE205325_Hippocampus_SFTUXX_GSEA)[colnames(GSE205325_Hippocampus_SFTUXX_GSEA)=="pval"]="P.Value_GSE205325_Hippocampus_SFTUXX"
+colnames(GSE205325_Hippocampus_SFTUXX_GSEA)[colnames(GSE205325_Hippocampus_SFTUXX_GSEA)=="NES"]="NES_GSE205325_Hippocampus_SFTUXX"
+colnames(GSE205325_Hippocampus_SFTUXX_GSEA)[colnames(GSE205325_Hippocampus_SFTUXX_GSEA)=="padj"]="AdjP_GSE205325_Hippocampus_SFTUXX"
+
+#GSE109445_Hippocampus_SFTUXX
+GSE109445_Hippocampus_SFTUXX_GSEA=readRDS("FLX_datasets/GSE109445/Flx_GSEA_GSE109445.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE109445_Hippocampus_SFTUXX_GSEA)[colnames(GSE109445_Hippocampus_SFTUXX_GSEA)=="pval"]="P.Value_GSE109445_Hippocampus_SFTUXX"
+colnames(GSE109445_Hippocampus_SFTUXX_GSEA)[colnames(GSE109445_Hippocampus_SFTUXX_GSEA)=="NES"]="NES_GSE109445_Hippocampus_SFTUXX"
+colnames(GSE109445_Hippocampus_SFTUXX_GSEA)[colnames(GSE109445_Hippocampus_SFTUXX_GSEA)=="padj"]="AdjP_GSE109445_Hippocampus_SFTUXX"
+
+#GSE86392_Brain_SFTUXX
+GSE86392_Brain_SFTUXX_GSEA=readRDS("FLX_datasets/GSE86392/Flx_GSEA_GSE86392.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE86392_Brain_SFTUXX_GSEA)[colnames(GSE86392_Brain_SFTUXX_GSEA)=="pval"]="P.Value_GSE86392_Brain_SFTUXX"
+colnames(GSE86392_Brain_SFTUXX_GSEA)[colnames(GSE86392_Brain_SFTUXX_GSEA)=="NES"]="NES_GSE86392_Brain_SFTUXX"
+colnames(GSE86392_Brain_SFTUXX_GSEA)[colnames(GSE86392_Brain_SFTUXX_GSEA)=="padj"]="AdjP_GSE86392_Brain_SFTUXX"
+
+#GSE56028_DG_SFTUXX
+GSE56028_DG_SFTUXX_GSEA=readRDS("FLX_datasets/GSE56028/GSEA_TreatedVsUnreated_GSE56028.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE56028_DG_SFTUXX_GSEA)[colnames(GSE56028_DG_SFTUXX_GSEA)=="pval"]="P.Value_GSE56028_DG_SFTUXX"
+colnames(GSE56028_DG_SFTUXX_GSEA)[colnames(GSE56028_DG_SFTUXX_GSEA)=="NES"]="NES_GSE56028_DG_SFTUXX"
+colnames(GSE56028_DG_SFTUXX_GSEA)[colnames(GSE56028_DG_SFTUXX_GSEA)=="padj"]="AdjP_GSE56028_DG_SFTUXX"
+
+#GSE89873_Glioma_XFTUXX
+GSE89873_Glioma_XFTUXX_GSEA=readRDS("FLX_datasets/GSE89873/GSEA_GSE89873.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE89873_Glioma_XFTUXX_GSEA)[colnames(GSE89873_Glioma_XFTUXX_GSEA)=="pval"]="P.Value_GSE89873_Glioma_XFTUXX"
+colnames(GSE89873_Glioma_XFTUXX_GSEA)[colnames(GSE89873_Glioma_XFTUXX_GSEA)=="NES"]="NES_GSE89873_Glioma_XFTUXX"
+colnames(GSE89873_Glioma_XFTUXX_GSEA)[colnames(GSE89873_Glioma_XFTUXX_GSEA)=="padj"]="AdjP_GSE89873_Glioma_XFTUXX"
+
+#GSE42940_Hippocampus_XFTUXX
+GSE42940_Hippocampus_XFTUXX_GSEA=readRDS("FLX_datasets/GSE42940/GSEA_GSE42940.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE42940_Hippocampus_XFTUXX_GSEA)[colnames(GSE42940_Hippocampus_XFTUXX_GSEA)=="pval"]="P.Value_GSE42940_Hippocampus_XFTUXX"
+colnames(GSE42940_Hippocampus_XFTUXX_GSEA)[colnames(GSE42940_Hippocampus_XFTUXX_GSEA)=="NES"]="NES_GSE42940_Hippocampus_XFTUXX"
+colnames(GSE42940_Hippocampus_XFTUXX_GSEA)[colnames(GSE42940_Hippocampus_XFTUXX_GSEA)=="padj"]="AdjP_GSE42940_Hippocampus_XFTUXX"
+
+#GSE194289_Arc_XFTUXX
+GSE194289_Arc_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/Arc_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_Arc_XFTUXX_GSEA)[colnames(GSE194289_Arc_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_Arc_XFTUXX"
+colnames(GSE194289_Arc_XFTUXX_GSEA)[colnames(GSE194289_Arc_XFTUXX_GSEA)=="NES"]="NES_GSE194289_Arc_XFTUXX"
+colnames(GSE194289_Arc_XFTUXX_GSEA)[colnames(GSE194289_Arc_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_Arc_XFTUXX"
+
+#GSE194289_BLA_XFTUXX
+GSE194289_BLA_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/BLA_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_BLA_XFTUXX_GSEA)[colnames(GSE194289_BLA_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_BLA_XFTUXX"
+colnames(GSE194289_BLA_XFTUXX_GSEA)[colnames(GSE194289_BLA_XFTUXX_GSEA)=="NES"]="NES_GSE194289_BLA_XFTUXX"
+colnames(GSE194289_BLA_XFTUXX_GSEA)[colnames(GSE194289_BLA_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_BLA_XFTUXX"
+
+#GSE194289_BNST_XFTUXX
+GSE194289_BNST_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/BNST_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_BNST_XFTUXX_GSEA)[colnames(GSE194289_BNST_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_BNST_XFTUXX"
+colnames(GSE194289_BNST_XFTUXX_GSEA)[colnames(GSE194289_BNST_XFTUXX_GSEA)=="NES"]="NES_GSE194289_BNST_XFTUXX"
+colnames(GSE194289_BNST_XFTUXX_GSEA)[colnames(GSE194289_BNST_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_BNST_XFTUXX"
+
+#GSE194289_CGC_XFTUXX
+GSE194289_CGC_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/CGC_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_CGC_XFTUXX_GSEA)[colnames(GSE194289_CGC_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_CGC_XFTUXX"
+colnames(GSE194289_CGC_XFTUXX_GSEA)[colnames(GSE194289_CGC_XFTUXX_GSEA)=="NES"]="NES_GSE194289_CGC_XFTUXX"
+colnames(GSE194289_CGC_XFTUXX_GSEA)[colnames(GSE194289_CGC_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_CGC_XFTUXX"
+
+#GSE194289_CMA_XFTUXX
+GSE194289_CMA_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/CMA_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_CMA_XFTUXX_GSEA)[colnames(GSE194289_CMA_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_CMA_XFTUXX"
+colnames(GSE194289_CMA_XFTUXX_GSEA)[colnames(GSE194289_CMA_XFTUXX_GSEA)=="NES"]="NES_GSE194289_CMA_XFTUXX"
+colnames(GSE194289_CMA_XFTUXX_GSEA)[colnames(GSE194289_CMA_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_CMA_XFTUXX"
+
+#GSE194289_dorCA1_XFTUXX
+GSE194289_dorCA1_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/dorCA1_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_dorCA1_XFTUXX_GSEA)[colnames(GSE194289_dorCA1_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_dorCA1_XFTUXX"
+colnames(GSE194289_dorCA1_XFTUXX_GSEA)[colnames(GSE194289_dorCA1_XFTUXX_GSEA)=="NES"]="NES_GSE194289_dorCA1_XFTUXX"
+colnames(GSE194289_dorCA1_XFTUXX_GSEA)[colnames(GSE194289_dorCA1_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_dorCA1_XFTUXX"
+
+#GSE194289_dorDG_XFTUXX
+GSE194289_dorDG_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/dorDG_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_dorDG_XFTUXX_GSEA)[colnames(GSE194289_dorDG_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_dorDG_XFTUXX"
+colnames(GSE194289_dorDG_XFTUXX_GSEA)[colnames(GSE194289_dorDG_XFTUXX_GSEA)=="NES"]="NES_GSE194289_dorDG_XFTUXX"
+colnames(GSE194289_dorDG_XFTUXX_GSEA)[colnames(GSE194289_dorDG_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_dorDG_XFTUXX"
+
+#GSE194289_HB_XFTUXX
+GSE194289_HB_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/HB_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_HB_XFTUXX_GSEA)[colnames(GSE194289_HB_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_HB_XFTUXX"
+colnames(GSE194289_HB_XFTUXX_GSEA)[colnames(GSE194289_HB_XFTUXX_GSEA)=="NES"]="NES_GSE194289_HB_XFTUXX"
+colnames(GSE194289_HB_XFTUXX_GSEA)[colnames(GSE194289_HB_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_HB_XFTUXX"
+
+#GSE194289_ILC_XFTUXX
+GSE194289_ILC_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/ILC_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_ILC_XFTUXX_GSEA)[colnames(GSE194289_ILC_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_ILC_XFTUXX"
+colnames(GSE194289_ILC_XFTUXX_GSEA)[colnames(GSE194289_ILC_XFTUXX_GSEA)=="NES"]="NES_GSE194289_ILC_XFTUXX"
+colnames(GSE194289_ILC_XFTUXX_GSEA)[colnames(GSE194289_ILC_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_ILC_XFTUXX"
+
+#GSE194289_InsularCortex_XFTUXX
+GSE194289_InsularCortex_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/InsularCortex_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_InsularCortex_XFTUXX_GSEA)[colnames(GSE194289_InsularCortex_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_InsularCortex_XFTUXX"
+colnames(GSE194289_InsularCortex_XFTUXX_GSEA)[colnames(GSE194289_InsularCortex_XFTUXX_GSEA)=="NES"]="NES_GSE194289_InsularCortex_XFTUXX"
+colnames(GSE194289_InsularCortex_XFTUXX_GSEA)[colnames(GSE194289_InsularCortex_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_InsularCortex_XFTUXX"
+
+#GSE194289_LC_XFTUXX
+GSE194289_LC_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/LC_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_LC_XFTUXX_GSEA)[colnames(GSE194289_LC_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_LC_XFTUXX"
+colnames(GSE194289_LC_XFTUXX_GSEA)[colnames(GSE194289_LC_XFTUXX_GSEA)=="NES"]="NES_GSE194289_LC_XFTUXX"
+colnames(GSE194289_LC_XFTUXX_GSEA)[colnames(GSE194289_LC_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_LC_XFTUXX"
+
+#GSE194289_LH_XFTUXX
+GSE194289_LH_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/LH_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_LH_XFTUXX_GSEA)[colnames(GSE194289_LH_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_LH_XFTUXX"
+colnames(GSE194289_LH_XFTUXX_GSEA)[colnames(GSE194289_LH_XFTUXX_GSEA)=="NES"]="NES_GSE194289_LH_XFTUXX"
+colnames(GSE194289_LH_XFTUXX_GSEA)[colnames(GSE194289_LH_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_LH_XFTUXX"
+
+#GSE194289_LS_XFTUXX
+GSE194289_LS_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/LS_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_LS_XFTUXX_GSEA)[colnames(GSE194289_LS_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_LS_XFTUXX"
+colnames(GSE194289_LS_XFTUXX_GSEA)[colnames(GSE194289_LS_XFTUXX_GSEA)=="NES"]="NES_GSE194289_LS_XFTUXX"
+colnames(GSE194289_LS_XFTUXX_GSEA)[colnames(GSE194289_LS_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_LS_XFTUXX"
+
+#GSE194289_MDT_XFTUXX
+GSE194289_MDT_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/MDT_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_MDT_XFTUXX_GSEA)[colnames(GSE194289_MDT_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_MDT_XFTUXX"
+colnames(GSE194289_MDT_XFTUXX_GSEA)[colnames(GSE194289_MDT_XFTUXX_GSEA)=="NES"]="NES_GSE194289_MDT_XFTUXX"
+colnames(GSE194289_MDT_XFTUXX_GSEA)[colnames(GSE194289_MDT_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_MDT_XFTUXX"
+
+#GSE194289_MPOA_XFTUXX
+GSE194289_MPOA_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/MPOA_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_MPOA_XFTUXX_GSEA)[colnames(GSE194289_MPOA_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_MPOA_XFTUXX"
+colnames(GSE194289_MPOA_XFTUXX_GSEA)[colnames(GSE194289_MPOA_XFTUXX_GSEA)=="NES"]="NES_GSE194289_MPOA_XFTUXX"
+colnames(GSE194289_MPOA_XFTUXX_GSEA)[colnames(GSE194289_MPOA_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_MPOA_XFTUXX"
+
+#GSE194289_MS_XFTUXX
+GSE194289_MS_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/MS_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_MS_XFTUXX_GSEA)[colnames(GSE194289_MS_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_MS_XFTUXX"
+colnames(GSE194289_MS_XFTUXX_GSEA)[colnames(GSE194289_MS_XFTUXX_GSEA)=="NES"]="NES_GSE194289_MS_XFTUXX"
+colnames(GSE194289_MS_XFTUXX_GSEA)[colnames(GSE194289_MS_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_MS_XFTUXX"
+
+#GSE194289_NaCcore_XFTUXX
+GSE194289_NaCcore_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/NaCcore_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_NaCcore_XFTUXX_GSEA)[colnames(GSE194289_NaCcore_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_NaCcore_XFTUXX"
+colnames(GSE194289_NaCcore_XFTUXX_GSEA)[colnames(GSE194289_NaCcore_XFTUXX_GSEA)=="NES"]="NES_GSE194289_NaCcore_XFTUXX"
+colnames(GSE194289_NaCcore_XFTUXX_GSEA)[colnames(GSE194289_NaCcore_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_NaCcore_XFTUXX"
+
+#GSE194289_NaCshell_XFTUXX
+GSE194289_NaCshell_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/NaCshell_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_NaCshell_XFTUXX_GSEA)[colnames(GSE194289_NaCshell_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_NaCshell_XFTUXX"
+colnames(GSE194289_NaCshell_XFTUXX_GSEA)[colnames(GSE194289_NaCshell_XFTUXX_GSEA)=="NES"]="NES_GSE194289_NaCshell_XFTUXX"
+colnames(GSE194289_NaCshell_XFTUXX_GSEA)[colnames(GSE194289_NaCshell_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_NaCshell_XFTUXX"
+
+#GSE194289_PAG_XFTUXX
+GSE194289_PAG_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/PAG_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_PAG_XFTUXX_GSEA)[colnames(GSE194289_PAG_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_PAG_XFTUXX"
+colnames(GSE194289_PAG_XFTUXX_GSEA)[colnames(GSE194289_PAG_XFTUXX_GSEA)=="NES"]="NES_GSE194289_PAG_XFTUXX"
+colnames(GSE194289_PAG_XFTUXX_GSEA)[colnames(GSE194289_PAG_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_PAG_XFTUXX"
+
+#GSE194289_PLC_XFTUXX
+GSE194289_PLC_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/PLC_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_PLC_XFTUXX_GSEA)[colnames(GSE194289_PLC_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_PLC_XFTUXX"
+colnames(GSE194289_PLC_XFTUXX_GSEA)[colnames(GSE194289_PLC_XFTUXX_GSEA)=="NES"]="NES_GSE194289_PLC_XFTUXX"
+colnames(GSE194289_PLC_XFTUXX_GSEA)[colnames(GSE194289_PLC_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_PLC_XFTUXX"
+
+#GSE194289_PVN_XFTUXX
+GSE194289_PVN_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/PVN_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_PVN_XFTUXX_GSEA)[colnames(GSE194289_PVN_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_PVN_XFTUXX"
+colnames(GSE194289_PVN_XFTUXX_GSEA)[colnames(GSE194289_PVN_XFTUXX_GSEA)=="NES"]="NES_GSE194289_PVN_XFTUXX"
+colnames(GSE194289_PVN_XFTUXX_GSEA)[colnames(GSE194289_PVN_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_PVN_XFTUXX"
+
+#GSE194289_Raphe_XFTUXX
+GSE194289_Raphe_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/Raphe_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_Raphe_XFTUXX_GSEA)[colnames(GSE194289_Raphe_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_Raphe_XFTUXX"
+colnames(GSE194289_Raphe_XFTUXX_GSEA)[colnames(GSE194289_Raphe_XFTUXX_GSEA)=="NES"]="NES_GSE194289_Raphe_XFTUXX"
+colnames(GSE194289_Raphe_XFTUXX_GSEA)[colnames(GSE194289_Raphe_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_Raphe_XFTUXX"
+
+#GSE194289_SNT_XFTUXX
+GSE194289_SNT_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/SNT_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_SNT_XFTUXX_GSEA)[colnames(GSE194289_SNT_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_SNT_XFTUXX"
+colnames(GSE194289_SNT_XFTUXX_GSEA)[colnames(GSE194289_SNT_XFTUXX_GSEA)=="NES"]="NES_GSE194289_SNT_XFTUXX"
+colnames(GSE194289_SNT_XFTUXX_GSEA)[colnames(GSE194289_SNT_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_SNT_XFTUXX"
+
+#GSE194289_venCA1_XFTUXX
+GSE194289_venCA1_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/venCA1_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_venCA1_XFTUXX_GSEA)[colnames(GSE194289_venCA1_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_venCA1_XFTUXX"
+colnames(GSE194289_venCA1_XFTUXX_GSEA)[colnames(GSE194289_venCA1_XFTUXX_GSEA)=="NES"]="NES_GSE194289_venCA1_XFTUXX"
+colnames(GSE194289_venCA1_XFTUXX_GSEA)[colnames(GSE194289_venCA1_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_venCA1_XFTUXX"
+
+#GSE194289_venDG_XFTUXX
+GSE194289_venDG_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/venDG_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_venDG_XFTUXX_GSEA)[colnames(GSE194289_venDG_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_venDG_XFTUXX"
+colnames(GSE194289_venDG_XFTUXX_GSEA)[colnames(GSE194289_venDG_XFTUXX_GSEA)=="NES"]="NES_GSE194289_venDG_XFTUXX"
+colnames(GSE194289_venDG_XFTUXX_GSEA)[colnames(GSE194289_venDG_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_venDG_XFTUXX"
+
+#GSE194289_VMH_XFTUXX
+GSE194289_VMH_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/VMH_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_VMH_XFTUXX_GSEA)[colnames(GSE194289_VMH_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_VMH_XFTUXX"
+colnames(GSE194289_VMH_XFTUXX_GSEA)[colnames(GSE194289_VMH_XFTUXX_GSEA)=="NES"]="NES_GSE194289_VMH_XFTUXX"
+colnames(GSE194289_VMH_XFTUXX_GSEA)[colnames(GSE194289_VMH_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_VMH_XFTUXX"
+
+#GSE194289_VTA_XFTUXX
+GSE194289_VTA_XFTUXX_GSEA=readRDS("FLX_datasets/GSE194289/VTA_GSEA_GSE194289.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE194289_VTA_XFTUXX_GSEA)[colnames(GSE194289_VTA_XFTUXX_GSEA)=="pval"]="P.Value_GSE194289_VTA_XFTUXX"
+colnames(GSE194289_VTA_XFTUXX_GSEA)[colnames(GSE194289_VTA_XFTUXX_GSEA)=="NES"]="NES_GSE194289_VTA_XFTUXX"
+colnames(GSE194289_VTA_XFTUXX_GSEA)[colnames(GSE194289_VTA_XFTUXX_GSEA)=="padj"]="AdjP_GSE194289_VTA_XFTUXX"
+
+GSEASetList=as.list(mget(objects()))
+saveRDS(GSEASetList,"Input RDS/Rat_All_GSEA_List.rds")
+
+```
+
+```{r Merge GSEA data}
+HumanGSEA=readRDS("Input RDS/Human_All_GSEA_List.rds")
+HumanGSEADataMerge=purrr::reduce(HumanGSEA,full_join,by="pathway")
+HumanGSEADataMerge=filter(HumanGSEADataMerge,rowSums(is.na(HumanGSEADataMerge))<(ncol(HumanGSEADataMerge)*.5))
+HumanGSEADataMerge$pathway=gsub("\\- Homo sapiens \\(human\\) ","",HumanGSEADataMerge$pathway)
+saveRDS(HumanGSEADataMerge,"Input RDS/Human_Merged_GSEA_df.rds")
+HumanGSEADataList=list(p=HumanGSEADataMerge[,seq(2,ncol(HumanGSEADataMerge),3)],
+                       NES=HumanGSEADataMerge[,seq(3,ncol(HumanGSEADataMerge),3)],
+                       AdjP=HumanGSEADataMerge[,seq(4,ncol(HumanGSEADataMerge),3)],
+                       pathways=HumanGSEADataMerge[,1])
+saveRDS(HumanGSEADataList,"Input RDS/Human_Merged_GSEA_List.rds")
+
+MouseGSEA=readRDS("Input RDS/Mouse_All_GSEA_List.rds")
+MouseGSEADataMerge=purrr::reduce(MouseGSEA,full_join,by="pathway")
+MouseGSEADataMerge=filter(MouseGSEADataMerge,rowSums(is.na(MouseGSEADataMerge))<(ncol(MouseGSEADataMerge)*.5))
+MouseGSEADataMerge$pathway=gsub("\\- Mus musculus \\(mouse\\) ","",MouseGSEADataMerge$pathway)
+saveRDS(MouseGSEADataMerge,"Input RDS/Mouse_Merged_GSEA_df.rds")
+MouseGSEADataList=list(p=MouseGSEADataMerge[,seq(2,ncol(MouseGSEADataMerge),3)],
+                       NES=MouseGSEADataMerge[,seq(3,ncol(MouseGSEADataMerge),3)],
+                       AdjP=MouseGSEADataMerge[,seq(4,ncol(MouseGSEADataMerge),3)],
+                       pathways=MouseGSEADataMerge[,1])
+saveRDS(MouseGSEADataList,"Input RDS/Mouse_Merged_GSEA_List.rds")
+
+RatGSEA=readRDS("Input RDS/Rat_All_GSEA_List.rds")
+RatGSEADataMerge=purrr::reduce(RatGSEA,full_join,by="pathway")
+RatGSEADataMerge=filter(RatGSEADataMerge,rowSums(is.na(RatGSEADataMerge))<(ncol(RatGSEADataMerge)*.5))
+RatGSEADataMerge$pathway=gsub("\\- Mus musculus \\(mouse\\) ","",RatGSEADataMerge$pathway)
+saveRDS(RatGSEADataMerge,"Input RDS/Rat_Merged_GSEA_df.rds")
+RatGSEADataList=list(p=RatGSEADataMerge[,seq(2,ncol(RatGSEADataMerge),3)],
+                     NES=RatGSEADataMerge[,seq(3,ncol(RatGSEADataMerge),3)],
+                     AdjP=RatGSEADataMerge[,seq(4,ncol(RatGSEADataMerge),3)],
+                     pathways=RatGSEADataMerge[,1])
+saveRDS(RatGSEADataList,"Input RDS/Rat_Merged_GSEA_List.rds")
+
+AllGSEADataMerge=full_join(full_join(MouseGSEADataMerge,RatGSEADataMerge),HumanGSEADataMerge)
+AllGSEADataMerge=AllGSEADataMerge %>% 
+  filter(rowSums(is.na(AllGSEADataMerge))<(ncol(AllGSEADataMerge)*.5)) %>%
+  #filter(DB!='MouseCyc' & DB!='HumanCyc') %>% #Is not necessary because after the next filter only KEGG and Reactome pathways remain
+  filter(!is.na(P.Value_GSE128387_Blood_DFTUXX) | !is.na(P.Value_GSE83386_Lympho_DFTUXX))
+saveRDS(AllGSEADataMerge,"Input RDS/All_Merged_GSEA_df.rds")
+AllGSEADataList=list(p=AllGSEADataMerge[,seq(2,ncol(AllGSEADataMerge),3)],
+                     NES=AllGSEADataMerge[,seq(3,ncol(AllGSEADataMerge),3)],
+                     AdjP=AllGSEADataMerge[,seq(4,ncol(AllGSEADataMerge),3)],
+                     pathways=AllGSEADataMerge[,1])
+saveRDS(AllGSEADataList,"Input RDS/All_Merged_GSEA_List.rds")
+
+
+```

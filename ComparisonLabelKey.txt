@@ -1,0 +1,47 @@
+
+GSExxxx_Tissue_123456
+
+1 - Stress or MDD diagnosis
+
+S - Stress
+D - Depression diagnosis
+X - None
+
+
+2 - Treatment
+
+F - Fluoxetine
+P - Paroxetine
+C - Citalopram
+E - Escitalopram
+S - Sertraline
+X - No SSRI treatment
+
+
+3 - Numerator
+
+C - Control
+T - Treated
+U - Untreated
+R - Responder (Treated)
+N - Non-responder (Treated)
+
+
+4 - Denominator
+
+C - Control
+T - Treated
+U - Untreated
+R - Responder (Treated)
+N - Non-responder (Treated)
+
+
+5 - TimePoint
+
+0-9 - TimePoints (category or hours)
+X - unused
+
+
+6 - unused
+
+X - unused

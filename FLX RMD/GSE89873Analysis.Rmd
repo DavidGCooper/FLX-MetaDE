@@ -1,0 +1,200 @@
+---
+title: "GSE89873 Analysis"
+author: "David Cooper"
+date: "2022-09-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(GEOquery)
+library(limma)
+library("affycoretools")
+library(affy)
+library(tidyverse)
+library(fgsea)
+library(data.table)
+library(preprocessCore)
+library(pheatmap)
+library(biomaRt)
+source("read_cpdb_tab.R")
+
+```
+
+## Data Acquisition
+
+Use GEOquery to obtain the GEO series GSE89873. GSEMatrix=FALSE will pull out all the sample information as a GSE object. GSEMatrix=TRUE is the default and will provide a list of expression sets. Can use [[1]] to pull out the GSE object if there is only one. exprs() will return just the expression data and can be used to log transform the data if desired. 
+https://bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html
+
+```{r Get ExpressionSets}
+GSEname="GSE89873"
+GSE=getGEO(GSEname)
+exGSE=GSE[[1]]
+#exprs(exGSE)=log2(exprs(exGSE))
+LogexGSE=exGSE
+exprs(LogexGSE)=log2(exprs(LogexGSE))
+
+```
+
+## Quality Control Analyses 
+
+Compare samples with boxplots and PCA to assess the quality across samples. Normalized datasets should have the same median across the samples. The boxplot will show if there are any samples that differ from the rest. 
+
+```{r Boxplots}
+#Boxplot with all samples
+boxplot(exprs(exGSE),las=2)
+#Quantile plot with all samples
+qs=t(apply(exprs(exGSE),2,quantile,prob=c(0.05,0.25,0.5,0.75,0.95)))
+matplot(qs,type="l",lty=1)
+#Boxplot with all samples, log2 transformed
+boxplot(exprs(LogexGSE),las=2)
+#Quantile plot with all samples
+qs=t(apply(exprs(LogexGSE),2,quantile,prob=c(0.05,0.25,0.5,0.75,0.95)))
+matplot(qs,type="l",lty=1)
+
+```
+
+Principal component analysis (PCA). plotPCA(outside=TRUE) will place the legend on the outside of the plot.
+
+```{r PCA}
+#Characteristics to group by
+#colnames(exGSE@phenoData@data)
+#Samples all individual
+plotPCA(exGSE,outside=TRUE)
+#Samples grouped by Treatment
+plotPCA(exGSE, groups = as.numeric(as.factor(exGSE@phenoData@data$characteristics_ch1.3)), groupnames = levels(as.factor(exGSE@phenoData@data$characteristics_ch1.3)),outside=TRUE)
+#Samples all individual
+plotPCA(LogexGSE,outside=TRUE)
+#Samples grouped by Treatment
+plotPCA(LogexGSE, groups = as.numeric(as.factor(LogexGSE@phenoData@data$characteristics_ch1.3)), groupnames = levels(as.factor(LogexGSE@phenoData@data$characteristics_ch1.3)),outside=TRUE)
+
+
+```
+
+## Remove Low-expressed genes
+
+Removal of gene loci without expression above a threshold in at least half of the samples. First check what the lowest expression is for each sample. If no sample has any low expression levels, no filtering is done. 
+
+```{r}
+for(i in 1:as.numeric(ncol(exGSE))){print(min(exprs(exGSE[,i])))}
+for(i in 1:as.numeric(ncol(LogexGSE))){print(min(exprs(LogexGSE[,i])))}
+
+```
+
+## Differential Expression Analysis
+
+Use limma to analyze expression treatment vs. control with paired patient samples (section 9.4.1). >limmaUsersGuide() to open the users guide manual.
+
+```{r Paired Patient Samples Analysis}
+#Analysis using data as provided (not independently normalized)
+#Define variables for model matrix
+Treatment=as.factor(exGSE@phenoData@data$characteristics_ch1.3)
+#Design matrix
+Design=model.matrix(~Treatment)
+Names=exGSE@phenoData@data$geo_accession
+rownames(Design)=Names
+#DE analysis
+fit=lmFit(exGSE,Design)
+fit2=eBayes(fit)
+colnames(fit2) #To identify coef name to use in topTable
+topTable(fit2,coef = "Treatmenttreatment: fluoxetine")
+
+#Analysis using log2 transformed data
+#Define variables for model matrix
+Treatment=factor(LogexGSE@phenoData@data$characteristics_ch1.3,levels=levels(as.factor(LogexGSE@phenoData@data$characteristics_ch1.3))[c(5,1,2,3,4)])
+#Design matrix
+Design=model.matrix(~Treatment)
+Names=LogexGSE@phenoData@data$geo_accession
+rownames(Design)=Names
+#DE analysis
+fit3=lmFit(LogexGSE,Design)
+fit4=eBayes(fit3)
+colnames(fit4) #To identify coef name to use in topTable
+topTable(fit4,coef = "Treatmenttreatment: fluoxetine")
+
+#Subset of dataset
+LexFlx=LogexGSE[,LogexGSE@phenoData@data$characteristics_ch1.3=="treatment: unteated"|LogexGSE@phenoData@data$characteristics_ch1.3=="treatment: fluoxetine"]
+#Define variables for model matrix
+Treatment=factor(LexFlx@phenoData@data$characteristics_ch1.3,levels=levels(as.factor(LexFlx@phenoData@data$characteristics_ch1.3))[c(2,1)])
+#Treatment=as.factor(LexFlx@phenoData@data$characteristics_ch1.3) #If the factors are ordered with untreated first
+#Design matrix
+Design=model.matrix(~Treatment)
+Names=LexFlx@phenoData@data$geo_accession
+rownames(Design)=Names
+#DE analysis
+fit5=lmFit(LexFlx,Design)
+fit6=eBayes(fit5)
+colnames(fit6) #To identify coef name to use in topTable
+topTable(fit6,coef = "Treatmenttreatment: unteated")
+saveRDS(fit6,"../FLX_datasets/GSE89873/DE_GSE89873.rds")
+
+```
+
+## Differential Expression Plots
+
+Volcano plots for fit2 DE tables. Scatter plot stats for subsets of data in a merged table
+
+```{r Volcano Plots}
+volcanoplot(fit2,coef = "Treatmenttreatment: fluoxetine",main="Fluoxetine - Raw Data")
+volcanoplot(fit4,coef = "Treatmenttreatment: fluoxetine",main="Fluoxetine - log2 Transformed Data")
+volcanoplot(fit6,coef = "Treatmenttreatment: fluoxetine",main="Fluoxetine vs. Control - log2 Transformed Data")
+
+```
+
+## Gene Set Enrichment Analysis
+
+Use fgsea to analyze gene set enrichment.
+
+```{r Remove Duplicate Genes}
+#Get the average expression across all samples for each locus
+UniqueGenes=data.frame(AVG_EXPR=rowMeans(exprs(LogexGSE)),
+                       LOCI=LogexGSE@featureData@data$ID,
+                       GENE_SYMBOL=LogexGSE@featureData@data$Symbol,
+                       ENTREZ_ID=LogexGSE@featureData@data$Entrez_Gene_ID) %>%
+  arrange(desc(AVG_EXPR)) %>%
+  filter(!duplicated(ENTREZ_ID)) %>%
+  filter(ENTREZ_ID!="")
+
+ensembl=useEnsembl(biomart="genes",dataset = "rnorvegicus_gene_ensembl")
+attributes = listAttributes(ensembl)
+RatGeneList=getBM(mart = ensembl,attributes = c("entrezgene_id","ensembl_transcript_id"))
+MouseHomologGeneList=getBM(mart=ensembl,attributes = c("ensembl_transcript_id","mmusculus_homolog_ensembl_gene"))
+UniqueGenes$RAT_TRANSCRIPT=RatGeneList$ensembl_transcript_id[match(UniqueGenes$ENTREZ_ID,RatGeneList$entrezgene_id)]
+UniqueGenes=filter(UniqueGenes,RAT_TRANSCRIPT!="")
+UniqueGenes$MOUSE_GENE=MouseHomologGeneList$mmusculus_homolog_ensembl_gene[match(UniqueGenes$RAT_TRANSCRIPT,MouseHomologGeneList$ensembl_transcript_id)]
+UniqueGenes=filter(UniqueGenes,MOUSE_GENE!="")%>%filter(!duplicated(MOUSE_GENE))
+
+```
+
+```{r GSEA using fgsea}
+#Pathways list using mouse ensembl gene symbol (Mouse)
+CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+#Stats vector
+StatsFilter=data.frame(Loci=fit6$genes$ID,t=fit6$t[,"Treatmenttreatment: unteated"])%>%filter(Loci%in%UniqueGenes$LOCI)
+StatsFilter$MouseGene=UniqueGenes$MOUSE_GENE[match(StatsFilter$Loci,UniqueGenes$LOCI)]
+tstats=StatsFilter$t
+names(tstats)=StatsFilter$MouseGene
+#FGSEA
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10)
+head(arrange(GeneEnrich,padj),n=20)
+plotEnrichment(CPDBpaths[["Respiratory electron transport | Reactome"]], tstats)
+saveRDS(GeneEnrich,"../FLX_datasets/GSE89873/GSEA_GSE89873.rds")
+
+```
+
+```{r Heatmaps GSEA}
+#specify gene list from select path in CPDBpaths
+TargetGenes=CPDBpaths[["Respiratory electron transport | Reactome"]]
+#Select expression data from subset of samples for corresponding genes
+Exprs=as.data.frame(exprs(LexFlx))
+Exprs=filter(Exprs,rownames(Exprs)%in%UniqueGenes$LOCI)
+rownames(Exprs)=UniqueGenes$MOUSE_GENE[match(rownames(Exprs),UniqueGenes$LOCI)]
+ExSubset=Exprs[rownames(Exprs)%in%TargetGenes,]
+#Prepare annotation dataframe
+ColumnNames=data.frame(Sample=LexFlx@phenoData@data$title,Treatment=Treatment)
+rownames(ColumnNames)=LexFlx@phenoData@data$geo_accession
+#Make heatmap
+pheatmap(ExSubset,scale = "row",annotation_col = ColumnNames)
+
+```
+

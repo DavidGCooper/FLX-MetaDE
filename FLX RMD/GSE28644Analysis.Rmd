@@ -1,0 +1,257 @@
+---
+title: "GSE28644 Analysis"
+author: "David Cooper"
+date: "2022-09-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(GEOquery)
+library(limma)
+library("affycoretools")
+library(affy)
+library(tidyverse)
+library(fgsea)
+library(data.table)
+library(preprocessCore)
+library(pheatmap)
+library(biomaRt)
+source("read_cpdb_tab.R")
+
+```
+
+## Data Acquisition
+
+Use GEOquery to obtain the GEO series GSE28644. GSEMatrix=FALSE will pull out all the sample information as a GSE object. GSEMatrix=TRUE is the default and will provide a list of expression sets. Can use [[1]] to pull out the GSE object if there is only one. exprs() will return just the expression data and can be used to log transform the data if desired. 
+https://bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html
+
+```{r Get ExpressionSets}
+GSEname="GSE28644"
+GSE=getGEO(GSEname)
+exGSE=GSE[[1]]
+exprs(exGSE)=log2(exprs(exGSE))
+SampleData=read.table("GSE28644_sample_data.txt",header = TRUE,sep = "\t")
+pData(exGSE)$response=SampleData$response
+
+```
+
+## Quality Control Analyses 
+
+Compare samples with boxplots and PCA to assess the quality across samples. Normalized datasets should have the same median across the samples. The boxplot will show if there are any samples that differ from the rest. 
+
+```{r Boxplots}
+#Boxplot with all samples, log 2 transformed
+boxplot(exprs(exGSE),las=2)
+#Quantile plot with all samples
+qs=t(apply(exprs(exGSE),2,quantile,prob=c(0.05,0.25,0.5,0.75,0.95)))
+matplot(qs,type="l",lty=1)
+
+```
+
+Principal component analysis (PCA). plotPCA(outside=TRUE) will place the legend on the outside of the plot.
+
+```{r PCA}
+#Characteristics to group by
+#colnames(exGSE@phenoData@data)
+#Samples all individual
+plotPCA(exGSE,outside=TRUE)
+#Samples grouped by Treatment
+plotPCA(exGSE, groups = as.numeric(as.factor(exGSE@phenoData@data$source_name_ch1)), groupnames = gsub(".*group ","",levels(as.factor(exGSE@phenoData@data$source_name_ch1))),outside=TRUE)
+#Samples grouped by Strain
+plotPCA(exGSE, groups = as.numeric(as.factor(exGSE@phenoData@data$characteristics_ch1)), groupnames = gsub("strain: ","",levels(as.factor(exGSE@phenoData@data$characteristics_ch1))),outside=TRUE)
+#Samples grouped by Response
+plotPCA(exGSE, groups = as.numeric(as.factor(exGSE@phenoData@data$response)), groupnames = gsub("strain: ","",levels(as.factor(exGSE@phenoData@data$response))),outside=TRUE)
+
+
+```
+
+## Remove Low-expressed genes
+
+Removal of gene loci without expression above a threshold in at least half of the samples. First check what the lowest expression is for each sample. If no sample has any low expression levels, no filtering is done. 
+
+```{r}
+for(i in 1:as.numeric(ncol(exGSE))){print(min(exprs(exGSE[,i])))}
+fexGSE=exGSE
+ZeroCounts=as.numeric()
+for(i in 1:as.numeric(nrow(exGSE))){
+  ZeroCounts[i]=sum(exprs(exGSE)[i,]<2.1)
+  }
+hist(ZeroCounts)
+fexGSE@featureData@data$ZeroCounts=ZeroCounts
+fexGSE@featureData@varMetadata[17,]=c("ZeroCount","number of samples with zero counts",NA)
+fexGSE=fexGSE[fexGSE@featureData@data$ZeroCounts<30,]
+
+```
+
+## Differential Expression Analysis
+
+Use limma to analyze expression treatment vs. control with paired patient samples (section 9.4.1). >limmaUsersGuide() to open the users guide manual.
+
+```{r Paired Patient Samples Analysis}
+#Analysis using log2 transformed data
+#All samples
+#Define variables for model matrix
+Treatment=as.factor(fexGSE@phenoData@data$source_name_ch1)
+Strain=as.factor(fexGSE@phenoData@data$characteristics_ch1)
+Names=fexGSE@phenoData@data$geo_accession
+#Design matrix
+Design=model.matrix(~Treatment+Strain)
+rownames(Design)=Names
+#DE analysis
+fit=lmFit(fexGSE,Design)
+fit2=eBayes(fit)
+colnames(fit2) #To identify coef name to use in topTable
+topTable(fit2,coef = "Treatmenttreatment group (fluoxetine)")
+saveRDS(fit2,"../FLX_datasets/GSE28644/DE_GSE28644.rds")
+
+#Responders
+#Define variables for model matrix
+fexResponders=fexGSE[,rownames(na.omit(fexGSE@phenoData@data[fexGSE@phenoData@data$response=="positive",]))]
+rTreatment=as.factor(fexResponders@phenoData@data$source_name_ch1)
+rStrain=as.factor(fexResponders@phenoData@data$characteristics_ch1)
+rNames=fexResponders@phenoData@data$geo_accession
+#Design matrix
+rDesignPair=model.matrix(~rTreatment+rStrain)
+rownames(rDesignPair)=rNames
+#DE analysis
+rpairfit=lmFit(fexResponders,rDesignPair)
+rpairfit2=eBayes(rpairfit)
+colnames(rpairfit2)
+topTable(rpairfit2,coef = "rTreatmenttreatment group (fluoxetine)")
+saveRDS(rpairfit2,"../FLX_datasets/GSE28644/DE_Res_GSE28644.rds")
+
+#Nonresponders
+#Define variables for model matrix
+fexNon=fexGSE[,rownames(na.omit(fexGSE@phenoData@data[fexGSE@phenoData@data$response=="negative",]))]
+nTreatment=as.factor(fexNon@phenoData@data$source_name_ch1)
+nStrain=as.factor(fexNon@phenoData@data$characteristics_ch1)
+nNames=fexNon@phenoData@data$geo_accession
+#Design matrix
+nDesignPair=model.matrix(~nTreatment+nStrain)
+rownames(nDesignPair)=nNames
+#DE analysis
+npairfit=lmFit(fexNon,nDesignPair)
+npairfit2=eBayes(npairfit)
+colnames(npairfit2)
+topTable(npairfit2,coef = "nTreatmenttreatment group (fluoxetine)")
+saveRDS(npairfit2,"../FLX_datasets/GSE28644/DE_Non_GSE28644.rds")
+
+#Responders vs Nonresponders
+#Define variables for model matrix
+fexRandN=fexGSE[,rownames(na.omit(fexGSE@phenoData@data[fexGSE@phenoData@data$response=="negative"|fexGSE@phenoData@data$response=="positive",]))]
+TreatResponse=factor(paste(fexRandN@phenoData@data$source_name_ch1,fexRandN@phenoData@data$response,sep="_"))
+vNames=fexRandN@phenoData@data$geo_accession
+#Design matrix
+DesignResponse=model.matrix(~0+TreatResponse)
+rownames(DesignResponse)=vNames
+colnames(DesignResponse)=c("CNR","CR","FNR","FR")
+#DE analysis
+Responsefit=lmFit(fexRandN, DesignResponse)
+contrasts_Response=makeContrasts(FR - FNR, FR - CR, FNR - CNR, CR - CNR, levels = DesignResponse)  
+Responsefit2=contrasts.fit(Responsefit,contrasts_Response)
+Responsefit2=eBayes(Responsefit2)
+topTable(Responsefit2,coef = "FR - FNR")
+saveRDS(Responsefit2,"../FLX_datasets/GSE28644/DE_ResVNon_GSE28644.rds")
+
+
+```
+
+## Differential Expression Plots
+
+Volcano plots for fit2 DE tables. Scatter plot stats for subsets of data in a merged table
+
+```{r Volcano Plots}
+volcanoplot(fit2,coef = "Treatmenttreatment group (fluoxetine)",main="Fluoxetine vs. Control")
+
+volcanoplot(Responsefit2,coef="FR - FNR")
+```
+
+## Gene Set Enrichment Analysis
+
+Use fgsea to analyze gene set enrichment.
+
+```{r Remove Duplicate Genes}
+#Get the average expression across all samples for each locus
+UniqueGenes=data.frame(AVG_EXPR=rowMeans(exprs(fexGSE)),
+                       LOCI=fexGSE@featureData@data$ID,
+                       GENE_SYMBOL=fexGSE@featureData@data$`Gene Symbol`,
+                       ENTREZ_ID=fexGSE@featureData@data$ENTREZ_GENE_ID) %>%
+  arrange(desc(AVG_EXPR)) %>%
+  filter(!duplicated(ENTREZ_ID)) %>%
+  filter(ENTREZ_ID!="")
+#Get ensembl gene IDs using biomart
+ensembl=useEnsembl(biomart="genes",dataset = "mmusculus_gene_ensembl")
+attributes = listAttributes(ensembl)
+MouseGeneList=getBM(mart = ensembl,attributes = c("entrezgene_id","ensembl_gene_id"))
+UniqueGenes$ENSEMBL_GENE=MouseGeneList$ensembl_gene_id[match(UniqueGenes$ENTREZ_ID,MouseGeneList$entrezgene_id)]
+UniqueGenes=filter(UniqueGenes,ENSEMBL_GENE!="")%>%filter(!duplicated(ENSEMBL_GENE))
+
+```
+
+```{r GSEA using fgsea}
+#Pathways list using mouse ensembl gene symbol (Mouse)
+CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+
+#Pooled treatment vs control (t stat and gene symbols) using filtered genes list
+PooledFilter=topTable(fit2,coef = "Treatmenttreatment group (fluoxetine)",number = Inf)%>%filter(ID%in%UniqueGenes$LOCI)
+PooledFilter$GENE_SYMBOL=UniqueGenes$ENSEMBL_GENE[match(PooledFilter$ID,UniqueGenes$LOCI)]
+tstats=PooledFilter$t
+names(tstats)=PooledFilter$GENE_SYMBOL
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10)
+saveRDS(GeneEnrich,"../FLX_datasets/GSE28644/GSEA_Pooled_GSE28644.rds")
+
+#Stats vector for responders, patient-pairs treatment vs control (t stat and gene symbols) using filtered genes list
+RespondersFilter=topTable(rpairfit2,coef = "rTreatmenttreatment group (fluoxetine)",number = Inf)%>%filter(ID%in%UniqueGenes$LOCI)
+RespondersFilter$GENE_SYMBOL=UniqueGenes$ENSEMBL_GENE[match(RespondersFilter$ID,UniqueGenes$LOCI)]
+rtstats=RespondersFilter$t
+names(rtstats)=RespondersFilter$GENE_SYMBOL
+rGeneEnrich=fgsea(pathways = CPDBpaths, stats = rtstats, minSize  = 10)
+saveRDS(rGeneEnrich,"../FLX_datasets/GSE28644/GSEA_Res_GSE28644.rds")
+
+#Stats vector for non-responders, patient-pairs treatment vs control (t stat and gene symbols) using filtered genes list
+NonFilter=topTable(npairfit2,coef = "nTreatmenttreatment group (fluoxetine)",number = Inf)%>%filter(ID%in%UniqueGenes$LOCI)
+NonFilter$GENE_SYMBOL=UniqueGenes$ENSEMBL_GENE[match(NonFilter$ID,UniqueGenes$LOCI)]
+ntstats=NonFilter$t
+names(ntstats)=NonFilter$GENE_SYMBOL
+nGeneEnrich=fgsea(pathways = CPDBpaths, stats = ntstats, minSize  = 10)
+saveRDS(nGeneEnrich,"../FLX_datasets/GSE28644/GSEA_Non_GSE28644.rds")
+
+#Responders vs Non-responders
+VFilter=topTable(Responsefit2,coef = "FR - FNR",number = Inf)%>%filter(ID%in%UniqueGenes$LOCI)
+VFilter$GENE_SYMBOL=UniqueGenes$ENSEMBL_GENE[match(VFilter$ID,UniqueGenes$LOCI)]
+vtstats=VFilter$t
+names(vtstats)=VFilter$GENE_SYMBOL
+vGeneEnrich=fgsea(pathways = CPDBpaths, stats = vtstats, minSize  = 10)
+saveRDS(vGeneEnrich,"../FLX_datasets/GSE28644/GSEA_ResVNon_GSE28644.rds")
+
+#Responders vs Non-responders
+XFilter=topTable(Responsefit2,coef = "CR - CNR",number = Inf)%>%filter(ID%in%UniqueGenes$LOCI)
+XFilter$GENE_SYMBOL=UniqueGenes$ENSEMBL_GENE[match(XFilter$ID,UniqueGenes$LOCI)]
+Xtstats=XFilter$t
+names(Xtstats)=XFilter$GENE_SYMBOL
+XGeneEnrich=fgsea(pathways = CPDBpaths, stats = Xtstats, minSize  = 10)
+saveRDS(XGeneEnrich,"../FLX_datasets/GSE28644/GSEA_UnResVNon_GSE28644.rds")
+
+```
+
+```{r Heatmaps GSEA}
+#specify gene list from select path in CPDBpaths
+TargetGenes=CPDBpaths[["Cholesterol biosynthesis | Reactome"]]
+#Select expression data from subset of samples for corresponding genes
+Exprs=as.data.frame(exprs(fexGSE))
+Exprs=filter(Exprs,rownames(Exprs)%in%UniqueGenes$LOCI)
+rownames(Exprs)=UniqueGenes$ENSEMBL_GENE[match(rownames(Exprs),UniqueGenes$LOCI)]
+ExSubset=Exprs[rownames(Exprs)%in%TargetGenes,]
+#Prepare annotation dataframe
+ColumnNames=data.frame(Sample=gsub("Cortex_","",fexGSE@phenoData@data$title),Treatment=Treatment)
+rownames(ColumnNames)=fexGSE@phenoData@data$geo_accession
+#Filter out rows that all have the same value
+row_sd=apply(ExSubset, 1, sd)
+table(row_sd==0)
+FilteredExSubset=cbind(ExSubset,sd=row_sd)%>%filter(sd!=0)%>%dplyr::select(!sd)
+#Make heatmap
+pheatmap(FilteredExSubset,scale = "row",annotation_col = ColumnNames)
+
+```
+

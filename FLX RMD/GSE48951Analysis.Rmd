@@ -1,0 +1,271 @@
+---
+title: "GSE48951 Analysis"
+author: "David Cooper"
+date: "2022-11-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(GEOquery)
+library(limma)
+library("affycoretools")
+library(affy)
+library(tidyverse)
+library(fgsea)
+library(data.table)
+library(preprocessCore)
+library(pheatmap)
+library(biomaRt)
+library(stringi)
+source("read_cpdb_tab.R")
+
+```
+
+## Data Acquisition
+
+Use GEOquery to obtain the GEO series GSE48951. 
+
+```{r Get ExpressionSets}
+GSE=getGEO("GSE48951")
+exGSE=GSE[[1]]
+
+pData(exGSE)$RepGroup=stri_sub(exGSE$title,-5,-5)
+h1exGSE=exGSE[,exGSE$`timepoint:ch1`=="1h"]
+h2exGSE=exGSE[,exGSE$`timepoint:ch1`=="2h"]
+h4exGSE=exGSE[,exGSE$`timepoint:ch1`=="4h"]
+h8exGSE=exGSE[,exGSE$`timepoint:ch1`=="8h"]
+
+```
+
+## Quality Control Analyses 
+
+Compare samples with boxplots and PCA to assess the quality across samples. 
+
+```{r Boxplots}
+#Boxplots
+boxplot(exprs(exGSE),las=2)
+boxplot(log2(exprs(exGSE)),las=2)
+#Quantile plot with all samples
+qs=t(apply(exprs(exGSE),2,quantile,prob=c(0.05,0.25,0.5,0.75,0.95)))
+matplot(qs,type="l",lty=1)
+
+```
+
+```{r PCA All Data}
+#All data
+#Timepoint groups
+plotPCA(exGSE, groups = as.numeric(as.factor(exGSE$`timepoint:ch1`)), groupnames = levels(as.factor(exGSE$`timepoint:ch1`)),outside=TRUE)
+#Treatment groups
+plotPCA(exGSE, groups = as.numeric(as.factor(exGSE$`drug:ch1`)), groupnames = levels(as.factor(exGSE$`drug:ch1`)),outside=TRUE)
+#Rep groups
+plotPCA(exGSE, groups = as.numeric(as.factor(exGSE$RepGroup)), groupnames = levels(as.factor(exGSE$RepGroup)),outside=TRUE)
+
+```
+
+```{r PCA Highlight batches}
+pData(exGSE)$Index=1:ncol(exGSE)
+
+plotPCA(exGSE, groups = as.numeric(exGSE$Index),outside=TRUE)
+
+PCA=prcomp(t(exprs(exGSE)))
+dim(PCA)
+view(PCA$x)
+plot(PCA$x[,1])
+
+```
+
+```{r PCA 1hour}
+#1 hour group
+#Treatment groups
+plotPCA(h1exGSE, groups = as.numeric(as.factor(h1exGSE$`drug:ch1`)), groupnames = levels(as.factor(h1exGSE$`drug:ch1`)),outside=TRUE)
+#Rep groups
+plotPCA(h1exGSE, groups = as.numeric(as.factor(h1exGSE$RepGroup)), groupnames = levels(as.factor(h1exGSE$RepGroup)),outside=TRUE)
+
+```
+
+```{r PCA 2hour}
+#2 hour group
+#Treatment groups
+plotPCA(h2exGSE, groups = as.numeric(as.factor(h2exGSE$`drug:ch1`)), groupnames = levels(as.factor(h2exGSE$`drug:ch1`)),outside=TRUE)
+#Rep groups
+plotPCA(h2exGSE, groups = as.numeric(as.factor(h2exGSE$RepGroup)), groupnames = levels(as.factor(h2exGSE$RepGroup)),outside=TRUE)
+
+```
+
+```{r PCA 4hour}
+#4 hour group
+#Treatment groups
+plotPCA(h4exGSE, groups = as.numeric(as.factor(h4exGSE$`drug:ch1`)), groupnames = levels(as.factor(h4exGSE$`drug:ch1`)),outside=TRUE)
+#Rep groups
+plotPCA(h4exGSE, groups = as.numeric(as.factor(h4exGSE$RepGroup)), groupnames = levels(as.factor(h4exGSE$RepGroup)),outside=TRUE)
+
+```
+
+```{r PCA 8hour}
+#8 hour group
+#Treatment groups
+plotPCA(h8exGSE, groups = as.numeric(as.factor(h8exGSE$`drug:ch1`)), groupnames = levels(as.factor(h8exGSE$`drug:ch1`)),outside=TRUE)
+#Rep groups
+plotPCA(h8exGSE, groups = as.numeric(as.factor(h8exGSE$RepGroup)), groupnames = levels(as.factor(h8exGSE$RepGroup)),outside=TRUE)
+
+
+```
+
+## Expression Analysis
+
+Use limma to analyze expression to compare fluoxetine vs. control.
+
+```{r Expression Analysis}
+Names=exGSE$geo_accession
+Treatment=factor(exGSE$`drug:ch1`,levels=levels(as.factor(exGSE$`drug:ch1`))[c(4,1,3,2,5)])
+#Time=factor(exGSE$`timepoint:ch1`,levels = levels(as.factor(exGSE$`timepoint:ch1`)))
+Design=model.matrix(~Treatment)
+rownames(Design)=Names
+fit=lmFit(exGSE, Design)
+fit2=eBayes(fit)
+topTable(fit2,coef = "TreatmentFluoxetine",number = 30)
+saveRDS(fit2,"../FLX_datasets/GSE48951/DE_GSE48951.rds")
+
+```
+
+```{r Expression Analysis Timepoint Groups}
+h1Names=h1exGSE$geo_accession
+h1Treatment=factor(h1exGSE$`drug:ch1`,levels=levels(as.factor(h1exGSE$`drug:ch1`))[c(4,1,3,2,5)])
+#h1RepGroup=factor(h1exGSE$RepGroup)
+Designh1=model.matrix(~h1Treatment)
+rownames(Designh1)=h1Names
+h1fit=lmFit(h1exGSE, Designh1)
+h1fit2=eBayes(h1fit)
+topTable(h1fit2,coef = "h1TreatmentFluoxetine",number = 30)
+saveRDS(h1fit2,"../FLX_datasets/GSE48951/DE_h1_GSE48951.rds")
+
+h2Names=h2exGSE$geo_accession
+h2Treatment=factor(h2exGSE$`drug:ch1`,levels=levels(as.factor(h2exGSE$`drug:ch1`))[c(4,1,3,2,5)])
+#h2RepGroup=factor(h2exGSE$RepGroup)
+Designh2=model.matrix(~h2Treatment)
+rownames(Designh2)=h2Names
+h2fit=lmFit(h2exGSE, Designh2)
+h2fit2=eBayes(h2fit)
+topTable(h2fit2,coef = "h2TreatmentFluoxetine",number = 30)
+saveRDS(h2fit2,"../FLX_datasets/GSE48951/DE_h2_GSE48951.rds")
+
+h4Names=h4exGSE$geo_accession
+h4Treatment=factor(h4exGSE$`drug:ch1`,levels=levels(as.factor(h4exGSE$`drug:ch1`))[c(4,1,3,2,5)])
+#h4RepGroup=factor(h4exGSE$RepGroup)
+Designh4=model.matrix(~h4Treatment)
+rownames(Designh4)=h4Names
+h4fit=lmFit(h4exGSE, Designh4)
+h4fit2=eBayes(h4fit)
+topTable(h4fit2,coef = "h4TreatmentFluoxetine",number = 30)
+saveRDS(h4fit2,"../FLX_datasets/GSE48951/DE_h4_GSE48951.rds")
+
+h8Names=h8exGSE$geo_accession
+h8Treatment=factor(h8exGSE$`drug:ch1`,levels=levels(as.factor(exGSE$`drug:ch1`))[c(4,1,3,2,5)])
+#h8RepGroup=factor(h8exGSE$RepGroup)
+Designh8=model.matrix(~h8Treatment)
+rownames(Designh8)=h8Names
+h8fit=lmFit(h8exGSE, Designh8)
+h8fit2=eBayes(h8fit)
+topTable(h8fit2,coef = "h8TreatmentFluoxetine",number = 30)
+saveRDS(h8fit2,"../FLX_datasets/GSE48951/DE_h8_GSE48951.rds")
+
+```
+
+## Differential Expression Analysis
+
+Volcano plots
+
+```{r Volcano Plots}
+volcanoplot(fit2,coef = "TreatmentNaive",main="Naive vs Control")
+volcanoplot(fit2,coef = "TreatmentFluoxetine",main="Fluoxetine vs Control")
+
+```
+
+```{r}
+volcanoplot(h1fit2,coef = "h1TreatmentNaive",main="h1 TreatOnly Naive vs Control")
+volcanoplot(h1fit2,coef = "h1TreatmentFluoxetine",main="h1 TreatOnly Fluoxetine vs Control")
+
+volcanoplot(h2fit2,coef = "h2TreatmentNaive",main="h2 TreatOnly Naive vs Control")
+volcanoplot(h2fit2,coef = "h2TreatmentFluoxetine",main="h2 TreatOnly Fluoxetine vs Control")
+
+volcanoplot(h4fit2,coef = "h4TreatmentNaive",main="h4 TreatOnly Naive vs Control")
+volcanoplot(h4fit2,coef = "h4TreatmentFluoxetine",main="h4 TreatOnly Fluoxetine vs Control")
+
+volcanoplot(h8fit2,coef = "h8TreatmentNaive",main="h8 TreatOnly Naive vs Control")
+volcanoplot(h8fit2,coef = "h8TreatmentFluoxetine",main="h8 TreatOnly Fluoxetine vs Control")
+
+```
+
+## Gene Set Enrichment Analysis
+
+Use fgsea to analyze gene set enrichment.
+
+```{r Remove Duplicate Genes}
+UniqueGenes=data.frame(AvgExpr=rowMeans(exprs(exGSE)),GENE_SYMBOL=exGSE@featureData@data$Symbol,Loci=exGSE@featureData@data$ID)
+UniqueGenes2=arrange(UniqueGenes,desc(AvgExpr))%>%filter(!duplicated(GENE_SYMBOL))%>%filter(GENE_SYMBOL!="")
+ensembl=useEnsembl(biomart="genes",dataset = "mmusculus_gene_ensembl")
+GenesMouse=getBM(mart=ensembl,attributes = c("ensembl_gene_id","external_gene_name","entrezgene_id"))
+UniqueGenes2$MouseEnsembl=GenesMouse$ensembl_gene_id[match(UniqueGenes2$GENE_SYMBOL,GenesMouse$external_gene_name)]
+UniqueGenes3=filter(UniqueGenes2,MouseEnsembl!="")
+
+```
+
+```{r GSEA using fgsea}
+#Pathways list using mouse Ensembl gene IDs
+CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+#GSEA
+StatsFilter=UniqueGenes3%>%mutate(t=fit2$t[,"TreatmentFluoxetine"][match(UniqueGenes3$Loci,rownames(fit2$t))])
+tstats=StatsFilter$t
+names(tstats)=StatsFilter$MouseEnsembl
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10)
+head(arrange(GeneEnrich,padj),n=20)
+plotEnrichment(CPDBpaths[["Formyl peptide receptors bind formyl peptides and many other ligands | Reactome"]], tstats)
+saveRDS(GeneEnrich,"../FLX_datasets/GSE48951/GSEA_GSE48951.rds")
+
+#GSEA h1
+h1StatsFilter=UniqueGenes3%>%mutate(t=h1fit2$t[,"h1TreatmentFluoxetine"][match(UniqueGenes3$Loci,rownames(h1fit2$t))])
+h1tstats=h1StatsFilter$t
+names(h1tstats)=h1StatsFilter$MouseEnsembl
+h1GeneEnrich=fgsea(pathways = CPDBpaths, stats = h1tstats, minSize  = 10)
+head(arrange(h1GeneEnrich,padj),n=20)
+saveRDS(h1GeneEnrich,"../FLX_datasets/GSE48951/GSEA_h1_GSE48951.rds")
+
+#GSEA h2
+h2StatsFilter=UniqueGenes3%>%mutate(t=h2fit2$t[,"h2TreatmentFluoxetine"][match(UniqueGenes3$Loci,rownames(h2fit2$t))])
+h2tstats=h2StatsFilter$t
+names(h2tstats)=h2StatsFilter$MouseEnsembl
+h2GeneEnrich=fgsea(pathways = CPDBpaths, stats = h2tstats, minSize  = 10)
+head(arrange(h2GeneEnrich,padj),n=20)
+saveRDS(h2GeneEnrich,"../FLX_datasets/GSE48951/GSEA_h2_GSE48951.rds")
+
+#GSEA h4
+h4StatsFilter=UniqueGenes3%>%mutate(t=h4fit2$t[,"h4TreatmentFluoxetine"][match(UniqueGenes3$Loci,rownames(h4fit2$t))])
+h4tstats=h4StatsFilter$t
+names(h4tstats)=h4StatsFilter$MouseEnsembl
+h4GeneEnrich=fgsea(pathways = CPDBpaths, stats = h4tstats, minSize  = 10)
+head(arrange(h4GeneEnrich,padj),n=20)
+saveRDS(h4GeneEnrich,"../FLX_datasets/GSE48951/GSEA_h4_GSE48951.rds")
+
+#GSEA h8
+h8StatsFilter=UniqueGenes3%>%mutate(t=h8fit2$t[,"h8TreatmentFluoxetine"][match(UniqueGenes3$Loci,rownames(h8fit2$t))])
+h8tstats=h8StatsFilter$t
+names(h8tstats)=h8StatsFilter$MouseEnsembl
+h8GeneEnrich=fgsea(pathways = CPDBpaths, stats = h8tstats, minSize  = 10)
+head(arrange(h8GeneEnrich,padj),n=20)
+saveRDS(h8GeneEnrich,"../FLX_datasets/GSE48951/GSEA_h8_GSE48951.rds")
+
+
+```
+
+```{r Heatmaps GSEA}
+TargetGenes=CPDBpaths[["Formyl peptide receptors bind formyl peptides and many other ligands | Reactome"]]
+TargetTranscripts=UniqueGenes3$Loci[match(TargetGenes,UniqueGenes3$MouseEnsembl)][!is.na(TargetTranscripts)]
+ExSubset=filter(as.data.frame(exprs(exGSE)),rownames(exGSE)%in%TargetTranscripts)
+
+ColumnNames=data.frame(Timepoint=exGSE$`timepoint:ch1`,Treatment=exGSE$`drug:ch1`)
+rownames(ColumnNames)=exGSE$geo_accession
+pheatmap(ExSubset,annotation_col = ColumnNames,scale = "row")
+
+```
+

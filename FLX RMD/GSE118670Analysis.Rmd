@@ -1,0 +1,167 @@
+---
+title: "GSE118670 Analysis"
+author: "David Cooper"
+date: "2022-11-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(GEOquery)
+library(limma)
+library("affycoretools")
+library(affy)
+library(tidyverse)
+library(fgsea)
+library(data.table)
+library(preprocessCore)
+library(pheatmap)
+library(biomaRt)
+source("read_cpdb_tab.R")
+
+```
+
+## Data Acquisition
+
+Use GEOquery to obtain the GEO series GSE118670. This is a SuperSeries that consists of three series. GSE118667 (Medial prefrontal cortex of wild-type mice), GSE118668 (Medial prefrontal cortex fluoxetine treated or untreated), GSE118669 (Dentate gyrus fluoxetine treated or untreated)
+https://bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html
+
+```{r Get ExpressionSets}
+GSE118670=getGEO("GSE118670")
+exGSE118670=GSE118670[[1]]
+#exprs(exGSE118670)=log2(exprs(exGSE118670))
+
+exTreated=exGSE118670[,exGSE118670$characteristics_ch1.3!="tissue: Medial prefrontal cortex"]
+exPFC=exGSE118670[,exGSE118670$characteristics_ch1.2=="tissue: Medial prefrontal cortex"]
+exDG=exGSE118670[,exGSE118670$characteristics_ch1.2=="tissue: Dentate gyrus"]
+
+```
+
+## Quality Control Analyses 
+
+Compare samples with boxplots and PCA to assess the quality across samples. 
+
+```{r Boxplots}
+boxplot(exprs(exPFC),las=2,main="PFC")
+boxplot(exprs(exDG),las=2,main="DG")
+
+```
+
+```{r PCA}
+plotPCA(exGSE118670, groups = as.numeric(as.factor(exGSE118670$characteristics_ch1.3)), groupnames = levels(as.factor(exGSE118670$characteristics_ch1.3)),outside=TRUE)
+#Exclude the control series
+plotPCA(exTreated,groups=as.numeric(as.factor(exTreated$characteristics_ch1.3)),groupnames=levels(as.factor(exTreated$characteristics_ch1.3)),outside=TRUE)
+plotPCA(exPFC,groups=as.numeric(as.factor(exPFC$characteristics_ch1.3)),groupnames=levels(as.factor(exPFC$characteristics_ch1.3)),outside=TRUE)
+plotPCA(exDG,groups=as.numeric(as.factor(exDG$characteristics_ch1.3)),groupnames=levels(as.factor(exDG$characteristics_ch1.3)),outside=TRUE)
+
+```
+
+## Expression Analysis
+
+Use limma to analyze expression to compare fluoxetine vs. control and medial prefrontal cortex vs. dentate gyrus. >limmaUsersGuide() to open the users guide manual.
+
+```{r Expression Analysis}
+Names=exPFC$geo_accession
+Treatment=factor(exPFC$characteristics_ch1.3,levels=levels(as.factor(exPFC$characteristics_ch1.3))[c(2,1)])
+Design=model.matrix(~Treatment)
+rownames(Design)=Names
+PFCfit=lmFit(exPFC, Design)
+PFCfit2=eBayes(PFCfit)
+topTable(PFCfit2,coef = "Treatmenttreatment: fluoxetine")
+saveRDS(PFCfit2,"../FLX_datasets/GSE118668/DE_PFC_GSE118670.rds")
+
+Names=exDG$geo_accession
+Treatment=factor(exDG$characteristics_ch1.3,levels=levels(as.factor(exDG$characteristics_ch1.3))[c(2,1)])
+Design=model.matrix(~Treatment)
+rownames(Design)=Names
+DGfit=lmFit(exDG, Design)
+DGfit2=eBayes(DGfit)
+topTable(DGfit2,coef = "Treatmenttreatment: fluoxetine")
+saveRDS(DGfit2,"../FLX_datasets/GSE118669/DE_DG_GSE118670.rds")
+
+```
+
+## Significance Overlap 
+
+Overlap of significantly differentially expressed genes for prefrontal cortex vs. dentate gyrus
+
+```{r}
+DGtop=topTable(DGfit2,coef = "Treatmenttreatment: fluoxetine",number = 100000)%>%mutate(DGpValue=P.Value)%>%dplyr::select(ID,DGpValue,logFC)
+PFCtop=topTable(PFCfit2,coef = "Treatmenttreatment: fluoxetine",number = 100000)%>%mutate(PFCpValue=P.Value)%>%dplyr::select(ID,PFCpValue,logFC)
+PFCandDG=merge(DGtop,PFCtop,by="ID")
+fisher.test(table(PFCandDG$DGpValue<0.05,PFCandDG$PFCpValue<0.05))
+lowPmerge=filter(PFCandDG,DGpValue<0.05&PFCpValue<0.05)
+table(lowPmerge$logFC.x<0,lowPmerge$logFC.y<0)
+
+
+```
+
+## Differential Expression Analysis
+
+Volcano plots for responders and non-responders.
+Scatter plot stats for responders vs non-responders in a merged table
+
+```{r Volcano Plots}
+volcanoplot(PFCfit2,coef = "Treatmenttreatment: fluoxetine",main="PFC")
+volcanoplot(DGfit2,coef = "Treatmenttreatment: fluoxetine",main="DG")
+
+```
+
+## Gene Set Enrichment Analysis
+
+Use fgsea to analyze gene set enrichment.
+
+```{r Remove Duplicate Genes}
+UniqueGenes=data.frame(AvgExpr=rowMeans(exprs(exDG)),GENE_SYMBOL=exDG@featureData@data$`Gene Symbol`,Loci=rownames(exprs(exDG)))
+UniqueGenes2=arrange(UniqueGenes,desc(AvgExpr))%>%filter(!duplicated(GENE_SYMBOL))%>%filter(GENE_SYMBOL!="")
+ensembl=useEnsembl(biomart="genes",dataset = "mmusculus_gene_ensembl")
+GenesMouse=getBM(mart=ensembl,attributes = c("ensembl_gene_id","external_gene_name","entrezgene_id"))
+UniqueGenes2$MouseEnsembl=GenesMouse$ensembl_gene_id[match(UniqueGenes2$GENE_SYMBOL,GenesMouse$external_gene_name)]
+UniqueGenes3=filter(UniqueGenes2,MouseEnsembl!="")
+
+UniqueGenesa=data.frame(AvgExpr=rowMeans(exprs(exDG)),GENE_SYMBOL=exDG@featureData@data$ENTREZ_GENE_ID,Loci=rownames(exprs(exDG)))
+UniqueGenes2a=arrange(UniqueGenesa,desc(AvgExpr))%>%filter(!duplicated(GENE_SYMBOL))%>%filter(GENE_SYMBOL!="")
+UniqueGenes2a$MouseEnsembl=GenesMouse$ensembl_gene_id[match(UniqueGenes2a$GENE_SYMBOL,GenesMouse$entrezgene_id)]
+UniqueGenes3a=filter(UniqueGenes2a,MouseEnsembl!="")
+
+X=intersect(UniqueGenes3$MouseEnsembl,UniqueGenes3a$MouseEnsembl)
+
+View(listAttributes(ensembl))
+
+table(is.na(GenesMouse$entrezgene_id))
+
+```
+
+```{r GSEA using fgsea}
+#Pathways list using mouse Ensembl gene IDs
+CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+#PFC GSEA
+PFCStatsFilter=UniqueGenes3%>%mutate(t=PFCfit2$t[,"Treatmenttreatment: fluoxetine"][match(UniqueGenes3$Loci,rownames(PFCfit2$t))])
+PFCtstats=PFCStatsFilter$t
+names(PFCtstats)=PFCStatsFilter$MouseEnsembl
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = PFCtstats, minSize  = 10)
+head(arrange(GeneEnrich,padj),n=20)
+plotEnrichment(CPDBpaths[["Cytokine-cytokine receptor interaction - Mus musculus (mouse) | KEGG"]], PFCtstats)
+saveRDS(GeneEnrich,"../FLX_datasets/GSE118668/GSEA_PFC_GSE118670.rds")
+#DG GSEA
+DGStatsFilter=UniqueGenes3%>%mutate(t=DGfit2$t[,"Treatmenttreatment: fluoxetine"][match(UniqueGenes3$Loci,rownames(DGfit2$t))])
+DGtstats=DGStatsFilter$t
+names(DGtstats)=DGStatsFilter$MouseEnsembl
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = DGtstats, minSize  = 10)
+head(arrange(GeneEnrich,padj),n=30)
+plotEnrichment(CPDBpaths[["RNA Polymerase II Transcription | Reactome"]], DGtstats)
+saveRDS(GeneEnrich,"../FLX_datasets/GSE118669/GSEA_DG_GSE118670.rds")
+
+```
+
+```{r Heatmaps GSEA}
+TargetGenes=CPDBpaths[["Processing of Capped Intron-Containing Pre-mRNA | Reactome"]]
+TargetTranscripts=UniqueGenes3$Loci[match(TargetGenes,UniqueGenes3$MouseEnsembl)][!is.na(TargetTranscripts)]
+ExSubset=filter(as.data.frame(exprs(exTreated)),rownames(exTreated)%in%TargetTranscripts)
+
+ColumnNames=data.frame(Tissue=exTreated$characteristics_ch1.2,Treatment=exTreated$characteristics_ch1.3)
+rownames(ColumnNames)=exTreated$geo_accession
+pheatmap(ExSubset,annotation_col = ColumnNames,scale = "row")
+
+```
+

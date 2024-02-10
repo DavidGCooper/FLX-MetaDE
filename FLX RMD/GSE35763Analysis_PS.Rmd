@@ -1,0 +1,159 @@
+---
+title: "GSE35763 Analysis"
+author: "Parker Stanley"
+date: "2023-05-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(GEOquery)
+library(limma)
+library("affycoretools")
+library(affy)
+library(tidyverse)
+library(fgsea)
+library(data.table)
+library(preprocessCore)
+library(pheatmap)
+library(biomaRt)
+library(org.Rn.eg.db)
+source("read_cpdb_tab.R")
+
+
+```
+
+## Data Acquisition
+
+Use GEOquery to obtain the GEO series. GSEMatrix=FALSE will pull out all the sample information as a GSE object. GSEMatrix=TRUE is the default and will provide a list of expression sets. Can use [[1]] to pull out the GSE object if there is only one. exprs() will return just the expression data and can be used to log transform the data if desired. 
+https://bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html
+
+```{r Get ExpressionSets}
+
+dat <- getGEO("GSE35763")[[1]]
+
+```
+
+## Quality Control Analyses 
+
+Compare samples with boxplots, quantile plots, and/or principal component analysis (PCA) to assess the quality across samples. Normalized datasets should have the same median across the samples. Boxplots will show if there are any samples that differ greatly from the rest. Boxplots will often be most useful for log transformed expression data. 
+
+```{r Boxplots}
+exprs(dat) <- log2(exprs(dat))
+boxplot(exprs(dat))
+
+```
+
+Principal component analysis (PCA). plotPCA(outside=TRUE) will place the legend on the outside of the plot.
+
+```{r PCA}
+plotPCA(dat, groups = as.numeric(as.factor(dat$characteristics_ch1.5)), groupnames = levels(as.factor(dat$characteristics_ch1.5)),outside=TRUE)
+
+
+```
+
+## Differential Expression Analysis
+
+Use limma to analyze expression. >limmaUsersGuide() to open the users guide manual.
+
+```{r Differential Expression Analysis limma}
+
+Names <- dat$geo_accession
+Treatment <- factor(dat$characteristics_ch1.5, levels =
+                      levels(as.factor(dat$characteristics_ch1.5))[c(2,1)])
+Design <- model.matrix(~Treatment)
+rownames(Design) <- Names
+fit <- lmFit(dat, Design)
+fit2 <- eBayes(fit)
+View(topTable(fit2, coef = "Treatmenttreatment: fluoxetine", number = Inf))
+
+#Save differential expression results as an .rds file
+saveRDS(fit2,"../FLX_datasets/GSE35763/DE_GSE35763.rds")
+
+```
+
+## Differential Expression Plots
+
+Volcano plots or MA plots can be used to visualize differential expression results.
+
+```{r Volcano Plots}
+
+volcanoplot(fit2, coef = "Treatmenttreatment: fluoxetine", highlight = 5)
+
+```
+
+## Processing Differential Expression Data
+
+In order to perform gene set enrichment analysis, the data first needs to be filtered to remove duplicate genes (multiple rows of data that correspond to the same gene) and to ensure that each gene is labeled with an appropriate gene ID. If there are multiple rows of data that correspond to the same gene, we want to keep the row with the highest average expression for that gene across samples.
+
+```{r Remove Duplicate Genes}
+GeneList <- data.frame(AvgExpr = rowMeans(exprs(dat)), Gene_Symbol = dat@featureData@data$`Gene Symbol`, Loci = rownames(exprs(dat)))
+UniqueGenes <- arrange(GeneList, desc(AvgExpr)) %>% filter(!duplicated(Gene_Symbol))%>% 
+  filter(Gene_Symbol != "")
+
+EntrezList <- data.frame(AvgExpr = rowMeans(exprs(dat)), Gene_Symbol =
+                           dat@featureData@data$ENTREZ_GENE_ID, Loci = rownames(exprs(dat)))
+UniqueEntrez <- arrange(EntrezList, desc(AvgExpr))%>% filter(!duplicated(Gene_Symbol))%>% 
+  filter(Gene_Symbol != "")
+
+```
+
+Convert transcript IDs to gene symbols using esembl biomarts. See biomaRt_script.R for details on using emsembl biomarts.
+
+```{r Convert Transcript IDs to Gene Symbols}
+ensembl <- useEnsembl(biomart="genes",dataset = "mmusculus_gene_ensembl")
+MouseGeneList <- getBM(mart=ensembl,attributes = c("ensembl_gene_id","external_gene_name","entrezgene_id"))
+UniqueGenes$MouseEnsembl <- MouseGeneList$ensembl_gene_id[match(UniqueGenes$Gene_Symbol,
+                                                            MouseGeneList$external_gene_name)]
+UniqueGenes <- na.omit(UniqueGenes)
+
+UniqueEntrez$MouseEnsembl <- MouseGeneList$ensembl_gene_id[match(UniqueEntrez$Gene_Symbol,
+                                                            MouseGeneList$entrezgene_id)]
+UniqueEntrez <- na.omit(UniqueEntrez)
+
+```
+
+## Gene Set Enrichment Analysis (GSEA)
+
+Use fgsea to analyze gene set enrichment.
+
+```{r GSEA Analsis}
+pathwayDB <- read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+
+UniqueGenes$Stat <- fit2$t[match(UniqueGenes$Loci, rownames(fit2$t))]
+GeneStat <- c(UniqueGenes$Stat)
+GeneStat <- set_names(GeneStat, nm = UniqueGenes$MouseEnsembl)
+fgsea <- fgsea(pathways = pathwayDB,
+               stats = GeneStat,
+               minSize = 5)
+
+#Save GSEA results as an .rds file
+saveRDS(fgsea,"../FLX_datasets/GSE35763/GSEA_GSE35763.rds")
+
+```
+
+## GSEA plots
+
+An enrichment plot shows the enrichment of genes, from a specific pathway, differentially expressed in one group vs another group.
+
+```{r GSEA Enrichment Plot}
+head(fgsea[order(pval)],)
+plotEnrichment(pathwayDB[["Metabolism of proteins | Reactome"]], 
+               GeneStat) + labs(title = "Metabolism of proteins | Reactome")
+
+```
+
+Heatmaps can show patterns of expression for groups of genes across samples. Specific pathways selected after doing GSEA can be analyzed further by creating heatmaps of genes in those pathways.
+
+```{r GSEA Heatmaps}
+dat.names <- data.frame(Group = dat$characteristics_ch1.5, row.names = colnames(dat@assayData$exprs))
+
+selectgenes <- pathwayDB[["Metabolism of proteins | Reactome"]]
+GSEA.select <- UniqueGenes$Loci[match(selectgenes, UniqueGenes$MouseEnsembl)]
+GSEA.select <- na.omit(GSEA.select)
+dat.select <- filter(as.data.frame(exprs(dat)), rownames(dat)%in%GSEA.select)
+pheatmap(dat.select, cluster_rows = TRUE, show_rownames = FALSE,
+         cluster_cols = TRUE, scale = "row", annotation_col = dat.names)
+
+
+```

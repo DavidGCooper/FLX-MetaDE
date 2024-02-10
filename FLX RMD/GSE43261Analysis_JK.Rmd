@@ -1,0 +1,276 @@
+---
+title: "Research_Test_Proj2"
+author: "Jack Karbowski"
+date: "5/27/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(GEOquery)
+library(tidyverse)
+library(BiocManager)
+library(limma)
+library(DESeq2)
+library(stringr)
+library(pheatmap)
+library(fgsea)
+library(biomaRt)
+source("read_cpdb_tab.R")
+
+```
+
+
+```{r getGEO}
+#downloading micro array data from omnibus
+gse43<- getGEO("GSE43261")
+#length(gse43)
+#save gse43 as expression set
+gse43<- gse43[[1]]
+gse43
+pData(gse43) #sample info 
+exprs(gse43) [1,] #gene expression info
+
+#check summary of gene expression data, this data has not been log transformed
+summary(exprs(gse43)) 
+#log transform data 
+exprs(gse43) <- log2(exprs(gse43))
+```
+
+```{r boxplot}
+#check the log transformed data, summary and visualization 
+summary(exprs(gse43))
+boxplot(exprs(gse43),las=2)
+
+```
+
+```{r Sample Data}
+sampledata<- pData(gse43) #save pData into data frame
+head(sampledata)
+dim(sampledata)
+table(sampledata$characteristics_ch1.5) #table of sampledata
+
+```
+
+```{r heatmap}
+corMatrix<- cor(exprs(gse43), use = "c")
+pheatmap(corMatrix)
+
+#checking to see if rownames of sampledata match col names of corMatrix 
+rownames(sampledata)
+colnames(corMatrix)
+
+pheatmap(corMatrix, annotation_col= sampledata)
+
+```
+
+limma differential expression steps for both tissue types (Ventral dentate gyrus and Dorsal dentate gyrus)
+```{r differential expression}
+#VDG (Ventral DG)
+gse43_VDG <- gse43[,gse43@phenoData@data$`tissue:ch1`=="Ventral dentate gyrus"]
+sampledata_VDG <- pData(gse43_VDG)
+names(sampledata_VDG)[names(sampledata_VDG)=="treatment:ch1"] <- "Treatment"
+sampledata_VDG$Treatment <- factor(sampledata_VDG$Treatment,levels = c("untreated","Fluoxetine"))
+names(sampledata_VDG)[names(sampledata_VDG)=="response:ch1"] <- "Response"
+Pooled_Design_VDG <- model.matrix(~sampledata_VDG$Treatment)
+Response_Design_VDG <- model.matrix(~0+sampledata_VDG$Response)
+colnames(Response_Design_VDG)=c("Control","Resistant","Responder")
+
+#DDG (Dorsal DG)
+gse43_DDG=gse43[,gse43@phenoData@data$`tissue:ch1`=="Dorsal dentate gyrus"]
+sampledata_DDG <- pData(gse43_DDG)
+names(sampledata_DDG)[names(sampledata_DDG)=="treatment:ch1"] <- "Treatment"
+sampledata_DDG$Treatment <- factor(sampledata_DDG$Treatment,levels = c("untreated","Fluoxetine"))
+names(sampledata_DDG)[names(sampledata_DDG)=="response:ch1"] <- "Response"
+Pooled_Design_DDG <- model.matrix(~sampledata_DDG$Treatment)
+Response_Design_DDG <- model.matrix(~0+sampledata_DDG$Response)
+colnames(Response_Design_DDG)=c("Control","Resistant","Responder")
+
+```
+
+```{r Filter out low expressed genes}
+#removing genes that have low expression
+exprs_cutoff<- median(exprs(gse43))
+
+#saving the genes that fall above the median cutoff into genes_expressed
+genes_expressed <- exprs(gse43) > exprs_cutoff
+
+#saving the genes that are expressed in more than three samples 
+genes_retained<- rowSums(genes_expressed)>3
+
+#checking how many genes are removed, seems about right because of the median cutoff
+table(genes_retained) 
+
+#No filtering was saved
+#saving the genes we kept into the gse43 expression set 
+#gse43<-gse43[genes_retained,]
+
+```
+
+```{r}
+#VDG
+lm_fit43_pooled_VDG <- lmFit(gse43_VDG, Pooled_Design_VDG)
+lm_fit43_pooled_VDG <- eBayes(lm_fit43_pooled_VDG)
+head(lm_fit43_pooled_VDG$coefficients)
+saveRDS(lm_fit43_pooled_VDG,"../FLX_datasets/GSE43261/DE_PooledVDG_GSE43261.rds")
+
+#DDG
+lm_fit43_pooled_DDG <- lmFit(gse43_DDG, Pooled_Design_DDG)
+lm_fit43_pooled_DDG <- eBayes(lm_fit43_pooled_DDG)
+head(lm_fit43_pooled_DDG$coefficients)
+saveRDS(lm_fit43_pooled_DDG,"../FLX_datasets/GSE43261/DE_PooledDDG_GSE43261.rds")
+
+```
+
+```{r}
+#VDG
+lm_fit43_reponse_VDG <- lmFit(gse43_VDG, Response_Design_VDG)
+head(lm_fit43_reponse_VDG$coefficients)
+contrasts_VDG <- makeContrasts(Responder - Control , Resistant - Control, Responder - Resistant, levels = Response_Design_VDG)  
+lm_fit43_reponse_VDG <- contrasts.fit(lm_fit43_reponse_VDG, contrasts_VDG)
+lm_fit43_reponse_VDG <- eBayes(lm_fit43_reponse_VDG)
+saveRDS(lm_fit43_reponse_VDG,"../FLX_datasets/GSE43261/DE_ResponseVDG_GSE43261.rds")
+colnames(lm_fit43_reponse_VDG$coefficients)
+
+#DDG
+lm_fit43_reponse_DDG <- lmFit(gse43_DDG, Response_Design_DDG)
+head(lm_fit43_reponse_DDG$coefficients)
+contrasts_DDG <- makeContrasts(Responder - Control , Resistant - Control, Responder - Resistant, levels = Response_Design_DDG)  
+lm_fit43_reponse_DDG <- contrasts.fit(lm_fit43_reponse_DDG, contrasts_DDG)
+lm_fit43_reponse_DDG <- eBayes(lm_fit43_reponse_DDG)
+saveRDS(lm_fit43_reponse_DDG,"../FLX_datasets/GSE43261/DE_ResponseDDG_GSE43261.rds")
+colnames(lm_fit43_reponse_DDG$coefficients)
+
+```
+
+```{r Summary of Differential Expression}
+summary(decideTests(lm_fit43_pooled_VDG))
+summary(decideTests(lm_fit43_pooled_DDG))
+
+#view of the overall differential expression between the three groups 
+#seems about right, most genes are not significant 
+
+summary(decideTests(lm_fit43_reponse_VDG))
+summary(decideTests(lm_fit43_reponse_DDG))
+
+#table(decideTests(lm_fit43_reponse_VDG))
+
+```
+
+GSEA
+
+Response coefficients (lm_fit43_reponse_VDG):
+1="Responder - Control"
+2="Resistant - Control"
+3="Responder - Resistant"
+
+```{r}
+gse43 <- getGEO("GSE43261")
+gse43 <- gse43[[1]]
+gse43_fdata <- (featureData(gse43))
+pathways <- read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+
+#DE files
+lm_fit43_pooled_VDG=readRDS("../FLX_datasets/GSE43261/DE_PooledVDG_GSE43261.rds")
+lm_fit43_pooled_DDG=readRDS("../FLX_datasets/GSE43261/DE_PooledDDG_GSE43261.rds")
+lm_fit43_reponse_VDG=readRDS("../FLX_datasets/GSE43261/DE_ResponseVDG_GSE43261.rds")
+lm_fit43_reponse_DDG=readRDS("../FLX_datasets/GSE43261/DE_ResponseDDG_GSE43261.rds")
+
+#Unique genes
+ensembl=useEnsembl(biomart="genes",dataset = "mmusculus_gene_ensembl")
+#attributes = listAttributes(ensembl)
+GeneList=getBM(mart = ensembl,attributes = c("ensembl_gene_id","external_gene_name","entrezgene_id"))
+gse43_genesymbol <- data.frame(loci=gse43_fdata@data$ID,entrez=gse43_fdata@data$ENTREZ_GENE_ID)
+gse43_genesymbol$symbol=GeneList$ensembl_gene_id[match(gse43_genesymbol$entrez,GeneList$entrezgene_id)]
+TopTable <- topTable(lm_fit43_pooled_VDG, coef = 2, number = Inf)
+gse43_genesymbol$AvgExpr=TopTable$AveExpr[match(gse43_genesymbol$loci,TopTable$ID)]
+gse43_genesymbol=na.omit(gse43_genesymbol)
+gse43_genesymbol=arrange(gse43_genesymbol,desc(AvgExpr))%>%filter(!duplicated(symbol))%>%filter(symbol!="")
+
+```
+
+```{r VDG GSEA}
+#Pooled
+Pooled_VDG <- topTable(lm_fit43_pooled_VDG, coef = 2, number = Inf)
+Pooled_VDG$loci <- rownames(Pooled_VDG)
+Pooled_VDG$symbol <- gse43_genesymbol$symbol[match(Pooled_VDG$loci,gse43_genesymbol$loci)]
+Pooled_VDG <- Pooled_VDG[!is.na(Pooled_VDG$symbol),]
+PooledStat_VDG <- Pooled_VDG$t
+names(PooledStat_VDG) <- Pooled_VDG$symbol
+fgseaPooled_VDG <- fgsea(pathways, PooledStat_VDG, minSize=10)
+saveRDS(fgseaPooled_VDG,"../FLX_datasets/GSE43261/GSEA_PooledVDG_GSE43261.rds")
+
+#Responders
+Responder_VDG <- topTable(lm_fit43_reponse_VDG, coef=1, number = Inf)
+Responder_VDG$loci <- rownames(Responder_VDG)
+Responder_VDG$symbol <- gse43_genesymbol$symbol[match(Responder_VDG$loci,gse43_genesymbol$loci)]
+Responder_VDG <- Responder_VDG[!is.na(Responder_VDG$symbol),]
+RespondStat_VDG <- Responder_VDG$t
+names(RespondStat_VDG) <- Responder_VDG$symbol
+fgseaRespond_VDG <- fgsea(pathways, RespondStat_VDG, minSize=10)
+saveRDS(fgseaRespond_VDG,"../FLX_datasets/GSE43261/GSEA_RespondVDG_GSE43261.rds")
+
+#Resistant
+Resistant_VDG <- topTable(lm_fit43_reponse_VDG, coef=2, number = Inf)
+Resistant_VDG$loci <- rownames(Resistant_VDG)
+Resistant_VDG$symbol <- gse43_genesymbol$symbol[match(Resistant_VDG$loci,gse43_genesymbol$loci)]
+Resistant_VDG <- Resistant_VDG[!is.na(Resistant_VDG$symbol),]
+ResistantStat_VDG <- Resistant_VDG$t
+names(ResistantStat_VDG) <- Resistant_VDG$symbol
+fgseaResistant_VDG <- fgsea(pathways, ResistantStat_VDG, minSize=10)
+saveRDS(fgseaResistant_VDG,"../FLX_datasets/GSE43261/GSEA_ResistantVDG_GSE43261.rds")
+
+#Responder vs Resistant
+ResVRes_VDG <- topTable(lm_fit43_reponse_VDG, coef=3, number = Inf)
+ResVRes_VDG$loci <- rownames(ResVRes_VDG)
+ResVRes_VDG$symbol <- gse43_genesymbol$symbol[match(ResVRes_VDG$loci,gse43_genesymbol$loci)]
+ResVRes_VDG <- ResVRes_VDG[!is.na(ResVRes_VDG$symbol),]
+ResVResStat_VDG <- ResVRes_VDG$t
+names(ResVResStat_VDG) <- ResVRes_VDG$symbol
+fgseaResVRes_VDG <- fgsea(pathways, ResVResStat_VDG, minSize=10)
+saveRDS(fgseaResVRes_VDG,"../FLX_datasets/GSE43261/GSEA_ResVResVDG_GSE43261.rds")
+
+```
+
+```{r DDG GSEA}
+#Pooled
+Pooled_DDG <- topTable(lm_fit43_pooled_DDG, coef = 2, number = Inf)
+Pooled_DDG$loci <- rownames(Pooled_DDG)
+Pooled_DDG$symbol <- gse43_genesymbol$symbol[match(Pooled_DDG$loci,gse43_genesymbol$loci)]
+Pooled_DDG <- Pooled_DDG[!is.na(Pooled_DDG$symbol),]
+PooledStat_DDG <- Pooled_DDG$t
+names(PooledStat_DDG) <- Pooled_DDG$symbol
+fgseaPooled_DDG <- fgsea(pathways, PooledStat_DDG, minSize=10)
+saveRDS(fgseaPooled_DDG,"../FLX_datasets/GSE43261/GSEA_PooledDDG_GSE43261.rds")
+
+#Responders
+Responder_DDG <- topTable(lm_fit43_reponse_DDG, coef=1, number = Inf)
+Responder_DDG$loci <- rownames(Responder_DDG)
+Responder_DDG$symbol <- gse43_genesymbol$symbol[match(Responder_DDG$loci,gse43_genesymbol$loci)]
+Responder_DDG <- Responder_DDG[!is.na(Responder_DDG$symbol),]
+RespondStat_DDG <- Responder_DDG$t
+names(RespondStat_DDG) <- Responder_DDG$symbol
+fgseaRespond_DDG <- fgsea(pathways, RespondStat_DDG, minSize=10)
+saveRDS(fgseaRespond_DDG,"../FLX_datasets/GSE43261/GSEA_RespondDDG_GSE43261.rds")
+
+#Resistant
+Resistant_DDG <- topTable(lm_fit43_reponse_DDG, coef=2, number = Inf)
+Resistant_DDG$loci <- rownames(Resistant_DDG)
+Resistant_DDG$symbol <- gse43_genesymbol$symbol[match(Resistant_DDG$loci,gse43_genesymbol$loci)]
+Resistant_DDG <- Resistant_DDG[!is.na(Resistant_DDG$symbol),]
+ResistantStat_DDG <- Resistant_DDG$t
+names(ResistantStat_DDG) <- Resistant_DDG$symbol
+fgseaResistant_DDG <- fgsea(pathways, ResistantStat_DDG, minSize=10)
+saveRDS(fgseaResistant_DDG,"../FLX_datasets/GSE43261/GSEA_ResistantDDG_GSE43261.rds")
+
+#Responder vs Resistant
+ResVRes_DDG <- topTable(lm_fit43_reponse_DDG, coef=3, number = Inf)
+ResVRes_DDG$loci <- rownames(ResVRes_DDG)
+ResVRes_DDG$symbol <- gse43_genesymbol$symbol[match(ResVRes_DDG$loci,gse43_genesymbol$loci)]
+ResVRes_DDG <- ResVRes_DDG[!is.na(ResVRes_DDG$symbol),]
+ResVResStat_DDG <- ResVRes_DDG$t
+names(ResVResStat_DDG) <- ResVRes_DDG$symbol
+fgseaResVRes_DDG <- fgsea(pathways, ResVResStat_DDG, minSize=10)
+saveRDS(fgseaResVRes_DDG,"../FLX_datasets/GSE43261/GSEA_ResVResDDG_GSE43261.rds")
+
+```

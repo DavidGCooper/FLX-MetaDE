@@ -1,0 +1,182 @@
+---
+title: "GSE42940 Analysis"
+author: "David Cooper"
+date: "2022-09-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(GEOquery)
+library(limma)
+library("affycoretools")
+library(affy)
+library(tidyverse)
+library(fgsea)
+library(data.table)
+library(preprocessCore)
+library(pheatmap)
+library(biomaRt)
+library(org.Rn.eg.db)
+source("read_cpdb_tab.R")
+
+```
+
+## Data Acquisition
+
+Use GEOquery to obtain the GEO series GSE42940. GSEMatrix=FALSE will pull out all the sample information as a GSE object. GSEMatrix=TRUE is the default and will provide a list of expression sets. Can use [[1]] to pull out the GSE object if there is only one. exprs() will return just the expression data and can be used to log transform the data if desired. 
+https://bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html
+
+```{r Get ExpressionSets}
+GSEname="GSE42940"
+GSE=getGEO(GSEname)
+exGSE=GSE[[1]]
+
+```
+
+## Quality Control Analyses 
+
+Compare samples with boxplots and PCA to assess the quality across samples. Normalized datasets should have the same median across the samples. The boxplot will show if there are any samples that differ from the rest. 
+
+```{r Boxplots}
+#Boxplot with all samples
+boxplot(exprs(exGSE),las=2)
+#Quantile plot with all samples
+qs=t(apply(exprs(exGSE),2,quantile,prob=c(0.05,0.25,0.5,0.75,0.95)))
+matplot(qs,type="l",lty=1)
+
+```
+
+Principal component analysis (PCA). plotPCA(outside=TRUE) will place the legend on the outside of the plot.
+
+```{r PCA}
+#Samples all individual
+plotPCA(exGSE,outside=TRUE)
+#Samples grouped by Treatment
+Treatment=factor(c(rep("Control",4),rep("PNFLX",4)))
+plotPCA(exGSE, groups = as.numeric(Treatment), groupnames = levels(Treatment),outside=TRUE)
+
+```
+
+## Remove Low-expressed genes
+
+Removal of gene loci without expression above a threshold in at least half of the samples. First check what the lowest expression is for each sample. If no sample has any low expression levels, no filtering is done. 
+
+```{r}
+for(i in 1:as.numeric(ncol(exGSE))){print(min(exprs(exGSE[,i])))}
+
+```
+
+## Differential Expression Analysis
+
+Use limma to analyze expression treatment vs. control with paired patient samples (section 9.4.1). >limmaUsersGuide() to open the users guide manual.
+
+```{r Paired Patient Samples Analysis}
+#Analysis using data as provided (not independently normalized)
+#Define variables for model matrix
+Treatment=factor(c(rep("Control",4),rep("PNFLX",4)))
+#Design matrix
+Design=model.matrix(~Treatment)
+Names=exGSE@phenoData@data$geo_accession
+rownames(Design)=Names
+#DE analysis
+fit=lmFit(exGSE,Design)
+fit2=eBayes(fit)
+colnames(fit2) #To identify coef name to use in topTable
+topTable(fit2,coef = "TreatmentPNFLX")
+saveRDS(fit2,"../FLX_datasets/GSE42940/DE_GSE42940.rds")
+
+```
+
+## Differential Expression Plots
+
+Volcano plots for fit2 DE tables. Scatter plot stats for subsets of data in a merged table
+
+```{r Volcano Plots}
+volcanoplot(fit2,coef = "TreatmentPNFLX",main="Fluoxetine vs Control")
+
+```
+
+```{r Heatmap Top Genes}
+#Obtain gene list for genes with log2 FC greater than 2 and adjusted p value less than 0.05 based on fit2 table.
+DEtable=topTable(fit2,coef = "TreatmentPNFLX",number=200,sort.by = "logFC")
+GeneList=filter(DEtable, abs(logFC)>=2 & adj.P.Val<0.05)%>%dplyr::select(GB_ACC)
+#Select expression data from subset of samples for corresponding genes
+DFexGSE=as.data.frame(exprs(exGSE))
+ExSubset=DFexGSE[rownames(DFexGSE)%in%rownames(GeneList),]
+rownames(ExSubset)=GeneList$GB_ACC[match(rownames(ExSubset),rownames(GeneList))]
+#Prepare annotation dataframe
+ColumnNames=data.frame(Sample=exGSE@phenoData@data$title,Treatment=Treatment)
+rownames(ColumnNames)=exGSE@phenoData@data$geo_accession
+#Make heatmap
+pheatmap(ExSubset,scale = "row",annotation_col = ColumnNames)
+
+```
+
+## Gene Set Enrichment Analysis
+
+Use fgsea to analyze gene set enrichment.
+
+```{r Remove Duplicate Genes}
+#Get the average expression across all samples for each locus
+UniqueGenes=data.frame(AVG_EXPR=rowMeans(exprs(exGSE)),
+                       LOCI=exGSE@featureData@data$ID,
+                       GB_ACC=exGSE@featureData@data$GB_ACC) %>%
+  arrange(desc(AVG_EXPR)) %>%
+  filter(!duplicated(GB_ACC)) %>%
+  filter(GB_ACC!="")
+
+```
+
+## Transcript ID to Gene Symbol
+
+```{r}
+ensembl=useEnsembl(biomart="genes",dataset = "rnorvegicus_gene_ensembl")
+attributes = listAttributes(ensembl)
+RatGeneList=getBM(mart = ensembl,attributes = c("entrezgene_id","ensembl_transcript_id"))
+MouseHomologGeneList=getBM(mart=ensembl,attributes = c("ensembl_transcript_id","mmusculus_homolog_ensembl_gene"))
+RatGB=select(org.Rn.eg.db, as.character(exGSE@featureData@data$GB_ACC), c("ENTREZID","SYMBOL"), "ACCNUM")
+UniqueGenes$ENTREZ=RatGB$ENTREZID[match(UniqueGenes$GB_ACC,RatGB$ACCNUM)]
+UniqueGenes=filter(UniqueGenes,ENTREZ!="")
+UniqueGenes$RAT_TRANSCRIPT=RatGeneList$ensembl_transcript_id[match(UniqueGenes$ENTREZ,RatGeneList$entrezgene_id)]
+UniqueGenes=filter(UniqueGenes,RAT_TRANSCRIPT!="")
+UniqueGenes$MOUSE_GENE=MouseHomologGeneList$mmusculus_homolog_ensembl_gene[match(UniqueGenes$RAT_TRANSCRIPT,MouseHomologGeneList$ensembl_transcript_id)]
+UniqueGenes=filter(UniqueGenes,MOUSE_GENE!="")%>%filter(!duplicated(MOUSE_GENE))
+
+```
+
+
+```{r GSEA using fgsea}
+#Pathways list using Gene_Symbols (Human)
+#CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_symbol.tab")
+#Pathways list using mouse ensembl gene symbol (Mouse)
+CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+#Stats vector
+StatsFilter=data.frame(Loci=fit2$genes$ID,t=fit2$t[,"TreatmentPNFLX"])%>%filter(Loci%in%UniqueGenes$LOCI)
+StatsFilter$MouseGene=UniqueGenes$MOUSE_GENE[match(StatsFilter$Loci,UniqueGenes$LOCI)]
+tstats=StatsFilter$t
+names(tstats)=StatsFilter$MouseGene
+#FGSEA
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10)
+head(arrange(GeneEnrich,padj),n=20)
+plotEnrichment(CPDBpaths[["Olfactory transduction - Mus musculus (mouse) | KEGG"]], tstats)
+saveRDS(GeneEnrich,"../FLX_datasets/GSE42940/GSEA_GSE42940.rds")
+
+```
+
+```{r Heatmaps GSEA}
+#specify gene list from select path in CPDBpaths
+TargetGenes=CPDBpaths[["Olfactory transduction - Mus musculus (mouse) | KEGG"]]
+#Select expression data from subset of samples for corresponding genes
+Exprs=as.data.frame(exprs(exGSE))
+Exprs=filter(Exprs,rownames(Exprs)%in%UniqueGenes$LOCI)
+rownames(Exprs)=UniqueGenes$MOUSE_GENE[match(rownames(Exprs),UniqueGenes$LOCI)]
+ExSubset=Exprs[rownames(Exprs)%in%TargetGenes,]
+#Prepare annotation dataframe
+ColumnNames=data.frame(Sample=exGSE@phenoData@data$title,Treatment=Treatment)
+rownames(ColumnNames)=exGSE@phenoData@data$geo_accession
+#Make heatmap
+pheatmap(ExSubset,scale = "row",annotation_col = ColumnNames)
+
+```
+

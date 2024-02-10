@@ -1,0 +1,176 @@
+---
+title: "GSE109445 Analysis"
+author: "David Cooper"
+date: "2022-10-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(GEOquery)
+library(DESeq2)
+library(tidyverse)
+library(fgsea)
+library(data.table)
+library(preprocessCore)
+library(pheatmap)
+library(apeglm)
+library(EnhancedVolcano)
+library(biomaRt)
+source("read_cpdb_tab.R")
+
+```
+
+## Data Acquisition
+
+Use getGEO() to obtain the GEO series. Use getGEOSuppFiles() to download the supplementary count data files.
+
+```{r Get ExpressionSets}
+#Using getGEO
+GSEname="GSE109445"
+GSE=getGEO(GSEname)
+GSE=GSE[[1]]
+#Get Supplementary Files
+getGEOSuppFiles(GSEname)
+Directory=paste(getwd(),"/",GSEname,sep="")
+Files=list.files(Directory,full.names = TRUE)
+#untar
+untar(Files,exdir = Directory)
+file.remove(Files)
+Files=list.files(Directory,full.names = TRUE)
+#gunzip
+for (i in Files) {
+  gunzip(i)
+}
+Files=list.files(Directory,full.names = TRUE)
+
+#Read and format into expression set table
+#Data in a single file
+exGSE=read.table(Files,header = TRUE,sep = "\t",check.names = FALSE)
+#Label rows and delete label column
+rownames(exGSE)=exGSE$geneID
+exGSE=dplyr::select(exGSE,!geneID)
+#Replace column labels with GSM accession numbers
+NewColLabels=data.frame(GEO_ACC=GSE@phenoData@data$geo_accession,ID=GSE@phenoData@data$title)
+colnames(exGSE)=NewColLabels$GEO_ACC[match(colnames(exGSE),NewColLabels$ID)]
+#Reorder columns to match GSE
+exGSE=exGSE[,GSE@phenoData@data$geo_accession]
+#Round data if not integers
+exGSE=round(exGSE)
+saveRDS(exGSE,"CountTableGSE109445.rds")
+
+```
+
+## Quality Control Analyses 
+
+Compare samples with boxplots and PCA to assess the quality across samples. Normalized datasets should have the same median across the samples. The boxplot will show if there are any samples that differ from the rest. 
+
+```{r Boxplots}
+exGSE=readRDS("CountTableGSE109445.rds")
+#Boxplot with all samples
+boxplot(log2(exGSE+0.1),las=2)
+#Quantile plot with all samples
+qs=t(apply(log2(exGSE+0.1),2,quantile,prob=c(0.05,0.25,0.5,0.75,0.95)))
+matplot(qs,type="l",lty=1)
+
+```
+
+##DESeq2
+
+```{r DESeq2}
+SampleData=GSE@phenoData@data
+Treatment=factor(c(rep("saline",3),rep("albiflorin",3),rep("fluoxetine",3),rep("saline",3)),levels = c("saline","fluoxetine","albiflorin"))
+Stress=factor(c(rep("ChronicStress",9),rep("NoStress",3)),levels = c("NoStress","ChronicStress"))
+SampleData$StressTreat=factor(paste(Treatment,Stress,sep = "_"),
+                   levels=c("saline_NoStress","albiflorin_ChronicStress","fluoxetine_ChronicStress","saline_ChronicStress"))
+#Design matrix
+Design=model.matrix(~StressTreat)
+dds <- DESeqDataSetFromMatrix(countData = exGSE,
+                              colData = SampleData,
+                              design = ~StressTreat) #design = ~ characteristic1 + characteristic 2)
+dds <- DESeq(dds)
+saveRDS(dds,"../FLX_datasets/GSE109445/DESeqDataGSE109445.rds")
+resultsNames(dds) # lists the coefficients
+resFlx <- results(dds, contrast = c("StressTreat","fluoxetine_ChronicStress","saline_ChronicStress"))
+saveRDS(resFlx,"../FLX_datasets/GSE109445/Flx_DESeqResGSE109445.rds")
+resStress <- results(dds, contrast = c("StressTreat","saline_ChronicStress","saline_NoStress"))
+saveRDS(resFlx,"../FLX_datasets/GSE109445/Stress_DESeqResGSE109445.rds")
+
+```
+
+Principal component analysis (PCA).
+
+```{r PCA}
+vsd=varianceStabilizingTransformation(dds)
+#Samples all individual
+plotPCA(vsd,intgroup="title")
+#Samples grouped by treatment
+plotPCA(vsd,intgroup="description")
+
+```
+
+Volcano Plots
+
+```{r volcanoplot, fig.height = 10, fig.width = 12}
+#res=readRDS("DESeqLFC109445.rds")
+EnhancedVolcano(resFlx,
+  lab = rownames(resFlx),
+  x = "log2FoldChange",
+  y = "pvalue",
+  title = "Fluoxetine")
+
+```
+
+## Transcript ID to Gene Symbol
+
+```{r}
+#Rat gene ID to mouse gene symbol
+ensembl=useEnsembl(biomart="genes",dataset = "rnorvegicus_gene_ensembl")
+#attributes = listAttributes(ensembl)
+GeneList=getBM(mart = ensembl,attributes = c("ensembl_gene_id","external_gene_name"))
+GenesMouse=getBM(mart=ensembl,attributes = c("ensembl_gene_id","mmusculus_homolog_ensembl_gene"))
+GeneList$MouseEnsembl=GenesMouse$mmusculus_homolog_ensembl_gene[match(GeneList$ensembl_gene_id,GenesMouse$ensembl_gene_id)]
+
+```
+
+## Gene Set Enrichment Analysis
+
+Match transcript IDs in dataset with gene names using GeneList. Take single transcript per gene with highest expression (counts). Remove blanks. Move to gene set enrichment analysis.
+
+```{r Remove Duplicate Genes}
+UniqueGenesFlx=as.data.frame(resFlx)%>%
+  mutate(GENE_SYMBOL=GeneList$MouseEnsembl[match(rownames(exGSE),GeneList$ensembl_gene_id)])%>%
+  arrange(desc(baseMean))%>%
+  filter(!duplicated(GENE_SYMBOL))%>%
+  filter(GENE_SYMBOL!=""&!is.na(log2FoldChange)&!is.na(padj))
+
+UniqueGenesStress=as.data.frame(resStress)%>%
+  mutate(GENE_SYMBOL=GeneList$MouseEnsembl[match(rownames(exGSE),GeneList$ensembl_gene_id)])%>%
+  arrange(desc(baseMean))%>%
+  filter(!duplicated(GENE_SYMBOL))%>%
+  filter(GENE_SYMBOL!=""&!is.na(log2FoldChange)&!is.na(padj))
+
+```  
+
+```{r GSEA using fgsea}
+#Pathways list using mouse Ensembl gene IDs
+CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+
+#Stats vector treatment vs control (stat and gene symbols) using filtered genes list
+pstatsFlx=filter(UniqueGenesFlx)$stat
+names(pstatsFlx)=UniqueGenesFlx$GENE_SYMBOL
+#Pathway enrichment
+GeneEnrichFlx=fgsea(pathways = CPDBpaths, stats = pstatsFlx, minSize  = 10)
+head(arrange(GeneEnrichFlx,padj),n=20)
+saveRDS(GeneEnrichFlx,"../FLX_datasets/GSE109445/Flx_GSEA_GSE109445.rds")
+
+#Stats vector stress vs no stress (stat and gene symbols) using filtered genes list
+pstatsStress=filter(UniqueGenesStress)$stat
+names(pstatsStress)=UniqueGenesStress$GENE_SYMBOL
+#Pathway enrichment
+GeneEnrichStress=fgsea(pathways = CPDBpaths, stats = pstatsStress, minSize  = 10)
+head(arrange(GeneEnrichStress,padj),n=20)
+saveRDS(GeneEnrichStress,"../FLX_datasets/GSE109445/Stress_GSEA_GSE109445.rds")
+
+```
+

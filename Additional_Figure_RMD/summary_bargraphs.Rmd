@@ -1,0 +1,202 @@
+---
+title: "Summary bargraphs"
+author: "Caleb Class"
+date: "2023-12-18"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+reactome_hs <- readRDS("../FLX RMD/Reactome_HS_withTopLevel.rds")
+npgColors <- readRDS("../npgColors.rds")
+npgFill <- readRDS("../npgFill.rds")
+```
+
+
+Responder vs. non-responder
+
+```{r}
+
+dat <- readRDS("../MetaDE RDS/AllSFRNgsea.rds")
+#dim(dat)
+
+pvals <- dat[,1:9]
+summariesRN <- dat[,10:15]
+
+
+summariesRN$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summariesRN$Pathway), reactome_hs$Name)]
+summariesRN$ReactomeTop <- reactome_hs$top_level_name[match(summariesRN$ReactomeID, reactome_hs$ID)]
+summariesRN$ReactomeTop[substr(summariesRN$Pathway, nchar(summariesRN$Pathway)-3, nchar(summariesRN$Pathway)) == "KEGG"] <- "KEGG Database"
+summariesRN$ReactomeTop[!(summariesRN$ReactomeTop %in% names(npgColors))] <- "Other Reactome"
+summariesRN$ReactomeTop <- factor(summariesRN$ReactomeTop)
+
+allCats <- table(summariesRN$ReactomeTop)
+allCats
+
+```
+
+```{r}
+
+percentSignif <- data.frame(Category = names(allCats),
+  Fisher = as.numeric(table(summariesRN$ReactomeTop[summariesRN$Fish < 0.05 | summariesRN$Max < 0.05]) / allCats * 100),
+MaxP = as.numeric(table(summariesRN$ReactomeTop[summariesRN$Max < 0.05]) / allCats * 100)) %>%
+  arrange(desc(Fisher))
+
+percentSignif$Category <- factor(percentSignif$Category, levels = rev(percentSignif$Category))
+
+# Don't double-count P-Max
+percentSignif$Fisher <- percentSignif$Fisher - percentSignif$MaxP
+
+percentSignif <- percentSignif %>% pivot_longer(-Category, names_to = "Method", values_to = "Percent")
+
+ggplot(percentSignif, aes(x = Percent, y = Category, fill = Method)) +
+  geom_col(position = "stack", color = "black", linewidth = 1) +
+  theme_classic() +
+  theme(legend.position = c(0.8, 0.3)) +
+  scale_fill_manual(values = c("#A1DBFF", "#DBE866")) +
+  ylab("") + xlab("% of Pathways Enriched with q < 0.05")
+ggsave("../Figures/GSEA/AllSFRNgsea/RN_pathway_percent_bar.tiff", height = 4, width = 5)
+
+```
+
+Treated vs. untreated (all)
+
+```{r}
+
+dat <- readRDS("../MetaDE RDS/AllFTUgsea.rds")
+#dim(dat)
+
+#pvals <- dat[,1:9]
+summariesTU <- dat[,56:61]
+
+
+summariesTU$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summariesTU$Pathway), reactome_hs$Name)]
+summariesTU$ReactomeTop <- reactome_hs$top_level_name[match(summariesTU$ReactomeID, reactome_hs$ID)]
+summariesTU$ReactomeTop[substr(summariesTU$Pathway, nchar(summariesTU$Pathway)-3, nchar(summariesTU$Pathway)) == "KEGG"] <- "KEGG Database"
+summariesTU$ReactomeTop[!(summariesTU$ReactomeTop %in% names(npgColors))] <- "Other Reactome"
+summariesTU$ReactomeTop <- factor(summariesTU$ReactomeTop)
+
+allCats <- table(summariesTU$ReactomeTop)
+allCats
+
+```
+
+```{r}
+
+percentSignif <- data.frame(Category = names(allCats),
+  Fisher = as.numeric(table(summariesTU$ReactomeTop[summariesTU$Fish < 0.05 | summariesTU$Max < 0.05]) / allCats * 100),
+MaxP = as.numeric(table(summariesTU$ReactomeTop[summariesTU$Max < 0.05]) / allCats * 100)) %>%
+  arrange(desc(Fisher))
+
+percentSignif$Category <- factor(percentSignif$Category, levels = rev(percentSignif$Category))
+
+# Don't double-count P-Max
+percentSignif$Fisher <- percentSignif$Fisher - percentSignif$MaxP
+
+percentSignif <- percentSignif %>% pivot_longer(-Category, names_to = "Method", values_to = "Percent")
+
+ggplot(percentSignif, aes(x = Percent, y = Category, fill = Method)) +
+  geom_col(position = "stack", color = "black", linewidth = 1) +
+  theme_classic() +
+  theme(legend.position = c(0.9, 0.2)) +
+  scale_fill_manual(values = c("#A1DBFF", "#DBE866")) +
+  ylab("") + xlab("% of Pathways Enriched with q < 0.05")
+ggsave("../Figures/GSEA/AllFTUgsea/TU_pathway_percent_bar.tiff", height = 4, width = 5)
+
+```
+
+
+Treated vs. untreated (stressed)
+
+```{r}
+
+dat <- readRDS("../MetaDE RDS/AllSFTUgsea.rds")
+#dim(dat)
+
+#pvals <- dat[,1:9]
+summariesTU <- dat[,14:19]
+
+
+summariesTU$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summariesTU$Pathway), reactome_hs$Name)]
+summariesTU$ReactomeTop <- reactome_hs$top_level_name[match(summariesTU$ReactomeID, reactome_hs$ID)]
+summariesTU$ReactomeTop[substr(summariesTU$Pathway, nchar(summariesTU$Pathway)-3, nchar(summariesTU$Pathway)) == "KEGG"] <- "KEGG Database"
+summariesTU$ReactomeTop[!(summariesTU$ReactomeTop %in% names(npgColors))] <- "Other Reactome"
+summariesTU$ReactomeTop <- factor(summariesTU$ReactomeTop)
+
+allCats <- table(summariesTU$ReactomeTop)
+allCats
+
+```
+
+```{r}
+
+percentSignif <- data.frame(Category = names(allCats),
+  Fisher = as.numeric(table(summariesTU$ReactomeTop[summariesTU$Fish < 0.05 | summariesTU$Max < 0.05]) / allCats * 100),
+MaxP = as.numeric(table(summariesTU$ReactomeTop[summariesTU$Max < 0.05]) / allCats * 100)) %>%
+  arrange(desc(Fisher))
+
+percentSignif$Category <- factor(percentSignif$Category, levels = rev(percentSignif$Category))
+
+# Don't double-count P-Max
+percentSignif$Fisher <- percentSignif$Fisher - percentSignif$MaxP
+
+percentSignif <- percentSignif %>% pivot_longer(-Category, names_to = "Method", values_to = "Percent")
+
+ggplot(percentSignif, aes(x = Percent, y = Category, fill = Method)) +
+  geom_col(position = "stack", color = "black", linewidth = 1) +
+  theme_classic() +
+  theme(legend.position = c(0.9, 0.2)) +
+  scale_fill_manual(values = c("#A1DBFF", "#DBE866")) +
+  ylab("") + xlab("% of Pathways Enriched with q < 0.05")
+ggsave("../Figures/GSEA/AllSFTUgsea/STU_pathway_percent_bar.tiff", height = 4, width = 5)
+
+```
+
+
+Treated vs. untreated (unstressed)
+
+```{r}
+
+dat <- readRDS("../MetaDE RDS/AllXFTUgsea.rds")
+#dim(dat)
+
+#pvals <- dat[,1:9]
+summariesTU <- dat[,43:48]
+
+
+summariesTU$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summariesTU$Pathway), reactome_hs$Name)]
+summariesTU$ReactomeTop <- reactome_hs$top_level_name[match(summariesTU$ReactomeID, reactome_hs$ID)]
+summariesTU$ReactomeTop[substr(summariesTU$Pathway, nchar(summariesTU$Pathway)-3, nchar(summariesTU$Pathway)) == "KEGG"] <- "KEGG Database"
+summariesTU$ReactomeTop[!(summariesTU$ReactomeTop %in% names(npgColors))] <- "Other Reactome"
+summariesTU$ReactomeTop <- factor(summariesTU$ReactomeTop)
+
+allCats <- table(summariesTU$ReactomeTop)
+allCats
+
+```
+
+```{r}
+
+percentSignif <- data.frame(Category = names(allCats),
+  Fisher = as.numeric(table(summariesTU$ReactomeTop[summariesTU$Fish < 0.05 | summariesTU$Max < 0.05]) / allCats * 100),
+MaxP = as.numeric(table(summariesTU$ReactomeTop[summariesTU$Max < 0.05]) / allCats * 100)) %>%
+  arrange(desc(Fisher))
+
+percentSignif$Category <- factor(percentSignif$Category, levels = rev(percentSignif$Category))
+
+# Don't double-count P-Max
+percentSignif$Fisher <- percentSignif$Fisher - percentSignif$MaxP
+
+percentSignif <- percentSignif %>% pivot_longer(-Category, names_to = "Method", values_to = "Percent")
+
+ggplot(percentSignif, aes(x = Percent, y = Category, fill = Method)) +
+  geom_col(position = "stack", color = "black", linewidth = 1) +
+  theme_classic() +
+  theme(legend.position = c(0.9, 0.2)) +
+  scale_fill_manual(values = c("#A1DBFF", "#DBE866")) +
+  ylab("") + xlab("% of Pathways Enriched with q < 0.05")
+ggsave("../Figures/GSEA/AllXFTUgsea/XTU_pathway_percent_bar.tiff", height = 4, width = 5)
+
+```

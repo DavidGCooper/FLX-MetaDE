@@ -2226,7 +2226,7 @@ ggsave("Figures/AllFTUgsea_Bar.tiff",height = 5,width = 6)
 ggplot(pvaluesDF)+
   geom_density(aes(x=Vote,fill=Group),alpha=0.3,linewidth=0.8)+
   theme_classic()+
-  scale_x_continuous(breaks=seq(min(pvaluesDF$Vote),max(pvaluesDF$Vote),1))+ #breaks=seq(-X,X,X)
+  scale_x_continuous(breaks=seq(min(pvaluesDF$Vote),max(pvaluesDF$Vote),5))+ #breaks=seq(-X,X,X)
   scale_y_continuous(expand = c(0, 0), limits = c(0, NA))+
   scale_fill_manual(name="Significant in:",limits= c("Fisher","Maximum p-value","Fisher & Maximum p-value","Neither"), label=c("Fisher","Maximum p-value","Fisher & Maximum p-value","Neither"),values=c("#21B0FE","#FED700","green","grey70"))+
   xlab("Expression Change Agreement (Vote)")+

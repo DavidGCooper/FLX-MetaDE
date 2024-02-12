@@ -1,0 +1,139 @@
+---
+title: "RvsN_preTreat"
+author: "Caleb Class"
+date: "2024-01-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(plotly)
+library(ggrepel)
+
+
+source("../FLX RMD/read_cpdb_tab.R")
+reactome_hs <- readRDS("../FLX RMD/Reactome_HS_withTopLevel.rds")
+cpdb <- read_cpdb_tab("../FLX RMD/CPDB_pathways_genes_mouse.tab")
+names(cpdb) <- gsub(" \\|.*| \\- Mus.*", "", names(cpdb))
+npgColors <- readRDS("../npgColors.rds")
+npgFill <- readRDS("../npgFill.rds")
+
+```
+
+## Loading Data
+
+Results of R vs N for pretreat samples. LCL data came from human patients with known response. Cortex data came from mouse models -- each strain was measured and summarized for response, but the ones included in this comparison were not actually treated (their response is inferred based on strain).
+
+```{r}
+
+mouseCor <- readRDS("../FLX_datasets/GSE28644/GSEA_UnResVNon_GSE28644.rds")
+mouseCor$db <- gsub(".*\\| ", "", mouseCor$pathway)
+mouseCor <- mouseCor %>% filter(db %in% c("Reactome", "KEGG"))
+mouseCor$pathway <- gsub(" - Mus musculus \\(mouse\\)", "", mouseCor$pathway)
+mouseCor$DS <- "Mouse Cortex"
+
+humanLCL <- readRDS("../FLX_datasets/GSE83386/GSEA_UnResVNon_GSE83386.rds")
+humanLCL$db <- gsub(".*\\| ", "", humanLCL$pathway)
+humanLCL <- humanLCL %>% filter(db %in% c("Reactome", "KEGG"))
+humanLCL$pathway <- gsub(" - Homo sapiens \\(human\\)", "", humanLCL$pathway)
+humanLCL$DS <- "Human LCL"
+
+resMerged <- merge(mouseCor, humanLCL, by = "pathway", all = FALSE,
+                   suffixes = c(".Mm", ".Hs"))
+dim(resMerged)
+
+```
+
+
+Overall, the pathways increased or decreased between the two comparisons are not significantly correlated.
+
+```{r}
+
+table(Mm = resMerged$NES.Mm > 0, Hs = resMerged$NES.Hs > 0)
+fisher.test(resMerged$NES.Mm > 0, resMerged$NES.Hs > 0)
+
+```
+
+
+```{r}
+
+table(Mm = resMerged$padj.Mm < 0.05, Hs = resMerged$padj.Hs < 0.05)
+fisher.test(resMerged$padj.Mm < 0.05, resMerged$padj.Hs < 0.05)
+
+```
+
+
+```{r}
+
+resSignif <- resMerged %>% filter(padj.Mm < 0.05 & padj.Hs < 0.05) %>% arrange(desc(padj.Hs))
+resSignif %>% select(pathway, size.Hs, padj.Mm, NES.Mm, padj.Hs, NES.Hs)
+
+```
+
+
+```{r}
+
+resSignif$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", resSignif$pathway), reactome_hs$Name)]
+resSignif$ReactomeTop <- reactome_hs$top_level_name[match(resSignif$ReactomeID, reactome_hs$ID)]
+resSignif$ReactomeTop[is.na(resSignif$ReactomeTop)] <- "KEGG Database"
+resSignif$pathway <- gsub(" \\|.*", "", resSignif$pathway)
+resSignif$pathway <- factor(resSignif$pathway, levels = resSignif$pathway)
+
+```
+
+Table/graph
+
+```{r}
+
+resPlot <- rbind(resSignif[,c("pathway", "padj.Mm", "NES.Mm", "ReactomeTop", "DS.Mm")], 
+                 resSignif[,c("pathway", "padj.Hs", "NES.Hs", "ReactomeTop", "DS.Hs")],
+                 use.names = FALSE)
+colnames(resPlot) <- gsub("\\..*", "", colnames(resPlot))
+#resPlot$pathway <- paste0(resPlot$pathway, " (", resPlot$ReactomeTop, ")")
+resPlot$p.adj <- ifelse(resPlot$padj < 0.0001, yes = "< 0.0001",
+                        no = ifelse(resPlot$padj < 0.001, yes = "< 0.001",
+                        no = ifelse(resPlot$padj < 0.01, yes = "< 0.01", no = "< 0.05")))
+
+ggplot(resPlot, aes(x = DS, y = pathway, color = NES, size = p.adj)) +
+  geom_point() +
+  scale_size_manual(values = c(6, 5, 3.75, 2.5)) +
+  scale_color_gradientn(limits = c(-2.7, 2.7),
+                        colors = c("blue", "gray20", "red"),
+                        breaks = c(-2, 0, 2)) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 20, hjust = 1)) +
+  xlab("") + ylab("")
+ggsave(filename = "../Figures/Other_Figures/preRN_overlapSignif.tiff", 
+       height = 4, width = 6)
+
+
+```
+
+
+Gene set clustering
+
+```{r}
+
+
+cpdb.signif <- cpdb[as.character(resSignif$pathway)]
+
+cpdb.mat <- t(table(stack(cpdb.signif)))
+
+cpdb_rowannot <- data.frame(row.names = resSignif$pathway, 
+                            Top_Level = resSignif$ReactomeTop)
+pheatmap::pheatmap(cpdb.mat, color = c("white", "black"),
+                   show_colnames = FALSE,
+                   annotation_row = cpdb_rowannot,
+                   filename = "../Figures/Other_Figures/preRN_overlapGeneMembership.tiff",
+                   height = 5, width = 11,
+                   fontsize_row = 8)
+
+
+```
+
+
+
+
+
+

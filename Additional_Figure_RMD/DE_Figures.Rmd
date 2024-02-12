@@ -1,0 +1,95 @@
+---
+title: "DE Figures"
+author: "Caleb Class"
+date: "2024-01-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+## Responders vs. Non-Responders (Mouse)
+
+```{r}
+
+deDat <- readRDS("../MetaDE RDS/MouseSFRNDE.rds")
+```
+
+This provides a "meta-volcano" plot of statistical significance vs. direction of change for Responders vs. Non-responders. Because no genes were significant by Max-P, we will use the q by Fisher's Method. There were 
+`r sum(deDat$logFish < 0.05)` genes that were identified by Fisher's method as differentially
+expressed in at least one comparison.
+
+
+```{r}
+
+deDat$logFish <- -log10(deDat$Fish)
+
+labelsDE <- deDat[c("Fosl2", "Cacna1g", "Notch4", "Golm1", "Adamts16", "Adck5", "Prex1", "Wisp1"),]
+ggplot(deDat, aes(x = Vote, y = logFish, color = Fish < 0.05)) +
+  geom_jitter(height = 0, width = 0.2, alpha = 0.5) +
+  scale_color_manual(values = c("grey30", "#E64B35")) +
+  ggrepel::geom_text_repel(data = labelsDE, aes(label = Gene, x = Vote, fontface="bold"), show.legend = FALSE) +
+  guides(color = "none") +
+  theme_classic() +
+  scale_x_continuous(breaks = -4:5, limits = c(-4.2, 5.2)) +
+  xlab("Expression Change Agreement (Vote)") +
+  ylab("-log10(q) | Fisher's Method")
+ggsave("../Figures/DifferentialExpression/MouseSFRNDE/DE_FisherVolcano_MouseSFRN.tiff", width = 3.5, height = 3)
+
+
+```
+
+
+## Treated vs. Untreated (Mouse, Stressed)
+
+```{r}
+
+deDat <- readRDS("../MetaDE RDS/MouseSFTUDE.rds")
+
+```
+
+There were `r sum(deDat$logFish < 0.05)` genes that were identified by Fisher's method as differentially
+expressed in at least one comparison.
+
+```{r}
+
+deDat$logFish <- -log10(deDat$Fish)
+
+#labelsDE <- deDat[c("Fosl2", "Cacna1g", "Notch4", "Adamts16", "Adck5"),]
+ggplot(deDat, aes(x = Vote, y = logFish, color = Fish < 0.05)) +
+  geom_jitter(height = 0, width = 0.2, alpha = 0.5) +
+  scale_color_manual(values = c("grey30", "#E64B35")) +
+ # ggrepel::geom_text_repel(data = labelsDE, aes(label = Gene, x = Vote, fontface="bold"), show.legend = FALSE) +
+  guides(color = FALSE) +
+  theme_classic() +
+  scale_x_continuous(breaks = -7:7, limits = c(-7.2, 7.2)) +
+  xlab("Expression Change Agreement (Vote)") +
+  ylab("-log10(q) | Fisher's Method")
+ggsave("../Figures/DifferentialExpression/MouseSFTUDE/DE_FisherVolcano_MouseSFTU.tiff", width = 3.5, height = 3.5)
+
+
+```
+
+
+
+```{r}
+
+deDat$logMax <- -log10(deDat$Max)
+
+labelsDE <- deDat[abs(deDat$Vote) == 7,]
+ggplot(deDat, aes(x = Vote, y = logMax, color = Max < 0.05)) +
+  geom_jitter(height = 0, width = 0.2, alpha = 0.5) +
+  scale_color_manual(values = c("grey30", "#E64B35")) +
+  ggrepel::geom_text_repel(data = labelsDE, aes(label = Gene, x = Vote, fontface="bold"), show.legend = FALSE) +
+  guides(color = FALSE) +
+  theme_classic() +
+  scale_x_continuous(breaks = -7:7, limits = c(-7.2, 7.2)) +
+  xlab("Expression Change Agreement (Vote)") +
+  ylab("-log10(q) | Max-P Method")
+ggsave("../Figures/DifferentialExpression/MouseSFTUDE/DE_MaxPVolcano_MouseSFTU.tiff", width = 4, height = 3.5)
+
+
+```

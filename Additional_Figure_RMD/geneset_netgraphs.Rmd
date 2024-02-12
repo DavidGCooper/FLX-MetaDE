@@ -206,7 +206,7 @@ cpdb_rowannot <- data.frame(row.names = TU.signif$Pathway,
 pheatmap::pheatmap(cpdb.mat, color = c("white", "black"),
                    show_colnames = FALSE,
                    annotation_row = cpdb_rowannot,
-                   filename = "../Figures/GSEA/AllSFTUgsea/TU_overlapHM.tiff",
+                   filename = "../Figures/GSEA/AllFTUgsea/TU_overlapHM.tiff",
                    height = 4, width = 8,
                    fontsize_row = 10)
 

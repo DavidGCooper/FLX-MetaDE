@@ -212,3 +212,29 @@ ggsave("../Figures/GSEA/AllXFTUgsea/AllXTU_pathways_pmax_bar.tiff", width = 6, h
 
 ```
 
+
+Summarize overlapping pathways from FTU comparisons
+
+```{r}
+
+summariesCompare <- merge(summaries, summariesS, by = "Pathway", suffixes = c(".full", ".stress"), all = FALSE)
+summariesCompare <- merge(summariesCompare, summariesX, by = "Pathway", all = FALSE)
+
+library(VennDiagram)
+venn.diagram(x = list("Full Set" = summariesCompare$Pathway[summariesCompare$Max.full < 0.05],
+                      "Stressed Only" = summariesCompare$Pathway[summariesCompare$Max.stress < 0.05],
+                      "Unstressed Only" = summariesCompare$Pathway[summariesCompare$Max < 0.05]),
+             filename = "../Figures/ComparisonFigures/venn_TU-STU-XTU_pmax.tiff",
+             height=2500, width=2500)
+venn.diagram(x = list("Full Set" = summariesCompare$Pathway[summariesCompare$Fish.full < 0.05],
+                      "Stressed Only" = summariesCompare$Pathway[summariesCompare$Fish.stress < 0.05],
+                      "Unstressed Only" = summariesCompare$Pathway[summariesCompare$Fish < 0.05]),
+             filename = "../Figures/ComparisonFigures/venn_TU-STU-XTU_fish.tiff",
+             height=2500, width=2500)
+
+
+```
+
+
+
+

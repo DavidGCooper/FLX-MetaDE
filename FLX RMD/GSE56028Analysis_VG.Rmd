@@ -25,70 +25,31 @@ https://www.nature.com/articles/1301497  (mainly abstract and intro)
 
 This study uses phenotypic and genotypic variability of mouse strains to show that there is a genetic component to the behavior and neuronal effects of chronic fluoxeine treatment. The results of this data may support the theory that there is an inherent genetic predisposition that may increase the effectiveness of antidepressants.
 
-```{r}
+```{r get data}
+set.seed(123)
 dat <- getGEO("GSE56028")[[1]]
+#Filter out non-fluoxetine treatments
+dat.filtered <- dat[ ,dat$`agent:ch1`=="untreated" | dat$`agent:ch1`=="fluoxetine"]
 
 ```
 
-#Viewing the Data
-We use functions to look at/use the data
-
-```{r}
-head(exprs(dat))
-
-```
-
-This is used to view the featured data of dat
-
-```{r}
-head(fData(dat))
-
-```
-
-I then accessed the phenotypic data and meta-data associated with the dat data set.
-I then viewed the source_name_ch1 column of dat data set.
-
-```{r}
-pData(dat)
-dat$source_name_ch1
-
-```
-
-## Analysis
-Boxplot of expression data (boxplot())
-
-```{r title}
+```{r boxplots}
 boxplot(exprs(dat))
-
-summary(exprs(dat))
-```
-
-We then filtered the data to only get the Control, UCMS untreated, and UCMS treated with Fluoxetine data.
-
-```{r}
-dat.filtered<-dat[ ,dat$`agent:ch1`=="untreated" | dat$`agent:ch1`=="fluoxetine"]
-
-head(dat.filtered)
-
 boxplot(exprs(dat.filtered))
+
 ```
+
+## DE Analysis
 
 https://rpubs.com/jrgonzalezISGlobal/transcriptomic_analyses
 To continue with the analysis, I had to set up a new design matrix
-
-```{r}
-matri<-model.matrix(~0+paste(dat.filtered$`agent:ch1`,dat.filtered$`stress:ch1`))
-colnames(matri)<-c("fluoxetine_ucms","untreated_control","untreated_ucms")
-matri
-
-```
-
 In this, we are contrasting untreated control versus untreaed stressed and untreated stressed with fluoxetine stressed
 
-```{r}
-fit<-lmFit(dat.filtered, matri)
-contrast.matrix<-makeContrasts(untreated_ucms-untreated_control,fluoxetine_ucms-untreated_ucms, levels=matri)
-contrast.matrix
+```{r differential expression}
+matri <- model.matrix(~0+paste(dat.filtered$`agent:ch1`,dat.filtered$`stress:ch1`))
+colnames(matri) <- c("fluoxetine_ucms","untreated_control","untreated_ucms")
+fit <- lmFit(dat.filtered, matri)
+contrast.matrix <- makeContrasts(untreated_ucms-untreated_control,fluoxetine_ucms-untreated_ucms, levels=matri)
 
 fit2 <- contrasts.fit(fit, contrast.matrix)
 fit2 <- eBayes(fit2)
@@ -97,197 +58,120 @@ saveRDS(fit2,file = "../FLX_datasets/GSE56028/DE_GSE56028.rds")
 
 ```
 
-#Table of Results
-###comparing control and stressed untreated
+## Results
+# comparing control and stressed untreated
 Here I am comparing the controlled data and the untreated UCMS data. I then created a histogram to view the results. There is not really any strong differences as the adjusted P.Values come out high
 
 ```{r control vs stressed untreated}
-compare1<-topTable(fit2, coef=1, adjust="BH",number=Inf)
-compare1
-
+compare1 <- topTable(fit2, coef=1, adjust="BH",number=Inf)
 hist(compare1$P.Value)
 hist(compare1$adj.P.Val)
+
 ```
 
-###comparing untreated stressed vs treated stress
+# comparing untreated stressed vs treated stress
 Here I am comparing the untreated UCMS data and the treated UCMS data. I then created a histogram to view the results. There is not really any strong differences as the adjusted P.Values come out high
 
 ```{r stressed untreated vs stressed treated}
-compare2<-topTable(fit2, coef=2, adjust="BH",number=Inf)
-compare2
-
+compare2 <- topTable(fit2, coef=2, adjust="BH",number=Inf)
 hist(compare2$P.Value)
 hist(compare2$adj.P.Val)
 
-#run topTable and set number to Inf. then save that as another object
-#topTable(fit, number=Inf,)
 ```
 
 This provides us with the results from "fit2" to identify which genes are significantly differentially expressed for each contrast
 
 ```{r results}
-results <- decideTests(fit2)
-results
-
-?decideTests
-```
-
-###Venn Diagram
-
-```{r vennDiagram}
-vennDiagram(results)
+decideTests(fit2)
 
 ```
 
 Here I am combining the two comparisons into one big comparison of Control vs Untreated UCMS vs Treated UCMS. I then ploted these results to be able to see how each comparisons and their differences
 
 ```{r merged compare}
-
 cbind(compare1,compare2)
-
-merge<-merge(compare1, compare2, by="ID")
-
+merge <- merge(compare1, compare2, by="ID")
 plot(merge$logFC.x, merge$logFC.y)
 
-```
-
-##Pheatmap
-Here I created a heat map of "merge" comparing certian P-Values
-
-```{r}
-annotation_col = data.frame(group=paste(dat.filtered$`agent:ch1`,dat.filtered$`stress:ch1`))
-rownames(annotation_col)=colnames(dat.filtered)
-
-
+annotation_col <- data.frame(group=paste(dat.filtered$`agent:ch1`,dat.filtered$`stress:ch1`))
+rownames(annotation_col) <- colnames(dat.filtered)
 pheatmap(dat.filtered[merge$P.Value.x<0.01&merge$P.Value.y<0.01, ], scale="row", annotation_col=annotation_col,)
 
 ```
 
-###Pathway Data
+# Pathway Data
 I then used pathway data to my two comparisons
 
 ```{r pathway data}
-compare1$ENS<-gsub(".*ENSRNOT","ENSRNOT",compare1$gene_assignment)
-compare1
+compare1$ENS <- gsub(".*ENSRNOT","ENSRNOT",compare1$gene_assignment)
+compare1$ENS <- gsub(" .*","",compare1$ENS)
 
-compare1$ENS<-gsub(" .*","",compare1$ENS)
-compare1
+compare2$ENS <- gsub(".*ENSRNOT","ENSRNOT",compare2$gene_assignment)
+compare2$ENS <- gsub(" .*","",compare2$ENS)
 
-compare2$ENS<-gsub(".*ENSRNOT","ENSRNOT",compare2$gene_assignment)
-compare2
-
-compare2$ENS<-gsub(" .*","",compare2$ENS)
-compare2
-
-merge<-merge(compare1, compare2, by="ID")
+merge <- merge(compare1, compare2, by="ID")
 
 ```
 
-###Changing Names
+## Changing Names
 Here I am changing the names and utilizing the homologous ensembl.
 
 ```{r}
 #Accessing homologous ensembl gene symbols using biomaRt
-#If you do not know which biomart or dataset you want, you would follow these steps:
-listEnsembl()
-
-#You probably want the genes biomart which you can make without specifying an organism
-ensembl <- useEnsembl(biomart = "genes")
-
-#Identify which datasets (organisms) exist in the genes biomart
-datasets <- listDatasets(ensembl)
-
-#You can determine which dataset you want specifically by searching for a pattern, such as a specific organism
-searchDatasets(mart = ensembl, pattern = "Rat")
-
-
-
-#If you know which biomart and dataset you want, you can start here (example for rat):
-#Create a "Mart" for rat
 ensembl <- useEnsembl(biomart="genes",dataset = "rnorvegicus_gene_ensembl")
-
-#List attributes (gene symbols, start sites, homologous gene symbols, etc.)
-attributes <- listAttributes(ensembl)
-
-#Pull down rat ensembl IDs and mouse ensembl IDs
+#attributes <- listAttributes(ensembl)
 MouseHomologGeneList <- getBM(mart=ensembl,attributes = c("ensembl_transcript_id","mmusculus_homolog_ensembl_gene"))
-```
 
-#Another Name Change
-I used another technique to change the name.
-
-```{r}
 merge$MouseGenes <- MouseHomologGeneList$mmusculus_homolog_ensembl_gene[match(merge$ENS.x, MouseHomologGeneList$ensembl_transcript_id)]
 
-head(merge)
 ```
 
+## GSEA
 Here, I am now ordering the merge data of df and genes by AveExpr of merge in decreasing order.
 We then go through and take out all of the duplicates in merged_ordered.
-We then take out the t values from the merge_noduplic?duplates and create a new data set called stats.
+We then take out the t values from the merge_noduplicates and create a new data set called stats.
 The names of the stats data set are going to be taken from the column ensembl_gene_id from merged_noduplicates data set.
-
-```{r x}
-merge_orderedx<-merge[order(merge$AveExpr.x, decreasing=TRUE),]
-head(merge_orderedx)
-
-merge_noduplicatesx<-filter(merge_orderedx,duplicated(merge_orderedx$MouseGenes)==FALSE & !(merge_orderedx$MouseGenes%in%c("","<NA>")))
-
-statsx<-merge_noduplicatesx$t.x
-names(statsx)<-merge_noduplicatesx$MouseGenes
-statsx<-statsx[-1]
-head(statsx)
-```
-```{r y}
-merge_orderedy<-merge[order(merge$AveExpr.y, decreasing=TRUE),]
-head(merge_orderedy)
-
-
-merge_noduplicatesy<-filter(merge_orderedy,duplicated(merge_orderedy$MouseGenes)==FALSE & !(merge_orderedy$MouseGenes%in%c("","<NA>")))
-
-statsy<-merge_noduplicatesy$t.y
-names(statsy)<-merge_noduplicatesy$MouseGenes
-statsy<-statsy[-1]
-head(statsy)
-
-```
-
 We are now taking the mouse pathways and making the names match up with each gene data, creating a new data set.
-
 Here I am creating a fgsea pathway for the Control vs Untreated UCMS data data. We are also ordering by p-value.
-
-```{r Control_vs_UntreatedUCMS.x}
-mouse_pathways<-read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
-
-Control_vs_UntreatedUCMS.x <- fgsea(pathways = mouse_pathways,stats = statsx,minSize  = 10)
-head(Control_vs_UntreatedUCMS.x)
-
-saveRDS(Control_vs_UntreatedUCMS.x,"../FLX_datasets/GSE56028/GSEA_StressVsControl_GSE56028.rds")
-pvalorderedx<-Control_vs_UntreatedUCMS.x[order(Control_vs_UntreatedUCMS.x$pval, decreasing=FALSE),]
-
-head(pvalorderedx)
-
-```
-
 Here I am creating a fgsea pathway for the Untreated UCMS data vs the Treated UCMS data. We are also ordering by p-value.
 
-```{r UntreatedUCMS_vs_TreatedUCMS.y}
-UntreatedUCMS_vs_TreatedUCMS.y <- fgsea(pathways = mouse_pathways,stats = statsy,minSize  = 10)
-head(UntreatedUCMS_vs_TreatedUCMS.y)
+```{r fgsea}
+mouse_pathways<-read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
 
+DElist=list()
+
+#Control_vs_UntreatedUCMS.x
+merge_orderedx <- merge[order(merge$AveExpr.x, decreasing=TRUE),]
+merge_noduplicatesx <- filter(merge_orderedx,duplicated(merge_orderedx$MouseGenes)==FALSE & !(merge_orderedx$MouseGenes%in%c("","<NA>")))
+statsx <- merge_noduplicatesx$t.x
+names(statsx) <- merge_noduplicatesx$MouseGenes
+statsx <- statsx[-1]
+Control_vs_UntreatedUCMS.x <- fgsea(pathways = mouse_pathways, stats = statsx, minSize  = 10, nPermSimple=10000)
+saveRDS(Control_vs_UntreatedUCMS.x,"../FLX_datasets/GSE56028/GSEA_StressVsControl_GSE56028.rds")
+
+#UntreatedUCMS_vs_TreatedUCMS.y
+merge_orderedy <- merge[order(merge$AveExpr.y, decreasing=TRUE),]
+merge_noduplicatesy <- filter(merge_orderedy,duplicated(merge_orderedy$MouseGenes)==FALSE & !(merge_orderedy$MouseGenes%in%c("","<NA>")))
+DElist$SFTU=sapply(strsplit(merge_noduplicatesy[merge_noduplicatesy$gene_assignment.y!="---"&merge_noduplicatesy$P.Value.y<0.05,]$gene_assignment.y,split = " // "), "[[",2)
+DEbackground=sapply(strsplit(merge_noduplicatesy[merge_noduplicatesy$gene_assignment.y!="---",]$gene_assignment.y,split = " // "), "[[",2)
+statsy <- merge_noduplicatesy$t.y
+names(statsy) <- merge_noduplicatesy$MouseGenes
+statsy<-statsy[-1]
+UntreatedUCMS_vs_TreatedUCMS.y <- fgsea(pathways = mouse_pathways, stats = statsy, minSize  = 10, nPermSimple=10000)
 saveRDS(UntreatedUCMS_vs_TreatedUCMS.y,"../FLX_datasets/GSE56028/GSEA_TreatedVsUnreated_GSE56028.rds")
 
-pvalorderedy<-UntreatedUCMS_vs_TreatedUCMS.y[order(UntreatedUCMS_vs_TreatedUCMS.y$pval, decreasing=FALSE),]
+write.table(t(plyr::ldply(DElist,rbind)),"../FLX_datasets/GSE56028/GSE56028-DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DEbackground,"../FLX_datasets/GSE56028/GSE56028-DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
 
-head(pvalorderedy)
 ```
 
 I then created a heat map of the Control vs Untreated UCMS p-values.
 
 ```{r pheatmap Control_vs_UntreatedUCMS.x}
+pvalorderedx<-Control_vs_UntreatedUCMS.x[order(Control_vs_UntreatedUCMS.x$pval, decreasing=FALSE),]
+
 annotation_col = data.frame(group=paste(dat.filtered$`agent:ch1`,dat.filtered$`stress:ch1`))
 rownames(annotation_col)=colnames(dat.filtered)
-
 
 pheatmap(dat.filtered[merge$MouseGenes%in%pvalorderedx$leadingEdge[[1]], ], scale="row", annotation_col=annotation_col,)
 
@@ -296,9 +180,10 @@ pheatmap(dat.filtered[merge$MouseGenes%in%pvalorderedx$leadingEdge[[1]], ], scal
 I then created a heat map of the Untreated UCMS vs Treated UCMS p-values.
 
 ```{r pheatmap UntreatedUCMS_vs_TreatedUCMS.y}
+pvalorderedy<-UntreatedUCMS_vs_TreatedUCMS.y[order(UntreatedUCMS_vs_TreatedUCMS.y$pval, decreasing=FALSE),]
+
 annotation_col = data.frame(group=paste(dat.filtered$`agent:ch1`,dat.filtered$`stress:ch1`))
 rownames(annotation_col)=colnames(dat.filtered)
-
 
 pheatmap(dat.filtered[merge$MouseGenes%in%pvalorderedy$leadingEdge[[1]], ], scale="row", annotation_col=annotation_col,)
 
@@ -316,4 +201,5 @@ The final thing I did was plot "merge_ordered" to view where there are significa
 
 ```{r}
 plot(merge_ordered$NES.x,merge_ordered$NES.y)
+
 ```

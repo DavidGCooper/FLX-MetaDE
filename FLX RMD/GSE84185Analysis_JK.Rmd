@@ -21,26 +21,12 @@ source("read_cpdb_tab.R")
 ```
 
 ```{r}
+set.seed(123)
 #downloading micro array data from omnibus
 gse84<- getGEO("GSE84185")
-#head(featureData(gse84[[1]]))
-#View((featureData(gse84[[1]])))
-
-#save as expression set
 gse84<- gse84[[1]]
-
-#sample info 
-#pData(gse84) 
-#gene expression info
-#exprs(gse84) [1,] 
-
-#check how data was processed
-#pData(gse84)$data_processing[1]
-#seems like data was processed using qauntile normalization 
-
 #save pData into data frame
 sampledata<- pData(gse84) 
-#View(sampledata)
 
 #split sample data into three separate groups, Dentate, Cingulate, and Whole blood 
 gse84_Dentate<- gse84[, 1:32]
@@ -66,15 +52,14 @@ sampledata_Blood_Stress$TreatRes=gsub("No.*","No",paste(sampledata_Blood_Stress$
 ## DE Dentate
 
 ```{r}
-summary(exprs(gse84_Dentate))
-
-boxplot(exprs(gse84_Dentate))
-
 #Boxplot with all samples
 boxplot(exprs(gse84),las=2)
 #Quantile plot with all samples
 qs=t(apply(exprs(gse84),2,quantile,prob=c(0.05,0.25,0.5,0.75,0.95)))
 matplot(qs,type="l",lty=1)
+
+summary(exprs(gse84_Dentate))
+boxplot(exprs(gse84_Dentate))
 
 ```
 
@@ -84,45 +69,33 @@ exprs_cutoff_Dentate<- 4.637468
 genes_expressed_Dentate <- exprs(gse84_Dentate) > exprs_cutoff_Dentate
 genes_retained_Dentate<- (rowSums(genes_expressed_Dentate)>3)
 table(genes_retained_Dentate) 
-dim(genes_expressed_Dentate)
 
 ```
 
 ```{r Treatment DE}
+#creating a matrix from treatment_group
 design_data_Dentate<- model.matrix(~0 +sampledata_Dentate$source_name_ch1)
-# creating a matrix from treatment_group
-
-colnames(design_data_Dentate)<- c("Control", "Unstressed_Fluoxetine_Treated", "Stressed_Fluoxetine_Treated", "Stressed")
 #changing column names (treated with fluoxetine)
-
-#design_data_Dentate
-
+colnames(design_data_Dentate)<- c("Control", "Unstressed_Fluoxetine_Treated", "Stressed_Fluoxetine_Treated", "Stressed")
 lm_fit_Dentate<- lmFit(gse84_Dentate, design_data_Dentate)
-
 #head(lm_fit_Dentate$coefficients)
-
 contrasts_Dentate <- makeContrasts(
-Stressed - Control, 
-Unstressed_Fluoxetine_Treated - Control,
-Stressed_Fluoxetine_Treated - Unstressed_Fluoxetine_Treated,
-Stressed_Fluoxetine_Treated - Stressed,
-levels = design_data_Dentate)  
-
+  Stressed - Control, 
+  Unstressed_Fluoxetine_Treated - Control,
+  Stressed_Fluoxetine_Treated - Unstressed_Fluoxetine_Treated,
+  Stressed_Fluoxetine_Treated - Stressed,
+  Diff=(Stressed_Fluoxetine_Treated - Stressed)-(Unstressed_Fluoxetine_Treated - Control),
+  levels = design_data_Dentate)  
 #comparsions between the genes of the four groups 
-
 lm_fit_Dentate_2 <- contrasts.fit(lm_fit_Dentate, contrasts_Dentate)
 lm_fit_Dentate_2 <- eBayes(lm_fit_Dentate_2)
 
 saveRDS(lm_fit_Dentate_2,"../FLX_datasets/GSE84183/DE_DG_GSE84183.rds")
 
-topTable(lm_fit_Dentate_2)
-#topTable1 <- topTable(lm_fit_Dentate_2, coef=1)
-
-
+#view of the overall differential expression between the three groups 
 summary(decideTests(lm_fit_Dentate_2))
 table(decideTests(lm_fit_Dentate_2))
 
-#view of the overall differnetial expression between the three groups 
 ```
 
 ```{r Responder DE}
@@ -131,10 +104,10 @@ colnames(design_stress_Dentate)<- c("Control", "Resistant", "Responder")
 
 lm_fit_Dentate_stress<- lmFit(gse84_Dentate_Stress, design_stress_Dentate)
 contrasts_Dentate_stress <- makeContrasts(
-Responder - Control, 
-Resistant - Control,
-Responder - Resistant,
-levels = design_stress_Dentate)  
+  Responder - Control, 
+  Resistant - Control,
+  Responder - Resistant,
+  levels = design_stress_Dentate)  
 lm_fit_Dentate_stress_2 <- contrasts.fit(lm_fit_Dentate_stress, contrasts_Dentate_stress)
 lm_fit_Dentate_stress_2 <- eBayes(lm_fit_Dentate_stress_2)
 
@@ -144,7 +117,7 @@ saveRDS(lm_fit_Dentate_stress_2,"../FLX_datasets/GSE84183/DE_DG_Stress_GSE84183.
 
 ## GSEA Dentate
 
-```{r}
+```{r filter unique genes}
 #Unique genes
 ensembl=useEnsembl(biomart="genes",dataset = "mmusculus_gene_ensembl")
 attributes = listAttributes(ensembl)
@@ -159,8 +132,12 @@ gse84_genesymbol=arrange(gse84_genesymbol,desc(AvgExpr))%>%filter(!duplicated(sy
 
 ```
 
-```{r}
+```{r GSEA}
 pathways <- read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+
+DG_DElist=list()
+
+#Treatment
 head(lm_fit_Dentate_2$coefficients)
 
 DG_Stress_Control <- topTable(lm_fit_Dentate_2, coef=1, number = Inf)%>%filter(ID %in% gse84_genesymbol$ID)
@@ -168,67 +145,71 @@ DG_Stress_Control$symbol <- gse84_genesymbol$symbol[match(DG_Stress_Control$ID,g
 DG_Stress_Control <- DG_Stress_Control[!is.na(DG_Stress_Control$symbol),]
 DG_Stress_Control_stat <- DG_Stress_Control$t
 names(DG_Stress_Control_stat) <- DG_Stress_Control$symbol
-fgseaDG_Stress_Control <- fgsea(pathways, DG_Stress_Control_stat, minSize=10)
+fgseaDG_Stress_Control <- fgsea(pathways, DG_Stress_Control_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaDG_Stress_Control,"../FLX_datasets/GSE84183/GSEA_DG_Stress_Control_GSE84183.rds")
-
 
 DG_NoStressFlx_Control <- topTable(lm_fit_Dentate_2, coef=2, number = Inf)
 DG_NoStressFlx_Control$symbol <- gse84_genesymbol$symbol[match(DG_NoStressFlx_Control$ID,gse84_genesymbol$ID)]
 DG_NoStressFlx_Control <- DG_NoStressFlx_Control[!is.na(DG_NoStressFlx_Control$symbol),]
+DG_DElist$XFTU=DG_NoStressFlx_Control[DG_NoStressFlx_Control$P.Value<0.05,]$GENE_SYMBOL
+DG_DEbackground=DG_NoStressFlx_Control$GENE_SYMBOL
 DG_NoStressFlx_Control_stat <- DG_NoStressFlx_Control$t
 names(DG_NoStressFlx_Control_stat) <- DG_NoStressFlx_Control$symbol
-fgseaDG_NoStressFlx_Control <- fgsea(pathways, DG_NoStressFlx_Control_stat, minSize=10)
+fgseaDG_NoStressFlx_Control <- fgsea(pathways, DG_NoStressFlx_Control_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaDG_NoStressFlx_Control,"../FLX_datasets/GSE84183/GSEA_DG_NoStressFlx_Control_GSE84183.rds")
-
 
 DG_StressFlx_NoStressFlx <- topTable(lm_fit_Dentate_2, coef=3, number = Inf)
 DG_StressFlx_NoStressFlx$symbol <- gse84_genesymbol$symbol[match(DG_StressFlx_NoStressFlx$ID,gse84_genesymbol$ID)]
 DG_StressFlx_NoStressFlx <- DG_StressFlx_NoStressFlx[!is.na(DG_StressFlx_NoStressFlx$symbol),]
 DG_StressFlx_NoStressFlx_stat <- DG_StressFlx_NoStressFlx$t
 names(DG_StressFlx_NoStressFlx_stat) <- DG_StressFlx_NoStressFlx$symbol
-fgseaDG_StressFlx_NoStressFlx <- fgsea(pathways, DG_StressFlx_NoStressFlx_stat, minSize=10)
+fgseaDG_StressFlx_NoStressFlx <- fgsea(pathways, DG_StressFlx_NoStressFlx_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaDG_StressFlx_NoStressFlx,"../FLX_datasets/GSE84183/GSEA_DG_StressFlx_NoStressFlx_GSE84183.rds")
-
 
 DG_StressFlx_Stress <- topTable(lm_fit_Dentate_2, coef=4, number = Inf)
 DG_StressFlx_Stress$symbol <- gse84_genesymbol$symbol[match(DG_StressFlx_Stress$ID,gse84_genesymbol$ID)]
 DG_StressFlx_Stress <- DG_StressFlx_Stress[!is.na(DG_StressFlx_Stress$symbol),]
+DG_DElist$SFTU=DG_StressFlx_Stress[DG_StressFlx_Stress$P.Value<0.05,]$GENE_SYMBOL
 DG_StressFlx_Stress_stat <- DG_StressFlx_Stress$t
 names(DG_StressFlx_Stress_stat) <- DG_StressFlx_Stress$symbol
-fgseaDG_StressFlx_Stress <- fgsea(pathways, DG_StressFlx_Stress_stat, minSize=10)
+fgseaDG_StressFlx_Stress <- fgsea(pathways, DG_StressFlx_Stress_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaDG_StressFlx_Stress,"../FLX_datasets/GSE84183/GSEA_DG_StressFlx_Stress_GSE84183.rds")
-```
 
-```{r}
-pathways <- read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+#Responder GSEA
 head(lm_fit_Dentate_stress_2$coefficients)
 
 DG_Responder_Control <- topTable(lm_fit_Dentate_stress_2, coef=1, number = Inf) %>% 
   filter(ID %in% gse84_genesymbol$ID)
 DG_Responder_Control$symbol <- gse84_genesymbol$symbol[match(DG_Responder_Control$ID,gse84_genesymbol$ID)]
 DG_Responder_Control <- DG_Responder_Control[!is.na(DG_Responder_Control$symbol),]
+DG_DElist$SFRC=DG_Responder_Control[DG_Responder_Control$P.Value<0.05,]$GENE_SYMBOL
 DG_Responder_Control_stat <- DG_Responder_Control$t
 names(DG_Responder_Control_stat) <- DG_Responder_Control$symbol
-fgseaDG_Responder_Control <- fgsea(pathways, DG_Responder_Control_stat, minSize=10)
+fgseaDG_Responder_Control <- fgsea(pathways, DG_Responder_Control_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaDG_Responder_Control,"../FLX_datasets/GSE84183/GSEA_DG_Responder_Control_GSE84183.rds")
 
 DG_Resistant_Control <- topTable(lm_fit_Dentate_stress_2, coef=2, number = Inf) %>% 
   filter(ID %in% gse84_genesymbol$ID)
 DG_Resistant_Control$symbol <- gse84_genesymbol$symbol[match(DG_Resistant_Control$ID,gse84_genesymbol$ID)]
 DG_Resistant_Control <- DG_Resistant_Control[!is.na(DG_Resistant_Control$symbol),]
+DG_DElist$SFNC=DG_Resistant_Control[DG_Resistant_Control$P.Value<0.05,]$GENE_SYMBOL
 DG_Resistant_Control_stat <- DG_Resistant_Control$t
 names(DG_Resistant_Control_stat) <- DG_Resistant_Control$symbol
-fgseaDG_Resistant_Control <- fgsea(pathways, DG_Resistant_Control_stat, minSize=10)
+fgseaDG_Resistant_Control <- fgsea(pathways, DG_Resistant_Control_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaDG_Resistant_Control,"../FLX_datasets/GSE84183/GSEA_DG_Resistant_Control_GSE84183.rds")
 
 DG_Responder_Resistant <- topTable(lm_fit_Dentate_stress_2, coef=3, number = Inf) %>% 
   filter(ID %in% gse84_genesymbol$ID)
 DG_Responder_Resistant$symbol <- gse84_genesymbol$symbol[match(DG_Responder_Resistant$ID,gse84_genesymbol$ID)]
 DG_Responder_Resistant <- DG_Responder_Resistant[!is.na(DG_Responder_Resistant$symbol),]
+DG_DElist$SFRN=DG_Responder_Resistant[DG_Responder_Resistant$P.Value<0.05,]$GENE_SYMBOL
 DG_Responder_Resistant_stat <- DG_Responder_Resistant$t
 names(DG_Responder_Resistant_stat) <- DG_Responder_Resistant$symbol
-fgseaDG_Responder_Resistant <- fgsea(pathways, DG_Responder_Resistant_stat, minSize=10)
+fgseaDG_Responder_Resistant <- fgsea(pathways, DG_Responder_Resistant_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaDG_Responder_Resistant,"../FLX_datasets/GSE84183/GSEA_DG_Responder_Resistant_GSE84183.rds")
+
+write.table(t(plyr::ldply(DG_DElist,rbind)),"../FLX_datasets/GSE84183/GSE84183-DG_DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DG_DEbackground,"../FLX_datasets/GSE84183/GSE84183-DG_DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
 
 ```
 
@@ -248,43 +229,27 @@ gse84_Cingulate=gse84_Cingulate[genes_retained_Cingulate,]
 
 ```
 
-```{r}
+```{r Treatment DE}
 design_data_Cingulate<- model.matrix( ~0 +sampledata_Cingulate$source_name_ch1)
-# creating a matrix from treatment_group
-
 colnames(design_data_Cingulate)<- c("Control", "Unstressed_Fluoxetine_Treated", "Stressed_Fluoxetine_Treated", "Stressed")
-#changing column names (treated with fluoxitine)
-
-design_data_Cingulate
 
 lm_fit_Cingulate<- lmFit(gse84_Cingulate, design_data_Cingulate)
-
-head(lm_fit_Cingulate$coefficients)
-
-```
-
-```{r}
 contrasts_Cingulate <- makeContrasts(
-Stressed - Control, 
-Unstressed_Fluoxetine_Treated - Control,
-Stressed_Fluoxetine_Treated - Unstressed_Fluoxetine_Treated,
-Stressed_Fluoxetine_Treated - Stressed,
-levels = design_data_Cingulate)  
-
-#comparsions between the genes of the four groups 
-
+  Stressed - Control, 
+  Unstressed_Fluoxetine_Treated - Control,
+  Stressed_Fluoxetine_Treated - Unstressed_Fluoxetine_Treated,
+  Stressed_Fluoxetine_Treated - Stressed,
+  Diff=(Stressed_Fluoxetine_Treated - Stressed)-(Unstressed_Fluoxetine_Treated - Control),
+  levels = design_data_Cingulate)  
 lm_fit_Cingulate_2 <- contrasts.fit(lm_fit_Cingulate, contrasts_Cingulate)
 lm_fit_Cingulate_2 <- eBayes(lm_fit_Cingulate_2)
 
 saveRDS(lm_fit_Cingulate_2,"../FLX_datasets/GSE84183/DE_CG_GSE84183.rds")
 
-topTable(lm_fit_Cingulate_2)
-#topTable1 <- topTable(lm_fit_Cingulate_2, coef=2)
-
+#view of the overall differential expression between the three groups 
 summary(decideTests(lm_fit_Cingulate_2))
 table(decideTests(lm_fit_Cingulate_2))
 
-#view of the overall differnetial expression between the four groups 
 ```
 
 ```{r Responder DE}
@@ -293,10 +258,10 @@ colnames(design_stress_Cingulate)<- c("Control", "Resistant", "Responder")
 
 lm_fit_Cingulate_stress<- lmFit(gse84_Cingulate_Stress, design_stress_Cingulate)
 contrasts_Cingulate_stress <- makeContrasts(
-Responder - Control, 
-Resistant - Control,
-Responder - Resistant,
-levels = design_stress_Cingulate)  
+  Responder - Control, 
+  Resistant - Control,
+  Responder - Resistant,
+  levels = design_stress_Cingulate)  
 lm_fit_Cingulate_stress_2 <- contrasts.fit(lm_fit_Cingulate_stress, contrasts_Cingulate_stress)
 lm_fit_Cingulate_stress_2 <- eBayes(lm_fit_Cingulate_stress_2)
 
@@ -321,9 +286,12 @@ gse84_genesymbol=arrange(gse84_genesymbol,desc(AvgExpr))%>%filter(!duplicated(sy
 
 ```
 
-```{r}
+```{r GSEA}
 pathways <- read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
 
+CG_DElist=list()
+
+#Treatment GSEA
 head(lm_fit_Cingulate_2$coefficients)
 
 CG_Stress_Control <- topTable(lm_fit_Cingulate_2, coef=1, number = Inf)%>%filter(ID %in% gse84_genesymbol$ID)
@@ -331,69 +299,71 @@ CG_Stress_Control$symbol <- gse84_genesymbol$symbol[match(CG_Stress_Control$ID,g
 CG_Stress_Control <- CG_Stress_Control[!is.na(CG_Stress_Control$symbol),]
 CG_Stress_Control_stat <- CG_Stress_Control$t
 names(CG_Stress_Control_stat) <- CG_Stress_Control$symbol
-fgseaCG_Stress_Control <- fgsea(pathways, CG_Stress_Control_stat, minSize=10)
+fgseaCG_Stress_Control <- fgsea(pathways, CG_Stress_Control_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaCG_Stress_Control,"../FLX_datasets/GSE84183/GSEA_CG_Stress_Control_GSE84183.rds")
-
 
 CG_NoStressFlx_Control <- topTable(lm_fit_Cingulate_2, coef=2, number = Inf)
 CG_NoStressFlx_Control$symbol <- gse84_genesymbol$symbol[match(CG_NoStressFlx_Control$ID,gse84_genesymbol$ID)]
 CG_NoStressFlx_Control <- CG_NoStressFlx_Control[!is.na(CG_NoStressFlx_Control$symbol),]
+CG_DElist$XFTU=CG_NoStressFlx_Control[CG_NoStressFlx_Control$P.Value<0.05,]$GENE_SYMBOL
+CG_DEbackground=CG_NoStressFlx_Control$GENE_SYMBOL
 CG_NoStressFlx_Control_stat <- CG_NoStressFlx_Control$t
 names(CG_NoStressFlx_Control_stat) <- CG_NoStressFlx_Control$symbol
-fgseaCG_NoStressFlx_Control <- fgsea(pathways, CG_NoStressFlx_Control_stat, minSize=10)
+fgseaCG_NoStressFlx_Control <- fgsea(pathways, CG_NoStressFlx_Control_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaCG_NoStressFlx_Control,"../FLX_datasets/GSE84183/GSEA_CG_NoStressFlx_Control_GSE84183.rds")
-
 
 CG_StressFlx_NoStressFlx <- topTable(lm_fit_Cingulate_2, coef=3, number = Inf)
 CG_StressFlx_NoStressFlx$symbol <- gse84_genesymbol$symbol[match(CG_StressFlx_NoStressFlx$ID,gse84_genesymbol$ID)]
 CG_StressFlx_NoStressFlx <- CG_StressFlx_NoStressFlx[!is.na(CG_StressFlx_NoStressFlx$symbol),]
 CG_StressFlx_NoStressFlx_stat <- CG_StressFlx_NoStressFlx$t
 names(CG_StressFlx_NoStressFlx_stat) <- CG_StressFlx_NoStressFlx$symbol
-fgseaCG_StressFlx_NoStressFlx <- fgsea(pathways, CG_StressFlx_NoStressFlx_stat, minSize=10)
+fgseaCG_StressFlx_NoStressFlx <- fgsea(pathways, CG_StressFlx_NoStressFlx_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaCG_StressFlx_NoStressFlx,"../FLX_datasets/GSE84183/GSEA_CG_StressFlx_NoStressFlx_GSE84183.rds")
-
 
 CG_StressFlx_Stress <- topTable(lm_fit_Cingulate_2, coef=4, number = Inf)
 CG_StressFlx_Stress$symbol <- gse84_genesymbol$symbol[match(CG_StressFlx_Stress$ID,gse84_genesymbol$ID)]
 CG_StressFlx_Stress <- CG_StressFlx_Stress[!is.na(CG_StressFlx_Stress$symbol),]
+CG_DElist$SFTU=CG_StressFlx_Stress[CG_StressFlx_Stress$P.Value<0.05,]$GENE_SYMBOL
 CG_StressFlx_Stress_stat <- CG_StressFlx_Stress$t
 names(CG_StressFlx_Stress_stat) <- CG_StressFlx_Stress$symbol
-fgseaCG_StressFlx_Stress <- fgsea(pathways, CG_StressFlx_Stress_stat, minSize=10)
+fgseaCG_StressFlx_Stress <- fgsea(pathways, CG_StressFlx_Stress_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaCG_StressFlx_Stress,"../FLX_datasets/GSE84183/GSEA_CG_StressFlx_Stress_GSE84183.rds")
 
-
-```
-
-```{r}
-pathways <- read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+#Responder GSEA
 head(lm_fit_Cingulate_stress_2$coefficients)
 
 CG_Responder_Control <- topTable(lm_fit_Cingulate_stress_2, coef=1, number = Inf) %>% 
   filter(ID %in% gse84_genesymbol$ID)
 CG_Responder_Control$symbol <- gse84_genesymbol$symbol[match(CG_Responder_Control$ID,gse84_genesymbol$ID)]
 CG_Responder_Control <- CG_Responder_Control[!is.na(CG_Responder_Control$symbol),]
+CG_DElist$SFRC=CG_Responder_Control[CG_Responder_Control$P.Value<0.05,]$GENE_SYMBOL
 CG_Responder_Control_stat <- CG_Responder_Control$t
 names(CG_Responder_Control_stat) <- CG_Responder_Control$symbol
-fgseaCG_Responder_Control <- fgsea(pathways, CG_Responder_Control_stat, minSize=10)
+fgseaCG_Responder_Control <- fgsea(pathways, CG_Responder_Control_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaCG_Responder_Control,"../FLX_datasets/GSE84183/GSEA_CG_Responder_Control_GSE84183.rds")
 
 CG_Resistant_Control <- topTable(lm_fit_Cingulate_stress_2, coef=2, number = Inf) %>% 
   filter(ID %in% gse84_genesymbol$ID)
 CG_Resistant_Control$symbol <- gse84_genesymbol$symbol[match(CG_Resistant_Control$ID,gse84_genesymbol$ID)]
 CG_Resistant_Control <- CG_Resistant_Control[!is.na(CG_Resistant_Control$symbol),]
+CG_DElist$SFNC=CG_Resistant_Control[CG_Resistant_Control$P.Value<0.05,]$GENE_SYMBOL
 CG_Resistant_Control_stat <- CG_Resistant_Control$t
 names(CG_Resistant_Control_stat) <- CG_Resistant_Control$symbol
-fgseaCG_Resistant_Control <- fgsea(pathways, CG_Resistant_Control_stat, minSize=10)
+fgseaCG_Resistant_Control <- fgsea(pathways, CG_Resistant_Control_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaCG_Resistant_Control,"../FLX_datasets/GSE84183/GSEA_CG_Resistant_Control_GSE84183.rds")
 
 CG_Responder_Resistant <- topTable(lm_fit_Cingulate_stress_2, coef=3, number = Inf) %>% 
   filter(ID %in% gse84_genesymbol$ID)
 CG_Responder_Resistant$symbol <- gse84_genesymbol$symbol[match(CG_Responder_Resistant$ID,gse84_genesymbol$ID)]
 CG_Responder_Resistant <- CG_Responder_Resistant[!is.na(CG_Responder_Resistant$symbol),]
+CG_DElist$SFRN=CG_Responder_Resistant[CG_Responder_Resistant$P.Value<0.05,]$GENE_SYMBOL
 CG_Responder_Resistant_stat <- CG_Responder_Resistant$t
 names(CG_Responder_Resistant_stat) <- CG_Responder_Resistant$symbol
-fgseaCG_Responder_Resistant <- fgsea(pathways, CG_Responder_Resistant_stat, minSize=10)
+fgseaCG_Responder_Resistant <- fgsea(pathways, CG_Responder_Resistant_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaCG_Responder_Resistant,"../FLX_datasets/GSE84183/GSEA_CG_Responder_Resistant_GSE84183.rds")
+
+write.table(t(plyr::ldply(CG_DElist,rbind)),"../FLX_datasets/GSE84183/GSE84183-CG_DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(CG_DEbackground,"../FLX_datasets/GSE84183/GSE84183-CG_DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
 
 ```
 
@@ -401,54 +371,35 @@ saveRDS(fgseaCG_Responder_Resistant,"../FLX_datasets/GSE84183/GSEA_CG_Responder_
 
 ```{r}
 quantile(exprs(gse84_Blood))
-
 exprs_cutoff_Blood<- 4.654816
-
 genes_expressed_Blood <- exprs(gse84_Blood) > exprs_cutoff_Blood
-
 genes_retained_Blood<- rowSums(genes_expressed_Blood)>3
-
 table(genes_retained_Blood) 
 table(rowSums(genes_expressed_Blood))
-dim(genes_expressed_Blood)
 
 ```
 
-```{r}
+```{r Treatment DE}
 design_data_Blood<- model.matrix( ~0 +sampledata_Blood$source_name_ch1)
-# creating a matrix from treatment_group
-
 colnames(design_data_Blood)<- c("Control", "Unstressed_Fluoxetine_Treated", "Stressed_Fluoxetine_Treated", "Stressed")
-#changing column names (treated with fluoxitine)
-
-design_data_Blood
 
 lm_fit_Blood<- lmFit(gse84_Blood, design_data_Blood)
-
-head(lm_fit_Blood$coefficients)
-
 contrasts_Blood <- makeContrasts(
-Stressed - Control, 
-Unstressed_Fluoxetine_Treated - Control,
-Stressed_Fluoxetine_Treated - Unstressed_Fluoxetine_Treated,
-Stressed_Fluoxetine_Treated - Stressed,
-levels = design_data_Blood)  
-
-#comparsions between the genes of the four groups 
-
+  Stressed - Control, 
+  Unstressed_Fluoxetine_Treated - Control,
+  Stressed_Fluoxetine_Treated - Unstressed_Fluoxetine_Treated,
+  Stressed_Fluoxetine_Treated - Stressed,
+  Diff=(Stressed_Fluoxetine_Treated - Stressed)-(Unstressed_Fluoxetine_Treated - Control),
+  levels = design_data_Blood)  
 lm_fit_Blood_2 <- contrasts.fit(lm_fit_Blood, contrasts_Blood)
 lm_fit_Blood_2 <- eBayes(lm_fit_Blood_2)
 
 saveRDS(lm_fit_Blood_2,"../FLX_datasets/GSE84184/DE_Blood_GSE84184.rds")
 
-topTable(lm_fit_Blood_2)
-#topTable1 <- topTable(lm_fit_Blood_2, coef=1)
-
-
+#view of the overall differential expression between the three groups 
 summary(decideTests(lm_fit_Blood_2))
 table(decideTests(lm_fit_Blood_2))
 
-#view of the overall differnetial expression between the four groups 
 ```
 
 ```{r Responder DE}
@@ -485,9 +436,12 @@ gse84_genesymbol=arrange(gse84_genesymbol,desc(AvgExpr))%>%filter(!duplicated(sy
 
 ```
 
-```{r}
+```{r GSEA}
 pathways <- read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
 
+BL_DElist=list()
+
+#Treatment GSEA
 head(lm_fit_Blood_2$coefficients)
 
 BL_Stress_Control <- topTable(lm_fit_Blood_2, coef=1, number = Inf)%>%filter(ID %in% gse84_genesymbol$ID)
@@ -495,92 +449,70 @@ BL_Stress_Control$symbol <- gse84_genesymbol$symbol[match(BL_Stress_Control$ID,g
 BL_Stress_Control <- BL_Stress_Control[!is.na(BL_Stress_Control$symbol),]
 BL_Stress_Control_stat <- BL_Stress_Control$t
 names(BL_Stress_Control_stat) <- BL_Stress_Control$symbol
-fgseaBL_Stress_Control <- fgsea(pathways, BL_Stress_Control_stat, minSize=10)
+fgseaBL_Stress_Control <- fgsea(pathways, BL_Stress_Control_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaBL_Stress_Control,"../FLX_datasets/GSE84184/GSEA_BL_Stress_Control_GSE84184.rds")
-
 
 BL_NoStressFlx_Control <- topTable(lm_fit_Blood_2, coef=2, number = Inf)
 BL_NoStressFlx_Control$symbol <- gse84_genesymbol$symbol[match(BL_NoStressFlx_Control$ID,gse84_genesymbol$ID)]
 BL_NoStressFlx_Control <- BL_NoStressFlx_Control[!is.na(BL_NoStressFlx_Control$symbol),]
+BL_DElist$XFTU=BL_NoStressFlx_Control[BL_NoStressFlx_Control$P.Value<0.05,]$GENE_SYMBOL
+BL_DEbackground=BL_NoStressFlx_Control$GENE_SYMBOL
 BL_NoStressFlx_Control_stat <- BL_NoStressFlx_Control$t
 names(BL_NoStressFlx_Control_stat) <- BL_NoStressFlx_Control$symbol
-fgseaBL_NoStressFlx_Control <- fgsea(pathways, BL_NoStressFlx_Control_stat, minSize=10)
+fgseaBL_NoStressFlx_Control <- fgsea(pathways, BL_NoStressFlx_Control_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaBL_NoStressFlx_Control,"../FLX_datasets/GSE84184/GSEA_BL_NoStressFlx_Control_GSE84184.rds")
-
 
 BL_StressFlx_NoStressFlx <- topTable(lm_fit_Blood_2, coef=3, number = Inf)
 BL_StressFlx_NoStressFlx$symbol <- gse84_genesymbol$symbol[match(BL_StressFlx_NoStressFlx$ID,gse84_genesymbol$ID)]
 BL_StressFlx_NoStressFlx <- BL_StressFlx_NoStressFlx[!is.na(BL_StressFlx_NoStressFlx$symbol),]
 BL_StressFlx_NoStressFlx_stat <- BL_StressFlx_NoStressFlx$t
 names(BL_StressFlx_NoStressFlx_stat) <- BL_StressFlx_NoStressFlx$symbol
-fgseaBL_StressFlx_NoStressFlx <- fgsea(pathways, BL_StressFlx_NoStressFlx_stat, minSize=10)
+fgseaBL_StressFlx_NoStressFlx <- fgsea(pathways, BL_StressFlx_NoStressFlx_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaBL_StressFlx_NoStressFlx,"../FLX_datasets/GSE84184/GSEA_BL_StressFlx_NoStressFlx_GSE84184.rds")
-
 
 BL_StressFlx_Stress <- topTable(lm_fit_Blood_2, coef=4, number = Inf)
 BL_StressFlx_Stress$symbol <- gse84_genesymbol$symbol[match(BL_StressFlx_Stress$ID,gse84_genesymbol$ID)]
 BL_StressFlx_Stress <- BL_StressFlx_Stress[!is.na(BL_StressFlx_Stress$symbol),]
+BL_DElist$SFTU=BL_StressFlx_Stress[BL_StressFlx_Stress$P.Value<0.05,]$GENE_SYMBOL
 BL_StressFlx_Stress_stat <- BL_StressFlx_Stress$t
 names(BL_StressFlx_Stress_stat) <- BL_StressFlx_Stress$symbol
-fgseaBL_StressFlx_Stress <- fgsea(pathways, BL_StressFlx_Stress_stat, minSize=10)
+fgseaBL_StressFlx_Stress <- fgsea(pathways, BL_StressFlx_Stress_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaBL_StressFlx_Stress,"../FLX_datasets/GSE84184/GSEA_BL_StressFlx_Stress_GSE84184.rds")
 
-
-```
-
-```{r}
-pathways <- read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+#Responder GSEA
 head(lm_fit_Blood_stress_2$coefficients)
 
 BL_Responder_Control <- topTable(lm_fit_Blood_stress_2, coef=1, number = Inf) %>% 
   filter(ID %in% gse84_genesymbol$ID)
 BL_Responder_Control$symbol <- gse84_genesymbol$symbol[match(BL_Responder_Control$ID,gse84_genesymbol$ID)]
 BL_Responder_Control <- BL_Responder_Control[!is.na(BL_Responder_Control$symbol),]
+BL_DElist$SFRC=BL_Responder_Control[BL_Responder_Control$P.Value<0.05,]$GENE_SYMBOL
 BL_Responder_Control_stat <- BL_Responder_Control$t
 names(BL_Responder_Control_stat) <- BL_Responder_Control$symbol
-fgseaBL_Responder_Control <- fgsea(pathways, BL_Responder_Control_stat, minSize=10)
+fgseaBL_Responder_Control <- fgsea(pathways, BL_Responder_Control_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaBL_Responder_Control,"../FLX_datasets/GSE84184/GSEA_BL_Responder_Control_GSE84184.rds")
 
 BL_Resistant_Control <- topTable(lm_fit_Blood_stress_2, coef=2, number = Inf) %>% 
   filter(ID %in% gse84_genesymbol$ID)
 BL_Resistant_Control$symbol <- gse84_genesymbol$symbol[match(BL_Resistant_Control$ID,gse84_genesymbol$ID)]
 BL_Resistant_Control <- BL_Resistant_Control[!is.na(BL_Resistant_Control$symbol),]
+BL_DElist$SFNC=BL_Resistant_Control[BL_Resistant_Control$P.Value<0.05,]$GENE_SYMBOL
 BL_Resistant_Control_stat <- BL_Resistant_Control$t
 names(BL_Resistant_Control_stat) <- BL_Resistant_Control$symbol
-fgseaBL_Resistant_Control <- fgsea(pathways, BL_Resistant_Control_stat, minSize=10)
+fgseaBL_Resistant_Control <- fgsea(pathways, BL_Resistant_Control_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaBL_Resistant_Control,"../FLX_datasets/GSE84184/GSEA_BL_Resistant_Control_GSE84184.rds")
 
 BL_Responder_Resistant <- topTable(lm_fit_Blood_stress_2, coef=3, number = Inf) %>% 
   filter(ID %in% gse84_genesymbol$ID)
 BL_Responder_Resistant$symbol <- gse84_genesymbol$symbol[match(BL_Responder_Resistant$ID,gse84_genesymbol$ID)]
 BL_Responder_Resistant <- BL_Responder_Resistant[!is.na(BL_Responder_Resistant$symbol),]
+BL_DElist$SFRN=BL_Responder_Resistant[BL_Responder_Resistant$P.Value<0.05,]$GENE_SYMBOL
 BL_Responder_Resistant_stat <- BL_Responder_Resistant$t
 names(BL_Responder_Resistant_stat) <- BL_Responder_Resistant$symbol
-fgseaBL_Responder_Resistant <- fgsea(pathways, BL_Responder_Resistant_stat, minSize=10)
+fgseaBL_Responder_Resistant <- fgsea(pathways, BL_Responder_Resistant_stat, minSize=10, nPermSimple=10000)
 saveRDS(fgseaBL_Responder_Resistant,"../FLX_datasets/GSE84184/GSEA_BL_Responder_Resistant_GSE84184.rds")
 
-```
+write.table(t(plyr::ldply(BL_DElist,rbind)),"../FLX_datasets/GSE84184/GSE84184-BL_DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(BL_DEbackground,"../FLX_datasets/GSE84184/GSE84184-BL_DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
 
-
-Overall Diff Expression Results for Cingulate, Dentate, and Whole Blood 
-
-```{r}
-summary(decideTests(lm_fit_Dentate_2))
-table(decideTests(lm_fit_Dentate_2))
-
-#view of the overall differnetial expression between the three groups 
-```
-
-```{r}
-summary(decideTests(lm_fit_Cingulate_2))
-table(decideTests(lm_fit_Cingulate_2))
-
-#view of the overall differnetial expression between the four groups 
-```
-
-```{r}
-summary(decideTests(lm_fit_Blood_2))
-table(decideTests(lm_fit_Blood_2))
-
-#view of the overall differnetial expression between the four groups 
 ```

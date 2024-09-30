@@ -1,0 +1,240 @@
+---
+title: "MaxP_bargraphs"
+author: "Caleb Class"
+date: "2024-01-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(plotly)
+
+source("../FLX RMD/read_cpdb_tab.R")
+reactome_hs <- readRDS("../FLX RMD/Reactome_HS_withTopLevel.rds")
+cpdb <- read_cpdb_tab("../FLX RMD/CPDB_pathways_genes_mouse.tab")
+#names(cpdb) <- gsub(" \\|.*| \\- Mus.*", "", names(cpdb))
+npgColors <- readRDS("../npgColors.rds")
+npgFill <- readRDS("../npgFill.rds")
+```
+
+
+## Responder vs. non-responder
+
+```{r, fig.width = 9, fig.height = 5}
+
+
+
+# Resp v. NR
+dat <- readRDS("../MetaDE RDS/AllSFRNgsea.rds")
+
+pvals <- dat[,1:9]
+summariesRN <- dat[,10:15]
+
+
+summariesRN$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summariesRN$Pathway), reactome_hs$Name)]
+summariesRN$ReactomeTop <- reactome_hs$top_level_name[match(summariesRN$ReactomeID, reactome_hs$ID)]
+
+# This shows the categories of pathways with q < 0.05 by P-Max
+table(summariesRN$ReactomeTop[summariesRN$Max < 0.05])
+
+RN.signif <- summariesRN[summariesRN$Max < 0.05, ]
+RN.signif$ReactomeTop[is.na(RN.signif$ReactomeTop)] <- "KEGG Database"
+RN.signif$Pathway <- gsub(" \\|.*", "", RN.signif$Pathway)
+
+RN.ord <- RN.signif %>% arrange(Max) %>%
+  mutate(Pathway_let = paste0(Pathway, " (", letters[1:length(Pathway)], ")")) %>%
+  mutate(Pathway_let = factor(Pathway_let, levels = rev(Pathway_let)),
+         ReactomeTop = factor(ReactomeTop, levels = names(npgColors)))
+
+ggplot(RN.ord, aes(x = -log10(Max), y = Pathway_let)) +
+  geom_col(aes(fill = ReactomeTop), color = "black", size = 1) + 
+  geom_vline(xintercept = -log10(0.05), linetype = "dashed", linewidth = 1, color = "#DC0000") +
+  geom_point(aes(x = -log10(Max) + 0.35, color = Vote), size = 6, show.legend = FALSE) +
+  geom_text(aes(x = -log10(Max) + 0.35, y = Pathway_let, label = Vote), color = "white", fontface = "bold") +
+  scale_color_gradient2(low = "blue",high = "red", mid = "gray30", breaks = c(-5, 0, 3), minor_breaks = -5:5) +
+  xlab("-log10(q)") + ylab("") +
+  xlim(0, 4.8) +
+  theme(axis.text.y = element_text(size = 8.5)) +
+  npgFill +
+  guides(fill = guide_legend(title = "Pathway Category")) +
+  theme_classic()
+ggsave("../Figures/GSEA/AllSFRNgsea/RN_pathways_pmax_bar.tiff", width = 9, height = 5)
+
+```
+
+## Treated vs. untreated (all)
+
+```{r, fig.width = 6.3, fig.height = 3}
+
+dat <- readRDS("../MetaDE RDS/AllFTUgsea.rds")
+
+pvals <- dat[,1:55]
+summaries <- dat[,56:61]
+
+summaries$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summaries$Pathway), reactome_hs$Name)]
+summaries$ReactomeTop <- reactome_hs$top_level_name[match(summaries$ReactomeID, reactome_hs$ID)]
+table(summaries$ReactomeTop[summaries$Max < 0.05])
+
+
+TU.signif <- summaries[summaries$Max < 0.05, ]
+TU.signif$ReactomeTop[is.na(TU.signif$ReactomeTop)] <- "KEGG Database"
+TU.signif$Pathway <- gsub(" \\|.*", "", TU.signif$Pathway)
+
+
+TU.ord <- TU.signif %>% arrange(Max) %>%
+  mutate(Pathway_let = paste0(Pathway, " (", letters[1:length(Pathway)], ")")) %>%
+  mutate(Pathway_let = factor(Pathway_let, levels = rev(Pathway_let)),
+         ReactomeTop = factor(ReactomeTop, levels = names(npgColors)))
+
+
+ggplot(TU.ord, aes(x = -log10(Max), y = Pathway_let)) +
+  geom_col(aes(fill = ReactomeTop), color = "black", size = 1) + 
+  geom_vline(xintercept = -log10(0.05), linetype = "dashed", linewidth = 1, color = "#DC0000") +
+  geom_point(aes(x = -log10(Max) + 0.7, color = Vote), size = 6, show.legend = FALSE) +
+  geom_text(aes(x = -log10(Max) + 0.7, y = Pathway_let, label = Vote), size = 3, color = "white", fontface = "bold") +
+  scale_color_gradient2(low = "blue",high = "red", mid = "gray30", breaks = c(-5, 0, 3), minor_breaks = -5:5) +
+  xlab("-log10(q)") + ylab("") +
+  xlim(0, 4.2) +
+  theme(axis.text.y = element_text(size = 8.5)) +
+  npgFill +
+  guides(fill = guide_legend(title = "Pathway Category")) +
+  theme_classic()
+  
+ggsave("../Figures/GSEA/AllFTUgsea/AllTU_pathways_pmax_bar.tiff", width = 6.3, height = 3)
+
+```
+
+
+## Treated vs. untreated (stressed)
+
+
+```{r, fig.width = 12, fig.height = 16}
+dat <- readRDS("../MetaDE RDS/AllSFTUgsea.rds")
+
+pvals <- dat[,1:13]
+summariesS <- dat[,14:19]
+
+
+summariesS$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summariesS$Pathway), reactome_hs$Name)]
+summariesS$ReactomeTop <- reactome_hs$top_level_name[match(summariesS$ReactomeID, reactome_hs$ID)]
+table(summariesS$ReactomeTop[summariesS$Max < 0.05])
+
+
+STU.signif <- summariesS[summariesS$Max < 0.05, ]
+STU.signif$ReactomeTop[is.na(STU.signif$ReactomeTop)] <- "KEGG Database"
+STU.signif$ReactomeTop[!(STU.signif$ReactomeTop %in% names(npgColors))] <- "Other Reactome"
+STU.signif$Pathway <- gsub(" \\|.*", "", STU.signif$Pathway)
+
+STU.ord <- STU.signif %>% arrange(Max) %>%
+  mutate(Pathway = factor(Pathway, levels = rev(Pathway)),
+         ReactomeTop = factor(ReactomeTop, levels = names(npgColors)))
+
+
+ggplot(STU.ord, aes(x = -log10(Max), y = Pathway)) +
+  geom_col(aes(fill = ReactomeTop), color = "black", size = 1) + 
+  geom_vline(xintercept = -log10(0.05), linetype = "dashed", linewidth = 1, color = "#DC0000") +
+  geom_point(aes(x = -log10(Max) + 0.4, color = Vote), size = 6, show.legend = FALSE) +
+  geom_text(aes(x = -log10(Max) + 0.4, y = Pathway, label = Vote), size = 4, color = "white", fontface = "bold") +
+  scale_color_gradient2(low = "blue",high = "red", mid = "gray30", breaks = c(-5, 0, 3), minor_breaks = -5:5) +
+  xlab("-log10(q)") + ylab("") +
+  xlim(0, 8) +
+  theme(axis.text.y = element_text(size = 8.5)) +
+  npgFill +
+  guides(fill = guide_legend(title = "Pathway Category")) +
+  theme_classic()
+
+ggsave("../Figures/GSEA/AllSFTUgsea/AllSTU_pathways_pmax_bar.tiff", width = 12, height = 16)
+
+```
+
+Only showing pathways with absolute vote sums of 3 or greater
+
+```{r, fig.width = 6, fig.height = 6}
+
+STU.ord2 <- STU.signif %>% arrange(Max) %>%
+  filter(abs(Vote) >= 3) %>%
+  mutate(Pathway_let = paste0(Pathway, " (", letters[1:length(Pathway)], ")")) %>%
+  mutate(Pathway_let = factor(Pathway_let, levels = rev(Pathway_let)),
+         ReactomeTop = factor(ReactomeTop, levels = names(npgColors)))
+
+ggplot(STU.ord2, aes(x = -log10(Max), y = Pathway_let)) +
+  geom_col(aes(fill = ReactomeTop), color = "black", size = 1) + 
+  geom_vline(xintercept = -log10(0.05), linetype = "dashed", linewidth = 1, color = "#DC0000") +
+  geom_point(aes(x = -log10(Max) + 0.45, color = Vote), size = 6, show.legend = FALSE) +
+  geom_text(aes(x = -log10(Max) + 0.45, y = Pathway_let, label = Vote), size = 3, color = "white", fontface = "bold") +
+  scale_color_gradient2(low = "blue",high = "red", mid = "gray30", breaks = c(-5, 0, 3), minor_breaks = -5:5) +
+  xlab("-log10(q)") + ylab("") +
+  xlim(0, 8) +
+  npgFill +
+  guides(fill = guide_legend(title = "Pathway Category")) +
+  theme_classic() +
+  theme(axis.text.y = element_text(size = 8.5),
+        legend.position = c(0.7, 0.2)) 
+
+ggsave("../Figures/GSEA/AllSFTUgsea/AllSTU_pathways_pmax_bar_Vote3.tiff", width = 6, height = 6)
+```
+
+## Treated vs. untreated (unstressed)
+
+```{r, fig.width = 6, fig.height = 3}
+
+dat <- readRDS("../MetaDE RDS/AllXFTUgsea.rds")
+
+pvals <- dat[,1:42]
+summariesX <- dat[,43:48]
+
+summariesX$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summariesX$Pathway), reactome_hs$Name)]
+summariesX$ReactomeTop <- reactome_hs$top_level_name[match(summariesX$ReactomeID, reactome_hs$ID)]
+table(summariesX$ReactomeTop[summariesX$Max < 0.05])
+
+XTU.signif <- summariesX[summariesX$Max < 0.05, ]
+XTU.signif$ReactomeTop[is.na(XTU.signif$ReactomeTop)] <- "KEGG Database"
+XTU.signif$Pathway <- gsub(" \\|.*", "", XTU.signif$Pathway)
+
+XTU.ord <- XTU.signif %>% arrange(Max) %>%
+  mutate(Pathway = factor(Pathway, levels = rev(Pathway)),
+         ReactomeTop = factor(ReactomeTop, levels = names(npgColors)))
+
+ggplot(XTU.ord, aes(x = -log10(Max), y = Pathway)) +
+  geom_col(aes(fill = ReactomeTop), color = "black", size = 1) + 
+  geom_vline(xintercept = -log10(0.05), linetype = "dashed", linewidth = 1, color = "#DC0000") +
+  geom_point(aes(x = -log10(Max) + 0.7, color = Vote), size = 6, show.legend = FALSE) +
+  geom_text(aes(x = -log10(Max) + 0.7, y = Pathway, label = Vote), size = 3, color = "white", fontface = "bold") +
+  scale_color_gradient2(low = "blue",high = "red", mid = "gray30", breaks = c(-5, 0, 3), minor_breaks = -5:5) +
+  xlab("-log10(q)") + ylab("") +
+  xlim(0, 3.2) +
+  theme(axis.text.y = element_text(size = 8.5)) +
+  npgFill +
+  guides(fill = guide_legend(title = "Pathway Category")) +
+  theme_classic()
+ggsave("../Figures/GSEA/AllXFTUgsea/AllXTU_pathways_pmax_bar.tiff", width = 6, height = 3)
+
+
+```
+
+
+Summarize overlapping pathways from FTU comparisons
+
+```{r}
+
+summariesCompare <- merge(summaries, summariesS, by = "Pathway", suffixes = c(".full", ".stress"), all = FALSE)
+summariesCompare <- merge(summariesCompare, summariesX, by = "Pathway", all = FALSE)
+
+library(VennDiagram)
+venn.diagram(x = list("Full Set" = summariesCompare$Pathway[summariesCompare$Max.full < 0.05],
+                      "Stressed Only" = summariesCompare$Pathway[summariesCompare$Max.stress < 0.05],
+                      "Unstressed Only" = summariesCompare$Pathway[summariesCompare$Max < 0.05]),
+             filename = "../Figures/ComparisonFigures/venn_TU-STU-XTU_pmax.tiff",
+             height=2500, width=2500)
+venn.diagram(x = list("Full Set" = summariesCompare$Pathway[summariesCompare$Fish.full < 0.05],
+                      "Stressed Only" = summariesCompare$Pathway[summariesCompare$Fish.stress < 0.05],
+                      "Unstressed Only" = summariesCompare$Pathway[summariesCompare$Fish < 0.05]),
+             filename = "../Figures/ComparisonFigures/venn_TU-STU-XTU_fish.tiff",
+             height=2500, width=2500)
+
+
+```
+
+
+
+

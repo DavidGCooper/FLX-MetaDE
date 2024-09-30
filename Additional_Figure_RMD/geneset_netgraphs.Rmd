@@ -1,0 +1,213 @@
+---
+title: "Gene set similarity"
+author: "Caleb Class"
+date: "2023-12-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(igraph)
+library(tidyverse)
+
+source("../FLX RMD/read_cpdb_tab.R")
+reactome_hs <- readRDS("../FLX RMD/Reactome_HS_withTopLevel.rds")
+cpdb <- read_cpdb_tab("../FLX RMD/CPDB_pathways_genes_mouse.tab")
+names(cpdb) <- gsub(" \\|.*| \\- Mus.*", "", names(cpdb))
+npgColors <- readRDS("../npgColors.rds")
+npgFill <- readRDS("../npgFill.rds")
+```
+
+
+**Responder vs. Non-responder** Gene sets to adjacency matrix to network graph
+
+```{r}
+
+dat <- readRDS("../MetaDE RDS/AllSFRNgsea.rds")
+summariesRN <- dat[,10:15]
+summariesRN$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summariesRN$Pathway), reactome_hs$Name)]
+summariesRN$ReactomeTop <- reactome_hs$top_level_name[match(summariesRN$ReactomeID, reactome_hs$ID)]
+
+RN.signif <- summariesRN[summariesRN$Max < 0.05, ]
+RN.signif$ReactomeTop[is.na(RN.signif$ReactomeTop)] <- "KEGG Database"
+RN.signif$Pathway <- gsub(" \\|.*", "", RN.signif$Pathway)
+
+RN.signif <- RN.signif %>% arrange(Max) %>%
+  mutate(Pathway_let = letters[1:length(Pathway)])
+
+cpdb.signif <- cpdb[RN.signif$Pathway]
+summary(sapply(cpdb.signif, length))
+
+cpdb.mat <- t(table(stack(cpdb.signif)))
+jac.mat <- as.matrix(1-dist(cpdb.mat, method = "binary"))
+jac.mat[jac.mat < 0.01] <- 0
+
+network <- graph_from_adjacency_matrix(jac.mat, weighted = TRUE, mode = "undirected", diag = FALSE)
+
+vertex_cols <- as.character(npgColors[RN.signif$ReactomeTop])
+vertex_size <- (sapply(cpdb.signif, length))^.5
+vertex_lab <- RN.signif$Pathway_let
+
+size_legend <- c(20,200,2000)
+size_scale <- size_legend^0.5
+
+set.seed(123)
+tiff("../Figures/GSEA/AllSFRNgsea/RN_igraph.tiff", height = 1000, width = 1000)
+plot(network,
+     vertex.color = vertex_cols,
+     vertex.label = vertex_lab,
+     vertex.label.cex = 2,
+     vertex.label.color = "black",
+     vertex.size = vertex_size,
+     vertex.frame.color = "black")
+
+dev.off()
+
+```
+
+
+
+```{r}
+
+cpdb_rowannot <- data.frame(row.names = RN.signif$Pathway, 
+                            Top_Level = RN.signif$ReactomeTop)
+pheatmap::pheatmap(cpdb.mat, color = c("white", "black"),
+                   show_colnames = FALSE,
+                   annotation_row = cpdb_rowannot,
+                   filename = "../Figures/GSEA/AllSFRNgsea/RN_overlapHM.tiff",
+                   height = 5, width = 11,
+                   fontsize_row = 8)
+
+```
+
+```{r}
+
+cpdb_rowannot <- data.frame(row.names = RN.signif$Pathway, 
+                            Top_Level = RN.signif$ReactomeTop)
+pheatmap::pheatmap(cpdb.mat[,colSums(cpdb.mat) >= 2], color = c("white", "black"),
+                   show_colnames = FALSE,
+                   annotation_row = cpdb_rowannot,
+                   filename = "../Figures/GSEA/AllSFRNgsea/RN_overlapHM_atLeast2.tiff",
+                   height = 5, width = 10,
+                   fontsize_row = 8)
+
+```
+
+
+**Treated vs. untreated (stressed)** Gene sets to adjacency matrix to network graph
+
+```{r}
+
+dat <- readRDS("../MetaDE RDS/AllSFTUgsea.rds")
+summariesTU <- dat[,14:19]
+summariesTU$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summariesTU$Pathway), reactome_hs$Name)]
+summariesTU$ReactomeTop <- reactome_hs$top_level_name[match(summariesTU$ReactomeID, reactome_hs$ID)]
+
+TU.signif <- summariesTU[summariesTU$Max < 0.05 & abs(summariesTU$Vote) >= 3, ]
+TU.signif$ReactomeTop[is.na(TU.signif$ReactomeTop)] <- "KEGG Database"
+TU.signif$ReactomeTop[!(TU.signif$ReactomeTop %in% names(npgColors))] <- "Other Reactome"
+TU.signif$Pathway <- gsub(" \\|.*", "", TU.signif$Pathway)
+
+TU.signif <- TU.signif %>% arrange(Max) %>%
+  mutate(Pathway_let = letters[1:length(Pathway)])
+
+cpdb.signif <- cpdb[TU.signif$Pathway]
+cpdb.mat <- t(table(stack(cpdb.signif)))
+jac.mat <- as.matrix(1-dist(cpdb.mat, method = "binary"))
+jac.mat[jac.mat < 0.05] <- 0
+
+network <- graph_from_adjacency_matrix(jac.mat, weighted = TRUE, mode = "undirected", diag = FALSE)
+
+vertex_cols <- as.character(npgColors[TU.signif$ReactomeTop])
+vertex_size <- ((sapply(cpdb.signif, length))^.5)*.5
+vertex_lab <- TU.signif$Pathway_let
+
+set.seed(123)
+tiff("../Figures/GSEA/AllSFTUgsea/STU_igraph.tiff", height = 1000, width = 1000)
+plot(network,
+     vertex.color = vertex_cols,
+     vertex.label = vertex_lab,
+     vertex.label.cex = 2,
+     vertex.label.color = "black",
+     vertex.label.dist = sqrt(vertex_size/6),
+     vertex.size = vertex_size,
+     vertex.frame.color = "black")
+dev.off()
+
+```
+
+
+```{r}
+
+cpdb_rowannot <- data.frame(row.names = TU.signif$Pathway, 
+                            Top_Level = TU.signif$ReactomeTop)
+rownames(cpdb.mat) <- substr(rownames(cpdb.mat), 1, 70)
+rownames(cpdb_rowannot) <- substr(rownames(cpdb_rowannot), 1, 70)
+
+pheatmap::pheatmap(cpdb.mat, color = c("white", "black"),
+                   show_colnames = FALSE,
+                   annotation_row = cpdb_rowannot,
+                   filename = "../Figures/GSEA/AllSFTUgsea/STU_overlapHM.tiff",
+                   height = 10, width = 14,
+                   fontsize_row = 8)
+
+```
+
+**Treated vs. untreated (all)** Gene sets to adjacency matrix to network graph
+
+```{r}
+
+dat <- readRDS("../MetaDE RDS/AllFTUgsea.rds")
+summariesTU <- dat[,56:61]
+summariesTU$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summariesTU$Pathway), reactome_hs$Name)]
+summariesTU$ReactomeTop <- reactome_hs$top_level_name[match(summariesTU$ReactomeID, reactome_hs$ID)]
+
+TU.signif <- summariesTU[summariesTU$Max < 0.05, ]
+TU.signif$ReactomeTop[is.na(TU.signif$ReactomeTop)] <- "KEGG Database"
+TU.signif$ReactomeTop[!(TU.signif$ReactomeTop %in% names(npgColors))] <- "Other Reactome"
+TU.signif$Pathway <- gsub(" \\|.*", "", TU.signif$Pathway)
+
+TU.signif <- TU.signif %>% arrange(Max) %>%
+  mutate(Pathway_let = letters[1:length(Pathway)])
+
+cpdb.signif <- cpdb[TU.signif$Pathway]
+cpdb.mat <- t(table(stack(cpdb.signif)))
+jac.mat <- as.matrix(1-dist(cpdb.mat, method = "binary"))
+jac.mat[jac.mat < 0.01] <- 0
+
+network <- graph_from_adjacency_matrix(jac.mat, weighted = TRUE, mode = "undirected", diag = FALSE)
+
+vertex_cols <- as.character(npgColors[TU.signif$ReactomeTop])
+vertex_size <- ((sapply(cpdb.signif, length))^.5)
+vertex_lab <- TU.signif$Pathway_let
+
+set.seed(123)
+tiff("../Figures/GSEA/AllFTUgsea/TU_igraph.tiff", height = 700, width = 700)
+plot(network,
+     vertex.color = vertex_cols,
+     vertex.label = vertex_lab,
+     vertex.label.cex = 2,
+     vertex.label.color = "black",
+     vertex.label.dist = sqrt(vertex_size/6),
+     vertex.size = vertex_size,
+     vertex.frame.color = "black")
+dev.off()
+
+```
+
+```{r}
+
+cpdb_rowannot <- data.frame(row.names = TU.signif$Pathway, 
+                            Top_Level = TU.signif$ReactomeTop)
+#rownames(cpdb.mat) <- substr(rownames(cpdb.mat), 1, 70)
+#rownames(cpdb_rowannot) <- substr(rownames(cpdb_rowannot), 1, 70)
+
+pheatmap::pheatmap(cpdb.mat, color = c("white", "black"),
+                   show_colnames = FALSE,
+                   annotation_row = cpdb_rowannot,
+                   filename = "../Figures/GSEA/AllFTUgsea/TU_overlapHM.tiff",
+                   height = 4, width = 8,
+                   fontsize_row = 10)
+
+```

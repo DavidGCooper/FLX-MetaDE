@@ -26,6 +26,7 @@ Use GEOquery to obtain the GEO series GSE83386. GSEMatrix=FALSE will pull out al
 https://bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html
 
 ```{r Get ExpressionSets}
+set.seed(123)
 GSEname="GSE83386"
 GSE83386=getGEO(GSEname)
 exGSE83386=GSE83386[[1]]
@@ -45,7 +46,6 @@ qs=t(apply(exprs(exGSE83386),2,quantile,prob=c(0.05,0.25,0.5,0.75,0.95)))
 matplot(qs,type="l",lty=1)
 
 ```
-
 
 ```{r PCA}
 #Samples all individual
@@ -193,7 +193,6 @@ summary(decideTests(rpairfit2))
 summary(decideTests(npairfit2))
 summary(decideTests(Responsefit2))
 
-
 ```
 
 ```{r Volcano Plots}
@@ -212,6 +211,7 @@ colnames(NandRfit)
 class(NandRfit)
 
 ```
+
 ## Investigating High Fold Change genes in responder group
 
 What genes are more highly expressed, but not highly significantly overexpressed, in the responder group?
@@ -249,36 +249,43 @@ all(arrange(UniqueGenes2,desc(AvgExpr))==UniqueGenes3)
 #Pathways list using Gene_Symbols
 CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_symbol.tab")
 
+DElist=list()
+
 #Pooled treatment vs control (t stat and gene symbols) using filtered genes list
 PooledFilter=topTable(pairfit2,coef = "Treatmenttreatment: fluoxetine",number = Inf)%>%filter(ID%in%UniqueGenes2$Loci)
+DElist$DFTU=PooledFilter[PooledFilter$P.Value<0.05,]$GENE_SYMBOL
+DEbackground=PooledFilter$GENE_SYMBOL
 tstats=PooledFilter$t
 names(tstats)=PooledFilter$GENE_SYMBOL
-GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10)
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
 saveRDS(GeneEnrich,"../FLX_datasets/GSE83386/GSEA_Pooled_GSE83386.rds")
 
 #Stats vector for responders, patient-pairs treatment vs control (t stat and gene symbols) using filtered genes list
 RespondersFilter=topTable(rpairfit2,coef = "rTreatmenttreatment: fluoxetine",number = Inf)%>%filter(ID%in%UniqueGenes2$Loci)
+DElist$DFRC=RespondersFilter[RespondersFilter$P.Value<0.05,]$GENE_SYMBOL
 rtstats=RespondersFilter$t
 names(rtstats)=RespondersFilter$GENE_SYMBOL
-rGeneEnrich=fgsea(pathways = CPDBpaths, stats = rtstats, minSize  = 10)
+rGeneEnrich=fgsea(pathways = CPDBpaths, stats = rtstats, minSize  = 10, nPermSimple=10000)
 #head(arrange(rGeneEnrich,padj),n=20)
 #plotEnrichment(CPDBpaths[["Apoptosis - Homo sapiens (human) | KEGG"]], rtstats)
 saveRDS(rGeneEnrich,"../FLX_datasets/GSE83386/GSEA_Res_GSE83386.rds")
 
 #Stats vector for non-responders, patient-pairs treatment vs control (t stat and gene symbols) using filtered genes list
 NonFilter=topTable(npairfit2,coef = "nTreatmenttreatment: fluoxetine",number = Inf)%>%filter(ID%in%UniqueGenes2$Loci)
+DElist$DFNC=NonFilter[NonFilter$P.Value<0.05,]$GENE_SYMBOL
 ntstats=NonFilter$t
 names(ntstats)=NonFilter$GENE_SYMBOL
-nGeneEnrich=fgsea(pathways = CPDBpaths, stats = ntstats, minSize  = 10)
+nGeneEnrich=fgsea(pathways = CPDBpaths, stats = ntstats, minSize  = 10, nPermSimple=10000)
 #head(arrange(nGeneEnrich,padj),n=20)
 #plotEnrichment(CPDBpaths[["Apoptosis - Homo sapiens (human) | KEGG"]], ntstats)
 saveRDS(nGeneEnrich,"../FLX_datasets/GSE83386/GSEA_Non_GSE83386.rds")
 
 #Responders vs Non-responders
 VFilter=topTable(Responsefit2,coef = "FR - FNR",number = Inf)%>%filter(ID%in%UniqueGenes2$Loci)
+DElist$DFRN=VFilter[VFilter$P.Value<0.05,]$GENE_SYMBOL
 vtstats=VFilter$t
 names(vtstats)=VFilter$GENE_SYMBOL
-vGeneEnrich=fgsea(pathways = CPDBpaths, stats = vtstats, minSize  = 10)
+vGeneEnrich=fgsea(pathways = CPDBpaths, stats = vtstats, minSize  = 10, nPermSimple=10000)
 #head(arrange(nGeneEnrich,padj),n=20)
 #plotEnrichment(CPDBpaths[["Apoptosis - Homo sapiens (human) | KEGG"]], ntstats)
 saveRDS(vGeneEnrich,"../FLX_datasets/GSE83386/GSEA_ResVNon_GSE83386.rds")
@@ -287,11 +294,13 @@ saveRDS(vGeneEnrich,"../FLX_datasets/GSE83386/GSEA_ResVNon_GSE83386.rds")
 XFilter=topTable(Responsefit2,coef = "CR - CNR",number = Inf)%>%filter(ID%in%UniqueGenes2$Loci)
 Xtstats=XFilter$t
 names(Xtstats)=XFilter$GENE_SYMBOL
-XGeneEnrich=fgsea(pathways = CPDBpaths, stats = Xtstats, minSize  = 10)
+XGeneEnrich=fgsea(pathways = CPDBpaths, stats = Xtstats, minSize  = 10, nPermSimple=10000)
 saveRDS(XGeneEnrich,"../FLX_datasets/GSE83386/GSEA_UnResVNon_GSE83386.rds")
 
-```
+write.table(t(plyr::ldply(DElist,rbind)),"../FLX_datasets/GSE83386/GSE83386-DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DEbackground,"../FLX_datasets/GSE83386/GSE83386-DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
 
+```
 
 ```{r GSEA Res and Non combined}
 #Combine and Compare responders vs nonresponders
@@ -302,7 +311,6 @@ NandRgsea=cbind(nTrunc,rGeneEnrich)
 ggplot(NandRgsea)+
   geom_point(mapping=aes(x=nNES,y=NES))+
   theme_classic()
-
 
 ```
 
@@ -326,4 +334,3 @@ rownames(nColumnNames)=pData(qexNon)[,2]
 pheatmap(nExSubset,annotation_col = nColumnNames,scale = "row") 
 
 ```
-

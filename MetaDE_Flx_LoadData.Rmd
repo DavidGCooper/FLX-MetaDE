@@ -187,7 +187,7 @@ rm(list = objects())
 #GSE128387_Blood_DFTUxx
 GSE128387_Blood_DFTUXX_DE=readRDS("FLX_datasets/GSE128387/DE_GSE128387.rds")
 #colnames(GSE128387_Blood_DFTUXX_DE)
-GSE128387_Blood_DFTUXX_DE_df=topTable(GSE128387_Blood_DFTUXX_DE,coef = "Treatment_Timeinital",number = Inf)
+GSE128387_Blood_DFTUXX_DE_df=topTable(GSE128387_Blood_DFTUXX_DE,coef = "Treatment_Timeinitial",number = Inf)
 GSE128387_Blood_DFTUXX_DE_df$Gene.Symbol=as.character(mapIds(org.Hs.eg.db, keys=GSE128387_Blood_DFTUXX_DE_df$GB_ACC , column="SYMBOL", keytype="REFSEQ"))
 GSE128387_Blood_DFTUXX_DE_df=GSE128387_Blood_DFTUXX_DE_df %>%
   filter(Gene.Symbol!="NANA" & Gene.Symbol!="NULL") %>%
@@ -907,7 +907,7 @@ rm(GSE56028_DG_SFTUXX_DE)
 #GSE89873_Glioma_XFTUXX
 GSE89873_Glioma_XFTUXX_DE=readRDS("FLX_datasets/GSE89873/DE_GSE89873.rds")
 #colnames(GSE89873_Glioma_XFTUXX_DE)
-GSE89873_Glioma_XFTUXX_DE_df=topTable(GSE89873_Glioma_XFTUXX_DE,coef = "Treatmenttreatment: unteated",number = Inf) %>%
+GSE89873_Glioma_XFTUXX_DE_df=topTable(GSE89873_Glioma_XFTUXX_DE,coef = "Treatmenttreatment: fluoxetine",number = Inf) %>%
   mutate(Gene.Symbol=gsub("_predicted","",Symbol)) %>%
   arrange(desc(AveExpr)) %>%
   filter(!duplicated(Gene.Symbol)) %>%

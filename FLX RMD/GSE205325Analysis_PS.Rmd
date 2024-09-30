@@ -7,22 +7,21 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
 library(tidyverse)
 library(GEOquery)
 library(DESeq2)
 library(pheatmap)
 library(fgsea)
+library(biomaRt)
 source("read_cpdb_tab.R")
-source("biomaRt_script.R")
 
 ```
 
 ### Loading in Libraries and Data Sets
 
 ```{r}
+set.seed(123)
 dat <- getGEO("GSE205325")[[1]]
-
 RatsCounts <- read.csv("GSE205325_CUS_Rats_Counts.csv", row.names = 1)
 
 ```
@@ -32,13 +31,10 @@ boxplot(log2(RatsCounts+1))
 
 ```
 
-
 # Differential Expression Analysis with DESeq2
-
 ## Formating Data Sets
 
 ```{r}
-
 pmatrix <- pData(dat)
 rownames(pmatrix) <- pmatrix$description
 RatsCounts <- RatsCounts[, order(colnames(RatsCounts))]
@@ -61,7 +57,6 @@ levels(ddsSE$treatment) <- c("Stress", "EPA", "FL_EPA", "FL", "FL_LPS", "LPS", "
 
 #Removing genes with consistently low expression in every group
 ddsSE <- ddsSE[rowSums(counts(ddsSE)) > 5,]
-
 ddsSE <- DESeq(ddsSE)
 
 #Creating groups for differential expression analysis
@@ -69,7 +64,6 @@ Control.v.Stress <- results(ddsSE, contrast = c("treatment", "Stress", "Control"
 saveRDS(Control.v.Stress,"../FLX_datasets/GSE205325/DESeq_Control.v.Stress_GSE205325.RDS")
 FL.v.Stress <- results(ddsSE, contrast = c("treatment", "FL", "Stress"))
 saveRDS(FL.v.Stress,"../FLX_datasets/GSE205325/DESeq_Fl.v.Stress_GSE205325.RDS")
-
 
 ```
 
@@ -89,18 +83,16 @@ This code stabilizes the variance of the data set, and transforms the counts to 
 
 ```{r}
 boxplot(assay(dds.vsd))
-
 boxplot(log2(1+RatsCounts))
+
 ```
-
-
 
 ### MA-Plots
 
 ```{r}
 plotMA(Control.v.Stress)
-
 plotMA(FL.v.Stress)
+
 ```
 
 The first MA plot displays the data from the Control vs. Stress group, and the second MA plot displays the data from the Fluoxetine vs. Stress group. The points that are colored blue represent genes with p-values less than 0.1.
@@ -109,7 +101,6 @@ The first MA plot displays the data from the Control vs. Stress group, and the s
 
 ```{r}
 plotCounts(ddsSE, gene = which.min(Control.v.Stress$padj), intgroup = "treatment")
-
 plotCounts(ddsSE, gene = which.min(FL.v.Stress$padj), intgroup = "treatment")
 
 ```
@@ -121,9 +112,7 @@ The first plot count displays the expression level for the gene that had the low
 ```{r}
 #Filtering experimental groups
 dds.filt <- dds.vsd [, dds.vsd$treatment %in% c("Stress", "FL", "Control")]
-
 plotPCA(dds.vsd, intgroup = "treatment")
-
 plotPCA(dds.filt, intgroup = "treatment")
 
 ```
@@ -154,52 +143,40 @@ The first heat map displays the results of the entire standardized dds data set,
 # Gene Set Expression Analysis
 
 ```{r}
+pathwayDB <- read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+
+ensembl <- useEnsembl(biomart="genes",dataset = "rnorvegicus_gene_ensembl")
+#Pull down rat ensembl IDs and mouse ensembl IDs
+MouseHomologGeneList <- getBM(mart=ensembl,attributes = c("ensembl_gene_id","mmusculus_homolog_ensembl_gene"))
+
+DElist=list()
+
 FL.v.Stress.df <- as.data.frame(FL.v.Stress)
 FL.v.Stress.df$mouseID <- MouseHomologGeneList$mmusculus_homolog_ensembl_gene[
   match(rownames(FL.v.Stress.df), MouseHomologGeneList$ensembl_gene_id)]
-
-pathwayDB <- read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
-
 FL.v.Stress.full <- FL.v.Stress.df
-
 FL.v.Stress.df <- na.omit(FL.v.Stress.df)
 FL.v.Stress.df <- filter(FL.v.Stress.df, mouseID != "")
-
-
-any(duplicated(FL.v.Stress.df$mouseID))
 #Arranging duplicates in descending order of Base Mean, so the lower Base Mean is removed.
 FL.v.Stress.df <- arrange(FL.v.Stress.df, desc(FL.v.Stress.df$baseMean))
 FL.v.Stress.df <- FL.v.Stress.df[!duplicated(FL.v.Stress.df$mouseID), ]
-
+DEbackground=rownames(FL.v.Stress.df)
+DElist$SFTU=rownames(FL.v.Stress.df[FL.v.Stress.df$pvalue<0.05,])
 FL.v.Stress.stat <- c(FL.v.Stress.df$stat)
 FL.v.Stress.stat <- set_names(FL.v.Stress.stat, nm = FL.v.Stress.df$mouseID)
 
 fgseaRES <- fgsea(pathways = pathwayDB,
                   stats = FL.v.Stress.stat,
-                  minSize = 5)
-head(fgseaRES[order(pval), ])
+                  minSize = 10, nPermSimple=10000)
 
 saveRDS(fgseaRES,"../FLX_datasets/GSE205325/GSEA_FL.v.Stress_GSE205325.RDS")
 
-
-
-```
-The "SRP-dependent cotranslational protein targeting to membrane | Reactome" pathway has the lowest p-value in the Fluoxetine vs. Stress group.
-
-```{r}
 Control.v.Stress.df <- as.data.frame(Control.v.Stress)
 Control.v.Stress.df$mouseID <- MouseHomologGeneList$mmusculus_homolog_ensembl_gene[
   match(rownames(Control.v.Stress.df), MouseHomologGeneList$ensembl_gene_id)]
-
-pathwayDB <- read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
-
 Control.v.Stress.full <- Control.v.Stress.df
-
 Control.v.Stress.df <- na.omit(Control.v.Stress.df)
 Control.v.Stress.df <- filter(Control.v.Stress.df, mouseID != "")
-
-
-any(duplicated(Control.v.Stress.df$mouseID))
 #Arranging duplicates in descending order of Base Mean, so the lower Base Mean is removed.
 Control.v.Stress.df <- arrange(Control.v.Stress.df, desc(Control.v.Stress.df$baseMean))
 Control.v.Stress.df <- Control.v.Stress.df[!duplicated(Control.v.Stress.df$mouseID), ]
@@ -209,12 +186,16 @@ Control.v.Stress.stat <- set_names(Control.v.Stress.stat, nm = Control.v.Stress.
 
 fgseaRES <- fgsea(pathways = pathwayDB,
                   stats = Control.v.Stress.stat,
-                  minSize = 5)
-head(fgseaRES[order(pval), ])
+                  minSize = 10, nPermSimple=10000)
 
 saveRDS(fgseaRES,"../FLX_datasets/GSE205325/GSEA_Control.v.Stress_GSE205325.RDS")
 
+write.table(t(plyr::ldply(DElist,rbind)),"../FLX_datasets/GSE205325/GSE205325-DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DEbackground,"../FLX_datasets/GSE205325/GSE205325-DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
+
 ```
+
+The "SRP-dependent cotranslational protein targeting to membrane | Reactome" pathway has the lowest p-value in the Fluoxetine vs. Stress group.
 The "Immune System | Reactome" pathway has the lowest p-value in the Control vs. Stress Group.
 
 ## GSEA Plots
@@ -237,9 +218,6 @@ gsea.select <- FL.v.Stress.full$mouseID %in% pathwayDB[["SRP-dependent cotransla
 pheatmap(assay(dds.vsd)[gsea.select, ], cluster_rows = TRUE, show_rownames = FALSE,
          cluster_cols = TRUE, scale = "row", annotation_col = dds.names)
 
-#Filtered with only control, stress, and fluoxetine samples.
-pheatmap(assay(dds.filt)[gsea.select, ], cluster_rows = TRUE, show_rownames = FALSE,
-         cluster_cols = TRUE, scale = "row", annotation_col = dds.names)
 ```
 
 The first heat map displays the GSEA results for the entire data set, and the second heat map displays the GSEA results for only the Fluoxetine, Stress, and Control groups. The Fluoxetine and Control groups show similar patterns, and differ from two of the samples from the Stress group, but one sample from the Stress group more closely resembles the Control group.

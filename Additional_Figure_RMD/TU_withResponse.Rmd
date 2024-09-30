@@ -1,0 +1,118 @@
+---
+title: "Treated/Untreated among response groups"
+author: "Caleb Class"
+date: "2024-01-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(plotly)
+library(ggrepel)
+```
+
+## Loading Data
+This meta-analyses summarize comparisons of Responders (post-treatment) vs. untreated, and Non-responders (post-treatment) vs. untreated. In two of the comparisons it was possible to define pre-treatment samples as responders or non-responders--in those cases we conducted treated vs. untreated within response group. In all other cases, they were compared against the same control group.
+
+```{r}
+
+reactome_hs <- readRDS("../FLX RMD/Reactome_HS_withTopLevel.rds")
+npgColors <- readRDS("../npgColors.rds")
+npgFill <- readRDS("../npgFill.rds")
+source("../FLX RMD/read_cpdb_tab.R")
+cpdb <- read_cpdb_tab("../FLX RMD/CPDB_pathways_genes_mouse.tab")
+names(cpdb) <- gsub(" \\|.*| \\- Mus.*", "", names(cpdb))
+
+
+datR <- readRDS("../MetaDE RDS/AllSFRCgsea.rds")
+datN <- readRDS("../MetaDE RDS/AllSFNCgsea.rds")
+
+```
+
+## Comparison
+
+Merge by pathway and compare Max-P results.
+
+```{r}
+
+summaries <- merge(datR[,10:15], datN[,10:15], by = "Pathway", suffixes = c(".R", ".N"))
+summaries$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summaries$Pathway), reactome_hs$Name)]
+summaries$ReactomeTop <- reactome_hs$top_level_name[match(summaries$ReactomeID, reactome_hs$ID)]
+summaries$ReactomeTop[is.na(summaries$ReactomeTop)] <- "KEGG Database"
+summaries$ReactomeTop[!(summaries$ReactomeTop %in% names(npgColors))] <- "Other Reactome"
+summaries <- summaries %>% 
+  mutate(ReactomeTop = factor(ReactomeTop, levels = names(npgColors)))
+
+ggplot(summaries, aes(x=-log10(Max.R), y = -log10(Max.N), 
+                      color = ReactomeTop)) +
+  geom_point() +
+  scale_color_manual(name="ReactomeTop", values = npgColors) +
+  theme_classic() +
+  guides(color = guide_legend(title = "Pathway Category")) +
+  xlab("-log10(q) | Responders") + ylab("-log10(q) | Non-Responders") +
+  geom_vline(xintercept = -log10(0.05), color = "darkred", linetype = "dashed") + 
+  geom_hline(yintercept = -log10(0.05), color = "darkred", linetype = "dashed")
+ggsave("../Figures/ComparisonFigures/TU_NvsR_pmax.tiff", width = 6, height = 4)
+
+
+table(R = summaries$Max.R < 0.05, NR = summaries$Max.N < 0.05)
+
+```
+
+Next, we'll compare results by Fisher's method.
+
+```{r}
+
+
+
+ggplot(summaries, aes(x=-log10(Fish.R), y = -log10(Fish.N), 
+                      color = ReactomeTop)) +
+  geom_point() +
+  scale_color_manual(name="ReactomeTop", values = npgColors) +
+  theme_classic() +
+  guides(color = guide_legend(title = "Pathway Category")) +
+  xlab("-log10(q) | Responders") + ylab("-log10(q) | Non-Responders") +
+  geom_vline(xintercept = -log10(0.05), color = "darkred", linetype = "dashed") + 
+  geom_hline(yintercept = -log10(0.05), color = "darkred", linetype = "dashed")
+ggsave("../Figures/ComparisonFigures/TU_NvsR_fish.tiff", width = 6, height = 4)
+
+#table(R = summaries$Fish.R < 0.05, NR = summaries$Fish.N < 0.05)
+
+```
+
+
+Finally, we'll focus on those consistently affected in responders (q < 0.05 by Max-P), but consistently unaffected in non-responders (q >= 0.05 by Fisher's method).
+
+
+```{r}
+
+summaries.signif <- summaries[summaries$Max.R < 0.05 & summaries$Fish.R < 0.05 & summaries$Fish.N >= 0.05 ,]
+
+summaries.signif <- summaries.signif %>% arrange(Max.R) 
+# Stretch this pathway name to 2 lines:
+summaries.signif$Pathway[5] <- "Activated PKN1 stimulates transcription of\nAR regulated genes KLK2 and KLK3"
+summaries.signif$Pathway <- gsub(" \\|.*", "", summaries.signif$Pathway)
+summaries.signif <- summaries.signif %>%
+  mutate(Pathway = factor(Pathway, levels = rev(Pathway)),
+         ReactomeTop = factor(ReactomeTop, levels = names(npgColors)))
+
+
+
+ggplot(summaries.signif, aes(x = -log10(Max.R), y = Pathway)) +
+  geom_col(aes(fill = ReactomeTop), color = "black", linewidth = 1) + 
+  geom_vline(xintercept = -log10(0.05), linetype = "dashed", linewidth = 1, color = "#DC0000") +
+  geom_point(aes(x = -log10(Max.R) + 0.13, color = Vote.R), size = 6, show.legend = FALSE) +
+  geom_text(aes(x = -log10(Max.R) + 0.13, y = Pathway, label = Vote.R), size = 4, color = "white", fontface = "bold") +
+  scale_color_gradient2(low = "blue",high = "red", mid = "gray30", breaks = c(-5, 0, 3), minor_breaks = -5:5) +
+  xlab("-log10(q)") + ylab("") +
+#  xlim(0, 8) +
+  theme(axis.text.y = element_text(size = 8.5)) +
+  npgFill +
+  guides(fill = guide_legend(title = "Pathway Category")) +
+  theme_classic()
+
+ggsave("../Figures/ComparisonFigures/RTUonly_pmax_bar.tiff", width = 7.5, height = 5)
+
+
+```

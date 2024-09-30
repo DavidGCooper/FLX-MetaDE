@@ -26,38 +26,38 @@ source("read_cpdb_tab.R")
 Use getGEO() to obtain the GEO series. Use getGEOSuppFiles() to download the supplementary count data files.
 
 ```{r Get ExpressionSets}
+set.seed(123)
 #Using getGEO
 GSEname="GSE109445"
 GSE=getGEO(GSEname)
 GSE=GSE[[1]]
-#Get Supplementary Files
-getGEOSuppFiles(GSEname)
-Directory=paste(getwd(),"/",GSEname,sep="")
-Files=list.files(Directory,full.names = TRUE)
-#untar
-untar(Files,exdir = Directory)
-file.remove(Files)
-Files=list.files(Directory,full.names = TRUE)
-#gunzip
-for (i in Files) {
-  gunzip(i)
-}
-Files=list.files(Directory,full.names = TRUE)
 
-#Read and format into expression set table
-#Data in a single file
-exGSE=read.table(Files,header = TRUE,sep = "\t",check.names = FALSE)
-#Label rows and delete label column
-rownames(exGSE)=exGSE$geneID
-exGSE=dplyr::select(exGSE,!geneID)
-#Replace column labels with GSM accession numbers
-NewColLabels=data.frame(GEO_ACC=GSE@phenoData@data$geo_accession,ID=GSE@phenoData@data$title)
-colnames(exGSE)=NewColLabels$GEO_ACC[match(colnames(exGSE),NewColLabels$ID)]
-#Reorder columns to match GSE
-exGSE=exGSE[,GSE@phenoData@data$geo_accession]
-#Round data if not integers
-exGSE=round(exGSE)
-saveRDS(exGSE,"CountTableGSE109445.rds")
+##Get Supplementary Files
+#getGEOSuppFiles(GSEname)
+#Directory=paste(getwd(),"/",GSEname,sep="")
+#Files=list.files(Directory,full.names = TRUE)
+#untar(Files,exdir = Directory)
+#file.remove(Files)
+#Files=list.files(Directory,full.names = TRUE)
+#for (i in Files) {
+#  gunzip(i)
+#}
+#Files=list.files(Directory,full.names = TRUE)
+
+##Read and format into expression set table
+##Data in a single file
+#exGSE=read.table(Files,header = TRUE,sep = "\t",check.names = FALSE)
+##Label rows and delete label column
+#rownames(exGSE)=exGSE$geneID
+#exGSE=dplyr::select(exGSE,!geneID)
+##Replace column labels with GSM accession numbers
+#NewColLabels=data.frame(GEO_ACC=GSE@phenoData@data$geo_accession,ID=GSE@phenoData@data$title)
+#colnames(exGSE)=NewColLabels$GEO_ACC[match(colnames(exGSE),NewColLabels$ID)]
+##Reorder columns to match GSE
+#exGSE=exGSE[,GSE@phenoData@data$geo_accession]
+##Round data if not integers
+#exGSE=round(exGSE)
+#saveRDS(exGSE,"CountTableGSE109445.rds")
 
 ```
 
@@ -84,7 +84,6 @@ Stress=factor(c(rep("ChronicStress",9),rep("NoStress",3)),levels = c("NoStress",
 SampleData$StressTreat=factor(paste(Treatment,Stress,sep = "_"),
                    levels=c("saline_NoStress","albiflorin_ChronicStress","fluoxetine_ChronicStress","saline_ChronicStress"))
 #Design matrix
-Design=model.matrix(~StressTreat)
 dds <- DESeqDataSetFromMatrix(countData = exGSE,
                               colData = SampleData,
                               design = ~StressTreat) #design = ~ characteristic1 + characteristic 2)
@@ -150,6 +149,12 @@ UniqueGenesStress=as.data.frame(resStress)%>%
   filter(!duplicated(GENE_SYMBOL))%>%
   filter(GENE_SYMBOL!=""&!is.na(log2FoldChange)&!is.na(padj))
 
+DElist=list()
+DElist$SFTU=rownames(UniqueGenesFlx[UniqueGenesFlx$pvalue<0.05,])
+DEbackground=rownames(UniqueGenesFlx)
+write.table(t(plyr::ldply(DElist,rbind)),"../FLX_datasets/GSE109445/GSE109445-DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DEbackground,"../FLX_datasets/GSE109445/GSE109445-DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
+
 ```  
 
 ```{r GSEA using fgsea}
@@ -160,7 +165,7 @@ CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
 pstatsFlx=filter(UniqueGenesFlx)$stat
 names(pstatsFlx)=UniqueGenesFlx$GENE_SYMBOL
 #Pathway enrichment
-GeneEnrichFlx=fgsea(pathways = CPDBpaths, stats = pstatsFlx, minSize  = 10)
+GeneEnrichFlx=fgsea(pathways = CPDBpaths, stats = pstatsFlx, minSize  = 10, nPermSimple=10000)
 head(arrange(GeneEnrichFlx,padj),n=20)
 saveRDS(GeneEnrichFlx,"../FLX_datasets/GSE109445/Flx_GSEA_GSE109445.rds")
 
@@ -168,7 +173,7 @@ saveRDS(GeneEnrichFlx,"../FLX_datasets/GSE109445/Flx_GSEA_GSE109445.rds")
 pstatsStress=filter(UniqueGenesStress)$stat
 names(pstatsStress)=UniqueGenesStress$GENE_SYMBOL
 #Pathway enrichment
-GeneEnrichStress=fgsea(pathways = CPDBpaths, stats = pstatsStress, minSize  = 10)
+GeneEnrichStress=fgsea(pathways = CPDBpaths, stats = pstatsStress, minSize  = 10, nPermSimple=10000)
 head(arrange(GeneEnrichStress,padj),n=20)
 saveRDS(GeneEnrichStress,"../FLX_datasets/GSE109445/Stress_GSEA_GSE109445.rds")
 

@@ -26,11 +26,10 @@ source("read_cpdb_tab.R")
 Use GEOquery to obtain the GEO series. The expression data may not be saved within the GEO expression set data structure, but the feature data (gene labels) and phenotype data (sample labels) should still be present. Use getGEOSuppFiles() to download the supplementary count data files. Filter and relabel that data as necessary to create a table of counts.
 
 ```{r Get ExpressionSets}
-
+set.seed(123)
 mousedat <- getGEO("GSE202172")[[1]]
 mpmatrix <- pData(mousedat)
 rownames(mpmatrix) <- c("GH_Veh_INPUT1", "GH_Veh_INPUT2", "SH_Veh_INPUT1", "SH_Veh_INPUT2", "Flx_INPUT1", "Flx_INPUT2", "A_Flx_INPUT1", "A_Flx_INPUT2", "GH_Veh_INPUT3", "GH_Veh_INPUT4", "SH_Veh_INPUT3", "SH_Veh_INPUT4", "Flx_INPUT3", "Flx_INPUT4", "A_Flx_INPUT3", "A_Flx_INPUT4", "GH_Veh_TRAP1", "GH_Veh_TRAP2", "SH_Veh_TRAP1", "SH_Veh_TRAP2", "Flx_TRAP1", "Flx_TRAP2", "A_Flx_TRAP1", "A_Flx_TRAP2", "GH_Veh_TRAP3", "GH_Veh_TRAP4", "SH_Veh_TRAP3", "SH_Veh_TRAP4", "Flx_TRAP3", "Flx_TRAP4", "A_Flx_TRAP3", "A_Flx_TRAP4")
-
 colnames(mpmatrix)[13] <- "Housing" 
 colnames(mpmatrix)[14] <- "Treatment"
 colnames(mpmatrix)[15] <- "Behavior"
@@ -48,37 +47,28 @@ TRAPpmatrix <- mpmatrix[c("GH_Veh_TRAP1", "GH_Veh_TRAP2", "SH_Veh_TRAP1", "SH_Ve
                           "Flx_TRAP1", "Flx_TRAP2", "A_Flx_TRAP1", "A_Flx_TRAP2", "GH_Veh_TRAP3",
                           "GH_Veh_TRAP4", "SH_Veh_TRAP3", "SH_Veh_TRAP4", "Flx_TRAP3",
                           "Flx_TRAP4", "A_Flx_TRAP3", "A_Flx_TRAP4"),]
-saveRDS(inputpmatrix,"inputpmatrix.rds")
-saveRDS(TRAPpmatrix, "TRAPpmatrix.rds")
+#saveRDS(inputpmatrix,"inputpmatrix.rds")
+#saveRDS(TRAPpmatrix, "TRAPpmatrix.rds")
 
-getGEOSuppFiles("GSE202172")
+#getGEOSuppFiles("GSE202172")
+#for (i in list.files("GSE202172/")) {
+#  gunzip(i)
+#}
+#countdata <- list()
+#for(file in list.files("GSE202172/")) {
+#  countdata[[file]] <- read.table(file)
+#}
+#countmatrix <- Reduce(function(...) merge(..., all = TRUE, by = "V1"),countdata)
+#colnames(countmatrix) <- c("V1", "GH_Veh_INPUT1", "GH_Veh_INPUT2", "SH_Veh_INPUT1", "SH_Veh_INPUT2", "Flx_INPUT1", "Flx_INPUT2", "A_Flx_INPUT1", "A_Flx_INPUT2", "GH_Veh_INPUT3", "GH_Veh_INPUT4", "SH_Veh_INPUT3", "SH_Veh_INPUT4", "Flx_INPUT3", "Flx_INPUT4", "A_Flx_INPUT3", "A_Flx_INPUT4", "GH_Veh_TRAP1", "GH_Veh_TRAP2", "SH_Veh_TRAP1", "SH_Veh_TRAP2", "Flx_TRAP1", "Flx_TRAP2", "A_Flx_TRAP1", "A_Flx_TRAP2", "GH_Veh_TRAP3", "GH_Veh_TRAP4", "SH_Veh_TRAP3", "SH_Veh_TRAP4", "Flx_TRAP3", "Flx_TRAP4", "A_Flx_TRAP3", "A_Flx_TRAP4")
+#rownames(countmatrix) <- countmatrix$V1
+#countmatrix$V1 <- NULL
+#inputcounts <- countmatrix[, c("GH_Veh_INPUT1", "GH_Veh_INPUT2", "SH_Veh_INPUT1", "SH_Veh_INPUT2", "Flx_INPUT1", "Flx_INPUT2", "A_Flx_INPUT1",  "A_Flx_INPUT2", "GH_Veh_INPUT3", "GH_Veh_INPUT4", "SH_Veh_INPUT3", "SH_Veh_INPUT4", "Flx_INPUT3", "Flx_INPUT4", "A_Flx_INPUT3", "A_Flx_INPUT4")]
+#TRAPcounts <- countmatrix[, c("GH_Veh_TRAP1", "GH_Veh_TRAP2", "SH_Veh_TRAP1", "SH_Veh_TRAP2", "Flx_TRAP1", "Flx_TRAP2", "A_Flx_TRAP1",  "A_Flx_TRAP2", "GH_Veh_TRAP3", "GH_Veh_TRAP4", "SH_Veh_TRAP3", "SH_Veh_TRAP4", "Flx_TRAP3", "Flx_TRAP4", "A_Flx_TRAP3", "A_Flx_TRAP4")]
+#saveRDS(inputcounts,"inputcountsGSE202172.rds")
+#saveRDS(TRAPcounts, "TRAPcountsGSE202172.rds")
 
-for (i in list.files("GSE202172/")) {
-  gunzip(i)
-}
-countdata <- list()
-for(file in list.files("GSE202172/")) {
-  countdata[[file]] <- read.table(file)
-}
-countmatrix <- Reduce(function(...) merge(..., all = TRUE, by = "V1"),
-       countdata)
-colnames(countmatrix) <- c("V1", "GH_Veh_INPUT1", "GH_Veh_INPUT2", "SH_Veh_INPUT1", "SH_Veh_INPUT2", "Flx_INPUT1", "Flx_INPUT2", "A_Flx_INPUT1", "A_Flx_INPUT2", "GH_Veh_INPUT3", "GH_Veh_INPUT4", "SH_Veh_INPUT3", "SH_Veh_INPUT4", "Flx_INPUT3", "Flx_INPUT4", "A_Flx_INPUT3", "A_Flx_INPUT4", "GH_Veh_TRAP1", "GH_Veh_TRAP2", "SH_Veh_TRAP1", "SH_Veh_TRAP2", "Flx_TRAP1", "Flx_TRAP2", "A_Flx_TRAP1", "A_Flx_TRAP2", "GH_Veh_TRAP3", "GH_Veh_TRAP4", "SH_Veh_TRAP3", "SH_Veh_TRAP4", "Flx_TRAP3", "Flx_TRAP4", "A_Flx_TRAP3", "A_Flx_TRAP4")
-
-rownames(countmatrix) <- countmatrix$V1
-countmatrix$V1 <- NULL
-
-inputcounts <- countmatrix[, c("GH_Veh_INPUT1", "GH_Veh_INPUT2", "SH_Veh_INPUT1", "SH_Veh_INPUT2",
-                               "Flx_INPUT1", "Flx_INPUT2","A_Flx_INPUT1", "A_Flx_INPUT2",
-                               "GH_Veh_INPUT3", "GH_Veh_INPUT4", "SH_Veh_INPUT3", "SH_Veh_INPUT4",
-                               "Flx_INPUT3","Flx_INPUT4", "A_Flx_INPUT3",  "A_Flx_INPUT4")]
-TRAPcounts <- countmatrix[, c("GH_Veh_TRAP1", "GH_Veh_TRAP2", "SH_Veh_TRAP1", "SH_Veh_TRAP2",
-                              "Flx_TRAP1", "Flx_TRAP2", "A_Flx_TRAP1", "A_Flx_TRAP2",
-                              "GH_Veh_TRAP3", "GH_Veh_TRAP4", "SH_Veh_TRAP3", "SH_Veh_TRAP4",
-                              "Flx_TRAP3", "Flx_TRAP4", "A_Flx_TRAP3", "A_Flx_TRAP4")]
-
-#If the count table has to be created, save it as an .rds file to easily load in later
-saveRDS(inputcounts,"inputcountsGSE202172.rds")
-saveRDS(TRAPcounts, "TRAPcountsGSE202172.rds")
+inputcounts=readRDS("inputcountsGSE202172.rds")
+TRAPcounts=readRDS("TRAPcountsGSE202172.rds")
 
 ```
 
@@ -87,7 +77,6 @@ saveRDS(TRAPcounts, "TRAPcountsGSE202172.rds")
 Compare samples with boxplots or quantile plots to assess the quality across samples. Normalized datasets should have the same median across the samples. Boxplots will show if there are any samples that differ greatly from the rest. Boxplots will often be most useful for log transformed expression data.
 
 ```{r Boxplots}
-
 boxplot(log2(1+inputcounts))
 boxplot(log2(1+TRAPcounts))
 
@@ -98,7 +87,6 @@ boxplot(log2(1+TRAPcounts))
 To focus on gene loci with expression that can be compared across samples, it may be useful to remove gene loci without expression above a threshold in at least half of the samples.
 
 ```{r Filter Low-Expressed Genes}
-
 inputcounts <- inputcounts[rowSums(inputcounts) > 5,]
 TRAPcounts <- TRAPcounts[rowSums(TRAPcounts) > 5,]
 
@@ -135,7 +123,6 @@ saveRDS(INPUT.Flx_Anx.vs.SH_Veh, "../FLX_datasets/GSE202172/DESeqINPUT.Flx_Anx.v
 saveRDS(INPUT.Flx_Norm.vs.Flx_Anx, "../FLX_datasets/GSE202172/DESeqINPUT.Flx_Norm.vs.Flx_Anx_GSE202172.rds")
 saveRDS(INPUT.Flx.vs.Veh, "../FLX_datasets/GSE202172/DESeqINPUT.Flx.vs.Veh_GSE202172.rds")
 
-
 #DESeq2 for TRAP Count Data
 dds_TRAP <- DESeqDataSetFromMatrix(countData = TRAPcounts, colData = TRAPpmatrix, design = ~ Group)
 levels(dds_TRAP$Group)
@@ -169,7 +156,6 @@ saveRDS(TRAP.Flx.vs.Veh, "../FLX_datasets/GSE202172/DESeqTRAP.Flx.vs.Veh_GSE2021
 Principal component analysis (PCA). DESeq results need to be transformed to use in a PCA plot: vsd=varianceStabilizingTransformation(dds) plotPCA(outside=TRUE) will place the legend on the outside of the plot.
 
 ```{r PCA}
-
 input.vsd <- vst(dds_input, blind = FALSE)
 TRAP.vsd <- vst(dds_TRAP, blind = FALSE)
 
@@ -181,21 +167,19 @@ plotPCA(TRAP.vsd, intgroup = "Group")
 Volcano plots or MA plots can be used to visualize differential expression results.
 
 ```{r Volcano Plots}
-
-EnhancedVolcano(INPUT.GH_Veh.vs.SH_Veh, lab = rownames(INPUT.GH_Veh.vs.SH_Veh), x = 'log2FoldChange', y = 'pvalue', 
-                title = "INPUT.GH_Veh.vs.SH_Veh")
+EnhancedVolcano(INPUT.SH_Veh.vs.GH_Veh, lab = rownames(INPUT.SH_Veh.vs.GH_Veh), x = 'log2FoldChange', y = 'pvalue', 
+                title = "INPUT.SH_Veh.vs.GH_Veh")
 EnhancedVolcano(INPUT.Flx_Norm.vs.Flx_Anx, lab = rownames(INPUT.Flx_Norm.vs.Flx_Anx), x = 'log2FoldChange', y = 'pvalue',
                 title = "INPUT.Flx_Norm.vs.Flx_Anx")
 EnhancedVolcano(INPUT.Flx_Sh.vs.SH_Veh, lab = rownames(INPUT.Flx_Sh.vs.SH_Veh), x = 'log2FoldChange', y = 'pvalue',
                 title = "INPUT.Flx_Sh.vs.SH_Veh")
 
-EnhancedVolcano(TRAP.GH_Veh.vs.SH_Veh, lab = rownames(TRAP.GH_Veh.vs.SH_Veh), x = 'log2FoldChange', y = 'pvalue',
-                title = "TRAP.GH_Veh.vs.SH_Veh")
+EnhancedVolcano(TRAP.SH_Veh.vs.GH_Veh, lab = rownames(TRAP.SH_Veh.vs.GH_Veh), x = 'log2FoldChange', y = 'pvalue',
+                title = "TRAP.SH_Veh.vs.GH_Veh")
 EnhancedVolcano(TRAP.Flx_Norm.vs.Flx_Anx, lab = rownames(TRAP.Flx_Norm.vs.Flx_Anx), x = 'log2FoldChange', y = 'pvalue',
                 title = "TRAP.Flx_Norm.vs.Flx_Anx")
 EnhancedVolcano(TRAP.Flx_Sh.vs.SH_Veh, lab = rownames(TRAP.Flx_Sh.vs.SH_Veh), x = 'log2FoldChange', y = 'pvalue', 
                 title = "TRAP.Flx_Sh.vs.SH_Veh")
-
 
 ```
 
@@ -204,7 +188,6 @@ EnhancedVolcano(TRAP.Flx_Sh.vs.SH_Veh, lab = rownames(TRAP.Flx_Sh.vs.SH_Veh), x 
 In order to perform gene set enrichment analysis, the data first needs to be filtered to remove duplicate genes (multiple rows of data that correspond to the same gene) and to ensure that each gene is labeled with an appropriate gene ID. If there are multiple rows of data that correspond to the same gene, we want to keep the row with the highest average expression for that gene across samples.
 
 ```{r Remove Duplicate Genes}
-
 #No duplicated Genes
 
 ```
@@ -212,23 +195,8 @@ In order to perform gene set enrichment analysis, the data first needs to be fil
 Convert transcript IDs to gene symbols using esembl biomarts. See biomaRt_script.R for details on using emsembl biomarts.
 
 ```{r Convert Transcript IDs to Gene Symbols}
-INPUT.SH_Veh.vs.GH_Veh=readRDS("../FLX_datasets/GSE202172/DESeqINPUT.SH_Veh.vs.GH_Veh_GSE202172.rds")
-INPUT.Flx_Sh.vs.SH_Veh=readRDS("../FLX_datasets/GSE202172/DESeqINPUT.Flx_Sh.vs.SH_Veh_GSE202172.rds")
-INPUT.Flx_Anx.vs.SH_Veh=readRDS("../FLX_datasets/GSE202172/DESeqINPUT.Flx_Anx.vs.SH_Veh_GSE202172.rds")
-INPUT.Flx_Norm.vs.Flx_Anx=readRDS("../FLX_datasets/GSE202172/DESeqINPUT.Flx_Norm.vs.Flx_Anx_GSE202172.rds")
-INPUT.Flx.vs.Veh=readRDS("../FLX_datasets/GSE202172/DESeqINPUT.Flx.vs.Veh_GSE202172.rds")
-TRAP.SH_Veh.vs.GH_Veh=readRDS("../FLX_datasets/GSE202172/DESeqTRAP.SH_Veh.vs.GH_Veh_GSE202172.rds")
-TRAP.Flx_Sh.vs.SH_Veh=readRDS("../FLX_datasets/GSE202172/DESeqTRAP.Flx_Sh.vs.SH_Veh_GSE202172.rds")
-TRAP.Flx_Anx.vs.SH_Veh=readRDS("../FLX_datasets/GSE202172/DESeqTRAP.Flx_Anx.vs.SH_Veh_GSE202172.rds")
-TRAP.Flx_Norm.vs.Flx_Anx=readRDS("../FLX_datasets/GSE202172/DESeqTRAP.Flx_Norm.vs.Flx_Anx_GSE202172.rds")
-TRAP.Flx.vs.Veh=readRDS("../FLX_datasets/GSE202172/DESeqTRAP.Flx.vs.Veh_GSE202172.rds")
-
-#ensembl <- useEnsembl(biomart = "genes")
-#datasets <- listDatasets(ensembl)
 ensembl <- useEnsembl(biomart="genes",dataset = "mmusculus_gene_ensembl")
-#attributes <- listAttributes(ensembl)
 MouseGeneList <- getBM(mart=ensembl,attributes = c("ensembl_gene_id", "external_gene_name"))
-
 
 INPUT.SH_Veh.vs.GH_Veh.df <- as.data.frame(INPUT.SH_Veh.vs.GH_Veh) %>% 
   arrange(desc(baseMean)) %>%
@@ -260,7 +228,6 @@ INPUT.Flx.vs.Veh.df <- as.data.frame(INPUT.Flx.vs.Veh) %>%
 INPUT.Flx.vs.Veh.df$GeneID <- MouseGeneList$ensembl_gene_id[match(rownames(INPUT.Flx.vs.Veh.df), MouseGeneList$external_gene_name)]
 INPUT.Flx.vs.Veh.df=filter(INPUT.Flx.vs.Veh.df,!is.na(GeneID))
 
-
 TRAP.SH_Veh.vs.GH_Veh.df <- as.data.frame(TRAP.SH_Veh.vs.GH_Veh) %>% 
   arrange(desc(baseMean)) %>%
   filter(!is.na(padj))
@@ -291,9 +258,7 @@ TRAP.Flx.vs.Veh.df <- as.data.frame(TRAP.Flx.vs.Veh) %>%
 TRAP.Flx.vs.Veh.df$GeneID <- MouseGeneList$ensembl_gene_id[match(rownames(TRAP.Flx.vs.Veh.df), MouseGeneList$external_gene_name)]
 TRAP.Flx.vs.Veh.df=filter(TRAP.Flx.vs.Veh.df,!is.na(GeneID))
 
-
 ```
-
 
 ## Gene Set Enrichment Analysis (GSEA)
 
@@ -302,67 +267,81 @@ Use fgsea to analyze gene set enrichment.
 ```{r GSEA Analsis}
 pathwayDB <- read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
 
+IN.DElist=list()
+IN.DEbackground=rownames(as.data.frame(INPUT.SH_Veh.vs.GH_Veh))
+TRP.DElist=list()
+TRP.DEbackground=rownames(as.data.frame(TRAP.SH_Veh.vs.GH_Veh))
+
 IN.Sh.Gh.Stat <- c(INPUT.SH_Veh.vs.GH_Veh.df$stat)
 IN.Sh.Gh.Stat <- set_names(IN.Sh.Gh.Stat, nm = INPUT.SH_Veh.vs.GH_Veh.df$GeneID)
 IN.Sh.Gh.fgseaRES <- fgsea(pathways = pathwayDB,
-                     stats = IN.Sh.Gh.Stat,
-                     minSize = 10)
+                           stats = IN.Sh.Gh.Stat,
+                           minSize = 10, nPermSimple=10000)
+IN.DElist$IN.Sh.Gh=rownames(INPUT.SH_Veh.vs.GH_Veh.df[INPUT.SH_Veh.vs.GH_Veh.df$pvalue<0.05,])
 
 IN.Norm.Sh.Stat <- c(INPUT.Flx_Sh.vs.SH_Veh.df$stat)
 IN.Norm.Sh.Stat <- set_names(IN.Norm.Sh.Stat, nm = INPUT.Flx_Sh.vs.SH_Veh.df$GeneID)
 IN.Norm.Sh.fgseaRES <- fgsea(pathways = pathwayDB,
-                     stats = IN.Norm.Sh.Stat,
-                     minSize = 10)
+                             stats = IN.Norm.Sh.Stat,
+                             minSize = 10, nPermSimple=10000)
+IN.DElist$IN.Norm.Sh=rownames(INPUT.Flx_Sh.vs.SH_Veh.df[INPUT.Flx_Sh.vs.SH_Veh.df$pvalue<0.05,])
 
 IN.Anx.Sh.Stat <- c(INPUT.Flx_Anx.vs.SH_Veh.df$stat)
 IN.Anx.Sh.Stat <- set_names(IN.Anx.Sh.Stat, nm = INPUT.Flx_Anx.vs.SH_Veh.df$GeneID)
 IN.Anx.Sh.fgseaRES <- fgsea(pathways = pathwayDB,
-                     stats = IN.Anx.Sh.Stat,
-                     minSize = 10)
+                            stats = IN.Anx.Sh.Stat,
+                            minSize = 10, nPermSimple=10000)
+IN.DElist$IN.Anx.Sh=rownames(INPUT.Flx_Anx.vs.SH_Veh.df[INPUT.Flx_Anx.vs.SH_Veh.df$pvalue<0.05,])
 
 IN.Norm.Anx.Stat <- c(INPUT.Flx_Norm.vs.Flx_Anx.df$stat)
 IN.Norm.Anx.Stat <- set_names(IN.Norm.Anx.Stat, nm = INPUT.Flx_Norm.vs.Flx_Anx.df$GeneID)
 IN.Norm.Anx.fgseaRES <- fgsea(pathways = pathwayDB,
-                     stats = IN.Norm.Anx.Stat,
-                     minSize = 10)
+                              stats = IN.Norm.Anx.Stat,
+                              minSize = 10, nPermSimple=10000)
+IN.DElist$IN.Norm.Anx=rownames(INPUT.Flx_Norm.vs.Flx_Anx.df[INPUT.Flx_Norm.vs.Flx_Anx.df$pvalue<0.05,])
 
 IN.Flx.Sh.Stat <- c(INPUT.Flx.vs.Veh.df$stat)
 IN.Flx.Sh.Stat <- set_names(IN.Flx.Sh.Stat, nm = INPUT.Flx.vs.Veh.df$GeneID)
 IN.Flx.Sh.fgseaRES <- fgsea(pathways = pathwayDB,
-                     stats = IN.Flx.Sh.Stat,
-                     minSize = 10)
+                            stats = IN.Flx.Sh.Stat,
+                            minSize = 10, nPermSimple=10000)
+IN.DElist$IN.Flx.Sh=rownames(INPUT.Flx.vs.Veh.df[INPUT.Flx.vs.Veh.df$pvalue<0.05,])
 
-
+#TRAP samples
 TRP.Sh.Gh.Stat <- c(TRAP.SH_Veh.vs.GH_Veh.df$stat)
 TRP.Sh.Gh.Stat <- set_names(TRP.Sh.Gh.Stat, nm = TRAP.SH_Veh.vs.GH_Veh.df$GeneID)
 TRP.Sh.Gh.fgseaRES <- fgsea(pathways = pathwayDB,
-                     stats = TRP.Sh.Gh.Stat,
-                     minSize = 10)
+                            stats = TRP.Sh.Gh.Stat,
+                            minSize = 10, nPermSimple=10000)
+TRP.DElist$TRP.Sh.Gh=rownames(TRAP.SH_Veh.vs.GH_Veh.df[TRAP.SH_Veh.vs.GH_Veh.df$pvalue<0.05,])
 
 TRP.Norm.Sh.Stat <- c(TRAP.Flx_Sh.vs.SH_Veh.df$stat)
 TRP.Norm.Sh.Stat <- set_names(TRP.Norm.Sh.Stat, nm = TRAP.Flx_Sh.vs.SH_Veh.df$GeneID)
 TRP.Norm.Sh.fgseaRES <- fgsea(pathways = pathwayDB,
-                     stats = TRP.Norm.Sh.Stat,
-                     minSize = 10)
+                              stats = TRP.Norm.Sh.Stat,
+                              minSize = 10, nPermSimple=10000)
+TRP.DElist$TRP.Norm.Sh=rownames(TRAP.Flx_Sh.vs.SH_Veh.df[TRAP.Flx_Sh.vs.SH_Veh.df$pvalue<0.05,])
 
 TRP.Anx.Sh.Stat <- c(TRAP.Flx_Anx.vs.SH_Veh.df$stat)
 TRP.Anx.Sh.Stat <- set_names(TRP.Anx.Sh.Stat, nm = TRAP.Flx_Anx.vs.SH_Veh.df$GeneID)
 TRP.Anx.Sh.fgseaRES <- fgsea(pathways = pathwayDB,
-                     stats = TRP.Anx.Sh.Stat,
-                     minSize = 10)
+                             stats = TRP.Anx.Sh.Stat,
+                             minSize = 10, nPermSimple=10000)
+TRP.DElist$TRP.Anx.Sh=rownames(TRAP.Flx_Anx.vs.SH_Veh.df[TRAP.Flx_Anx.vs.SH_Veh.df$pvalue<0.05,])
 
 TRP.Norm.Anx.Stat <- c(TRAP.Flx_Norm.vs.Flx_Anx.df$stat)
 TRP.Norm.Anx.Stat <- set_names(TRP.Norm.Anx.Stat, nm = TRAP.Flx_Norm.vs.Flx_Anx.df$GeneID)
 TRP.Norm.Anx.fgseaRES <- fgsea(pathways = pathwayDB,
-                     stats = TRP.Norm.Anx.Stat,
-                     minSize = 10)
+                               stats = TRP.Norm.Anx.Stat,
+                               minSize = 10, nPermSimple=10000)
+TRP.DElist$TRP.Norm.Anx=rownames(TRAP.Flx_Norm.vs.Flx_Anx.df[TRAP.Flx_Norm.vs.Flx_Anx.df$pvalue<0.05,])
 
 TRP.Flx.Sh.Stat <- c(TRAP.Flx.vs.Veh.df$stat)
 TRP.Flx.Sh.Stat <- set_names(TRP.Flx.Sh.Stat, nm = TRAP.Flx.vs.Veh.df$GeneID)
 TRP.Flx.Sh.fgseaRES <- fgsea(pathways = pathwayDB,
-                     stats = TRP.Flx.Sh.Stat,
-                     minSize = 10)
-
+                             stats = TRP.Flx.Sh.Stat,
+                             minSize = 10, nPermSimple=10000)
+TRP.DElist$TRP.Flx.Sh=rownames(TRAP.Flx.vs.Veh.df[TRAP.Flx.vs.Veh.df$pvalue<0.05,])
 
 #Save GSEA results as an .rds file
 saveRDS(IN.Sh.Gh.fgseaRES,"../FLX_datasets/GSE202172/IN.Sh.Gh.fgseaRES_GSE202172.rds")
@@ -377,6 +356,11 @@ saveRDS(TRP.Anx.Sh.fgseaRES, "../FLX_datasets/GSE202172/TRP.Anx.Sh.fgseaRES_GSE2
 saveRDS(TRP.Norm.Anx.fgseaRES, "../FLX_datasets/GSE202172/TRP.Norm.Anx.fgseaRES_GSE202172.rds")
 saveRDS(TRP.Flx.Sh.fgseaRES, "../FLX_datasets/GSE202172/TRP.Flx.Sh.fgseaRES_GSE202172.rds")
 
+write.table(t(plyr::ldply(IN.DElist,rbind)),"../FLX_datasets/GSE202172/GSE202172-IN.DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(IN.DEbackground,"../FLX_datasets/GSE202172/GSE202172-IN.DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(t(plyr::ldply(TRP.DElist,rbind)),"../FLX_datasets/GSE202172/GSE202172-TRP.DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(TRP.DEbackground,"../FLX_datasets/GSE202172/GSE202172-TRP.DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
+
 ```
 
 ## GSEA plots
@@ -384,27 +368,21 @@ saveRDS(TRP.Flx.Sh.fgseaRES, "../FLX_datasets/GSE202172/TRP.Flx.Sh.fgseaRES_GSE2
 An enrichment plot shows the enrichment of genes, from a specific pathway, differentially expressed in one group vs another group.
 
 ```{r GSEA Enrichment Plot}
-
 plotEnrichment(pathwayDB[["Ribosome - Mus musculus (mouse) | KEGG"]], 
-               IN.Gh.Sh.Stat) + labs(title = "Ribosome - Mus musculus (mouse) | KEGG")
+               IN.Sh.Gh.Stat) + labs(title = "Ribosome - Mus musculus (mouse) | KEGG")
 
 plotEnrichment(pathwayDB[["glycolysis I | MouseCyc"]], 
-               IN.Flx.Veh.Stat) + labs(title = "glycolysis I | MouseCyc")
+               IN.Flx.Sh.Stat) + labs(title = "glycolysis I | MouseCyc")
 
 plotEnrichment(pathwayDB[["Spliceosome - Mus musculus (mouse) | KEGG"]], 
-               IN.Flx.Anx.Stat) + labs(title = "Spliceosome - Mus musculus (mouse) | KEGG")
+               IN.Anx.Sh.Stat) + labs(title = "Spliceosome - Mus musculus (mouse) | KEGG")
 
-plotEnrichment(pathwayDB[["Translation | Reactome"]], 
-               TRP.Gh.Sh.Stat) + labs(title = "Translation | Reactome")
+plotEnrichment(pathwayDB[["Translation | Reactome"]], TRP.Sh.Gh.Stat) + labs(title = "Translation | Reactome")
 
-plotEnrichment(pathwayDB[[
-  "The citric acid (TCA) cycle and respiratory electron transport | Reactome"]],
-  TRP.Flx.Veh.Stat)+labs(title = "The citric acid (TCA) cycle and respiratory electron transport | 
-                        Reactome")
+plotEnrichment(pathwayDB[["The citric acid (TCA) cycle and respiratory electron transport | Reactome"]],TRP.Flx.Sh.Stat)+labs(title = "The citric acid (TCA) cycle and respiratory electron transport | Reactome")
 
 plotEnrichment(pathwayDB[["Neuronal System | Reactome"]], 
-               TRP.Flx.Anx.Stat) + labs(title = "Neuronal System | Reactome")
-
+               TRP.Anx.Sh.Stat) + labs(title = "Neuronal System | Reactome")
 
 ```
 
@@ -414,7 +392,7 @@ Heatmaps can show patterns of expression for groups of genes across samples. Spe
 input.names <- data.frame(Group = colData(dds_input)[,"Group"], row.names = colnames(dds_input))
 TRAP.names <- data.frame(Group = colData(dds_TRAP)[,"Group"], row.names = colnames(dds_TRAP))
 
-IN.Gh.Sh.select <- INPUT.GH_Veh.vs.SH_Veh.df$GeneID %in% pathwayDB[["Ribosome - Mus musculus (mouse) | KEGG"]]
+IN.Gh.Sh.select <- INPUT.SH_Veh.vs.GH_Veh.df$GeneID %in% pathwayDB[["Ribosome - Mus musculus (mouse) | KEGG"]]
 pheatmap(assay(input.vsd)[IN.Gh.Sh.select, ], cluster_rows = TRUE, show_rownames = FALSE,
          cluster_cols = TRUE, scale = "row", annotation_col = input.names)
 
@@ -426,7 +404,7 @@ IN.Flx.Anx.select <- INPUT.Flx_Norm.vs.Flx_Anx.df$GeneID %in% pathwayDB[["Splice
 pheatmap(assay(input.vsd)[IN.Flx.Anx.select, ], cluster_rows = TRUE, show_rownames = FALSE,
          cluster_cols = TRUE, scale = "row", annotation_col = input.names)
 
-TRP.Gh.Sh.select <- TRAP.GH_Veh.vs.SH_Veh.df$GeneID %in% pathwayDB[["Translation | Reactome"]]
+TRP.Gh.Sh.select <- TRAP.SH_Veh.vs.GH_Veh.df$GeneID %in% pathwayDB[["Translation | Reactome"]]
 pheatmap(assay(TRAP.vsd)[TRP.Gh.Sh.select, ], cluster_rows = TRUE, show_rownames = FALSE,
          cluster_cols = TRUE, scale = "row", annotation_col = TRAP.names)
 
@@ -437,6 +415,5 @@ pheatmap(assay(TRAP.vsd)[TRP.Flx.Veh.select, ], cluster_rows = TRUE, show_rownam
 TRP.Flx.Anx.select <- TRAP.Flx_Norm.vs.Flx_Anx.df$GeneID %in% pathwayDB[["Neuronal System | Reactome"]]
 pheatmap(assay(TRAP.vsd)[TRP.Flx.Anx.select, ], cluster_rows = TRUE, show_rownames = FALSE,
          cluster_cols = TRUE, scale = "row", annotation_col = TRAP.names)
-
 
 ```

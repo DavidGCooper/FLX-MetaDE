@@ -1,0 +1,212 @@
+---
+title: "GSE146446 Analysis"
+author: "David Cooper"
+date: "2022-09-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(GEOquery)
+library(limma)
+library("affycoretools")
+library(affy)
+library(tidyverse)
+library(fgsea)
+library(data.table)
+library(preprocessCore)
+library(pheatmap)
+source("read_cpdb_tab.R")
+
+```
+
+## Data Acquisition
+
+Use GEOquery to obtain the GEO series GSE83386. GSEMatrix=FALSE will pull out all the sample information as a GSE object. GSEMatrix=TRUE is the default and will provide a list of expression sets. Can use [[1]] to pull out the GSE object if there is only one. exprs() will return just the expression data and can be used to log transform the data if desired. 
+https://bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html
+
+```{r Get ExpressionSets}
+set.seed(123)
+GSEname="GSE146446"
+GSE=getGEO(GSEname)
+exGSE=GSE[[1]]
+#exprs(exGSE)=log2(exprs(exGSE))
+
+```
+
+## Quality Control Analyses 
+
+Compare samples with boxplots and PCA to assess the quality across samples. Normalized datasets should have the same median across the samples. The boxplot will show if there are any samples that differ from the rest. 
+
+```{r Boxplots}
+#Boxplot with all samples, log 2 transformed
+#boxplot(exprs(exGSE),las=2)
+
+#Quantile plot with all samples, log 2 transformed
+#qs=t(apply(exprs(exGSE),2,quantile,prob=c(0.05,0.25,0.5,0.75,0.95)))
+#matplot(qs,type="l",lty=1)
+
+```
+
+```{r PCA}
+#Samples all individual
+plotPCA(exGSE,outside=TRUE)
+#samples grouped treatment and control
+plotPCA(exGSE, groups = as.numeric(as.factor(exGSE@phenoData@data$characteristics_ch1.2)), groupnames = gsub("treatment: ","",levels(as.factor(exGSE@phenoData@data$characteristics_ch1.2))),outside=TRUE)
+#samples grouped by Timepoint
+plotPCA(exGSE, groups = as.numeric(as.factor(exGSE@phenoData@data$characteristics_ch1.1)), groupnames = gsub("cell line: ","",levels(as.factor(exGSE@phenoData@data$characteristics_ch1.1))),outside=TRUE)
+#samples grouped by responder type
+plotPCA(exGSE, groups = as.numeric(as.factor(exGSE@phenoData@data$characteristics_ch1.5)), groupnames = levels(as.factor(exGSE@phenoData@data$characteristics_ch1.5)),outside=TRUE)
+#
+plotPCA(exGSE, groups = as.numeric(as.factor(exGSE@phenoData@data$source_name_ch1)), groupnames = levels(as.factor(exGSE@phenoData@data$source_name_ch1)),outside=TRUE)
+
+```
+
+## Differential Expression Analysis
+
+Groups:
+DLX_T0_0  21
+DLX_T0_1
+DLX_T8_0  75
+DLX_T8_1
+PLB_T0_0  63
+PLB_T0_1
+PLB_T8_0  44
+PLB_T8_1
+
+Comparisons:
+Dlx responders vs nonresponders (treated)
+Dlx responders vs nonresponders (untreated)
+Placebo responders vs nonresponders (treated)
+Placebo responders vs nonresponders (untreated)
+Dlx treated vs untreated (all)
+Placebo treated vs untreated (all)
+
+```{r Two Group Analysis}
+Names=pData(exGSE)$geo_accession
+TreatmentResponse=factor(pData(exGSE)$source_name_ch1)
+Treatment=factor(str_sub(pData(exGSE)$source_name_ch1,1,6))
+PatientPair=factor(gsub("subject_id: ","",pData(exGSE)$characteristics_ch1))
+
+#Response & TvU for responders and non-responders
+Design=model.matrix(~0+TreatmentResponse)
+rownames(Design)=Names
+colnames(Design)=c("DLX_T0_0", "DLX_T0_1", "DLX_T8_0", "DLX_T8_1", "PLB_T0_0", "PLB_T0_1", "PLB_T8_0", "PLB_T8_1")
+fit=lmFit(exGSE,Design)
+contrasts=makeContrasts(DLX_T8_1 - DLX_T0_1, DLX_T8_0 - DLX_T0_0, DLX_T8_1 - DLX_T8_0, DLX_T0_1 - DLX_T0_0, 
+                        PLB_T8_1 - PLB_T0_1, PLB_T8_0 - PLB_T0_0, PLB_T8_1 - PLB_T8_0, PLB_T0_1 - PLB_T0_0, levels = Design)  
+fit2=contrasts.fit(fit,contrasts)
+fit2=eBayes(fit2)
+
+saveRDS(fit2,"DE_Response_GSE146446.rds")
+
+#head(fit2$coefficients)
+#topTable(fit2,coef = "DLX_T8_1 - DLX_T0_1")
+
+#TvU for all treated
+Design2=model.matrix(~0+Treatment)
+rownames(Design2)=Names
+colnames(Design2)=c("DLX_T0", "DLX_T8", "PLB_T0", "PLB_T8")
+fit3=lmFit(exGSE,Design2)
+contrasts2=makeContrasts(DLX_T8 - DLX_T0, PLB_T8 - PLB_T0, levels = Design2)  
+fit4=contrasts.fit(fit3,contrasts2)
+fit4=eBayes(fit4)
+
+saveRDS(fit4,"DE_TreatedAll_GSE146446.rds")
+
+```
+
+```{r Volcano Plots}
+volcanoplot(fit2,coef = "DLX_T8_1 - DLX_T8_0")
+
+```
+
+## Gene Set Enrichment Analysis
+
+Use fgsea to analyze gene set enrichment.
+
+```{r Remove Duplicate Genes}
+#Get the average expression across all samples for each locus
+UniqueGenes=data.frame(AvgExpr=rowMeans(exprs(exGSE)),GENE_SYMBOL=exGSE@featureData@data$Symbol,Loci=rownames(exprs(exGSE)))
+
+#filter the expression set to only include the rows with the highest average expression using the loci (default) row names
+UniqueGenes2=group_by(UniqueGenes,GENE_SYMBOL)%>%filter(AvgExpr==max(AvgExpr))%>%filter(GENE_SYMBOL!="")
+
+#An alternative method to get the unique genes
+#UniqueGenes3=arrange(UniqueGenes,desc(AvgExpr))%>%filter(!duplicated(GENE_SYMBOL))%>%filter(GENE_SYMBOL!="")
+#all(arrange(UniqueGenes2,desc(AvgExpr))==UniqueGenes3)
+
+```
+
+```{r GSEA using fgsea}
+#Pathways list using Gene_Symbols
+CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_symbol.tab")
+
+DElist=list()
+
+#Dlx responders vs nonresponders (treated)
+Dlx8hResponse=topTable(fit2,coef = "DLX_T8_1 - DLX_T8_0",number = Inf)%>%filter(ID%in%UniqueGenes2$Loci)
+DElist$DRN8=Dlx8hResponse[Dlx8hResponse$P.Value<0.05,]$Symbol
+DEbackground=Dlx8hResponse$Symbol
+tstats=Dlx8hResponse$t
+names(tstats)=Dlx8hResponse$Symbol
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
+saveRDS(GeneEnrich,"GSEA_Dlx8hResponse_GSE146446.rds")
+
+#Dlx responders vs nonresponders (untreated)
+Dlx0hResponse=topTable(fit2,coef = "DLX_T0_1 - DLX_T0_0",number = Inf)%>%filter(ID%in%UniqueGenes2$Loci)
+DElist$DRN0=Dlx0hResponse[Dlx0hResponse$P.Value<0.05,]$Symbol
+tstats=Dlx0hResponse$t
+names(tstats)=Dlx0hResponse$Symbol
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
+saveRDS(GeneEnrich,"GSEA_Dlx0hResponse_GSE146446.rds")
+
+#Placebo responders vs nonresponders (treated)
+Plb8hResponse=topTable(fit2,coef = "PLB_T8_1 - PLB_T8_0",number = Inf)%>%filter(ID%in%UniqueGenes2$Loci)
+DElist$PRN8=Plb8hResponse[Plb8hResponse$P.Value<0.05,]$Symbol
+tstats=Plb8hResponse$t
+names(tstats)=Plb8hResponse$Symbol
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
+saveRDS(GeneEnrich,"GSEA_Plb8hResponse_GSE146446.rds")
+
+#Placebo responders vs nonresponders (untreated)
+Plb0hResponse=topTable(fit2,coef = "PLB_T0_1 - PLB_T0_0",number = Inf)%>%filter(ID%in%UniqueGenes2$Loci)
+DElist$PRN0=Plb0hResponse[Plb0hResponse$P.Value<0.05,]$Symbol
+tstats=Plb0hResponse$t
+names(tstats)=Plb0hResponse$Symbol
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
+saveRDS(GeneEnrich,"GSEA_Plb0hResponse_GSE146446.rds")
+
+#Dlx treated vs untreated (all)
+DlxTreatment=topTable(fit4,coef = "DLX_T8 - DLX_T0",number = Inf)%>%filter(ID%in%UniqueGenes2$Loci)
+DElist$DTU=DlxTreatment[DlxTreatment$P.Value<0.05,]$Symbol
+tstats=DlxTreatment$t
+names(tstats)=DlxTreatment$Symbol
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
+saveRDS(GeneEnrich,"GSEA_DlxTreatment_GSE146446.rds")
+
+#Placebo treated vs untreated (all)
+PlbTreatment=topTable(fit4,coef = "PLB_T8 - PLB_T0",number = Inf)%>%filter(ID%in%UniqueGenes2$Loci)
+DElist$PTU=PlbTreatment[PlbTreatment$P.Value<0.05,]$Symbol
+tstats=PlbTreatment$t
+names(tstats)=PlbTreatment$Symbol
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
+saveRDS(GeneEnrich,"GSEA_PlbTreatment_GSE146446.rds")
+
+write.table(t(plyr::ldply(DElist,rbind)),"GSE146446-DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DEbackground,"GSE146446-DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
+
+```
+
+```{r Heatmaps GSEA}
+TargetGenes=CPDBpaths[["Lysosome - Homo sapiens (human) | KEGG"]]
+
+Exprs=as.data.frame(exprs(exGSE))
+UExprs=filter(Exprs,rownames(Exprs)%in%UniqueGenes2$Loci)
+rownames(UExprs)=UniqueGenes2$GENE_SYMBOL
+ExSubset=UExprs[rownames(UExprs)%in%TargetGenes,]
+ColumnNames=data.frame(CellLine=pData(exGSE)[,10],Treatment=pData(exGSE)[,8])
+rownames(ColumnNames)=pData(exGSE)[,2]
+pheatmap(ExSubset,annotation_col = ColumnNames,scale = "row")
+
+```

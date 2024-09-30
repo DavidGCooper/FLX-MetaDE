@@ -27,6 +27,7 @@ Use GEOquery to obtain the GEO series GSE28644. GSEMatrix=FALSE will pull out al
 https://bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html
 
 ```{r Get ExpressionSets}
+set.seed(123)
 GSEname="GSE28644"
 GSE=getGEO(GSEname)
 exGSE=GSE[[1]]
@@ -189,40 +190,52 @@ UniqueGenes=filter(UniqueGenes,ENSEMBL_GENE!="")%>%filter(!duplicated(ENSEMBL_GE
 
 ```
 
+    GSE28644_Cortex_XFTUXX
+    GSE28644_Cortex_XFRNXX
+    GSE28644_Cortex_XFRCXX
+    GSE28644_Cortex_XFNCXX
+    
 ```{r GSEA using fgsea}
 #Pathways list using mouse ensembl gene symbol (Mouse)
 CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
 
+DElist=list()
+
 #Pooled treatment vs control (t stat and gene symbols) using filtered genes list
 PooledFilter=topTable(fit2,coef = "Treatmenttreatment group (fluoxetine)",number = Inf)%>%filter(ID%in%UniqueGenes$LOCI)
 PooledFilter$GENE_SYMBOL=UniqueGenes$ENSEMBL_GENE[match(PooledFilter$ID,UniqueGenes$LOCI)]
+DElist$XFTU=PooledFilter[PooledFilter$P.Value<0.05,]$Gene.Symbol
+DEbackground=PooledFilter$Gene.Symbol
 tstats=PooledFilter$t
 names(tstats)=PooledFilter$GENE_SYMBOL
-GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10)
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
 saveRDS(GeneEnrich,"../FLX_datasets/GSE28644/GSEA_Pooled_GSE28644.rds")
 
 #Stats vector for responders, patient-pairs treatment vs control (t stat and gene symbols) using filtered genes list
 RespondersFilter=topTable(rpairfit2,coef = "rTreatmenttreatment group (fluoxetine)",number = Inf)%>%filter(ID%in%UniqueGenes$LOCI)
 RespondersFilter$GENE_SYMBOL=UniqueGenes$ENSEMBL_GENE[match(RespondersFilter$ID,UniqueGenes$LOCI)]
+DElist$XFRC=RespondersFilter[RespondersFilter$P.Value<0.05,]$Gene.Symbol
 rtstats=RespondersFilter$t
 names(rtstats)=RespondersFilter$GENE_SYMBOL
-rGeneEnrich=fgsea(pathways = CPDBpaths, stats = rtstats, minSize  = 10)
+rGeneEnrich=fgsea(pathways = CPDBpaths, stats = rtstats, minSize  = 10, nPermSimple=10000)
 saveRDS(rGeneEnrich,"../FLX_datasets/GSE28644/GSEA_Res_GSE28644.rds")
 
 #Stats vector for non-responders, patient-pairs treatment vs control (t stat and gene symbols) using filtered genes list
 NonFilter=topTable(npairfit2,coef = "nTreatmenttreatment group (fluoxetine)",number = Inf)%>%filter(ID%in%UniqueGenes$LOCI)
 NonFilter$GENE_SYMBOL=UniqueGenes$ENSEMBL_GENE[match(NonFilter$ID,UniqueGenes$LOCI)]
+DElist$XFNC=NonFilter[NonFilter$P.Value<0.05,]$Gene.Symbol
 ntstats=NonFilter$t
 names(ntstats)=NonFilter$GENE_SYMBOL
-nGeneEnrich=fgsea(pathways = CPDBpaths, stats = ntstats, minSize  = 10)
+nGeneEnrich=fgsea(pathways = CPDBpaths, stats = ntstats, minSize  = 10, nPermSimple=10000)
 saveRDS(nGeneEnrich,"../FLX_datasets/GSE28644/GSEA_Non_GSE28644.rds")
 
 #Responders vs Non-responders
 VFilter=topTable(Responsefit2,coef = "FR - FNR",number = Inf)%>%filter(ID%in%UniqueGenes$LOCI)
 VFilter$GENE_SYMBOL=UniqueGenes$ENSEMBL_GENE[match(VFilter$ID,UniqueGenes$LOCI)]
+DElist$XFRN=VFilter[VFilter$P.Value<0.05,]$Gene.Symbol
 vtstats=VFilter$t
 names(vtstats)=VFilter$GENE_SYMBOL
-vGeneEnrich=fgsea(pathways = CPDBpaths, stats = vtstats, minSize  = 10)
+vGeneEnrich=fgsea(pathways = CPDBpaths, stats = vtstats, minSize  = 10, nPermSimple=10000)
 saveRDS(vGeneEnrich,"../FLX_datasets/GSE28644/GSEA_ResVNon_GSE28644.rds")
 
 #Responders vs Non-responders
@@ -230,8 +243,12 @@ XFilter=topTable(Responsefit2,coef = "CR - CNR",number = Inf)%>%filter(ID%in%Uni
 XFilter$GENE_SYMBOL=UniqueGenes$ENSEMBL_GENE[match(XFilter$ID,UniqueGenes$LOCI)]
 Xtstats=XFilter$t
 names(Xtstats)=XFilter$GENE_SYMBOL
-XGeneEnrich=fgsea(pathways = CPDBpaths, stats = Xtstats, minSize  = 10)
+XGeneEnrich=fgsea(pathways = CPDBpaths, stats = Xtstats, minSize  = 10, nPermSimple=10000)
 saveRDS(XGeneEnrich,"../FLX_datasets/GSE28644/GSEA_UnResVNon_GSE28644.rds")
+
+write.table(t(plyr::ldply(DElist,rbind)),"../FLX_datasets/GSE28644/GSE28644-DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DEbackground,"../FLX_datasets/GSE28644/GSE28644-DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
+
 
 ```
 

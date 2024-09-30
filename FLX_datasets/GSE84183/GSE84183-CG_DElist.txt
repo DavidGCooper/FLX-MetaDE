@@ -1,0 +1,5522 @@
+XFTU	SFTU	SFRC	SFNC	SFRN
+Lhx9	Lhx9	Lhx9	Lhx9	Was
+	Myl4	Mpl	Myl4	Ict1
+Myl4	Samd14	Gm5771	Npy2r	Mycl1
+Mpl		Myl4	Samd14	Aptx
+Krt2	Apoc1	6330527O06Rik	6330527O06Rik	Mcf2
+Cpne9	Gdpd2	Samd14	Mpl	AA408296
+Apoc1	6330527O06Rik	Npy2r	Gm5771	Clec3a
+Hsd11b1	Btbd10	Btbd10		Acadl
+Arpp19	Mpl	Krt2	Krt2	Vasn
+Gdpd2	Arpp19	Pdp1	Pdp1	
+Btbd10	Krt2			2900006K08Rik
+Npy2r	Npy2r	Dpysl3	Btbd10	
+Slc44a5	Cpne9	Adamtsl1	Herc6	Slc39a12
+Hkdc1	Kcnv1	Herc6	Kit	Erp29
+6330527O06Rik	Foxo1		Dpysl3	Mpl
+Samd14	Chrdl1	Wnt10a	Gdpd2	Fut10
+Kcnv1	Slc44a5	Apoc1	Apoc1	B230120H23Rik
+Atp1a1	Atp1a1	Slc44a5	Prdm5	
+Pcsk2	Hspb3	Kit	Dock10	Rnf144b
+C130074G19Rik		Tyro3	Dkkl1	Sfxn5
+Herc6	Stard8	Gdpd2	Incenp	
+Foxo1	Lrrtm1	Ngef	Mycl1	Wipf1
+Stard8	Hkdc1	Lct	Thsd7b	Pydc3
+Prox1	Kcng2	Plcb4	Ngef	Fdxacb1
+Gpr153	Lmo4	Dkkl1	Slc44a5	Svop
+Allc	Herc6	Prdm5	Htr4	Upp2
+Rnf182	Hsd11b1	Stard8	Lct	Zfp954
+Lrrtm1	C130074G19Rik	Incenp	Hspb3	
+Lmo4	Slc27a3	Amhr2	Il20rb	Rnf212
+Rev3l	Cpne7	Il20rb	Chst9	Ino80e
+Cpne7	Slc9a4	Chst9	Plcb4	Krtap16-8
+Tspan33	Dgkg	Cpne7	Stard8	Cyp2j13
+Chrdl1	Il20rb	Lrrtm1	Adamtsl1	Adamtsl1
+Htr4	Pdyn	Kcnv1	Tyro3	Ganc
+Ptprz1	Rnf182	4931429I11Rik	Nrsn2	Shh
+Prdm5	Prox1	Dock10	Wnt10a	Prune2
+Myh10	Kit	Nnat	Chrdl1	Xdh
+Gm5771	Htr4	Nrsn2	4931429I11Rik	Cmtm2a
+Dock10	Trhr2	Dusp3	Lmo4	Nms
+Boc		Cpne9	Grp	Camk1g
+	Cpne6	Mkx	Cpne9	Fxyd4
+Slc9a4	Slit1	Tspan33	Hsd11b1	Rassf9
+Doc2a	Ncdn	6030405A18Rik	Prox1	
+Pld2	Tspan33	Thsd7b	Slc9a4	Amdhd1
+Amhr2	Prdm5	Grp	Tspan33	Gm5771
+Jsrp1	Dkkl1	Slc9a4	Hkdc1	Olfr1115
+Il20rb	Wnt10a	Chrdl1	Mkx	Dnmt3a
+Ngef	Pnlip	Lrrk2	Kcnv1	
+Dgkg	Tnnc1	Htr4	Rnf182	Hnf1a
+Ppme1	Gria1	Ntm		Tlr3
+	Mapk11	Rnf182	Lrrtm1	
+Slc27a3	Gstm6	Osbpl1a	Nnat	Asb5
+Osbpl1a	Sema4g		Nrp2	Col28a1
+Trhr2	Mef2d	Crym	Cpne7	Cd200r4
+Pdyn	Gm5771	Nrp2	Foxo1	2310009B15Rik
+Gpx1	Afap1l1	Sema7a	Pdyn	
+	Nrsn2	Foxo1	Pacrg	Ankra2
+Hspb3	Cdhr1	Fam3c	Arpp19	Cyth4
+	Ngef	Lmo4	Dusp3	Pcdhb13
+Stx1a	Osbpl1a	Hkdc1	Kcng2	Fzd4
+Wdfy4	2410004A20Rik	Plcl2	Crym	
+2410004A20Rik	Dock10	Atp1a1	Lrrk2	Slc15a3
+Dkkl1	Ccl27a	Prox1	6030405A18Rik	Dmrta2
+	Dusp3	Pdyn	Dpyd	Foxe1
+Kctd1	Lct	Arpp19	Fam70a	Amhr2
+Pnlip	Zfp945	Cdk2ap1	Osbpl1a	G630090E17Rik
+Rnf38	Amhr2	Mapk6	Trhr2	Gcc1
+Tgfb2	Pcsk2	Slit1	Pcsk2	Prosc
+Cacng3	Fam70a	Tmem198	Plcl2	Trim36
+Bves	Nnat	Hsd11b1	Rgs4	Cttnbp2nl
+Plcl2	Pdp1	Kcng2	P2rx4	Ccdc136
+	Uba52	Hspb3		AA986860
+Tnnc1			Atp1a1	Mfap1a
+Klhl13	Tgfb2	Ivns1abp	Ntm	Pik3r6
+Thsd7b	Thsd7b	Dbi	Zfp945	Foxn2
+Ryr3	Kctd1	Naaa	Tgfb2	Grm6
+Gria1	Sall2	Rgs4	Sema5a	Ccdc6
+Trib1		Ccl27a	Il1r1	Smad3
+		Arhgap25	Hs3st5	Atp4b
+Cpne5	Fibcd1	Hrasls	Slc27a3	
+Numb	Plcl2	Kntc1	Rerg	Slc35a2
+Cyfip2	6030405A18Rik	Zfp945	Amhr2	Tbkbp1
+Nnat	Arrb1	Slc29a4	Ccl27a	Sema4d
+Slit1	Nr2f2	P2rx4	Ccdc22	Foxo3
+St18	Dpyd	Sparc	Naaa	Dph3b-ps
+Zbtb20	Agt	Kl	Arhgap25	Arhgap42
+4931429I11Rik	Adcyap1	Fam70a	Kntc1	Zfp324
+Sigmar1	Tmem132a	Dgkg	Bves	Rasl12
+Lct	Mark1	Slc27a3	Hrasls	Btbd10
+Afap1l1	Pacrg	Pcsk2	Dbi	Gabpb2
+Mef2d	4930447C04Rik	Kctd1	Sema7a	Vegfc
+Cyp7b1	Rev3l	Rerg	Mark1	Phf1
+Nr2f2	Gpr153	Bloc1s1	Mef2d	Ascc1
+Cdk5r1	Trib1	Dpyd	Cdk2ap1	Cldn5
+Ripk4	Arhgap25	Tgfb2	Selm	Papd4
+Ipo5	P2rx4	Slc20a1	Ramp3	A530058N18Rik
+Zfp105	Nr3c2	Vit	Vit	Ap4s1
+Slc29a4	Vit	Trhr2	Ptk2b	Senp6
+Cnn3	Tiam2	Ptk2b	Sema4g	Lrrc7
+Osbp2	Rph3al	Gabra5	Ahcyl2	Taf13
+Dusp3	Myh10	Mcm6	Tnnc1	Card14
+Pacrg	4931429I11Rik	Mycl1	Agt	Ksr1
+Mybpc3	Slc29a4	C130074G19Rik	Mapk11	Zfp444
+Rftn1	Allc	Cpne6	Dgkg	Fzd1
+Man1c1	Cd6	Mark1	Trib1	Tmem198
+Arrb1	Ptpre	Foxo6	Trpc4	Ube4b
+Fam70a	Ryr3		Kcnh5	Tas2r131
+Ahcyl2	2310061C15Rik	Pacrg	Mapk6	Gm156
+Ptpre	Smarca2	Kcnh5	Sall2	Pcbd2
+Gstm6	3110035E14Rik	Hs3st5	Fgf10	Cdc42bpg
+	Crh	Ramp3	Slit1	Adhfe1
+Tmem196	Stx1a	Sema5a	Fam3c	Six4
+Ssu72	Nrip2	Agt	C130074G19Rik	Tnnt1
+Agt	Ppme1	Etv6	Kctd1	4833422C13Rik
+Cpne6	Coch	Trib1	St18	
+Ccl27a	Naprt1		Tmem132a	Dll1
+Nrip2	Med27	Scml4	Ivns1abp	Znhit1
+Moxd1	Gabra5	Dchs1	6530418L21Rik	Lgi1
+Gria3	Incenp	Ints7	Slc20a1	Gm15056
+Rtn4r	Slc39a10	Ncdn	Gabra5	Cd81
+Vit		Fam98c		Gys2
+Mapk11	Dchs1	Rftn1	Sparc	Lass4
+Pdlim4	Lmo7	Acot6		Crkl
+	Boc	Myh10	Scml4	Pou2af1
+Tbc1d9	Pparg	Mapk11	Adap1	Psmg2
+Prlr	Sigmar1	Stx4a	Ehd1	Cybb
+Smo	Pnck	Tnnc1	Gstm6	Cno
+Zfp945	Rogdi	Pnlip	Orai2	1700027D21Rik
+Susd2	Nrp2	Nr2f2	Nr2f2	Ckmt2
+Lyzl4	Aloxe3	Il17ra	Myh10	4930550L24Rik
+6530418L21Rik	Mkx	2410004A20Rik	Blnk	Rnf166
+Mgll	Mycl1	Tmem132a	Foxo6	D330045A20Rik
+Fgf10	Ephx4			Osbpl11
+Tacr3	Scml4	Bend6	Bloc1s1	Glp2r
+Acsl5	Selm	Fibcd1	Mcm6	Dtx4
+Accn1	Blnk	Serpina3n	Smo	Copg
+Selm	B3gat2	Mef2d	Vgf	Tnfaip6
+Tmem132a	Itgb3	Trpc4	Ptpn5	Xlr5a
+Acot6	Doc2a	Sall2	Etv6	Aff2
+Fibcd1	Foxo6	Nrip2	Zbtb20	Stag2
+Rps26	Kl	Zbtb20	Cidea	Il33
+Twf2	Slit3	Zap70	Kl	Ap4m1
+Ubqln4	Gria3	Sema4g	Gpx1	Hsp90ab1
+Cry2	Crym	Numb	Klhl13	Klf7
+Adcyap1	St18	Bves	Ints7	Extl2
+3110035E14Rik	Etv6	Ahcyl2		Wdr61
+Kit	Rftn1	Ehd1	Pik3r6	Hddc3
+Lactb	Srpk1	St6galnac5	Fhad1	Poln
+Rph3al	Ints7	Cidea	Adcyap1	Zfp316
+Prkar1b	Cyp7b1	Vgf	Cx3cl1	Tbx6
+Cav3	Sema7a	Ryr3	Slc39a10	Eed
+Gabra2	Adamtsl1	Dnmt3a	Zfp365	
+Mtfp1	Kcnh5	Cx3cl1	Wnt9a	Igsf10
+Hdac1	Klhl13	Fgf10	Prex1	Ube2v1
+Nrp2	Dpysl3	Mgll	Nrip2	Hmgn1
+Adra2c	Zap70		Acot6	Ugt2b38
+Ehd1	Spag5	Trpc3	Fibcd1	Spdef
+Itgb3	Rgs4	Arrb1	St6galnac5	Ttbk2
+Maml2	Slc20a1	Zfp365	Ncdn	Ephb1
+Trpc4	Smo	6530418L21Rik	Slc29a4	March7
+Rpl11	Rnf38	Med27	2410004A20Rik	
+Kl		Cdhr1	Fhl2	Uqcrh
+Lrig3	Moxd1	Afap1l1	Cyp7b1	Bend7
+Hdac1	Cdk5r1	2310061C15Rik	Tor1a	Paqr5
+Mkx	Hdac1	Ppme1		Zfp358
+Kif3c	Fap	Nr3c2	Racgap1	Zmynd19
+Pacs1	Orai2	Cyp7b1	Eef1a1	Mycbpap
+Calr4	Bloc1s1	Klhl13	Cpne5	Rsf1
+Dpyd	Mgll	Gria1	Tmem198	6330503K22Rik
+4930447C04Rik	6530418L21Rik	Camk1g	Garnl3	Chrm4
+6030405A18Rik	Cidea	Asap1	Pkp2	Ada
+Map1lc3a	Lrrn2	Ccdc22	Lmo7	Cox6a1
+Tmem198	Zbtb20	Fhad1	Adamts9	Hrsp12
+Mcm6	Kntc1	Cpne5	Rps26	8430410K20Rik
+Kcnh4	Ripk4	Orai2	Zap70	Hexim1
+Kcnh5	Mxra7	Hipk3	Pparg	Tmem91
+Wnt10a	Il16	Mrpl27	Pnlip	Rpl23
+Fhad1	Itga4	Boc	Crh	Mdm2
+Cabp1	Spr	Rps26	Ephx4	Defa-rs1
+Pparg	Phkg1	Slc7a14	Srp14	Cenpl
+Clstn1	Wdfy4	Akt2	Aloxe3	Napsa
+Pip4k2c	Fhl2	Hdac1	Gria1	
+Get4	Prex1	Adap1	H2-Ke6	Icmt
+Hdac8	Lrrk2	Galntl4	D330012F22Rik	Hdhd3
+Sall2	Acot6	Blnk	Iglon5	Hist1h1e
+Lrrn1	Eef1a1	Selm	Dgat2	Cd5
+Foxo6	Mcm6	Prickle3	Prlr	Clic3
+St8sia4	Tacc1	Il1r1	Rftn1	Racgap1
+Csrnp2	Ehd1	Icmt	Cdkl1	
+Nr3c2	Cnih2	Garnl3	Fam98c	Asb16
+Hist2h2be	Fgf10	Actn4	Uba52	Hspb3
+Phkg1	Padi2		Slc7a14	Zfp30
+Ankrd40	St6galnac5	Kctd6	Slc30a4	Lsm10
+Egln3	Dnajc21	BC046404		Abi3
+Pdp1	Ivns1abp	Crh	Ryr3	Pan3
+Efs	Tor1a	Lmo7	Arrb1	
+Mark1	Zfp365	Rogdi	Cpne6	
+Scml4	Ahcyl2	Bri3bp	Rph3al	
+Racgap1	Cpne5	Pitpna	Il17ra	Oxct1
+Cd6	Ppp2r2c	Srpk1	Golim4	Cyp2b9
+Cidea	Man1c1	St18	Pgam2	Cnksr3
+Sema4g		Gstm6	Eml2	Casq2
+Adamtsl1	Fhad1	Susd2	Ppme1	E2f7
+Nt5c3	Ptk2b	Ephx4	Hdac1	Gm9112
+Pak1	Rps26	Slc39a11	Tiam2	Ppm1j
+Gipc1	Pkp2	Tor1a	Asap1	Setdb2
+Nhsl1	Trpc4	Pkp2	Chst8	Psmc2
+Mcmbp	Ptpn5	Cdc42bpa	Enox2	Cphx
+Bloc1s1	Lxn	Ptpn5	Trpc3	Clec4a2
+Stard13	Pak1	Cdk5r1	Akt2	Pax9
+Tmem35	Egln3	Dpp4	Bri3bp	B3gnt2
+Etv6	Gm13889	Tacc1	Dchs1	Gm10324
+Plk3	Hs3st5	Fap	Doc2a	Wnt7b
+Drp2	Tacr3	Glcci1	Tle6	2010109A12Rik
+Kntc1	St8sia5	Fscn1	Pitpna	Bend6
+Smarca2	Cx3cl1	Uba52	Mgll	Wt1
+Hs3st5	Tle6	Chd9	Cdhr1	
+Tiam2	Efs	Tmem120a	Fap	Otx1
+Haus4	Lactb	Cnih2	Smarca2	5530601H04Rik
+Tead1	Akt2	Slc30a4	Ptprz1	
+Il1rapl1	Bves	Lrrn2	Serpina3n	Phkb
+Fam20c	Gabra2	Wnt9a	Numb	Ucp1
+Il1r1	Prickle3		BC046404	1700048O20Rik
+Gkap1	Tmem196	Npy	Ppm1b	Cntn4
+Acvr1b	Mcmbp	Aloxe3	Cacng3	Prkcz
+Coch	Kbtbd11	Dgat2	Sigmar1	Cpne3
+Rarres1	Numb	Pgam2	Spr	Hipk3
+Tle6	1700019N12Rik	Krt1	Hbegf	1200011M11Rik
+St8sia5	Fbxw7	Pparg	Kbtbd11	Gad1
+Limch1	Cyfip1	Sigmar1	Galntl4	Il2rg
+Il16	Slc9a2	Ppm1b	Npy	Slc47a2
+Hdc	Plcb4	H2-Ke6	Ptpre	Mcm10
+6530401D17Rik	Paqr6	Eef1a1	Tmem120a	
+Ecm2	Gcnt2	Fbxw7	4930447C04Rik	Nr1h5
+Amot	Csrnp1	Zfp316	Srpk1	Bub1b
+Stk32c	Kif3c	Egln3	Fscn1	Prkd2
+5730469M10Rik	Tcfap2b	Pnck	Kctd6	Sh3bgrl3
+Inpp4b	Ankrd40	Prlr	Arhgef26	Limk1
+Ccbp2	Mybpc3	Abcd2	Nr3c2	Wnt3a
+Spag5	Grk5	Ttc39b	Tacr3	
+Srpk1	Ndufa3	Snrnp40	Actn4	Pstpip1
+Prelid1	Il17rd	Rph3al	Boc	Lrg1
+Scrn1	Adrb3	Kif3c	Slc4a4	Bmyc
+Trpv2		Naprt1	Stx4a	Map3k15
+Zfp365	Ccdc113	Get4	Il16	Alkbh1
+Gabra5	Mcm4	Ptpre	Vti1b	Fbxl3
+Gm4838	Lck	Prex1	Allc	Wrn
+Lap3	Cxxc5	Gpr153	Ttl	Grhl1
+Blnk	Rasgrf1	Plk3	Uck2	Frmd5
+Kcnmb4	Ptprz1	1700019N12Rik	Med27	Rnf103
+Mapk6	Hdac1	B3gat2	B3galt5	Mid1
+Wnt9a	Tiam1	Tacr3	Rnf38	Negr1
+	Glcci1	Prkaa1	Afap1l1	Cyp4a31
+Matn4	Accn1	4930447C04Rik	Snrnp40	Slc4a4
+Sun1	5033430I15Rik	Lyrm2	Spint1	Tmem150b
+Vasn	Kcnmb4	Prdm8	Fbxo17	Dscaml1
+Kcnj4	Derl1	Ptprz1	Rpl18a	Adck5
+Golim4	Ehd3	Spr	Pnck	Gemin7
+Slc22a1	Myh1	Vasn	Stx1a	Diablo
+B3gat2	Racgap1	Il16	Cdk5r1	Crnkl1
+Cinp		Enox2	Klf7	Ggcx
+Gna13	Dgat2	Stx1a	Gm13889	Psp
+Cdhr1	Slc30a4	Cd34	Ap1s2	
+Zap70	Serpina3n	Rnf38	Slc39a11	Nqo2
+Ppap2b	Mtfp1	Fbxo17		Thnsl1
+Acap3	Adra2c	Slc39a10	Aldh1a3	AI836003
+Smad5	B3galt5	Doc2a	Ptgs1	Il1r1
+Fap	Bri3bp	Gaa	Naprt1	Foxp2
+Ehd3	Tmem150c	Limk1	3110035E14Rik	Stmn3
+Clstn2	H2-Ke6	Gm13889	Syt6	Mapk4
+Jakmip1	Ccbp2	D330012F22Rik	Tm6sf1	Zfp326
+Kcnh1	Pitpna	Rev3l	Htr3a	Wnt10a
+Kcng2	Pcp4	Scrn1	Pgm2	Acly
+Gucy1b3	Wnt9a	Cblb	Clstn1	BC147527
+Rps15a	Rerg	Lamb1	Sema3a	Pptc7
+Kcnk4	Sparc	Efs	Clu	Lrrc67
+Lxn	Il17ra	Cry2	Krt1	Sytl3
+Asb11	Cabp1	Rplp1	Rogdi	Pdzd7
+Csf2rb2	Mtap6	Rnf19b	Hecw2	
+Rerg	Prdm8	Smo		Ghitm
+Prkcb	Rab6b	Mst1r	Gpr153	Dhfr
+Ext1	Whsc1	Hdac1	Rev3l	
+Arhgap25	Gpx1	Cacng3	Inhba	Fads2
+Cyfip1	Adamts9	Rab27a	Kcnt1	Wdr95
+Ppp2r2c	Il1r1	Stmn3	Gkap1	Tox4
+Cyhr1	Cdk2ap1		Nr2c2ap	Fam58b
+Hrasls	Pdk2	Coch	5033430I15Rik	Prim2
+Gli3	Prkar1b	Fam136a	Cyfip1	Palld
+Rab27a	Etnk2	Arhgef26	Ehd3	Golim4
+Sipa1l3	Hdc	Nudt3	2310061C15Rik	
+Adrb3	Unc5a	Lactb	9630041G16Rik	Defa21
+Fhl2	Pgam2	Dnajc21	Mrpl27	Spnb2
+1700019N12Rik	Actn4	Iglon5	Plk3	Rbks
+Dchs1	Sema3a	Wnt7b	Trpv2	4921530D09Rik
+Comt	Dnmt3a	Ehd3	Cxxc5	Lcor
+Cd34	Slc24a3	Allc	Cdc42bpa	Hao1
+Etnk2	Kctd6	Clu	Ccbp2	Chd8
+Slc35f2	Gkap1	Ubqln4	Prickle3	Trnt1
+Naprt1	Cacng3	Sipa1l3	Fbxw7	Vmn1r71
+Rps9	Prkcb	Cryaa	Cblb	Amica1
+Gcnt2	Chst9	Ndel1	Sipa1l3	
+2410016O06Rik	Lrrn1		Hdac1	Kbtbd3
+Prickle3	Gm6816	Fhl2	Ptchd1	
+Mycl1	Nrsn1	Lmtk2	Itga4	Phf14
+Mageh1	Vgf	Rbpj	Tmem196	Larp4
+St6galnac5	Klk8	Nr2c2ap	Ttc39b	Phactr4
+Dpysl3	Ptgs1	Kcnt1	Cdc42se2	F13b
+Cckbr	Mapk6	Spint1	B3gat2	Atrx
+Arhgef26	Ipcef1	Tiam2	Slit3	Spink11
+Sema5a	Frem3	Hr	Pdk2	Klrb1a
+Dcaf12	Rarres1	Hecw2	Dnajc21	Zfp14
+Pard3	Nhsl1	Acsl5	Grk5	Cyp21a1
+Ints7	Ubqln4	Tnnt1	Pcp4	Dusp23
+Chd7	Crhr2	Gpx1	Ripk4	Thap3
+B3galt5	Rps6ka3	Rmnd1	Cnih2	2610002J02Rik
+Cpne2	Slco2a1	Mcmbp	Egln3	Mettl1
+	Pgm2	Caln1	Dpp4	Cib1
+Ddx21	Csgalnact1	Slc39a6	Tbr1	
+Gm13889	Galntl4	Adamts9	Rplp1	Tomm5
+Arhgap10	Ttl	Eml2	Lats2	
+Ip6k3	Fam149a	Ppp2r2c	Rnf19b	Exoc3l2
+Ndufa3	BC046404	Smarca2	Bend6	Ntan1
+Nrsn1	Bola2	Lpl	Ppl	1700029G01Rik
+Tmem38a	Cpne2	Aldh1a3	Efhd2	Olfr1354
+Pin1	Prlr	Pcp4	Chd9	3110040N11Rik
+Phlpp2	Cdc42bpa	Sf3b5	Lrrn2	Ampd1
+Gm5623	Papss2	Lck	Gabra2	Slc16a7
+Eef1a1	Pygl	Unc5a	Glcci1	Serpina3a
+Aldh1a7	Caln1	Hbegf	Rbpj	Slc29a3
+Kcng1	Rplp1	Grhl1	Tcfap2b	Gm22
+Nrsn2	Efhd2	Tcfap2b	Lck	Vps16
+Spr	Chd9	Gm6816	Itgb3	4732414G09Rik
+Mdga1	Ppap2b	Rpl11	Serpina3g	Gck
+Prokr2	Rab27a	Kcnk3	Csrnp1	E2f2
+1700040I03Rik	Slc22a1	Tle6	Nhsl1	Csnk1d
+9230105E10Rik	Cryaa	Ankrd40	Tmem150c	Tubb2a
+Kbtbd11	Ptchd1	Sorcs2	Papss2	Pigx
+Kcnt1	Get4	Adcyap1	Mst1r	Kndc1
+Crhr2	Slc39a6	Gabra2	St8sia5	Ugp2
+Sgpp1	Plk3	Tbr1	Maml2	Klf15
+Fbxw7	Thrb	Cyfip1	Lamb1	Eif3k
+Prkaa2	Tmem14a	Chst8	Ermp1	Zfp830
+Thbs4	Sipa1l3	Cwh43	Rmnd1	Apoc3
+Cd81	Capns1	Phlda3	Mxra7	Fam187a
+Pitpna	Nt5c3	Mtfp1	Plek	
+Slco2a1	Cav3	Man1c1	Gcnt2	Atp7a
+Sparc	D3Bwg0562e	Srp14	Slc24a3	Wdr11
+Dnajc21	Gaa	Itgb3	Ccdc113	Tph2
+Mapk12	Cyp11a1	Vti1b	Tacc1	Klhl38
+Tmem14a	5730469M10Rik	Frem3	Pld2	Brca1
+Pik3r5	St8sia4	Ptchd1	Rarres1	Eaf2
+Mcm4	Nap1l1	Gm4838	Phlda3	1810010H24Rik
+Adamts9	Ip6k3	Tmem35	Olfml2b	Hif3a
+Gucy1a3	Mst1r	9630041G16Rik	Slc9a2	Chac1
+2310061C15Rik	Rpl11	Syt6	Lyrm2	Med29
+Lrrn3	Ptk2	Serpina3g		Itgax
+Etfb	E130309F12Rik	0610007P14Rik	Susd2	Rb1cc1
+Il17rd	Apaf1	Il1rapl1	Nrsn1	Gm853
+Csrnp1	Uck2	Cpne2	Lmtk2	Gm13271
+Adcy2	Slc35f2	Ttl	Crlf1	Cand2
+Atp2a2	Lrrn3	Ednra	Acsl5	Spink2
+Lpl	Lmtk2	Rb1cc1	Wnt7a	
+	Slc39a11	Crlf1	Padi2	Wtip
+Ptpn5	Tmem62	Rpl18a	S100a6	Slc6a11
+Dctpp1	Acsl5	St8sia5	D10Jhu81e	
+Atp13a4	Garnl3	Efhd2	Ppap2b	Htr2c
+Rpl35	Hipk3	Arhgef10l	St8sia4	Cerk
+Prex1	Atp2a2	Pdk2	Rph3a	Sp110
+Phka1	Tm6sf1	Atp2a2	Adrb3	Ufsp1
+Ephx4	Adamts14	Tmem232	Tead1	Gm8909
+Rnf115	Myo1b	Rtn4r	Slc22a1	2210012G02Rik
+Robld3	Tmem198	Gabarap	Thrb	
+Arr3	Rgnef	Fut9	Kcnmb4	Fam3c
+Cish	Apeh	Cabp1	Mtap6	
+Grp	Sema5a	Loxl1	Spag5	Zfp879
+	Cry2	Apaf1	Rab27a	
+9630041G16Rik	Cckbr	Gcnt2	Lrrn1	Esrrg
+Slc20a1	0610007P14Rik	Etfb	Fbxl2	BC061237
+Ednra	Fscn1	Maml2	Man1c1	Klhl35
+Mapk8	Cd34	Kbtbd11	Cyb5r1	Gm15401
+Pkp2	Epha6	Gria3	Rgnef	
+Mamdc2	Cinp	Tac2	Gabpb2	
+D630045J12Rik	Tmcc2	Mcm4	Fut9	Mst1
+Vps8	Maml2		Gria3	Duox1
+Brsk2	Prokr2	Tmem196	Ppp2r2c	Sdr16c5
+Tyro3	Lpl	Inhba	Nfib	Cxcr3
+Trip4	Dtl	Rab6b	Unc5a	Mtrf1
+Ctnna2	Adora1	Ap1s2	Kcnk3	Rxfp4
+Dlgap3	Fam160a2		Kif3c	Gsta3
+Med27	Ccdc22	Nt5c3	Tiam1	Doc2g
+Myh1	Plcg2	Tmem62		Foxm1
+Gm88			Prkaa1	Ubqln2
+Rab6b	Prkaa1	Josd1		Folh1
+5033430I15Rik	Ano2	Wnt7a	Accn1	Ahcyl1
+Itga8	Jakmip1	Klk8	Rtn4r	Atg5
+Grk5	Fam3c	Slc24a3	Gaa	Smok3a
+Uba52	Arhgef26	Nhsl1	Gpc4	
+Sult4a1	Ngfr	Accn1	Scrn1	Nr2f1
+Frem3	Tbc1d9	Adra2c	Satb2	Il7r
+Klk8	Trpc3	Gabrd	Frem3	Nags
+Gin1	Lrrtm3	Pno1	Tac2	Gtf2h4
+Bmpr1a	Pld2	Rgnef	Lactb	Foxs1
+Actn4	Gatad1	Pgm2	Cib1	En2
+Prdm8	Pygb	Wdfy4	2410006H16Rik	Prss51
+Atp11c	Wls	Gm12824	1700019N12Rik	Sirpb1a
+Prkaa1	Prkaa2	Htr3a	Adora1	Aup1
+Padi2	Myo19	C1ql1	Kcnh1	Angptl4
+Ncdn	Rtn4r	3110035E14Rik	Rpl11	Adcyap1
+Sema4f	Stx4a	Hebp1	Ankrd40	Mina
+Pgm2		Xpa	Bola2	1700014N06Rik
+Foxp1	Kcng1	Slc13a5	Coch	Cacng7
+Shc3	Ednra	Thap3	Ramp1	Cks1b
+Ppl	Rpl10a	Sema3c	Fyn	Fpgs
+Efhd2	Olfml2b	Ccbp2	Rnf34	Flt3
+1700045I19Rik	Drp2	Myh3	Pak1	Irf8
+Adora1	Lats2	Papss2	Prdm8	Rassf3
+0610007L01Rik	Fut9	Sema3a	Trhr	Ctsg
+Rpl18	Wnt7b	Cdkl1	Lancl2	Stk32c
+Pclo	Marcksl1	Tmem14a	Sorcs2	
+Lancl2		Spag5	Mtfp1	Ccno
+Zdhhc17		Cd6	Ubqln4	Hps1
+Tlk1	Pdzd3	Tm6sf1	Rpl35a	Gm4937
+Jdp2	Fbxl2	Steap2	Cpne2	Gpr183
+Map2k3	Kcnb1	D3Bwg0562e	Phkg1	Abat
+Atp8a2	Trhr	Gm4883	Gm6816	4930402F06Rik
+Tmem120a	Hrasls	Crhr2	Slc39a6	Mrps24
+Polr3d	Nrl		Amot	Hist1h1c
+Slc13a5	Top1mt	Ap3b1		Kdm3a
+Sema7a	Inhba	Rnf34	Lrrc1	4933409K07Rik
+Il17ra	Slc25a29	Cyp11a1	Umodl1	Scn3a
+Incenp	Snrpg	Phkg1	Efs	Rfc5
+Ormdl1	Tmem120a		Hipk3	Fam96a
+Slc39a10	Rhebl1	Clstn1	Dlg1	Ndel1
+Egr2	Ttc39b	Thrb	Cckbr	Ptdss1
+Adrbk1	Slc4a4	Nrl	Abcd2	Cox6b1
+Myo1b	Uap1	Trhr	Klk8	Ap2s1
+Wdr74	Tead1	Pld2	Mcmbp	
+Rimkla	Susd2	Kcng1	Pno1	Serpina1f
+Cacnb3	Cyb561d1	Whsc1	Mcm4	Cox5a
+Rnf126	Scube1	Dlg1	Gria4	Hsd3b6
+Dbi	Dpp4	Stk39	Whsc1	Ascl2
+Lats2	Tmem35	Nrsn1		Cml2
+Hbegf	Ap1s2	Racgap1	Scaf11	Mmp8
+Slc9a2	Ccnd2	Mybpc3	Fbn2	Cytip
+	Snrnp40	Derl1	Kcng1	Hsd17b11
+Dysf	Etfb	Cyth4	Wdfy4	Acyp1
+Tac2	Cwh43	Cxxc5	Caln1	Ms4a8a
+Ccdc113	Llph	Cdc42se2	Rhebl1	
+Paqr6	Abcd2	Prokr2	Cd34	
+Clps	Aldh1a7	Egr1	Nt5c3	
+Il15ra	Tac2	Cyb5r1	Phf14	
+Prmt8	Gipc1	Dpy19l1	Paqr6	
+Dync1h1	Grp	Jdp2	Eif4ebp1	
+Josd1	Stk33	Satb2		
+Lck	Hebp1	Dcn	Itpr1	
+Rpl19	Gm4883	Prkg1		
+Stmn3	Rspo1	2410006H16Rik	Ramp2	
+Abca1	Hbegf	Ptp4a1	Gm4838	
+Cib1	Ssu72	Bola2	Mras	
+Crym	Cdh7	St8sia4	Apaf1	
+Slc4a4	Crlf1	Rpl35a	Prokr2	
+Ccl17		Slit3	Cyp11a1	
+Gfap	Cltb	Pak1	Cd6	
+Acaca	Rgs14	Pik3r6	Adra2c	
+Camk1g	Fam98c		Ppp6r1	
+Ptgs1	Chrna7	Tmem194		
+Klhdc8b	2900079G21Rik	Plcxd2	Prkra	
+Them4	Mapk3	Cckbr	Phgdh	
+Tmsb4x	Scrn1	Itga4	Slco2a1	
+Lrrn2	Cyfip2	Lats2	Cwh43	
+Nuf2	Gamt	Myh1	Fam160a2	
+H2-Ke6	Aldh1a3	Top1mt	Pard3	
+Ing2	Gabarap	Ripk4	Ap3s2	
+Cxxc5	Ppl	Slc22a1	Adrbk1	
+Fam160a2	Inpp4b	Itpr1	Rasgrf1	
+Adamts14	Rgs12	Cdkn1a	Dnmt3a	
+Eri3	Enox2	Moxd1	Tep1	
+Hras1	Rnf34	Grk5	Icmt	
+Timp4	Ipo5	Umodl1	Rgs12	
+Lmo7	Tubb2c	Ralgapb	Tmem232	
+Pla2g5		Ccno	Hr	
+Sema3a	6530401D17Rik	Rpl27	D3Bwg0562e	
+Rps15a	Ak5	Shisa5	Cinp	
+Hey1	9630041G16Rik	Hist2h2be	Myh3	
+Mgst1	Vti1b	Pim1		
+Arntl2	Gstm7	Ndufa3	Ndufa3	
+Apaf1	Cnn3	Slc25a29	Etfb	
+Crls1	Fgf13	Fbxl2	9030409G11Rik	
+Ednrb	Bcar3	Csrnp1	E130309F12Rik	
+Fbxl2	Zbtb8a	Rspo1	Scube1	
+Gtf2e1	Greb1	Uck2	Sema3c	
+Chst9	Pcdh15	Snrnp25	Ano2	
+	Zcchc14	Ccnf	Pcbd2	
+Wee1	Rnf19b	D10Jhu81e	Cyb561d1	
+Rgs4	Wnt7a	Padi2	1810019J16Rik	
+Gstm1	Phgdh	B3galt5	Get4	
+Ano10	Cpxm1	Unc13d	Rasgrp2	
+Paqr7	Rps28	Golim4	Hes6	
+Cx3cl1	Golim4	Kcnmb4	Tpmt	
+Unc5c	Dlg1	Adrbk1	Sgtb	
+Ramp3	Gm12824		Stmn1	
+Rab11fip4	Gmpr	Il17rd	Bcl11b	
+Nudt9	Usf2	Dynll2	Rab6b	
+Gabrg3	Dapk2	Adck3	Ankrd50	
+Kpna2	Hes6	Capns1	Plcg2	
+Magi2	D630045J12Rik	Rps8	Fam136a	
+Rpl35a	Tyro3	Olfml2b	Myh2	
+Sirpa	Trpv2	Spata13	Slc25a29	
+Cdkl1	Rpl18a	Bach2	Egr1	
+Tacc1	Drd5	Plek	Nudt4	
+Tiam1	Calr4		Cry2	
+Trhr	H2-M3	Apitd1	Tmem35	
+Ykt6	Krt1	Fbn2	Fgf13	
+Cttnbp2	Nsmaf	Cyb561d1	Pygb	
+Rph3a	Rnf5	Timp2	Gabrd	
+Zfp536	Pkp4	Ephb1	Bcar3	
+Atg4c	Bend6	D2hgdh	Prkg1	
+Rbm24	Nudt4	Myh2	Gabrg3	
+Gja1	Shisa5	Scn3b	Rps28	
+Fgf12	Gss	Csf2rb2		
+	Tmem188	Adamts14	Chac1	
+Srf	Nmb	Rora	Loxl1	
+Rmnd5b	Iglon5	Gfap	Csf2rb2	
+Fam132a	Kcnj12	1810019J16Rik	Rlf	
+Adrb1	Kcna6	Ip6k3	Prkar1b	
+Rgs11	Clu	Paqr6	Zmiz2	
+	Ing2	Kcnb1	Pygl	
+Zfp446	Myh2	5033430I15Rik	Gm4883	
+Rps6ka3	Scn3b	Rnf24	Rragb	
+Hsd17b10	Gm4838	Nudt4	Dtl	
+Xpa	Eif4ebp1	Phgdh	Mapkapk5	
+	Sgpp1	Grik4	Sf3b5	
+Gng13	Zfp367	Cav3	Marcksl1	
+Mlf1ip	Kcnh1	Cltb	Stard13	
+Nrl	Cgrrf1	Rhebl1	St6gal2	
+Bcl7c	Sf3b5	9030409G11Rik	Gabarap	
+Ndufa6	Trpm6	Tmem150c	Mgst1	
+Wls	Il1rapl1	Asb11	Arhgef10l	
+Serpina3n	Zfp316	Tiam1	Rnf19a	
+Igfbp4	Sh2d5	Pygl	H2-M3	
+Naaa	D330012F22Rik	Bmyc	Ascc1	
+Ap1s2	Bdp1	Rfwd2	Usf2	
+Sidt1	Rragb	Ppp6r1	Sept11	
+Kctd6	Kif6	Limd2	Nrp1	
+Secisbp2	Rorc	Amdhd2	Gm12824	
+Serpini1	Steap2	Csgalnact1	D16Ertd472e	
+Tap2	D10Jhu81e	Mxra7	Sh2d5	
+Agpat3	Ngf	Ptgs1	Upp2	
+Kcnk3	Uba52	Nub1	Echs1	
+Crlf1	Dcaf12	Zmiz2		
+Lyrm2	Cyb5r1	Ccdc113	Kcna6	
+Agl	Cdkn1a	Rpl10a	Snrnp25	
+Atxn7l3	Zfp105	Tbxa2r	Inpp4b	
+Plcb4		Pdia2	Camk1g	
+Gatad1	Mc4r	Hrh1	Galnt3	
+D3Bwg0562e		Cinp	Myh1	
+Diras2	1700045I19Rik	Lrrn3	Cnn3	
+Uck2	Clstn2	2900079G21Rik	Prkaa2	
+Abcd4	Ppp6r1	Rragb	Tbxa2r	
+Rap2a	Pla2g12a	Enpp2	Ccnd2	
+Hecw2	Csf2rb2	Cno	Cox6b1	
+Dnm1	Rbpj	Map3k4	Cttnbp2	
+Slc6a17	Ntm	Uap1	Stradb	
+Galntl4	Celsr1	Cthrc1	Gipc1	
+Apeh	Sorcs2	Rasgrf1	Rspo1	
+Fam136a	Cish	Caly	Kcnb1	
+Orai2	Trip4		Cabp1	
+Caln1	Caly	Nap1l1	Bean1	
+Pcp4	Zfp946	Mgst1	Rps6ka3	
+Rorc	Timm23	Slc9a2	Ednra	
+Dnahc9	Traip	Rilpl1	Uap1	
+Rps28	Mybpc1	Stmn1	Hrh1	
+Fbxl7	Hdac8	Fyn	Ngfr	
+Anp32b	Fgfr1	Tmsb4x	Lxn	
+Dcn	Tmsb4x	Dnajb5	Snrpg	
+Ggct	Mamdc2	Celsr1	Rfwd2	
+Dab1	Ankrd50	BC018242	Dcn	
+Cwh43	Vti1a	E130309F12Rik	Hsd17b11	
+Egr1	Slc7a14	Sgtb	Spata13	
+Gnl1		Gkap1	Ebf4	
+Gabarap	Kcnt1		Tmem14a	
+P2rx4	Ptp4a1	Prelid1	Il1rapl1	
+Acp5	Eef1b2	Kcnh1	Adamts14	
+Smyd3	Cblb	Prkar1b	Lrrn3	
+D130043K22Rik	Atp2b2	Cnn3	5730522E02Rik	
+Eif1ad	Kcnip2	Pcsk1	Mul1	
+Gm6816	Srp14	Ngfr	Stk11ip	
+Chchd5	Stard13	Plcg2	Atp11c	
+Synpo	Unc5c	Wee1	Kcnip2	
+Safb	Prkra	Adrb3	Rpl10a	
+Rad21	Asap1	Pbx2	Adam22	
+Tmem150c		Tlk1	Cryaa	
+Ntm	Syt4	Ddx21	Gss	
+Sync	Pmaip1	Tead1	0610007P14Rik	
+Necab3	Pik3r5		Kcnu1	
+Nup153	Spry2	Ankrd50	5730469M10Rik	
+Eif4e2	Gfap	Gemin7	Apeh	
+Ppapdc3	Gucy1a3	Stk32c	Mas1	
+Rcn3		Cdc42ep3	Nudt3	
+Cdr2	Grhl1	Mapk4	Sec24d	
+Rnf19b	Fyn	Adora1	Fam149a	
+Cblb	Elmod3	Hes6	Klf6	
+Pnck	Kcnu1	Atp6v1a	Psma6	
+Rpl27	Mtap4	Orai3	Il17rd	
+Nos1ap	Sema3c	Gipc1	D3Ertd751e	
+Usp5	Eml2	Erp29	Limd2	
+	Nme3	Tbc1d9	BC018242	
+BC046404		Scn4b	Zfp316	
+	Rad51c	Lyzl4	Sult4a1	
+Csnk2a2	Amdhd2	Acp5	Comt	
+Garnl3	Stmn3	Ak5		
+3200002M19Rik	Lamb1	1190003J15Rik	Moxd1	
+Dus1l	5430405G05Rik	H2-M3	Gnptg	
+Rogdi	Stk39	Tmem49	B4galt4	
+	D3Ertd751e	Rps6ka3	Traip	
+Zbtb10	Plp2	Ccdc64	Psmd8	
+Gm6813	Cdr2	Rgs12	Derl1	
+	Osbp2	Kcnj10	Smad5	
+Prkcd	Gria4	Psma6	Gpr125	
+Ncan	Ctnna2	Gabrg3	Eef1b2	
+Setd1a	Dntt	Ppl	Hey1	
+Cdc42bpa	Rlf	Chd8	C1ra	
+Myh3	Mas1		Slc39a12	
+Itga4	Pip4k2c	Ppm1l	Spry2	
+Thy1	Ramp3	Adam22	Gfap	
+Ppm1a	Josd1	Nsmaf	D130043K22Rik	
+Acot9	Grik4	Zcchc14	Nsmaf	
+Tusc2	Dnahc9	Snrpg	Tubb2c	
+Fam98c	Chst8	Rps28	Accn4	
+Clu	Dhx33	Lrrn1	Cdc42ep3	
+Kcnip1	Neto2	Dph3		
+Ptchd1	5730522E02Rik	Aldh1a7	Rpl27	
+Snrpg	Fxn	Rasa2	Mtap4	
+Htr2c	Foxred2	Slc4a4	Calca	
+Glcci1	Mrpl52	March11	Shisa5	
+Chd8	Ttc12	Gria4	Hnrnpab	
+Rgnef	Stat4	Ppap2b	Jakmip1	
+S100a6	Smad5	Prosc	Etv4	
+Zfp961	Gna13	Galnt3	Limk1	
+	Ntn5	Fgf12	Grik4	
+Habp4	Clstn1	Mamdc2	6530401D17Rik	
+Tppp	Tnnt1	Rph3a	Adck3	
+Zbtb46	Npb		Ap3b1	
+Smap2	Gm5468	Pygb	Lpl	
+Chrm3	B4galt4	Traip	Ndel1	
+Coro1a	Ramp2	Nfib	Dus1l	
+Stk39	Adcyap1r1	Trpv2	Fgf12	
+Sh3glb2	Parp1	Lancl2	Xpa	
+	Sphkap	Slco2a1	Slc1a6	
+Pmpca	Sec24d	Odz1	Mtss1l	
+Rhebl1	Ppp1r3f	1700045I19Rik	Aldh1a7	
+Erf	Myh3	Spry2	Tor1b	
+Tcf4	Sulf1	Cyp4b1	Mctp1	
+Rassf3	Scap	Sult4a1	Asb11	
+Cnih2	Lsmd1	Prkcb	Stmn3	
+Ece2	Mt3	Mageh1	Unc13d	
+Stard5	Tpmt	Trip4	Crispld1	
+Scn8a	Abcd4	Eef1b2	Mc4r	
+Zic3	Pbx2	Ermp1	Mageh1	
+Rnf34	Cttnbp2	Mc4r	Tlk1	
+Hspa4	Matn4	Snw1	Rnf24	
+Tpmt	Shmt1	Neto2	Rps8	
+Krt10	S100a6	Myo1e	Mt3	
+1810019J16Rik	Nbeal1	Fam160a2	Gstm7	
+H2-Q10	Icmt	Plxna2	Spsb3	
+Hmgn5	Sytl4	Mas1	Cacng5	
+Lmtk2	Prelid1	Dlg4	Cdkn1a	
+Epha6	Pin1	Capn3	Cebpa	
+F2r	Eml6	Rad51c	Gm4963	
+Bhlhe40	1810019J16Rik	Ptgfrn	Dpy19l1	
+Tmcc2	Tbc1d2	Sh2d5	Sulf1	
+Iglon5	Dnajb5	Usf2	Arnt2	
+Rasgrf2	Tbr1	B4galt4	Rorc	
+Wbp1	Ermp1	Ramp2	Gna13	
+Herc3	Syt6	Stard5	Ptp4a1	
+Rps4x	Rps9	Lxn	Mospd3	
+Zcchc14	Kcnj4	Flrt1	Tmem49	
+Slc24a3	Fgf12	Lrrtm3	Acp5	
+Csnk1e	Snw1	Pin1	Syt13	
+Ldha		Pard3	Dapk2	
+Zbtb8a	Jdp2	5430405G05Rik	Ing2	
+Stxbp1	Exoc5	Mapk3	Ncan	
+Zfp259	Lyzl4	Cry1	Caly	
+	Calb1	Gtf2h3	Ptgfrn	
+Nono	Lancl2	D630045J12Rik	Plp2	
+Kbtbd5	Foxp1	Ankra2	Ip6k3	
+Rlf	Rpl3	Zfp105	Zfp865	
+Nod1	Mapk8	Ap2s1	Atp2a2	
+Zfp521	Dpy19l1	Rgs14	Dntt	
+Vgf	Hr	Nr2f6	Acadl	
+Ipcef1	1500003O03Rik	Lrrc1		
+Tbc1d2	Hecw2	Comt	Cxcl12	
+Plcd4	Acp5	Snx5	BC049715	
+Itga11	Thbs3	Tmem188	Gamt	
+Tmem97	Cryga	Hnrnpab		
+Celsr1	Phlpp2	Sgpp1	Nr2f6	
+Acadsb	Pdia2	Etnk2	Tnk2	
+Olfr629	Rpl27	Rnf113a1	Mrpl52	
+Mboat7	Amot	Slc35f2	Lrrtm3	
+Zfp367		Mrpl52	Neto2	
+Slit3	Ssb	Rlf	D630045J12Rik	
+Rusc2	Cib1	Camk2g	Ptk2	
+Trp53rk		Rnf5		
+Ngfr	Ncan	Mtmr7	Rad51c	
+Myo19	Lyrm2	Clstn2	Zfp180	
+Pknox2	Kcnk3	Marcksl1	Folh1	
+Galnt3	Hmgcr	Abcd4	Mtmr7	
+Rps11	Cdc42se2	Nbeal1	Rps16	
+Psmc5	Htr3a	Parp8	Camk1d	
+Ivns1abp	Ndufs4	Avpi1	Ipcef1	
+Csgalnact1	Stk17b	S100a6	Hebp1	
+	Dkk3	Jakmip1	1190003J15Rik	
+Thrb	Hrh1	Asb13	Celsr1	
+	Znfx1	Mtap6	Gli3	
+Hipk3	Zic3	Kcnj12	Zfp467	
+Flot1	Asb11	Nono	Flrt1	
+Sec24d	Pbxip1	Rnf19a	Wnt7b	
+Drd5	D16Ertd472e		Dhx33	
+Rdx	Prkg1	Atp2b2	Gm5468	
+Bckdhb		Spdef	Aldoc	
+Ttc39b	Mad2l1	Ano2	Atp2b2	
+Taf5l	Kcnj10	Stk33	Prkcb	
+Gm12824	Rnf2	Cish	Cars	
+Fosb	Adrbk1	Stard13	Ngf	
+Aloxe3	Adam19	Gtf2e1	Epha6	
+	Mapk4	Accn4	Kcnj12	
+Fbxo27	Itgav	Ing2	Pcdh15	
+Vamp2	Cebpa	Drp2	Calcoco1	
+Gria4	Rfwd2	Bean1	Dtx4	
+	Spata13	Scube1	Pim1	
+Arfgef2	Sult4a1	Sdcbp	Plcxd2	
+Aamp	Avpi1	Rnf2	Csgalnact1	
+Clec11a	Nsun7	Tmcc2	Gm14496	
+Lpin2	Spnb1	Calr4	9430023L20Rik	
+Rplp1	Dctpp1	Ipcef1	Parp8	
+Gne	Ppp2r5d	Epha6	Ercc8	
+Cdc42ep3	Rasgrf2	Rpl3	Nrl	
+Eif4ebp1	Crls1	Fgfr1	S100a10	
+Crh	2410006H16Rik	Ccdc88b	Etnk2	
+Mst1r	Zbtb10	Tpmt	Nr4a2	
+Slc39a6	Dusp6	6530401D17Rik	Myo1b	
+Pex12	Prkcd	Apeh	Fut10	
+Myo18a	Ipo9	Plaur	Hist2h2be	
+Rhobtb3	Abcc5	Mrfap1	1700045I19Rik	
+Sec14l1	Sun1	Mapk10	Drd5	
+Ppp2ca	Bcl11b	Dhx33	Prkcd	
+Phf23	Naaa	Kcnu1	Wls	
+Lrrc47	Sec14l2		Sec14l2	
+Hrh3	Ednrb	Fgf13	Rpl27a	
+Ttc39c	Leng9	Klf7	Tmem62	
+Rad51c	Rpl35a	Mt3	2410042D21Rik	
+Shisa4	Lpin2	5730522E02Rik	Rnf113a1	
+Smurf1	Tlk1	Ppp2r5b	Mapk3	
+Fam49a	C1qbp	Syt13	Slc13a5	
+Zfp503		Ramp1	Enpp2	
+Ppp1r3b	Rpl27a	Scaf11	Ttc39c	
+Pla2g12a	Hsd17b11	Lamc2	Sdcbp	
+Cwf19l2	Eif3g	Ecm2	Pcsk1	
+St6gal2	Ralgapb	Mctp1	Nmb	
+5430405G05Rik	Cog7	Fdxr	Kif1c	
+Fscn1	Dlg4	Gna13	Apitd1	
+Fgf13	Ovca2	Cyfip2	Drp2	
+Inpp5d	Vasn	Ctnna2	Txlnb	
+Folh1	Chchd5	Tep1	Fads2	
+Timm23	Snrnp25	Drd5	Nap1l1	
+Abcb4	Yaf2		Gatad1	
+Cdh7	Supt6h	Tab3	Slc41a1	
+Chac1	Klf7	Zdhhc12	Adrb1	
+Fam149a	Nudt3	Osbp2	Dlg4	
+Cd63	Mrpl27	Ttc39c	Prkrir	
+Sulf1		Ppp2r5d	Sgpp1	
+Ankrd42	Pik3r6	Pmaip1	Ypel5	
+Trpc3	Ppm1h	Gstm7	Prrc2b	
+Mtor	Gnpat	Rpl36	Mapk10	
+Mras	Lrrc3b	Rarres1	Capns1	
+Pkp4	Ccdc88b	Nme3	Amdhd2	
+Chst8	Rimkla	Ptk2	Htr2c	
+Cltb	Uchl5	Slc4a11	Rnf126	
+Grin1		Prkaa2	Rasd1	
+Ddx24	Cdc42ep3	Id2	Cox7c	
+Cyp4b1	Itga8	3110040N11Rik	Mapk8	
+Rps27l	Stk11ip	Ckb	Tmed4	
+Pcnp	Cenpe		Git1	
+Dcaf5	Hist2h2be	Lpin2	Cav3	
+Napa	Accn4	Ccnd2	Cdh10	
+Slc9a9	Arl4d	Mospd3	Tmem194	
+Polg	Galnt3	Ywhag	C1qbp	
+Unc5a	Mgst1	Rcan2	Dnajb5	
+Polr2f	Tppp	Casz1	Eml6	
+Ostf1	Nuf2		Nme3	
+Olfml2b	Inpp5d	5730469M10Rik	Rpl3	
+	Otud1	Cacng7	Abcd4	
+Ccne1	Kcnh4	Bcl11b	Cdc42bpg	
+	Spag7	Stat5b	Parp1	
+Znfx1	Camk1g	Synpo	Fam49a	
+Rpl27a	Rbm25	Zic3	Hsd17b10	
+Rpl10	Ppm1b	Gnpat	Myo19	
+	Prickle1	Myo1b	Stk33	
+Ppp1r3f	Sept11	1810062O18Rik	C1ql1	
+Dlg1	Slc4a11	Ppp1r3f	Gprasp2	
+Myh2	Chrm3	Rab6	Trpm6	
+Cox7c	Dync1h1	Kcnk1	Grhl1	
+Cyth4	Tep1	Iqgap2	Ppp2r5b	
+Per1	Stmn1	Myo19	Pin1	
+Stradb	Adap1	Arnt2	Ippk	
+Flot2	Ezh1	Rnf135	Adam19	
+B230118H07Rik	Psmb10	Sec24d	Lmln	
+Ttl	Stk32c	Hdc	Pfkp	
+Mtap7d1	Dcn	Diras2	Rb1cc1	
+Stmn1	Adck3	Prkcd	Vti1a	
+2610002I17Rik	Lhx3	Tcap	Lhpp	
+Tgfbr3	Mageh1	Frmd5	Ecm2	
+Ermp1	Dact1	Gstm1	Rnf2	
+Nudt4	D130043K22Rik	Gpc4	Relb	
+Ibsp		Lsamp	Steap2	
+Emx1		Prdm1	Ggct	
+1110002B05Rik	Stat5b		Scap	
+Eml6	Wee1		Ppp1r3f	
+Scn3b	Egr1	Smad5	Crhr2	
+Derl1	Tpd52l1	Usp32	Ralgapb	
+Papss2		Kcnip2	Prelid1	
+Rnf128	Ddx21	Gss	Tbc1d9	
+Nsun7	Gadd45a	Znfx1	Top1mt	
+Numa1	Rnf19a	Spnb1	Zdhhc12	
+Nde1	Parl	Ssu72	Srf	
+Sdcbp	Jsrp1	Hsp90ab1	Atp6v1a	
+Ascl1	Map1lc3a	Psmb10	Ccnf	
+A130022J15Rik	Srf	D3Ertd751e	Leng9	
+Lrtm2	Gucy1b3	Atg4c	Llph	
+Gde1	Orai3	Gnl1	Ggcx	
+Sdf4	Ramp1	Spsb3	Thap7	
+Ralyl	Mospd3	Cenpe	Josd1	
+Map3k14	0610007L01Rik	Vps33b	Il33	
+Pdgfra	Cno	C1qbp	Disp1	
+Gabbr1	Ece2	Prrc2b	Cltb	
+Asap1	Dct	Amot	Dok4	
+Loxl1	Ttc39c	Dcaf12	Mad2l1	
+Calca	Cdh12	Sulf1	Cryga	
+Plp2	Dbi	Unc5c	Nrbf2	
+Heatr7a	Ptgfrn	Nmb	Tmsb4x	
+Gnb1	Aktip	Ttc19	Slc35f2	
+Dusp6	Rcn3	Dtl	Map3k4	
+Nmb		Ndufs4	Shmt1	
+Isy1	Tmem232	Inpp4b	2310009B15Rik	
+Maea	Stradb		Shc3	
+Map4k2	Syt13	Kcna6	Ccna1	
+Grik1	Calcoco1	Eif3k	Ppp2r5d	
+Rps12	Id2	Llph	Tnnt1	
+Avpi1	Zfp961	Ipo9	Sytl4	
+Lrrc48	Rasa2	Vti1a	Chrna7	
+Tmem232	S100a10	Kcnk4	Rpl26	
+Adap1	Xirp1	Srf	Hmgcr	
+Ambra1	Shc3	Smad2	Cd81	
+Cacna2d4	Maged2	Tcfcp2l1	Stat5b	
+Camk2a	Strbp	Hsd17b10	Zfp946	
+Dgki	Smad4	Tubb2c	Kcnh2	
+D10Jhu81e	Rnf135	Yaf2	2900079G21Rik	
+Stat4	Gprasp2	Prickle1	Lrrc3b	
+Lamb1	Ppp2ca	Adcyap1r1	Atp13a4	
+Dnajb5	Hey1	Nr1h3	Fbxl7	
+St6galnac4	Agpat3	Hmgcr	Hdac8	
+Sh2d5	Zfp536	Rpl18	Acot9	
+Ap2m1	Calca	Hdac8	Sun1	
+Ssb	Tmem49	Cox7c	Pik3cb	
+Adra2a	Sirpa	Crybg3		
+Abcf2	Timp4	Eml6	Jdp2	
+Polr2e	Gstm1	Cttnbp2	Gng13	
+Prkra	Ap3s2	Fbxo45	Fbxo27	
+Tbr1	Fbn2	Fam49a	AA986860	
+		Zcchc7	Eif2b1	
+Otud1	Zcchc7	Ipo5	Timp2	
+Rchy1	Cpne8	Eif4ebp1	Parvb	
+Enox2	Stard5	S100a10	Ak5	
+Slc8a3	Cdkl1	Mapkapk5	Stk39	
+Mtap4	Echs1	Ngf	Camk2b	
+Pfkp	Rora	Plekhg4	Gmpr	
+Nrip3	Cpe	Dscaml1	Ndp	
+Aimp2	Pfkp	Zbtb8a	Iqgap2	
+Sln	Pcsk1	Gatad1	Pou6f2	
+Ppm1g	Cthrc1	Stradb	D430041D05Rik	
+Atp6v0d1	Lgmn		Pbx2	
+Tcfap2b	Adcy2	Tnk2	Mgmt	
+Atp6v0a1	Phlda3	Rps15a	Smad7	
+Rps8	Umodl1	Kcnh4	Apoc3	
+Rbpj	Lrig3	Kcnj4	Zfp105	
+Ptdss1	Adra2a	Cgrrf1	Smad4	
+Tuba4a	Rps15a	Sphkap	Rgs14	
+Gng5	9430023L20Rik	Mettl1	Kcnj10	
+Hebp1	Iqgap2	Eif2b1	Timm23	
+Fam3c	Pard3	Pcdh15	Rora	
+Prrc2a	Pam	Lsmd1	Crybg3	
+Clec2e	Rph3a	Smad4	Id2	
+Prkar2a	Gls	Itgav	Fuca1	
+Clpb	Trappc6a	Ndufb7	Gucy1a3	
+B3galt2	Wsb2	Gck	Ppapdc1a	
+Capns1	Rpl18	Arhgap10	Flrt3	
+Ifi203	Lamc2	Hey1	Pnkd	
+Grik4	Cd7	Zfp467	D330045A20Rik	
+Hopx	Rdh5	Syn2	Lyzl4	
+Pam	Haus4	Rassf3	C230096C10Rik	
+Rapgef4	Ralyl	Evpl	Rnf152	
+Rps6	1700040I03Rik	Dkk3	Tnfrsf21	
+Grm1	Aldoc	Shmt1		
+Dpp4	Plekhm3	Mpv17	Rchy1	
+Ppp1r7	Adamts8	Sirpa	Iqcc	
+Pcsk4	Enpp2	Adrb1	Ednrb	
+BC006965	Rpl10a	Atp13a4	Paqr7	
+Itga6	March9		Cpe	
+Tmem123	Bmyc	Lor	Dkk3	
+Mrps16	Cradd	Pitpnc1	Ghitm	
+Gpc4	Mapk10	Ibsp	Cpxm1	
+Rpl10a	Ntng2	Sun1	Matn4	
+Fstl1	Gng13	Fam149a	Gca	
+Rspo1	Ergic3	Ndufs8	Ntng2	
+Trpm6	Rad1	Rnf152	Hdc	
+Gm561	Egr2	Slc41a1	Slc4a11	
+Tubg2	Rab6	Prkra	Snhg12	
+Sept11	H2-Q10	Gmpr	Elmod3	
+Phlda3	Skint7	Mapk8	Yaf2	
+Ntn5	Fgf1	Zfp367	Drap1	
+Foxred2	Apitd1	Egr2	Calr4	
+Lrrc59	Psme1	Matn4	Stmn2	
+Spag7	Xpa	Echs1	Cux2	
+Slc7a14	Snx5	Bdp1	Mybpc1	
+Traf4	D430041D05Rik	Cd7	Nmt2	
+Copa	Rpl7a-ps5	Rfx3	Cenpe	
+Hivep2		Chrna7	5430405G05Rik	
+Coq4	Camk1d	Gng13	Acadsb	
+Wnt7a	Gabrg3	Ints9	Tmem188	
+1810006K21Rik	Nrp1	Zfp865	Aif1l	
+Zmiz2	Fbxl7	Gamt	Kndc1	
+Dnmt3a	Ripk3	Kpna2	Pam	
+Uxt	Efna3		Ntrk2	
+		Eapp	Lrrc4c	
+6430548M08Rik	Cacnb4	Foxred2	Rilpl1	
+Map3k1	Nf2	Pacsin3	Snx5	
+Lman2l	Kcnh2	Rbm33	Zfp536	
+Sema3c	Hdac9	Phlpp2	Dll1	
+Bag5	Diras2	Ap4s1	Phlpp1	
+Ints1	Map3k14	Zbtb10	Cthrc1	
+	Slc1a6	Dus1l	Stat4	
+Kcnb1	Ifih1	Bcar3	Chd7	
+Pias2	Casz1		Itgax	
+Zbtb5	Disp1	Trpm6	2610305D13Rik	
+	Smad7	Gucy1a3	Pik3r5	
+Serpina3i	Nr4a2	Emx1	Bach2	
+U2af1	Sim2	Mgmt	Emx1	
+Tcf25	Ascl1	Thap7	Gpc3	
+Sestd1	Prkrir	Rps16	Elk3	
+Lgmn	Rnf24	Itga8	Thap3	
+Itpr1	Slc8a3	Ksr1	Lcat	
+Man2a1	Limk1	Stat4	Mybpc3	
+Tpp1	Klf6	Camk1d	Rpl37a	
+Hist1h2ba	Adrb1	Dctpp1	Ibsp	
+Tgfbrap1	Ppm1a	Prps1l3	Stard5	
+Slc30a4		Stk17b	Smad2	
+Ppfia3	Ppp2r5b	Ncan	Adcyap1r1	
+Rpl21-ps1	Hnrnpab		Fstl1	
+Osgepl1	Gm5623	Pip4k2c	Tubb5	
+Fancl	Gpc3	Kcnma1	Dner	
+C4b	Gm6813	Flrt3	Ralyl	
+1110002N22Rik	Pten	Sept11	Nhp2l1	
+Bmpr1b	Myo1e	Ssb	Pkp4	
+Rasal2	Impdh1	Rpl27a	Pbxip1	
+Fam160a1	Cenpp	Map3k12	Zfp93	
+1810032O08Rik		Gprasp2	Mamdc2	
+Spry2	Ccno	Zfp536	Hdac9	
+Gss	Acadsb	Psmd8	Pck2	
+Edil3	Plaur	Parp1	Gls	
+Dhx33	Hsd17b10	Zfp180	Mina	
+Pnmal2	Ccdc64	Ddx19b	Prkd1	
+Ccnyl1	Pdcd4	Rab40b	Ccdc88b	
+Hspbp1	Phlpp1	Nrp1	Spnb1	
+Cdh12	Chac1		Casq2	
+Fgf1	Arhgap10	Vps25	BC003331	
+Polm	Rps8	Nr3c1	Cd7	
+Pes1	Polr2f	Ntan1	Gtf2e1	
+C1ql1	Lrrc8d	Mtap7d1	Htr2a	
+Rdm1	Scn8a	Selk	Papolg	
+Psmc3ip	Kras	Pla2g12a	1810062O18Rik	
+	Gabrd	Man2a1	Foxred2	
+Sntg2	Ibsp	Zfp947	Dynll2	
+Mrps31	Rpl19	Rbfox3	Timp4	
+Cd9	Lrrc4c	Sytl4	Unc13b	
+Ptplb	Unc13b	1700040I03Rik	Ntn5	
+Plin3	Paqr7	Wls	Rit2	
+Pik3r6	Fcgbp	Uchl5	Cacnb4	
+Efna1	Comt	Disp1	Idh1	
+Aif1l	Drap1	Cib1	Pip4k2c	
+Nav2	Tacr2	Cars	Nr1h3	
+Arih2	Itpr1	Ddx39	Nono	
+Palld	Dda1	Supt6h	Ddx39	
+Grhl1	Dus1l	Cdh12	Myo1e	
+Tmem141	Slc6a17	Ifi203	Scn3b	
+Chrna7	AI413582	Ypel5	Map3k12	
+Atp6v1e1	Zc4h2	Zfp946	Tubb3	
+Me3	St5	Tbc1d2	Ormdl3	
+Hsd17b11	Parvb	AI413582	1810032O08Rik	
+Icmt	Htr2c	Rad1	Supt6h	
+Zfp142	Crybg3	Mtss1l	Ckb	
+Ddx19b	Tmem101	Sec14l2	Nub1	
+Syt6	Psmc5	Map1lc3a	Uba52	
+Poldip2	Syn2	Pafah1b1	Lrig3	
+Vcam1	Ap2s1	Plp2		
+Sytl4	Cdk5rap3	Elmod3	Dph3	
+Adra1b	Rasgrp2	Crls1	Gstm1	
+Pdgfb	Rnf11	Klf6	Map4k2	
+Camk1d	Kpna2	9430023L20Rik	Slc1a1	
+Rab6	Gtf3c5	Scap	Abcb9	
+Tnnt1	Dok4	Gli3		
+Mpdu1	Slc12a6	Paqr7	Dctpp1	
+Rab9	Fam136a	Impdh1	Uggt1	
+Aip	Rasd1	Klhl29	March11	
+Chd9	Tceb2	Secisbp2	1810037I17Rik	
+Eef1b2	Neto1	Prkcz	Spag7	
+Tmem49			Rab6	
+Atl1		Ovca2	Dusp6	
+Cryaa	Satb2	0610007L01Rik	Clstn2	
+Pdzd3	Hap1	Psmc5	Cradd	
+Abcb1b	A130022J15Rik	Eif3e	Aldh9a1	
+Mapk10	Chd8	Rbm24	Cenpp	
+Scube1	Atp2b3	Fam102a	Rpl36	
+Adamtsl2	Atp13a4	Gemin4	Cxcr4	
+Ptgfrn	Pnkd	Drap1	Tmcc2	
+Ap4s1	Tgfbr3	Tomm40l	Lpin2	
+Neto1	Vps33b	Mfap4	Trappc6a	
+Fbxo9	Mras	Ninj1	Tsga14	
+Net1	Polg	Aprt	Atp6v0e2	
+Eno2	Prkar2b	Ebf4	Capn3	
+Eif3b	Gabra1	Ldha	Pnpla7	
+Kcnq5	Slc7a6	Zbtb5	Rasa2	
+Sept5	Ecm2		Parl	
+Hmgcl	Mgmt	Dok4	Dcaf12	
+Prim1	Cacng5	Rnf103	Vps37a	
+Ftsj3	Bach2	Mras	Klhl29	
+Dock4	Timp2	Lsm10	Rasgrf2	
+Rnf214	Drg2	Gabra1	Lamc2	
+Acad8	Rps4x	Tpd52l1	Fbl	
+Slc39a11	Plekhg4	Aarsd1	D2hgdh	
+Zbtb34	Grip1	Hmgcl	Prickle1	
+Dbp	Rhobtb3	Ppp1r9b	Eif1b	
+Egfl8	Olfr629	Mapre1	3632451O06Rik	
+Gm15450	Ddx19b	D16Ertd472e	Unc5c	
+Pno1	Vcl	Kif6	Lrrc42	
+Pdia2	Trim71	Lgi1	Ccno	
+Rab11b		Net1	Agfg2	
+Snhg12	Gnptg	4921531C22Rik		
+Ndufs4	Pde4a	Fosb	Tbc1d2	
+Cenpe	Pno1	Scn8a		
+Dtl	Dner	Cdr2	Abca1	
+Jmjd6	Tmem38a	Sub1	Fcgbp	
+Cd3e		Dda1	Trip4	
+	Prps1l3	Rps7	Ipo5	
+Fgfr1	Phactr1	Xrcc3	Map1lc3a	
+Zfp879	Magi2	Atpif1	Zfp277	
+Gm6404	Rbm24	Drg2	Inpp5d	
+Gm6030	Cdh10	Rasgrf2	Npb	
+Ppap2c	Plcxd2	Calcoco1	Sphkap	
+Bdp1	F2r	Snhg12	Adra2a	
+Prpf3	Hmha1	Zfp961	Tpd52l1	
+Gosr1	Scaf11	Ap3s2	Tgfb3	
+Rpl18a	Rchy1	Clec2e	Plaur	
+Cops6	Nr2c2ap	Pkp4	Hmgn1	
+Lsm6	Apoh	Lrrc4b	Kif6	
+	Lsamp	Trp73	Chchd5	
+Slc23a2	Sdc2	Rhoa	Fgfr1	
+2810405K02Rik	1810032O08Rik	Tor1b	Foxp1	
+2700049A03Rik	Gstp2	Dapk2	Nek11	
+Rnf25	Pcbd2	Rnf166		
+Gabrd	Tor1b	Pnkd	F2r	
+Gm4883		Calb1	Rps6	
+Atp6ap1	BC048355	Etv4	Ppm1l	
+Cd7	Fgd2	Rrbp1	Ssb	
+Dscaml1	LOC100134990	Slc7a6	Trp73	
+D3Ertd751e	Dscaml1	Rasgrp2	Rps9	
+Atl2	Ndn	3632451O06Rik	Evpl	
+Dntt	Atpif1	Ech1	Asb13	
+Utp15	Zfp947	Ece2	Alkbh2	
+Zfp106	Ppm1l	Dntt	Hsd17b7	
+Slc30a3	Dpm2	Gm5623	Rpl18	
+Tmtc1	Clec2e	Dync1h1	Ppm1h	
+Pygb	Ppp1r14b	Cog7	Znfx1	
+Ccz1	Ppapdc3	Gnptg	Greb1	
+2410006H16Rik	Bzw1		Nup210	
+Rfx3	Zkscan17	Map3k8	Nampt	
+Rbfa	Tbxa2r	Thbs3	Maged1	
+Xpr1	Ldha	Zfp106	Vegfc	
+Dkk3	Emx1	Papolg	Cish	
+Srm	Sdcbp	St6gal2	Cyfip2	
+Ccdc88b	Cyp4b1	Tmem38a	Gtf2h3	
+Epb4.9	Dcaf5	Zkscan17	Gm1006	
+Phgdh	Mocs1	Cacnb4	Ndufs8	
+3632451O06Rik	Prkd1	Arl4d	Vav3	
+Os9	Ggct	Aif1l	Rdh5	
+Dhrs4	Kcnip3	Prkd1	Itgav	
+Myo1e	Bmpr1b	Rap1gap	2610318N02Rik	
+Srek1ip1	BC018242	Ppm1h	Cyp4b1	
+Dcbld2	Pclo	Pck2	Zfp963	
+Arl4d	Secisbp2	Jsrp1	Papd4	
+Cdc42ep4	Atg4c	Fcgbp	Pdia2	
+Crispld1	Pgm5	Bag5	Rcan2	
+Nrp1	Kif1c	Scg5	Crls1	
+Ppp2r5d	Gm11127	Cspg4	Dnahc9	
+Ttll1	Rpl23a-ps1	Cdc16	Strbp	
+A230046K03Rik	Exosc9	Gmeb2	Chrna1	
+March11	Cars	Rchy1	Ldha	
+Atp2b3	Ppp2cb	Rhobtb2	Sox5	
+Tnfrsf11a	Gnl1	Fbxo27	Mrps33	
+Gtf3c5	Sdcbp2	Zscan18	Pdzd3	
+Greb1	Nr2f6	Grip1	Ccdc64	
+	Tspan5	Acap3	Nbeal1	
+Exosc9	St6gal2	Nsun7	Ndufs4	
+Spata21	Lrtm2	Mpg	Ccs	
+Rpl21-ps4		Lsm14b	Clec2e	
+Hrh1	Cox6b2	Phf14	Vasn	
+9030617O03Rik	Psmd8	Pbxip1	Kcnk1	
+Ormdl3	Fbxo27	Ercc8	Lsmd1	
+Rb1	Serpina3i	Fgf22	Grm8	
+Cdh22	Dph3	Grik1	Plxna2	
+Adam22	Nmt2	Mul1	Psmb10	
+Tmem188	Plxna2	Cxcr4	Impdh1	
+Crk	Vps8	Acadsb	Pitpnc1	
+Anapc16	Kcnk1	Dpm2	Cog7	
+Syt4	Arhgef10l	1810032O08Rik	Prrt2	
+Ndor1	Unc13d	March9	Lhx3	
+Brd1	Zfp503	Kifc3	Fgd2	
+Wrap53	Rg9mtd2	Cacng5	Mycbpap	
+Prkg1	Cyb5	Ntng2		
+Trp73	Ormdl1	Dclre1c	Egr2	
+Med18	Abca1	Cxcl12	St5	
+Tubb2c	Rnf128	Oxtr	Zfhx4	
+Entpd4	Fbxo17	Rcn3	Mast2	
+Tacr2	Rock2	Ppdpf	Hist1h1e	
+2310045N01Rik	Ksr1	Syncrip	Cgrrf1	
+	Folh1	Ext1	Zfp961	
+Dnahc2	Pex12	C1ra	Cetn4	
+Stag2	Cenpq	Tmem101	Bdp1	
+Edc4	Thap3		Pgm5	
+	Prpf38a	Nap1l2	Mrfap1	
+Ccdc126	Aarsd1	Rpl19	Osbp2	
+Lmna	Krt5	Greb1	9430031J16Rik	
+Cenpt	Plau	Gm5468	Zcchc7	
+D16Ertd472e	Limd2	Atp11c	Ostf1	
+Nmbr	Zfhx4	Nkiras1	Zkscan17	
+Ube2ql1	Rab40b	Idh1	Bid	
+Nfs1	Atp11c	Wrap53	Ppp2cb	
+Prdm4	Serinc2	Socs7		
+C030034I22Rik	Vps37a	Stk11ip	Grik1	
+Mc4r	C1ra	Uba52	Dlgap3	
+Dlg4		Ppp2ca	Gm6813	
+Pgam2	Rhob	Atrx	Fzd2	
+5430411K18Rik	Rgs11		Cyb5	
+Zfp618	Arntl2		Apoa1bp	
+Flrt3	Gli3	Pten	Rad1	
+Arpp21		Zc4h2	Rnf144a	
+Bri3bp	Pip4k2b	Pdzd3	Ece2	
+Gm129	Rpl35	D430041D05Rik	Hs3st4	
+Nr4a1	Zscan18	Polm	Nhedc2	
+	Prrc2b	Sec63	Atp1a3	
+Ndufv1	Tcfcp2l1	Txlnb	A230051G13Rik	
+4930471M23Rik	Atp1a3	2610002I17Rik	Rnf11	
+Lrrc8a	Gpc4	Mafa	Kdr	
+Mctp2	Acvr2a	Rnf126	Atp2b3	
+Snrnp40	C1ql1	Atrn	Polg	
+Akt3	6330403A02Rik	Rnf11	Nf2	
+4933439C10Rik	Tap2	Exoc5	Plcd4	
+Gm12034	Ppp1r9b	Cdk4	Fam102a	
+Gprasp2	Pla2g5	Grcc10		
+Bscl2	Gm4978	Mybpc1	Cd24a	
+Hmha1	Stk38l	Git1	Atp6v1d	
+Hdgfrp3	Hivep2	Brpf1	Sestd1	
+Ppp6r1	1600002H07Rik	Nefh	Acvr1c	
+Usp39	Ube2v1	Nup153	Smap1	
+Nap1l1	Cadps2	Bid	Gchfr	
+Slx4	Sema4f	Cpxm1	Rab40b	
+E130309F12Rik	Rapgef4	Ypel4	Ssu72	
+Kcnk10	Foxg1	Slc12a6	Pdgfra	
+	Ppap2c	Rpl26	Mfap4	
+Dner	Fuca1	Twist1	Pmaip1	
+Clec18a	Rpl21-ps1	Nek3	Cdh7	
+Gng3	Dclre1c	Hdac9	Agpat3	
+Snx5	Asb13	Ntn5	2010305A19Rik	
+Shisa5	Tmem59l	Palld	Mtap7d1	
+Ddx56	3632451O06Rik	Epn2	Serpina3i	
+Loxl3	Bag5	Ifih1	Camk2g	
+Dact1		Polr2a	Mocs1	
+Rtn4rl2	Cox7c	Lrrc42	Wee1	
+	Rassf5	Pla2g5	Gnpat	
+1500003O03Rik	Ddx39	Lhx3	Skint7	
+Cux2		Zfp277	B630019K06Rik	
+Tbc1d8b	Vps25	Rpl31	Tmem101	
+	Mafa	Tshz3	Dync1h1	
+Snap23	Ccnyl1	Dact1	Jsrp1	
+Hsf4	Kcnk4	Ppp2cb	Ptgs2	
+Akt2	Pdgfra	Hddc2	Hopx	
+Adamts17	Hck	Dct	Uchl5	
+Rpl17	Tcf4	Sox5	Sepw1	
+Spata13	Nub1	Npb	Pde4a	
+Llph	Fam160a1	Chchd5	Tab3	
+Satb2	Mast2	Gm5316	Tgfbr3	
+	Cacng8	Ube2v1	Stk40	
+Itm2b	Pnmal2		AI413582	
+Cyb5r1	Acvr1b	B2m	Tceal5	
+Ccdc23	Mtrr	Atp6v1d	Tmem59l	
+Anapc13	Slc13a5	Nup210	1810030N24Rik	
+Nub1		Map4k2	Bcl6	
+4933424B01Rik	Maged1	Gm4963	Rhoa	
+Sec61b	Fosb	Syt4	Tceal3	
+Gabra1	Zfp618	Itga11	Sec63	
+Bcl11b	Lrrc42	Kcnh2	Nuf2	
+Pdzd8	Mpg	Pik3r5	Ano6	
+Arhgef10l	Trp73	Gca	Syn2	
+Disp1	Slc1a1	Mtap4	Peli1	
+Serpina3g	Camk2g	Ablim1	Zbtb8a	
+Minpp1	Net1	Sez6	Eps8	
+2310030N02Rik	Gsg1l	Tceb2	Rhobtb3	
+Zfpm1	Acot9	Ppp1r3b	St6galnac3	
+Vti1b	Th	Cux2	Mknk2	
+Clvs2	Snap23	Rps6ka6	Rnf212	
+Iqgap2	Loxl1	Adam19		
+Trim71	1810030N24Rik	Gabpb2	Mrps31	
+Tbca	Arpp21	Trappc5	Ddit4	
+Uxs1	Pitpnc1	Vapa	Casz1	
+Polg2	Acap3	D130043K22Rik	Cdk5rap3	
+Nsun2	Arhgap39	Synj2	C530028O21Rik	
+	Poc1a	Commd2	Unc45b	
+Gm5918	9030409G11Rik	Rbm25	Neurod1	
+Pex19	Gm5239	Prkrir	Orai3	
+Hspb6	Cux1	Atp6v1e2	Ascl2	
+Blvrb	March11	Gm14496	Nup153	
+Suz12	Camk2b	Prpf38a	Aif1	
+Kcnj12	Slc9a1	Spag7	Zcchc14	
+Fmo5	Mdga1	Cebpa	Rbpjl	
+Mlc1	Dcaf7	Ppm1a	Csnk1e	
+	Gemin7	Polg	Gcsh	
+	Mettl1	Slc1a1	Lgmn	
+Mapk4	Klhdc8b	Rorc	Tshz3	
+Chrm4	Psma6	Ormdl1	Prkcsh	
+Wdr16	Zfp963	Wbp1	Exoc5	
+Pola1	Acpl2	Rpl37a	Gm6030	
+Pitpnm1	Pcsk5	Zfp963	Prdm1	
+Bend6	Adam22	2610305D13Rik	Tgfb1i1	
+	Smad2	Psmd6		
+Rnf144a	C77370	Fbxl7	Osbpl11	
+Mosc2	Rcan2	Psme1	Rrbp1	
+Cgref1	Spcs3	Pfkp	Rapgef4	
+Parp8	Rpl37a	Gal3st4		
+Camsap1	Gpd2	Plekhm3	Klf15	
+Sv2c	Spint1	Ednrb	Rg9mtd2	
+Fut8	Pnpla7	Gstp2	Ormdl1	
+Ttc8	Htr2a	Mov10	Pten	
+Kcna6	Fdxr	Copb1	Zfp106	
+Tomm22	Fam102a	2410042D21Rik	Rnf5	
+Unc13a	Mtmr7	Pam	Mpv17	
+	Cacna1a	Smap2	Prkar2b	
+Ikbip	Sox5	Slc9a5	Trim36	
+Lrrtm3	Plcd4	Rg9mtd2	Sdcbp2	
+Stat5b	Capn3	Cdh7	Glyr1	
+Lhx3	Ckb	1500003O03Rik		
+Ptk2b	Gchfr	Arhgef12	Svop	
+Nr2c1	Atp8a2	Bclaf1	Slc25a20	
+Syt1	1190003J15Rik	Pdcd4	Mrpl46	
+Ddx1	Cux2	Kcnmb2	Kcnip3	
+Slc9a5	Mre11a	Relt	Mapre1	
+Pdxp	Ikbkb	Ppp1r14b	Nudt9	
+Gpc3	B630019K06Rik	Calca	Rbm24	
+Mapk8ip1		Mtrf1	Lsamp	
+Mavs	Kcnk10	Sik2	Cir1	
+Ssrp1	C230096C10Rik		Rfx3	
+Abtb2	Ndp	Camk2b	Rassf5	
+Lrrk2	Lrrc47	Iqcc	Scn4b	
+Pygl	Rfx3	Arfgef1	Prpf6	
+5730522E02Rik	Kctd5	Mdga1	Pde10a	
+Chst3	Sez6	Slc46a1	Gpatch8	
+Kcnh2	Psmd6	Capn10	Sirpa	
+Lrrc3b	Kdr	Rnf128	Ttc12	
+Pmaip1	Cyth4	F2r	Cks1b	
+Map3k8	Ephb1	Erbb4	Usp32	
+D430041D05Rik	Chd7	Acad8	Sema4f	
+Ndrg1	Mark4	Bckdha	Acpl2	
+Crlf3	Mboat7	Chrm3	Tbc1d8b	
+Hmgb3	Rps6ka6	Fxn	Usp51	
+Nek8	Twf2	Tmed4	BC048355	
+Opa1	Parp8	Gls	Efna3	
+Peli1	2610002I17Rik	Nsmce1	Brpf1	
+March1	Ippk	Pvalb	Abcc5	
+Tor1a	Kcnma1		Rgs8	
+Pdxk-ps	Nhedc2	Timm23	Pla2g12a	
+Eps8	Snhg12	Fmo5	Slc35d3	
+Scg5	Plekho1	Fgf9	Polr2f	
+Ncaph	Hecw1	Exosc4	Slc7a1	
+Fam58b	Smap1	Eif2s1	Slc23a2	
+Epb4.1l4b	Pbrm1	Adra2a	Erf	
+Smc4	Abcb4	LOC100134990	Psmc2	
+Rnd1	Pex6	Lrrc4c	Snw1	
+Ptk2	Csrnp2	Rock2	Rpl7a-ps5	
+Phka2	Nkiras1	Prrt2	Plekhg4	
+Tgfb1i1	BC003331	Ttbk2	Eif2s1	
+Tep1	Fbxo45	Ergic3	Trim8	
+Vat1l	Pou6f2	Gadd45a	Trim71	
+Tuba1b	Ppm1e	BC056474	Rps6ka6	
+Rpl7	Cpne4	Wsb2	Pcnp	
+Pbx2	Rmnd1	Timp4	Slc1a3	
+Nlgn2	Ints9	Hecw1	Yipf1	
+Eif2ak4	Slc9a5	Cpne8	Mrpl40	
+Prkd1	BC020535	Trib2	Mpg	
+Prps1l3	Cap2	Rassf5	Phactr4	
+0610007P14Rik	Zmiz2	Arhgap26	Gabra1	
+Krtap4-8	Nek6	Mbtps1	Fam118b	
+Cacnb4	Macf1	Otud1	Ict1	
+Rpl36a	Ctsl	Pip5kl1	Ppp1r3b	
+Hsd3b7	Hras1	Cryga	Ndrg2	
+Zscan12	Gemin4	Hivep2	Cage1	
+Ppp2r1a	Prkcc	Mgst3	Cdr2	
+Amd2	Sec62	Srxn1	Ddx21	
+Ppm1l	Wif1	Lmln	Fam160a1	
+Fcho1	Tlk2	Ttc12	Zfc3h1	
+Zscan22	Spsb3	Cenpp	Btbd17	
+Lrrc4c	Sorl1	Rapgef4	Exosc9	
+Rps6ka6	Tnfrsf11a	Doc2g	Ascl1	
+Slc15a2	Capn10	Gpc3	2510003E04Rik	
+Ttc12	Gm6994	Tcp11l2	Pts	
+Copg	Necab3	Dnahc9	Arhgap39	
+Pgm5	Odz1	2610318N02Rik	Ech1	
+Atg7	Fads2	Atl1	Alas1	
+Gyg	4933424B01Rik	Fgf1	Ky	
+Slc1a3	Zfp106	Sync	Appl1	
+Dpy19l1	Trib2	Phactr1	Gde1	
+Mthfd1l	Fam49a	Cacna1a	Acaa2	
+Tcfe3	Als2	Nudt1	Nol7	
+Sag	Cnbp	Rer1	Tcfcp2l1	
+Dffa	Dock4	Sim2	Rps24-ps2	
+Nbl1	Serpina3g	Slc8a3	1500003O03Rik	
+Fut9	Rpl36	Gtf3c5	Dact1	
+Psmf1	Acad8	Mad2l1	Atl1	
+Ppp1r14b	Agfg2	Glyr1	Synj2	
+Rnf215	Tspan4	Cenpb	Irx1	
+Snrnp25	Idua	Nr4a2	Lims2	
+Psph	Cry1	Atp6v1e1	Rbfox3	
+Lsm10	Sync	Cpne4	Myadml2	
+Ak8	Sec63	Uggt1	1700027D21Rik	
+	Ddah2	Foxp1	Cdh12	
+Acacb	Gosr1	Slc1a6	Samd1	
+Smad4	Arfgef2	Hck	Hecw1	
+Slco3a1	Dtx4	Cdh10	Zscan18	
+Gsg1l	Rnf115	Aldoc	Shank2	
+Sf3b5	Rps27	Shc3	Fen1	
+Gamt		Nuf2	Nrip3	
+Slc25a29	Slc26a11	Snhg3	Rbm25	
+Sfmbt2	Bzw2	Eif1ad	Abca7	
+Fgd1	Nrip3	2310028O11Rik	Bmyc	
+Dlk2	Taf2	Tpp1	Trib2	
+Fam116b	Them4	Prkcsh	Serpini1	
+Abcb6	Hsp90ab1		Zbtb10	
+Cpe	Gabrb3	Sfxn1	Dhx57	
+Fdx1	Iqcc	Chac1	Secisbp2	
+Hmgb1	Rps12	Vax2	Zfhx2	
+Rnf11	9230105E10Rik		Sub1	
+Rpl7a-ps5	Kndc1	Acpl2	Rbm33	
+Gmeb2	Gm5316	Ric8b	Nr4a1	
+Gm606	Mapre1	Adamts8	Odz1	
+Dgat1	Myadml2	Usp51	Phlpp2	
+Rpl7a-ps8	Tmem106b	Kras	Capn10	
+Znrd1as	Thbs4	Ripk3	Th	
+Top1mt	Rab27b	Hras1	Arfgef1	
+	Vapa	Rps9	Ripk3	
+	Flrt1	Ralyl	2610029G23Rik	
+Prpf38a		Elk3	Rpl17	
+Tcap	Cdc42ep4	Cradd	Pclo	
+	Robld3	Lhpp	Ovca2	
+Rilpl1	Taf11	Tap2	Rcn3	
+	Pcdha12	Rps11	Tgfa	
+Tm6sf1	Unc13a	Ndp	Dlk2	
+Bsn	Rassf3	Gchfr	Eif3g	
+Psd	Zfp467	Rnd1	Cenpb	
+Sphk2	Mtss1l	Twf2	Neo1	
+Etfa	2610305D13Rik	Map3k14	Wsb2	
+Armc9	Rpl7a	Ndn	Npw	
+Trappc5	Zfp865	Insig2	1110002N22Rik	
+Insig2	Ppp1r3b	Fst	Pptc7	
+Edf1	Hexim2		Pcdha12	
+Pcsk5	Spata21	Chmp7	Anapc16	
+Zfp963		Acot9	Syncrip	
+Rnaseh2a	Shroom1	Pgap2	Stk32c	
+Skint7		Haus4	Kcnk10	
+Gm10639	Neurod1	Rpl10	Kcnh4	
+Snrpd3	Slc25a20	Vps37a		
+Cwc25	Sepw1	Prpf6	Tcp11l2	
+Ipo9	Zbtb34	Rtn4rl1	Apoh	
+Shd	Atp6v1e2		Atxn7l3	
+Elovl2	Aanat	Lrig3	Xrcc3	
+Rasgef1b	Itgam	Mrps33	Cirh1a	
+Pbxip1	Papolg	Csrnp2	Vapa	
+Zfp53	Cdk5		Map3k5	
+Actr6	Mctp1	Nmt2	Grip1	
+Dgat2	Serpini1	Acly	Neto1	
+Usf2	Epb4.9	Pdgfra	Rimkla	
+Kndc1	Dhrs4	Ptpn2	Rpl23a-ps1	
+	Scn4b	Ache	Ywhag	
+Fads2	Tgfb1i1	Irx1		
+Pdgfc	Itga11	Fgd2	Syt4	
+Ube2m	Man2a1	Ccnyl1	Kcnmb2	
+Nr4a2	Irf2	Ezh1	Cdc16	
+Mas1	Bsn	Adcy2	Ephb1	
+	Mapkapk5	Skint7	Rnf135	
+Oxtr	Acaa2	Nr2f1	Haus4	
+Ssr3	Ccz1		Hmgcl	
+Ckb	Prex2	Alas1		
+Shroom1	2610318N02Rik	Rpl7a	Tbc1d15	
+Hdac11	Atxn7l3	Eif3g	Hexim1	
+Clec2d	Grik1	Scn3a	Srxn1	
+	Thap7	Crispld1	Klhl26	
+Scap	Rps11	Tppp	Cacna1a	
+Csk	Tceal6	Neo1	Mapk13	
+Apoh	Ninj1	Zfhx2	Smyd3	
+Strn4	Dlgap3	Nkrf	Habp4	
+Ddx55	Mrfap1	Nav2	Adcy2	
+Rpn2	Bckdha	Cox6b1	Arl9	
+Bche	Prkcz	Nek11		
+Dnajc13	Cdh11	Exosc9	Gpr39	
+Pde9a	Gm15450	Ldb1	Ipo9	
+Nkd2	Nsmce1	Ippk	Eif2ak2	
+Rgs12	Rasgef1b	Cand2	Lrrc47	
+Hemk1	Usp32	Usp43	Adra1a	
+Acox3		Trim71	Dda1	
+	Rps3a	Smad7	Cadps2	
+Nacc1	Ntan1	Parl	Zfp78	
+Zfp930	Dctn3	Gpr125	Eif1ad	
+Arhgef40	Map3k12	Mrps21	Gm5623	
+Rpl26	Rnd1	Lman2l	Gpd2	
+Cd276	Rpl10	4933424B01Rik	Nos1ap	
+Nfib	Plek	Dnalc4	Lrrc4b	
+Dpp3	Crispld1	Vav3	Sgca	
+Dsg2	Wdtc1	Pls3	Prmt5	
+Gemin4	Ccs	Dcaf5	Nsf	
+Enpp2	Arr3	Gucy1b3	Ppapdc3	
+Pacs2	Pde10a	Rps3a	Ppm1a	
+Camk2g	Sfxn1	Rac1	Aurkaip1	
+Afap1l2	Bhlhe40	Slco4a1	Psmd6	
+Tmed10	Map2k3	C4b	Pcsk6	
+Pacsin1	Mafb	Kctd5	Stk38l	
+Mfng	Pnma3	Tnfrsf12a	Bmpr1a	
+Btg1	Capza1	Foxg1	Lrig1	
+Reep2	Nudt1	Fpgs	Gabra3	
+Htr3a	Csnk1e		Timp1	
+Uap1l1	Zdhhc12	Sepw1	Tnfrsf11a	
+Accn4	Brpf1	Mrps31	Gm8054	
+	Usp11	Mdh1	Aldh6a1	
+Aasdh	Erp29	Hsd17b11		
+Kif1c	Mlf1ip	Parvb	Gadd45a	
+Gpd2	Itm2b	Hap1	B2m	
+Atrn	Pafah1b1	Neto1		
+Hmgcr	Xrcc1	Sdc2	Ddx55	
+Phf1	Cspg4	Akirin1	Rps12	
+Cdkn1a	Cyp2u1	Kif21b	Fzd4	
+Hspb11	Atl1	Lrrc47	Selk	
+Arhgdia	Stac3	Zc3h15	Spata3	
+	Pck2	Zfp866	Zfp618	
+Spnb1	Gpatch8	Tcf4	Aktip	
+Fbl	Wrap53	Ggct	Foxs1	
+Tmem201	4933439C10Rik	Myadml2	Ldb1	
+Fyn	Zcrb1	Rpl7a-ps5	Dct	
+Cyp4f15	Rnf126	1110002N22Rik	Slc25a17	
+Acvr2a	Kctd20	Nf2	Peci	
+Fbln2	March1	1810030N24Rik		
+Plcb3	Spryd4	Prkar2b	Dock4	
+Dhdds	Cd24a	Cacng8	BC029722	
+Pisd	Lsm14b	Polr2f	Mcm10	
+Timp2	Tmem141	Creg2	Fbxl21	
+	Itsn1	Nhedc2	Gm6994	
+Tsks	Eif1ad	Lgmn	Tspan4	
+Usp51	Tcp11	Hmha1	Smap2	
+Tbc1d15	Hopx	Dner	Rps7	
+Wdtc1	Ntrk2	Pnpla7	Socs7	
+Grk6	Jmjd7	Igfbp3	1600002H07Rik	
+Zfp281	Sdf4	Rab11fip4	Acap3	
+Zfp157	Rpl7a-ps8	Pex6	Macf1	
+Dgkz	Mia1	Ikbkb	Ngrn	
+Polr3c	Tgfb3	Rasd1	Heatr7a	
+Atn1	Gm5595	Pdlim4	Rac3	
+Hint3	2410042D21Rik	Grhl3	Mysm1	
+Spata7	Ypel5	Krt5	Krt5	
+3110009E18Rik	Map3k4	Zfp503	Ext1	
+Elovl5		Mre11a	Zfp367	
+Cdk5rap1	Txlnb	Necab3	Tcap	
+Rhob	Sgk3	Mtmr6	Actb	
+Slc45a1	Rnf144a	St5	Spata2	
+2010317E24Rik	Tab3	Rgs11	Sh2b3	
+Slc4a11	Pde9a	Fbxo33	Mapt	
+Urod	Irx1	Krtap5-5	Prdx3	
+Sirt4	1500032L24Rik	Ascl1	Cpne4	
+Smad2	Otud7a	Stmn2	Cry1	
+Ttpal		Cpe	Usp20	
+Tpm1	Slc25a23	Tlk2	Dmrta2	
+	Kif21b	Grm8	Smpd3	
+A230051G13Rik	Slc23a2	Dync1li2	Rps6ka1	
+Tcfcp2l1	Synj2	Ptgs2	Llgl2	
+Hyal2	Sh3glb2	Llgl2	E4f1	
+Zfp277	Nap1l2	Dusp6	Pigx	
+Rasa1	Pcgf1	H2afj		
+Magoh		Cdk5rap1	Park7	
+Asb13	Ezh1	Cdc14b	Kcnab2	
+Psmb10	BC049715	Nfic	Psmb7	
+Sox11	Ap2m1	Pde4a	Plekho1	
+Mt3	Zfp521	6430573F11Rik	Lrrc20	
+Ezh1	Slc25a17	Rps4x	Foxg1	
+Krt1	Acaca	Cdk5rap3	Slc12a6	
+Rad23a	Usp51	Amfr	Kif21b	
+1500011K16Rik	Apoa1bp	Ywhaz	Zfp947	
+Tns3	Nfib	Arr3	Ppp1r9b	
+Atoh7	Gtf2h3	Kcnq5	Ubr7	
+Map2k6	Erf	Cxcl14	Fgf1	
+Bag1	Gm4963	Yipf1	Mterfd2	
+Magt1	Ebf4	Stac3	Arhgap26	
+Rdh14	Nasp	Akr1b10	Cyth4	
+Phactr1	Evpl	Ccbe1	Pgap2	
+Cyp11a1	2410016O06Rik	Stk40	Vps25	
+D1Bwg0212e	Nos1ap	Rgag4	Meis1	
+Whsc1	Hemk1	Prmt5	Palmd	
+Sh2b3	Nlgn3	Rdh5	Fmo5	
+Atp6v1d	Srp68	Mafb	Wars	
+Srebf2	Nefh	Sh3bp1	Fxn	
+Rab15	Tnk2	Scarb2	Vcl	
+Mpp2	B2m	Slc7a1	Fst	
+Srp14	Arhgap26	Brsk2	Pigk	
+Gstm7	LOC668917	Ncoa2	Gal3st4	
+Arl2	Ttbk2	Arf4	Zfyve28	
+Steap2	Cacnb3	Atp6v1h	Sec61a1	
+Bcorl1	Dpysl2	Prkcc	Zbtb34	
+Ctsl		Efna3	Tceal6	
+Pcdha12	Ankra2	Lrtm2	Slc7a6	
+Rrp9		Serpina3i	Rnf128	
+Th	Dgkz	Nr4a1	Ypel4	
+Rab8b		Slc25a20	Cbx6	
+Luc7l3	3110040N11Rik	Apln	Lrrc8a	
+Ngrn		Kif1c	Nt5e	
+Psma6	2900092E17Rik	Tgfbr3	Gnl1	
+Pnrc2	Ttc19	Gm15450	Zcrb1	
+Slc24a4	Usp20	Rimkla	Mctp2	
+Atp2a1	Ap4s1	Ntrk2	Gm11818	
+Nampt	Arf4	Lrrc8d	Mapk4	
+Spcs3		Cd24a	Bclaf1	
+Nrxn2	Wdr6	Abcc5	Itga8	
+2010110P09Rik	Actn2	Gm12034	Irak1	
+Pkd2	Atrn	6330403A02Rik	Plekhm3	
+Cenpw	Habp4	Oprk1	Mre11a	
+Inhba	Vat1l	Smap1	H2-Q10	
+Sh3bp1	Myo18a	BC049715	Sgsm1	
+Syncrip	Cenpb	Nampt		
+Sepx1	Cage1	Plau	Arl4d	
+Fbxo2	Vax2	Them4	Prpf38a	
+Cyb561d1	P2rx6	Atp2b3	Cyth1	
+Ppip5k1	Dnahc2	Maged1	Zfp879	
+Sfrp1	Rit2	Fam160b1	Gemin7	
+Ntng2	Pecr	Zfp93	Nasp	
+Slc9a1	Kcnab2	Rab14	Coq4	
+Car12	Arfgef1	Rnpepl1	Atpif1	
+Limk1	Epn2	Med8	Cmtm2a	
+Gm6994	Mkl1	Taf2	Ctnna2	
+Mad2l1	Tmem194	Traf1	Bbs9	
+Gtf2h3	Stk40	Strbp	Cpne8	
+Alas1	Atp6v1c2	Rnf144a	Ttc14	
+Rnf24	Ggcx	Neurod1	Ezh1	
+Sncb	Lrrc4b	Ppip5k1	Clec3a	
+Atp2c1	Aldh9a1	Gng2	Rasgef1b	
+Gaa	Scarb1		Slc6a17	
+Bcl6	Mysm1	Ercc5	Lrrc3	
+Sgk3	Ric8b	Mlf1ip		
+Bach1	Sgsm1	Pcbd2	Cdh22	
+Atp6v1g1	Tmeff1	Erf	Nav2	
+Gm4963	Tpp1	Stk38l	Ppip5k2	
+Dnalc4	Tdp1	Tmem41b	Kcnj4	
+Tfrc	Ndufa11	Pcgf1	Chd8	
+Numbl	Dnalc4	Th	Asah1	
+Fos	Ndufs8	Dctn3	Slc26a11	
+Nanos1	Bid	Fbxo5	Aarsd1	
+	Traf1	Leng9	Kpna2	
+Stk38l	Cdh22		Scn8a	
+Xirp1	Mdh1	Fuca1	Actr6	
+Emd	Hadha	Taf9	Hck	
+Armcx5	Rapgef6	Gpatch8	Adamts8	
+Ece2	Lsm10	Pmpcb	Rab11fip4	
+Obfc1	S100a13	Aanat	Ampd2	
+Hs3st4	Plxnb1	Sec61a1	Ets2	
+Kif1a	Synpo	Pbrm1	Thbs3	
+Hsd17b12	Sec61a1	Sec62	Avpi1	
+Rpl23a-ps1	Frmd4b	Olfr629	Nfil3	
+Gsk3a	Oxtr	BC048355	Nlrp9c	
+Herc1	Arhgef12	Sfrp1	Spon1	
+Htr2a	Shank2	Chd7	Kcnk9	
+Pacsin3	Asah1	Serinc2	Amigo1	
+Ndufa1	Gde1	Gm8054	March7	
+Exoc5	Terf2ip	Epha2	Hmha1	
+Nfkbib	Fbxo8	Inpp5d	Thnsl2	
+Zfp239	Nono	Dusp23	Anp32b	
+Gm5468	Dysf	Ccz1	3110047P20Rik	
+Pmpcb	Ky	Zfhx4	Tox4	
+Wnt7b	Chst2	Plcb1		
+Rps27a		Apoh	Nme2	
+Dnajc9	Hmgcl	Mapk7	Abtb1	
+Cd320	Agfg1	Agpat3	Unc13a	
+C1ra	Paxip1	Smad3	Gm12034	
+Metap2	Il15ra		Phka1	
+Qk		Kctd20	Ddx41	
+Ap3b1		Arfgef2	Psme1	
+Fbn2	Pgap2	Alkbh2	Rpl10	
+Spdya	Clps	Tmem59l	Sbf1	
+Fut10	Scg5	Aldh8a1	Krtap5-5	
+St5		Cbx6	Alg10b	
+Macf1	Asl	Akirin2	Man2a1	
+Zfp677	Serpinb8	Rpl21-ps1	Smurf1	
+AI413582	Casp9		4921531C22Rik	
+Tapbpl	Tsga14	Gm6404	Hint2	
+Elmod3	Brsk2	Arfip2	Rpl7a	
+Stag1	Ddx55	Lrrc3b	Atp6v0d1	
+Tmed8		Gabrb3	Cldn5	
+Dnajc8	Tmed4	Camsap1	Tmem38a	
+Rap1gap	Ccna1	Tmem97	Tppp	
+1190002N15Rik	Sfxn3	Adra1a	Nde1	
+Scaf11	Wisp1	Nfil3	Atg4c	
+Bri3	Alas1	BC029722	Trp53bp2	
+Lrrc8d	Lcat	Ogfr	Atp1b1	
+Gabra3	Bex2	Abcb9		
+Arfgef1	Btg1		Zic3	
+Rin1	Fgf23	Lcat	Bzw2	
+Tmem229a	Dync1li2	Cntfr	Zc4h2	
+1810009A15Rik	Anxa5	Eif3j	Cpxm2	
+Nsa2	Fryl	Xrcc1	Mdh1	
+Rbm5	Scarb2	Rpl10a	Hddc2	
+Actr1b	Tbc1d8b	Gm9790		
+Mtfr1	Zfhx2	Sh3glb2	Bglap-rs1	
+Phlpp1	Fbxl21	Pnma3	Ankrd27	
+Cd24a	Pex5	Cdc42ep4	Cxcl14	
+Kcna3	Dpagt1	Pknox2	Rhobtb2	
+Cxcl14	A2ld1	Nek6	Nr3c1	
+Acadm	Ywhaz	A330021E22Rik	Zscan22	
+Atp6v1h	Mtf2	Slc23a2	Sdf4	
+Spnb3	Rps24-ps2	Hdgfrp3	Gpr133	
+Aqp2	Ddx24	Apoa1bp	Ddx24	
+Kras	Bcl6	Itm2b	Frmd4b	
+Smc2	Atp6v1d	Snrpd2	Cno	
+Nfyb	Alkbh2	Cct4	Twf2	
+Map3k4	Smurf1	Dpf1	1700040I03Rik	
+Gm9104	Rnf152	Tnfrsf11a	Sec62	
+Mybpc1	Gal3st4	Pla2g3	Ap2s1	
+BC003331	Map3k5	Slc9a1		
+Dis3	Bud31	2900092E17Rik	Chrm3	
+Nup133	Dynll2	Gabra3	Hivep2	
+Stx4a	Hyal2	Apoe	Fbxo45	
+Pold1	Mbtps1	Inppl1	Ppfia3	
+Fam102a	Map3k8	Rpl35	Nlgn3	
+Prex2	Tceal3	Gal3st3	Ctsl	
+Ddx27	Mrpl40	Maged2	Mark4	
+Slc18a2	Rpl26	Ptpn9	Sorl1	
+3110043O21Rik	Mina	Taf10	Pdcd4	
+Gnb2l1	Uggt1	Pts	2610035D17Rik	
+Wsb2	Mtap7d1	1600002H07Rik	Rgs11	
+Atf7ip	Frmd5	Hax1	Gucy1b3	
+Dmrtb1	Magoh	Srp68	Foxp2	
+Nrxn3	Fgf9	Kcnab3	Cacnb3	
+Fbxo42	Hddc2	Phlpp1	AI464131	
+Kcnj9	Dlat	Timp1	Cdc14b	
+Mars	Triobp	Msto1	Akt3	
+Nmnat1	Elk3	Grm1	Ddx19b	
+Atrx	Smyd3	Pcnp	Efna1	
+Hr			Anapc11	
+Evpl	Prdx3		Pecr	
+Amdhd2	Cox6b1	S100a13	Fars2	
+Mgst3	Gmnn	Fam53a	Nfs1	
+Flrt1	Tceal5	Zfp956	Sfxn3	
+Rasl11b	Ppip5k2	Nlgn3	Tap2	
+Bola2	Ephx3	Was	Wdr6	
+Nudt3	Appl1	Tmeff1	Pisd	
+Il27	Zfp866	Spcs3	Aanat	
+Cpm	Dusp1	Ccs	Tceb2	
+Abcd2	Mul1	Kcnk10	Rap1gap	
+Obfc2a	Sh2b3	Dlk2	Acbd6	
+Spag4	Gcsh	Pcbd1	Akirin2	
+Klhdc3	Selk	Mrps2	Lphn1	
+Lrrc3	Syncrip		Abcb4	
+Cdc42bpg	Lrrc48	Ttc14	Nrm	
+B4galt4	Gm5868		Them4	
+Aktip	Nup153	Ppapdc1a	Lman2	
+Atp5j2	Cog4	A230051G13Rik	Tmem97	
+Scamp1		Map2k3	Pllp	
+Clptm1	Abca7	Jmjd7		
+Chrna1	Grm1	Dpagt1	Gemin4	
+D2hgdh	1810037I17Rik	Snca	1810010H24Rik	
+Mxd1	Nubp1	Psmd12	Robld3	
+Smarcd3	Ttc14	Pcsk5	Pold2	
+Tcf12	Itpk1	Magi2	Plk5	
+Slco4a1	Agrn	Rplp0	Bckdha	
+Rab35	Mosc2	Cdh22	Npas2	
+Vps41	Uxs1	Habp4	Phactr1	
+Timm44	Slc46a1	Adamts17	Fsd1l	
+Eif3j	Rnpepl1		Tns3	
+Orai3	Pknox2	Hs3st4	Csrnp2	
+Cradd	Rab11fip4	Scand1	Acvr1b	
+Mbnl2	A230051G13Rik	Zfp90	Fdxr	
+Eif3c	Ercc8	Glg1	5830454E08Rik	
+Elavl1	Ankrd42	Btbd17	Sympk	
+Trim33	Nr4a1	Gm6813	Tomm40l	
+Pcdh15	Kcnq5	Aktip	Lrrc8d	
+Serpinb8	Tnfrsf11b	Sh2b3	Rcbtb1	
+ND2	Hint2	Casp9	Prkdc	
+2610528E23Rik	Timp1	Arntl2	Pip4k2b	
+Gm9104	Glt28d2	Zbtb9	Nek3	
+Stk11ip	Zbtb5	Dnajc17		
+Mgst2	Apoe	Anapc16	Paxip1	
+Cpxm2	Gm1006	Pomp	Rpl35	
+AW551984	Sbf1		Cdc42ep4	
+Tnks	Ogfr	Cc2d1a	Igfbp3	
+Doc2g	Gm6404	Hint2		
+Csnk2b	Rac3	Ppapdc3	Galntl6	
+Scube3	Snhg3	Pgm5	Trp53	
+Zfp187	Gm8054	Tacr2	Ttc19	
+Stk33		Gja1	Reln	
+Impdh1	Cdc42bpg	Fam160a1	B230120H23Rik	
+Atg4b	Eapp	Tmem115	Jmjd7	
+Surf2	Cwf19l2		Rab27b	
+Ovca2	Lmln	Apex1	Dnmt3l	
+Nol4	Llgl2	D17Wsu92e	Fbxo8	
+Tlr12	Glg1	Xrcc4	Itsn1	
+Lamc2	Fst	Bhlhe40	Gal3st3	
+Rab13	Mgst3	Arhgap39		
+Foxg1	Pvalb	Ankrd27	Smad6	
+Atp5e	Peli1	1810037I17Rik	Hrsp12	
+Cdk2ap1	Mrps33	Acvr1c	LOC668917	
+Ctdnep1	Tbca	Pou6f2	Cap2	
+Git1	Igsf1	Gpd2	Ppip5k1	
+Clip4	Rhoa	Prim1	Xirp1	
+Fam134b	Crlf3	Reln	Prss23	
+Pi16	Lrrc3	Cdk5	Mia1	
+Adamts8	Ext1	Rasgef1b	Tmem37	
+Stab2	Relb	Arl9	Serpina3b	
+Unc13d	Gtf2e1	Unc13b		
+Ei24	Wars	Tgfb3	Otud1	
+Lingo3	Pip5kl1	Trim33	Sqrdl	
+Cadm3	St6galnac4	Tnfrsf21	Acvr2a	
+Rhobtb1	Etv4	Ppm1e	Trpm3	
+Cntn6	2610039C10Rik	6720456B07Rik	Calb1	
+Mpp5	Clec11a	Gcc1	Tcte1	
+Stk17b	Hs3st4	Acvr2b	Magoh	
+Marcksl1	Zfp78	Npas2	Aagab	
+2610318N02Rik	Rpl31	Nasp	Pip5kl1	
+	Ash1l	Acvr1b	Vps33b	
+Ptp4a1	Nudt9	Sdf4	Ezh1	
+Med28	Tnfrsf21	Nisch	Otud7a	
+Trp53bp2	Rasal2	Cox5a	Arf4	
+Atp6v0e	Spon1	Clec11a	Rybp	
+Rps27	Dmrtb1	Rac3	5330417C22Rik	
+Ncrna00085	Lor	Bud31	Rpap1	
+Snw1	Sntg2	Mapk13	Taf9	
+Taf3	Pacsin3	Tom1	Pcsk5	
+Ift172	Map2k6	Nhp2l1	Kcnma1	
+Adprhl2	Pold2	Smc4	Abl2	
+Epn2	Traf4	Prok2	Ninj1	
+Mterfd2	Ccnf	Tbkbp1	Spef2	
+Scn1b	Mrps21	Arl8a	Oxtr	
+Eif1a	Pla2g3	Nudt9	Plekha2	
+Calu	Spast	Kdr	Rpl21-ps1	
+Psmb6		Rae1		
+Zfp760	Gck	Zcrb1	Vat1l	
+Emx2	Nisch	Mocs1	Tshz2	
+Rpl21-ps5	4921531C22Rik	BC034090	Rps27a	
+Dhx57	Dll1	A830080D01Rik	Pla2g5	
+Tspan5	Trp53	Shroom1	Cntfr	
+Sept8	Gja1	Akt3	Wrap53	
+Casp14	C4b	Dusp10	Ino80e	
+1300018I17Rik	Lhfp	Pcdha12	Sdc2	
+Nsmce1	Ebi3	Spef2	0610007L01Rik	
+Dgcr14	Th1l	Ube2v2	Maged2	
+Ergic1	Fam69a	Rpl7a-ps8	Tmem173	
+Mxra7	Hsd3b7	Spon1	Dusp1	
+Traf1	Rbfox3	Gm6994	A2ld1	
+Cd52	Pyroxd1	Tubb3	Tmem115	
+Rps5	Stmn2	Mllt6	Cdk5	
+Xrcc4	Mbnl2	Plcb3	Crlf3	
+Acot10	N6amt1	Dock4	Ppm1e	
+Tmem98		Rit2	Ppdpf	
+Rasd1	Srpk2	Hist1h2ba	Drg2	
+Spint1	Aldh8a1	Cycs	Tub	
+Pdcd4	Wipf3	Klc3	Ifih1	
+Magi3	Gria2	Coq4	Dnahc2	
+Prrt2	Lgi1	Tsc1	4933439C10Rik	
+Dcps	Gal3st3	Slc26a11	Rpl30	
+Noc4l	Sfrp1	Irak1	Tspan7	
+	Asxl2	Ddx55	Kcnk4	
+Ikbkb	Atrx	Dtx1	Plau	
+Cgrrf1	Arhgef16	Dpysl2	Nup93	
+Lrrc49	Eps8	Rps5	Nsmce1	
+Plxna2	Gm14496	Appl1	Tdp1	
+Dmrta2	Ube2v2	Rgs8	Lgi4	
+Rragb	Chrna1	Taf10	Slc8a3	
+Rpl7l1	Cxcl12	Gch1	Prps1l3	
+Rdbp	Gm10639	Ddx24	Ppap2c	
+Map3k9	Rrbp1	Ddah2	Fdx1	
+Ralgapb	Nmbr	Psmb2		
+Sqstm1	Plcb3	Asah1	Taf2	
+Reep5	Xrcc3	Arsa	Tmem117	
+Rps6-ps2	Sestd1		Rpl19	
+Casp9	Mrps31	Sesn2	Psmc5	
+Fam171b	Grm8	Wipf3	BC020535	
+Samm50	Psmd12	Nos1ap	Dnaic2	
+Phyhip	Gabpb2	Cirh1a	Rhob	
+Rpe	Smpd3	Unc13a	Ndufb7	
+Lig3	Gltp	Trim8	S100a13	
+March8	Ppp1r8	Dlgap3	Nme1	
+Bbs12	Samd1	Atxn7l3	Fmnl1	
+Snrpd1		Palmd	Pacs2	
+Dcaf13	Phf14	Ezh1		
+	Pcbd1	Tjp1	Gmnn	
+Gpr125		Wdtc1	Abcb1b	
+Plaur	Glyr1	Pcgf5	Sfrp1	
+Gm14496	Aif1l	Rps27a	Hap1	
+Grip1	Pik3r1	Sbf1	Arntl2	
+Srd5a1	Tnfrsf19	Gm606	Anapc10	
+D10Wsu52e	Ppip5k1	Folh1	Gstp2	
+Nr2f1	Inppl1	Cdh11	Prok2	
+Creg2	Tmem97	Atf2	Itm2b	
+Tbxa2r	Taf9	Phyhip	Stac3	
+Pin4	Hsd17b7	Clps	Prex2	
+C030046E11Rik	Dpf1	Hadha	Stk17b	
+BC017647	Dusp26	Bzw2	Ube2v2	
+Sgtb	Smap2	Fbxo42	Ifi203	
+Cry1	Grcc10	Hsp90aa1	Spcs3	
+Kif21b	Spata2	Kcnip3	Ints9	
+Pfkm	Fstl1		D330028D13Rik	
+Ubxn1	Gabra3	Rasa1	A130022J15Rik	
+Hspb8	Klhl4	C230096C10Rik	Prdx5	
+Uqcc	Zfpm1	Mark4	Med8	
+Camta1	Ubr7	Wdr6	Baiap2l1	
+Cntnap2	Bean1	Wars	Dedd	
+Hic2	Idh1	Ppip5k2	Gm5868	
+Pik3cb	Prpf19	Gm5595	Rtn4rl1	
+Relt	Tshz3	Hip1	Mapk14	
+Ddah1	Lix1	Rnasek	Capza1	
+Aph1b	Ndel1	Dcaf7	Akr1b10	
+Wdr48	Prkcsh	Gosr1	Tbca	
+Csrp2bp	Hnrnpa0	Tspan5	Ncf4	
+Smg7	Akirin1	Rpl23a-ps1	Zbtb5	
+Polr3g	Ahcy	Atp6v1c2	Zc3h15	
+Bnip3	Arfip2	Mrpl46		
+Syne2	Cc2d1a	Ctsl	Serinc2	
+Meox1	Alg10b	Sfxn3	Dlat	
+	Slc1a4	Scarb1	Lekr1	
+Vcl	Neo1	Ascc1	Lrtm2	
+Uap1	Rpusd3	Actn2		
+Slc26a11	Tgfa	Pak1ip1	Bmpr1b	
+Rnf8	Flrt3	Ap2m1	Gsg1l	
+Snx25	Cxadr	Chst2	Srsf12	
+Rpl30	Sh3d19	Wnt9b	Serpine2	
+Pip5kl1	Heatr7a	Rdm1	Spast	
+Rps10	Krt9	Tmem33	Top3a	
+Dock1	Hmgn2	Epha7	March9	
+	Dars	Shank2	Ppp1r14b	
+Cpne4	Nfs1	Maml3	Fbxo33	
+Triobp	C330005M16Rik	Ky	Lsp1	
+	Erh	Kif5a	Ache	
+Bax	Sat2	Magoh	Shisa4	
+Lmf1	Nsf	Dcc	P2ry13	
+Gck	Pgs1	Fbxo8	Cyp2u1	
+Lsm14b	Sra1	Mocs2	Fastk	
+D17Wsu92e	Rbp4		Phkb	
+	Eftud2	Ngrn	Arid1b	
+Rfk	Nt5m	Pecr	Prim1	
+Il10ra	Trappc5	Cog4	Dgkz	
+Hecw1	Cdk4	Hyal2		
+Fbxo41	Rae1	Tmem45a	Vps8	
+Sipa1l2	Plin3	Fem1b	Cd1d1	
+Rbx1	Rcbtb1	Zcchc18	Sfxn5	
+Klf7		Atp1a3	Grcc10	
+Nme1	Ano6	Ccdc115	Rock2	
+Rora	Tlr12	Nubp1	AA408296	
+Dctn2	Rpl17	Usp11	Amigo2	
+Rrp1	Ankfy1	Foxi1	Als2	
+Lsmd1	Efna1	Gm4978	Tnfrsf11b	
+Hist3h2a	Ttll11	Golph3	Rnf115	
+Hp	Arid1b	Rpl30	Scarb2	
+Lrp6	Sf3b3	Fam171a1	6330403A02Rik	
+Cttn	Pigk	Nrbf2	Klc3	
+Atp6v1c1	Thnsl2	Mrpl40	A830080D01Rik	
+Baz2a	Ppp1r14c	Pnmal2	Tspan5	
+Fndc3b	Grhl3	Agfg1	Gm5316	
+Lphn1	1810020D17Rik	Fam96a	Dpm2	
+Slc28a1	Fam100a	9230105E10Rik	Lhfp	
+Nsf		Csnk1e	Atp6v1h	
+Mctp1	Bai3	Fbxo9	Cspg4	
+Dync1li2	Rb1cc1	Dcbld2	Tnfrsf13b	
+Cspg4	Aprt	Nol4		
+B630019K06Rik	Gm16477	Pclo	Cep63	
+Ascl2	Dhx9	Dgkz	Npm1	
+C530028O21Rik	Abcg4	Cwf19l2	Actn2	
+Pgap2	Rac1	Lrp11		
+Mfap4	Slc39a4	Vps8	Ccbl1	
+Acot8	Slco4a1	Ctnnb1	Dcbld2	
+Thoc6	Zscan22	Acaa2	Ergic3	
+Ddah2	Sgca	Naa10	Sh3d19	
+Srebf1	Cdkl4	Taf13	Nkiras1	
+Agfg1	Lrrc8b	Lin28b	Gm22	
+Hrsp12	Srsf12	Lcp1		
+Zfp637	Hnrnpa1	Gm11127	Nt5m	
+Plekho1	Stxbp1	Fmnl1	Pcbd1	
+1810020D17Rik	Pcnp	B630019K06Rik	Fbxo2	
+Peci	Ykt6	Rpusd3	Tacr2	
+Prss12	Yipf1	Tnfrsf11b	Nubp1	
+Lix1	Gmeb2	Ppard	Plcb1	
+Ankrd56	Wwc1	Wif1	Map3k14	
+Tmem101	Sp110	Ubr7	Mllt6	
+Pip5k1c	Ablim1	Zfp618	2610002I17Rik	
+Rnf157	Trim33	Ostf1	Apex1	
+	Sln	Relb	Adhfe1	
+Rngtt	Zbtb9	Safb	Dysf	
+Rpl36	Anapc11	BC005537		
+Thbs3	Chmp7	6330503K22Rik	Dctn3	
+Rasgrf1	Palld	Bzw1		
+	1110002N22Rik	Rpl34	Mtf2	
+Zfp251	Cdc16	Cntn4	LOC100134990	
+Ippk	Pccb	Pes1	1500032L24Rik	
+Clcn2	Apln	Psmc3		
+			Rab42-ps	
+Vax2	Pgr	Stmn4	Il15ra	
+Atf5	Anapc16	Mtf2	Speg	
+Cdc16	Mapk7	Gm5640	Nek6	
+Umodl1	Eif1b	Mboat7	Gtf3c5	
+Zxdc	Tsc1	Cox6b2	Zfp830	
+Klf16	Tceal8	Rapgef6	Wnt9b	
+Pias4	Mrpl46	Tbca	Gm11127	
+Cd99l2	Mff	Cap2	Myo9a	
+Bst2	Hip1	Plekho1	1810020D17Rik	
+Ranbp3	Pgrmc1	Cenpq	Xpr1	
+Htra1	Spdef	Nrip3	Dcc	
+Gm5341	Pcsk6	Sirt3	Gtf2h4	
+Ywhag	Srek1ip1	Mbip	C1qc	
+Actn1	Actb	Zfpm1	Prdm11	
+Dda1	Dyx1c1		Sccpdh	
+Rmnd1	Msh2	Hist4h4	Cox6b2	
+Ppm1m	Krtap4-8	Ccdc86	Ppm1f	
+Gm5506	2310028O11Rik	St3gal6	1700073E17Rik	
+Gabpb2	Cd81	Itgam	Pcgf1	
+Rbpjl	Commd2	Mast2	Akap17b	
+Zc4h2	Dach1	Tubb5	Pdpn	
+Tmem62	Gm9790	Syt3	Wipf3	
+Epha8	Slc30a3	C77370	Net1	
+	Stat3		Cdkn3	
+Il18	D2hgdh	Zfp78	6720456B07Rik	
+Bzw1	Git1	Jak2	Gltp	
+Hmgb2	Casq2	BC003331	Pnma1	
+Spef2	Dcbld2	Abat	Prpf19	
+Phf13	Lpgat1	Nsf	Hcn3	
+Gm8054	Mov10	Sgsm1	Bud31	
+4930404H24Rik	Sh3bp1		Nudt1	
+Spsb3	Arpc5	Fxyd7	Tpp1	
+Tut1	Map4k2	Usp20	Mdga1	
+Timm8a1	Omp	Trp53	Gm15450	
+Gm9776	Mctp2	Rpl36a	Me3	
+Rab3a	Siva1	Zfyve19	Pgm2l1	
+Gabpa	Npas2	Brms1l	Ndufb8	
+Wwtr1	Ccne1	1810006K21Rik	Cdh11	
+	Shisa4	Rps12	Gm606	
+Psmd8	Trp53bp2	Igf1r	Brsk2	
+Ankrd27	Pts	2410016O06Rik	Kcna3	
+Kctd10	Adra1a	Map3k5	Zfpm1	
+Helq	Rps6	Tnfrsf19		
+Calb1	Nsa2	Agfg2		
+	Ncbp2	Cadps2	Pde9a	
+Stub1	Plekhg3	Zmynd12	Klf13	
+Mtap6	5330417C22Rik	Atp8a2	Traf1	
+Lage3	5830454E08Rik	Lsr	Dclk1	
+Rpl9	Mterfd2	Hmox1	Synpo	
+Ano2	Tnfrsf9	Htr2a	Magi2	
+Cat	Dusp10	Fzd8	Pacsin3	
+Mtmr7	Smc4	Zfp446	Plxnb1	
+Kctd12b	Dlk2	Poc1a	Lix1	
+Gtpbp6	1110065P20Rik	Pak6	Fosb	
+Asns	Chid1	Zfp598	Tmem106b	
+Mgat4a	2610029G23Rik	LOC668917	Pmpcb	
+Pex11a	Snx1	Irf2	H2afj	
+Galnt2	Cirh1a	Myo18a	Itgb7	
+1190002H23Rik	Ache	1700073E17Rik	Diras2	
+Tmem55b	U2af1	Kcnk9	Hax1	
+Rarb	Ppapdc1b	Fryl	Grin2d	
+Gm1006	Dclk1	Zfc3h1	Cux1	
+Sv2b	Ahcy	Syt1	Bex2	
+Ccnf	Rgs8	Ufm1	Wdr41	
+Svil	Nampt	Sln	Ppapdc1b	
+Pex6	Cdk5rap1	Asxl2	Ahcy	
+Gng2	Ifi203		Tcf4	
+Kcnq3	Tmem115	Ppap2c	Fam69a	
+Ube2v1	Epb4.1l4b	Armc6	Rfc4	
+Ano8	Zfp473	Tmem141	Slc9a1	
+Ndufb3	Polr2a			
+Kctd15	Amigo2	4933439C10Rik	Plat	
+Wtip	1700073E17Rik	Slc6a17	Ndufs7	
+Scn4b	Tmem134		F3	
+H3f3b	Ybx2	Rnf6	Oprk1	
+BC028528	Mbip	Dido1	Smc4	
+Dok5	Ing4	Fam129a	Dgki	
+Grik5	Top3a	Ankfy1	Rps15a	
+Nipal3	Dffa	Cacng6	Helq	
+Uqcr10	Nfil3	Parp14	Rab9	
+Fzr1	Trappc10	Itsn1	Cacng7	
+Trim3	Hdgfrp2	Msh2	Mbnl2	
+Pofut1	Npy	Uxs1	U2af1	
+	Cat	Vcam1	Cenpq	
+Sgpl1	Eif3k	Nme6	C85492	
+Rangap1	Dgki	Cdkn3	Ogfr	
+Rragc		Senp6	Glrx3	
+Poldip3	Aurkaip1	Kcnk6	Ogt	
+Svop	Klhl26	Cir1	Sf3b4	
+Spna2	Pdlim4	Uqcr11	Ppp2ca	
+Golga3	Syt3	Ppfia3		
+H2-M3	Trmt112	Spryd4	Sys1	
+Scamp5	Tmem41b	Mrpl38	Ip6k1	
+Gnpat	Kcnmb2	Rnf115	Lor	
+	Abcb9	Dyx1c1	Panx1	
+Ccl25	Prdm1	Idua	Fryl	
+C77370	Fbxo9	Htr2c	Rabac1	
+Cpxm1	Nr1h3	Cep63	Atr	
+Trove2		Atf4	Serpinb8	
+Fgd2	Eif4a2	Adpgk	Pak1ip1	
+Tomm40	Gm9104	Rps24-ps2	Asl	
+S100a13	Minpp1	Acvr2a	Cdk4	
+Ctr9	Kctd15	Klhl4	1110065P20Rik	
+Slc11a1	Trim67	Sf3b4	Bsn	
+H2-DMa	Creg2	Pitx3	Spns1	
+Hist1h2aa	Aif1	Zscan22	2210012G02Rik	
+Rrbp1	Ndrg2	Polr2e	Eif1a	
+Scn3a	ND4	Sqrdl	Plcb3	
+Nek3	Abl2		Slc39a2	
+Khsrp	Gpr39	Psmd7	Mdp1	
+Mrpl51	Acta1	Zdhhc9	St7	
+Cdkn3	Pldn	Pip4k2b	Pex12	
+Kcnmb2	Gm13157	Lgi4	Rdh14	
+Zfx	Nek3	A2ld1	Arpc5	
+Pkm2	Lman2l	Nt5m	Gria2	
+Hgsnat	Lrrc8a	H2-Q10	Ccnyl1	
+Nudt1	Cyth1	Pgrmc1	Emx2	
+Ttc13	Sbno1	Snap23	Rhpn2	
+Stau1	Cacng6		Pdlim2	
+1600002H07Rik	Gm9104	Glod4	Mapk1	
+Cdc14a	Dus4l	Gpr133	Idua	
+Nkap	Col23a1	Tmem117	Slc39a4	
+Cspg5	Ormdl3	Als2	Taf11	
+Fam195b	Rell1	Slc25a23	Pnma3	
+Zfhx4	1810006K21Rik	Dhx34	Rnd1	
+	Nav2	Ccne1	Hras1	
+Zbtb22	Ppm1f		3110040N11Rik	
+Ramp1	Lin28b	Vcl	Pdk3	
+Rpl37a	Atp6v1h	Gm5239		
+Prkd3	2810453I06Rik		Klhdc8b	
+Trpm3	Msx1	Ccna1	Sez6	
+Cox5b	Eif3e	Tmem210	Rps10	
+Tlr7	Trp53rk	Pde7b	Kcnq5	
+Ybx1	Zcchc18	Ralbp1	Gm4978	
+Ndrg2	Ip6k1	Sft2d2	Pex6	
+Bean1	Bbs9	Xdh	Gja1	
+Prkcz	Rilpl1	Sestd1	Ada	
+Akirin1	Mtmr6	Vamp2	Nmbr	
+Selenbp1	Cntn6	Rpl11		
+Ift80	Sub1		Lemd2	
+Cacng7	Ddx41	Ctdnep1	Amfr	
+Calm2	Cdkn3	Rpl22l1		
+Smap1	Parp14	Fstl1	Pvalb	
+Kcnj6	Srebf2	Mat2b	Spnb3	
+Syt5	Mdp1	Dnahc2	Sim2	
+Ppapdc1a	Neurl2	Gm2a	Nsun7	
+	Cep63	Sdcbp2	Serpina11	
+Fank1	Rpl21-ps5	Bcap31	Kifc3	
+Btf3	Eif4e	Mrpl17	Nr5a1	
+Adc	Eif2ak2	Xirp1	Arhgef12	
+Map3k15	Kcnj9	Prdx5		
+Meis1	Exosc4	Macf1	Rpl10a	
+Jkamp	Ift172		1810006K21Rik	
+2810453I06Rik	Nr2f1	Pomc	3110062M04Rik	
+Polr2k	Cd276	Trp53rk	2610039C10Rik	
+Ciao1	Suv39h2	Hemk1	Ube2v1	
+Prdx6	Akt3	Cux1	Sync	
+Nol7	Sgpp2	Bop1	Eif3e	
+Fbxo36	Nme2	Setd5	Zfp521	
+Myl6b	Sfrs18	Spata2	Mcoln1	
+Asah1	St7		Slc29a2	
+Pigv	3110062M04Rik	Chrna1	Acsl4	
+Tinf2	Pofut1	Traf4	Inppl1	
+Eml2	Rps5	Rps27	Pnmal2	
+Hdac3	2610035D17Rik	Six4	Mocs2	
+	Ddit4	Rhobtb3	Zfp937	
+Pvrl4	Prrt2	Pik3cb	Figf	
+Rnf135	Ascc1	Myl2	Cand1	
+Mcm7	Elmod1	Itpk1	Erh	
+	Apoc3	Serpini1	Aprt	
+Mtrr	Padi1	Tgfb1i1	Arhgap10	
+Map3k3	Rdm1	1700010I14Rik	Tnfrsf19	
+Rapgef6	Zfp277	Robld3	Gabrb3	
+	Decr2	Pde9a	Tmem45a	
+	Zfp423	Gxylt1	Unc79	
+Sntg1	Psmc3ip	Ogt	Kctd15	
+Fbxo45	Rap1gap	Speg	Amz2	
+Smpd2	Gm12034	ND5	Msh2	
+Phf14	Fam125b	1500032L24Rik	Bhlhe40	
+Fbxw11		Atp6v0d1	Kras	
+Cdc34	Myl3	Lix1	Wwc1	
+Slitrk1	Car4	Gm7935	Lrfn5	
+4833442J19Rik	Fam134b	Fads2	Ndn	
+Grm7	Stard3	Recql	Ngb	
+F3	Slc1a3	Terf2ip	Pdcd10	
+Cbr3	Glt25d1	Cul7	R74862	
+Cln8	Prpf6	Trappc6a	Epn2	
+Cdh10	Hmgn5	Slc1a4	Atp6ap2	
+Msln	Unc79	Nmbr	Mtrr	
+Ano6	Msto1	Neurl2	Rbbp9	
+Myl2	Tomm40l	Csnk2a2	Neurl2	
+Fxyd7	Gpr125	Nkain1	Ube2s	
+Uba52	Rnf113a1	Hexim2	Ctnnb1	
+Ak5	Hspb11	Sema4f	Cd5	
+Pvr	Lcp1	Cyb5		
+Cd38	Fars2	Trmt112	Eapp	
+Hmgb1	Ncaph	Cited1	Shroom1	
+Aldh5a1	Slc35d3	Pde10a	Gpx4	
+Vps4a	Cand2	Tceal8		
+Cntfr	Cel	Gm71	Orc3	
+Narg2			Kif22	
+Tmem107	Uqcr11	Cacnb3	Wnt11	
+Cpne8	Evc	Ms4a7	Urod	
+Gls	Fbxo42	Taf11	Mboat7	
+Mia1	Klhl21	Mtpap	Trim33	
+Rpl11	Arhgef40	Rell1	Rpl36a	
+Acadl		Zfp521	Tmem141	
+Otud7a		Obfc2a	Ndufa11	
+Mrpl27	Adamts17	2610029G23Rik	9230105E10Rik	
+Traf3ip3	Ercc5		Epb4.9	
+Pou6f2	Psmb2	Tbc1d8b	Gm561	
+Smek2	Dok6	Aldh1b1	BC056474	
+Mmp14	Fam149b	Triap1	Gng2	
+Ndufb8		Ppp1r14c	Hadha	
+Suox	Cttn	Bcl6	Ctr9	
+Rbfox3	Ghr	Tceal3	Arx	
+Fmnl1	Fbln2	Pex12		
+Fam120c	D330045A20Rik	Arid1b	Erlin2	
+A430078G23Rik	Scand1	Ranbp3	Plekhg3	
+Amigo1	Acly	Ormdl3		
+Odz1	BC056474	Orc3	Eya1	
+Hsdl2	Rnasek	Ash1l	Il27	
+Rpl7a	Katnal1	Grik3	Cttn	
+H3f3a	Prss23	Me2	Ipmk	
+Ppp1r1b	Rpl21-ps4	Mkl1	4833422C13Rik	
+Cldn5	Mtrf1	Serpina3b	Stat3	
+Mff	Anp32b	Esrrg	Wipf1	
+Gart	Fam3a	Hs3st1	Grb7	
+	Sik2	Cdkl4	Gm5239	
+Pkmyt1	Dcc	Pdcd10		
+Rpl31	Arhgef15	Mtrr	Slc16a7	
+	Atp6v0d1	Abca1	Lyl1	
+Rhpn2	Zfp956	Sgk3	Kif17	
+Cyp26b1	Ndufb8	Armc5	Glod4	
+1810030N24Rik	Tubgcp4	Aldh9a1		
+Rps24-ps2	Ldlrad3	Ttc33	Nol4	
+Cd93	Acot10	Bai2	Bzw1	
+Ripk3	2010305A19Rik	Sgca	Tlk2	
+Pgk1	Dpp3	Gsg1l		
+Tor1b	Wbp1	Arpc5	Ndufb9	
+Coro2a	Polr2e	Casp6	Ahcy	
+Ngf	Vcam1	Psmc3ip	Dnm2	
+Gm10094		Rdh14	Rras2	
+Kcnma1	Tbc1d15	Padi1	Sln	
+		Rarb	Ly6k	
+Sema6a	Hpca	4931406P16Rik		
+Zmym6	Glrx3	9630033F20Rik	Rer1	
+Eif3m	Glod4		Gosr1	
+Mrpl52	Fgf22	Cd1d1	Slc25a23	
+Fam176a	Rint1	Arap3	Hspb11	
+Eaf2	Acsl4	Sra1		
+Sssca1	A830080D01Rik	Edc4	Grik3	
+	Tgm3	Zfp473	Taf10	
+1110008J03Rik		BC020535	Slc25a47	
+Plcg2	Prdx5		Ms4a7	
+Ptger1	Vps54	Agpat5	Fam45a	
+Slc30a6	Ywhaq	Samd1	Chid1	
+Fam160b1	Trim25	St7	Rpl21-ps4	
+Ablim1	Fam160b1	Layn	2700081O15Rik	
+Dmap1	Mapk14	Fam69a	Insig2	
+Ppid		Hmgn5	Cnbp	
+Celf6	Me3	Mff	Glt28d2	
+Spc24	Zmynd12	Clns1a	Spdef	
+Rpl34	Fdft1	Hmbs	Gm6404	
+Hmg20b	Atp6v1e1	Pllp	Gm5595	
+Rbp4	Nprl2	Helq	Rac1	
+Prkar2b	Rab3gap1	Xpot	Cyp2j6	
+1500035N22Rik	Cdc14b	Cox6a2	Cox7a2l	
+Sec61a1	Alg2	Asl	Gars	
+Polr1b	Nde1	Klhl26	Sdhaf2	
+Bmp2	Cdc25a	Acbd6	Atf2	
+Akap8l	Prmt8	Rhob	Me2	
+Rragd	Ppdpf	Adcy1	Tnfrsf9	
+Sec14l2	Msln	Gm2382	AU040320	
+	Ccdc86	Pdgfb	Fam134b	
+Pten	Ephx1	Top3a	Exosc4	
+Pabpc1	Tjp1	Hspb11	Rpl21-ps5	
+Cym	AK129341	Sema5b	Dazap1	
+Sphkap	Oprd1	Hbs1l	Zfp318	
+Rbm3	Rapgefl1		2310003F16Rik	
+Fyco1		Tsks	Dpysl2	
+Gcc2	Cspg5	Pgs1	Npr3	
+Casp6	Rps27a	2610035D17Rik	Cacng8	
+E130116L18Rik	Sympk	Dgki	Cyp4f14	
+Rpl3	Dhx32	Dusp1	Tmbim4	
+Neto2	Ascl2	Tmem134	Ric8b	
+Ppdpf	Prok2	Wdr91	Tpm1	
+Fgf22	Rpl30	Cetn4	Acad8	
+Ddit4		Cnbp	Hpca	
+Ddx41	BC016495	Vps54		
+Ube2a	Sgtb	Dcaf10	Lsr	
+Ralbp1		Pex5	Dap3	
+Gm5239	Layn	Enc1		
+Atat1	Dmd	Sgpp2	Ldlrad3	
+Smarcd1	Rhot1	Kcnj9	Gtf2a2	
+Hnrnpab	Dync2h1	March1	Ccbe1	
+Chchd2		Ptpn12	Eng	
+Padi1	Bax	Tcte1	Usp11	
+Mul1	Pllp	Mosc2	Spryd4	
+Slc7a6	Ccbl1	A130022J15Rik	Zfyve21	
+Dlgap4	Xpr1	Bex2	Tmc6	
+Rspo3	9630033F20Rik		Ncbp1	
+Camk4	Cbx6	Figf	Dnajc17	
+Bcar3	Hic2	Ufsp1	C77370	
+Usp32	Ttll1		Gm10094	
+Ankrd22	Xrcc4	Avp		
+2700097O09Rik	3110047P20Rik	Nr5a1	Mlc1	
+Adamts13	Atxn1		Atad2	
+Arf4	Tmem117	Hsd3b7	Gm5751	
+Tmem25	Ncf4	Stk3	Ttll10	
+Vgll2	Ppfia3	Dhrs4	Ssr1	
+Crispld2	Tmtc1	Serpinb8	Nsa2	
+Nubp1	H1fx	Mapk12	Slc15a3	
+Mbtps1	Dhx34	Jkamp	Pafah1b1	
+Adk	BC034090	Gm5868	Rdm1	
+Cyba	Sesn2	Fgf23	Fos	
+Pcsk1	Tmem37	Gria2	Wdtc1	
+Gga2	Oprk1		Tmem123	
+Evi2a	Mbd4	Fam186b	Fam125b	
+Pip4k2b	St3gal6	Arpp21	Mpa2l	
+Uqcrb		Fam149b	Eif3k	
+2810001G20Rik	Sec61b	Ankrd42	Cstb	
+Rdh9	Prdm11	Ass1	Tada2a	
+Cage1	Fam116b	Impa1	Omp	
+Uvrag	Arsa	Srek1ip1	Mosc2	
+Sytl1	Fam129a	Rps29	Bmp2	
+Rusc1	Mapk12	Klhdc8b	Zbtb46	
+Skap2	2310009B15Rik	Nkd2	Snca	
+Nedd1	Emx2	Aagab	Uxs1	
+Dcun1d4	Rgag4	Mars	Dusp26	
+Scn2a1	U2af2		Dusp10	
+Ccno		Alg2	Itga11	
+Klc1	Aldh1b1	Minpp1	Gm14431	
+	Def8	Fbl	Poc1a	
+Nfia	G6pdx	Sorl1	Rasal2	
+Plekhg4	Nenf	Triobp	Snhg3	
+Pdf	Isy1	H2afz	Pcgf5	
+Rabif	Smpd2			
+Wdr82	Tom1	C85492	Lsm14b	
+Synm	Tomm22	Alg10b	Stk3	
+Tmem70	Mrpl47	Poln	Gm10639	
+Cand2	Spint2	Rab27b	Cops6	
+Neurod1		Bnip3	Syt3	
+Tubb4		Fbln2	Psmb3	
+Ndel1	Doc2g	Poldip3	Rps11	
+Papolg	Ccbe1	Slc41a2	Map2k6	
+Usp43	Atp1b3	Rheb	Cnksr3	
+Zfyve28	Prkdc	Nudt11	Adam15	
+Rnpc3	Sf3b4	Tgm3	Prosc	
+Cbs	Pecam1	Tspan4	Radil	
+Glt28d2	Gm7935	Nr2c1	Csnk2a2	
+Kif17	Btbd17	Erh	Gprc5b	
+Vav3	Rb1	Bmpr1b	Sgpp2	
+Sepp1	Rbm5	Amigo1	Fam100a	
+Stac3	Plxnb2	Apbb1ip	Akirin1	
+Mib2	Dpysl4	Ykt6		
+Gng11	Pdlim2	Elmod1	Snx1	
+Dusp1	Vamp2	Eif4e	4930529M08Rik	
+Pptc7	Nol4	Met	Camta1	
+Mtss1l	Socs3	Aurkaip1	1810022C23Rik	
+Cox6b2	Ndufb7	Prdm11	Tmem47	
+Coro7	Zbtb46	Smpd3	Sik2	
+Sub1	Sssca1	Dtnbp1	Cpm	
+Mfsd9	Scn3a		Aurka	
+Ramp2	Me2	Adm	Fbxw11	
+Vwa5b2	Ranbp3	Fam32a	Fam116b	
+Cd274	Gca	Abca7	Fgf22	
+Gpr133	Snrpd3	Ms4a6d	Pknox2	
+Rasgrp2	Nek8	Psmb7	B230307C23Rik	
+Ltc4s	Peci	2810453I06Rik	Cx3cr1	
+A330021E22Rik	Ptprf	Cerk	Rapgefl1	
+Frmd4b	Eya1	Sntg2	Lmo3	
+Atp2b2	Dmwd	Clic5	Xrcc1	
+Fcgbp	Gyg	Ndufa11	Dhrs4	
+Abhd16a	Taf10	Gars	Cct2	
+Per2	Rab14	Sys1	Fam53b	
+Tra2a	Gm606	Thbs4	Pdlim4	
+Cbx5	Taf10	Rnf25	Mbtps1	
+Hspe1	Trit1		Zfp473	
+Ier3ip1	Igfbp3	Prdx3		
+Polr1a		Anxa5	Rae1	
+Ash2l	Arl8a	Mapk14	Rgag4	
+Paqr8	9430031J16Rik	3110062M04Rik	Actn1	
+Rps3	Rab9	Srpk2	Rps27	
+Rnf5	Psmb6	Gm16477	G6pdx	
+Adar	Synj2bp	5730577I03Rik	4933424B01Rik	
+Socs3	Anapc10	Htatsf1	G630090E17Rik	
+Trim13	Prmt5	C030046I01Rik	Hemk1	
+Plxnb1	Unc45b	Irgm1	Katnal1	
+Kif6	Jak2	Bsn	Zmynd12	
+Hus1		Bax	Ccdc125	
+Slc38a3		Hnrnpa0	Zfp358	
+Bicd2	Gars	Hpca	Bmf	
+Nf2	Rcc2	Abcg4	Gm5640	
+Slc12a6	Arap3	Lrrc59	Tnfrsf23	
+Trim62	Nup210	Ccnh	Necab3	
+Ccpg1	Atf5	Ly6k	Atp8a2	
+Mcm3	Kdelr2	Lrrc48	Mtrf1l	
+Adcyap1r1	Dcdc2a	Map2k1	Otub1	
+Arpc5	Smg1	Pvrl4	Tecpr1	
+Rcbtb1	Tcf25	Paqr9	Sh3glb2	
+Rps18	Zfp882	Capza1	Pccb	
+Cxadr	Rnf25	Cplx2	Sumf1	
+Htatsf1	Ppm1m	Sympk	Dcun1d1	
+Akr1b3	Rab34	Hopx	Rac2	
+Jund	Apc2	Plcd4	2410016O06Rik	
+Dlg2	Nkain1	Vat1l		
+Snrpa1	Fam20c	Ncbp2	Syt1	
+Ict1	AU040320	Rap1b	Eef1d	
+Xrcc2	Sec14l3	Pccb	Rassf3	
+Naa50	Upp2	Slc25a17	Rps25	
+Vasp	Ndufaf3	Mid1	Dpf1	
+Fdft1	Ech1	Mfng	Traf4	
+Atpif1	Bclaf1	Anapc10	Anapc13	
+Polr2i	Rgs17	Cpne1	Trp53inp1	
+ATP8	C1qc	Anp32b		
+Zfp949	Zfp598	Aptx	Igf1r	
+Cdc42se2	Ano10	Sbno1	Srd5a1	
+Zfp217	Cpm	Bbs9	Cbx3	
+Trmt1	Cnot7	Sec61b	Synj2bp	
+Dazl	Slc7a1	Camk2a	Lpgat1	
+Mina	Psmb7	Tsga14	Plin3	
+Slc39a12	Mrpl38	Rhot1	Srpk2	
+Coq9	Bmpr1a	Abcb4	Dclre1c	
+Slc44a1	Ndufs7	Tceal5	Slc41a2	
+Elf1	E330020D12Rik	Gde1		
+Lgi1	Atp1a2	C530028O21Rik	Spint2	
+Cbx6	Cx3cr1	Gm10094	Cyp2j13	
+Atf6b	Fmnl1	Lmo3	Rheb	
+Slc1a4	Armc6	Ppp1r8	Frmd5	
+Gtf2a1	Tmem20	Mbnl2	Rnasek	
+Tmem150a	Cnga2	Socs3	Glo1	
+Osgin1	Syt1	March5	Dpysl5	
+Pgm2l1	Ypel4	Tmem37	Xrcc4	
+Alg3	Kcnj14	P2rx6	C330005M16Rik	
+Hmox1	Insig2	Hmgb1	Btbd3	
+Ttll11	AI464131	Dtx4	Snap23	
+Rnf7	Zfyve19	Ephx3	Ptpdc1	
+Ptprf	Sqrdl	Fos	Atp6v1e1	
+Lmo3	Ankrd27	Abtb1	Rcbtb2	
+Hnmt	Mrpl17	Gyg	Kctd5	
+1500032L24Rik	Homer1	Cyp2u1	Lman2l	
+Ypel5	Ctr9	Pyroxd1	Sipa1l2	
+Rpl22l1	Tcte1	Peli1	Apobec1	
+St7	Adam10	Fxyd6	Nek8	
+Pls3	Adam15	Klhl36	St6galnac4	
+Ankrd50	Il10rb	Stab2	Rgs17	
+	Pls3	Atp1a2	Wbscr27	
+	Zc3h15	Glrx5	Rpl21	
+Scp2	2010317E24Rik	Smyd3		
+AI464131	Ube2s	Meis1		
+Rnf19a	Cpsf6	Ankrd56	Arpc1a	
+Fdxr	Palmd	Csk		
+Pik3r2	Dnaic2	Heatr7a	Cel	
+4833439L19Rik	Ccdc71	Tada2a		
+Lrrc23	Fmo5	Prss23	Gm9790	
+Nudc	Kcna3	Acaca		
+Bbs5	Rnf166	Pold2	Def8	
+Ntrk3	Spata3	Pdf		
+Klhl2	Fzd2	Atp13a2	Irf2	
+Cap2	Nrm	Fxc1	Syngr1	
+Basp1	Fam53a	Hmgn2	Pion	
+Dus4l	Relt	Ppt2	Zbtb9	
+Ogfrl1	Nlrp9c	Tst	Tmeff1	
+Ercc8	Kif26b	Gltscr2	Tlr12	
+Itgav	Hsp90aa1	Kcnab2	Arhgef15	
+Itsn1	Tecpr1	Actn1	Sp110	
+Trim67	Gstm3	Tpbg	Pofut1	
+Obsl1		Gfer	Dcaf7	
+Prkcq	Mknk2	Meis3	Limch1	
+Hexim2	Lmo3	Il10rb	Sh3bp1	
+2700060E02Rik	Lrpap1	C330005M16Rik	Prkar1a	
+Btbd3	Kcnk6	Rnf181	Gpx2	
+Zc3hav1	Skil	Tmem59	Zfp954	
+Ifih1	Cbx3	Prmt8	Gsto2	
+Pts	Dlgap4	Efna1	Maml3	
+Lmln	Lrrc49	Rps10	Cplx2	
+Rassf5	Ttc33	Hnrnpa1	Sntg2	
+Ppp3cb	Armc5	Hdhd3	Wdr16	
+Jmjd7	Ostf1	Smurf1	Gm15056	
+	Ndufa6	Mysm1	Ddah2	
+Eif2c4	Adpgk	Dgcr6	Msto1	
+Mylk	Trim28	Trit1	Mafb	
+Esrrg	Mavs	Ei24	Dcaf5	
+Fbxw10	Rasa1	Rrp15	Ppp4r1l-ps	
+Cdh2	Fpgs	Tbx15	Disp2	
+Kctd21	Cacng7	Tbc1d15	N6amt1	
+Mrps33	Klhl29	Atp1b3	Hmgn2	
+Zfp110	Met	4833424O15Rik	Grm6	
+Gabrg1	Eif2s1	Klk1b24	Pdxp	
+Cth	Snrpd2	Cyp2d22	Oscar	
+Mylip	Cwc25	Chid1	Metap2	
+Rpl32	Rbbp9	Trpm3	Lrpap1	
+Aanat		Fzd2	Atp6v1c2	
+C330007P06Rik	Park7	Ccdc71	Adra1b	
+Nhedc2	Plk5	Rcbtb1	Zfp866	
+Mgat5		9430031J16Rik	Rbm28	
+	Gm561	Ggcx		
+Th1l	Dcaf10	Dpp3	Mettl1	
+Plcd1	Gm8580	Fam118b	Suv39h2	
+Eif3k	C530028O21Rik		Slc44a1	
+Lrrn4	Rarb	Abl2	Gck	
+1190003J15Rik	Trim13	Cat	Hexim2	
+Rpusd3	Synm	Th1l	Nefh	
+Adal	C85492	5830454E08Rik	Fbln2	
+Ankrd34a	Amfr	Epb4.9	Itgam	
+Galnt1	Tada2a	Tubgcp4		
+Slc46a1	Pim2	Tor3a	Copb1	
+Tmem108	Fos	Zfp687	Hnrnpa1	
+Id4	H2afj	Npr3	Hyal2	
+Ncbp2	Ptpn2	Pigk	Cstf3	
+Ube2o	Pacs2	Rpl13	Lap3	
+St3gal4	Tnfrsf12a	Wisp1	Igfbp5	
+Tmem48	Il33	Sp140	Ctdnep1	
+Cd1d1	Ei24	Zfp948	Mff	
+Pcsk6	Zfp655	Spata21	Ankrd42	
+Scarb2	Med8	Dysf	9630033F20Rik	
+Cdc123	Sag			
+Sgsh	Sp140		Rell1	
+	Pou6f1	Dmrtb1	Ranbp3	
+Suv39h2	B230307C23Rik	Dhx32	Sspn	
+Eef1d	Fxyd5	Kcnd3	Trim25	
+Mcrs1	Ptpdc1	Pxk	Skil	
+	Ogt	Sp8	Gpr61	
+Cabin1	Pex16		Thbs4	
+Map3k5	Zfp217	Scn1b	Mrps21	
+Srpk2	Ngb	Gm9104	Ddx1	
+Ankrd13b		Suv39h2	Cdk5rap1	
+Zkscan17	Rpl34	Eps8		
+Tshz3	Ywhag	Mterfd2	Spata21	
+Pex5	Mki67ip	Per1	Arhgef16	
+	Med12		Rint1	
+	Tor3a	Opa1	Rpl7a-ps8	
+Gm13178	Atoh7	Krtap4-8	Zfp598	
+2210403K04Rik	Crispld2	Synj1	Rfc5	
+Adcy3	Dnajc17	2010110P09Rik	Ing1	
+Leprot	Shpk	Gstm3	Ndufa6	
+Cars	Pola1	Rab3gap1	Suv39h1	
+Mkrn1		Apoc3	Cd300lf	
+Kctd8	C030046I01Rik	Trappc10	Ube4b	
+Zbtb8b	Spef2	Lrrc49	Bend5	
+Rps16	Ccdc88c	Arl8b	Abcf1	
+Kcnip2	Dtd1	Ndrg2	Rps5	
+Rcor2	Zfp446	Rps6	Zbtb41	
+Poln	Krtap5-5	Gps2	Mafa	
+Adra1a	Xrn1	Rab3d	4930524J08Rik	
+Zfp120	Fbxw10	Mfn1	Setd1a	
+5730577I03Rik	Dbnl	Rb1	Gng8	
+Dscr3	Ppt2	Krt9	Gmppb	
+Hprt	Cd48		Taf10	
+Ccdc90b	Nup93	Kif26b	Tcp11	
+Plekha1	Dscr3	Ccdc47	2810453I06Rik	
+Lcat	Rps15a	Dusp26	Cep57	
+Sox5	Prrx2	Sat2	Arsa	
+Lrrc1	Ccdc85a	Ddost	Rpa3	
+Cyp2u1	Bop1	Ip6k1	Card14	
+Lin37	Pak6	Fam100a	Ash1l	
+Tecpr1	Col12a1	Phf1	Chst2	
+Kifc2	Ap3b1	Xpr1	Gmeb2	
+Pyroxd1	Sys1	Fbxl21	Vmn1r65	
+Snx32	Gm10094	Ahcyl1	Mrpl47	
+Zfpm2	Igf1r	Stat6	Nap1l2	
+H2-Oa		B3galt2	Adh5	
+Ms4a6d	Mrps2	St6galnac4	Btg1	
+Nfkbid	Tlr1	Atp6v0e2	Rplp0	
+Fxn	Fam195b	Dtd1	Apcdd1	
+	1190002N15Rik			
+Ctdp1	Tbcd	Npm1	Arpp21	
+Fbxl3	Gsto2	Smg7	Grm1	
+2010305A19Rik	Rbbp8	Rufy1	Pgs1	
+Hspe1		Kdm5c	Tsks	
+Dido1	Atp13a2	Pola1		
+Sox4	Eif2ak4	Akap1	Bag5	
+Diras1		Mipep	Spice1	
+Pgr	Kif17	Bend5		
+Mvd	Pcgf5	Ndufs6	Mkl1	
+Ccdc115	Tubb5	Ddit3		
+Ddc	Mars	Mdp1	Frem1	
+Map3k11	B3galt2	Upp2	Zfp711	
+Bola3	Pes1	Bend7	Ccdc6	
+Zfp316	Ss18l1	Ebi3	2610018G03Rik	
+Arl8b	Lgi4	Inpp5j	Decr2	
+Rnf2	Ddah1		Agfg1	
+Tm4sf1	Ndufa13		Oprd1	
+Ebf1	Cyhr1	4930471M23Rik	Bai3	
+Cog4	Plrg1		Trp53rk	
+Mrfap1	Lrig1	Cage1	Clip4	
+Apitd1	Cab39l	Vgll2	1700112E06Rik	
+3110047P20Rik	Csnk2a2	Nenf	Nkain1	
+Rhoh	Elovl2	Cttn	Hip1	
+Mif4gd		Lrpap1	Ccne1	
+	Aqp2	Synj2bp	Slc36a1	
+Pnpla3	Rab8b	Cnot7	Pttg1ip	
+Ccdc64	H2-Q2	Ccdc13	Mov10	
+Snip1	Bmf	1700001O22Rik	Zfp423	
+Chchd3		Limch1	Tial1	
+Wdr54	Phrf1	Unc79	Dnalc4	
+Trim36	Mylk	Cenpa	Myo18a	
+Galnt4	2500003M10Rik	Trim67	Mlf1ip	
+Wtap	Fbl	Tcp11	Dach1	
+Arhgap6	Mical2	Dync2h1	Fam126b	
+Rnf13	Atr	Atp6ap2	Pes1	
+Top3a	Tnfrsf13b	Shpk	Slc6a9	
+Sdha	Sez6l2	Tnfrsf9	Rab30	
+Chst5	Kcna7	Tdp1	Fgf3	
+Actr2	Dtx1	Mia1	Fbp1	
+Iqsec3	Fbxo33	Tmem106b	Synj1	
+Smg5	Rab37	Siva1	Angptl4	
+Bbs7	Gm5640	Rps15a	C4b	
+Fam113b	Amigo1	Arih2	Dmd	
+Kcnk6	Fzd8	Prmt2	Klk1b24	
+Atr	Sgsh	Ppm1f	4930524L23Rik	
+Dohh	Alx3	Cntn6	Ybx2	
+Zfp882	Rpl13	Il15ra	Col28a1	
+Lsamp	Pitx3	Tcf25	Dscaml1	
+Alg14	Prosc	1700015F17Rik	Pdzd9	
+Gm8618	Trim11		Slc12a8	
+Psmg1	Nkd2		Nufip1	
+Fam131a	Lhpp	Csrp2bp	Ghr	
+Anapc1	Tial1	Rgs17	Tjp1	
+Hist1h1c	Zdhhc17	Fam58b	Slc1a4	
+Lsp1	Fam118b	Plxnb2	Crygd	
+Myh4	Pvrl4		Gm10729	
+Asb2	Stat6	Fzd1	Pgrmc1	
+Rps20	Arpc1a	Unc45b	Myl6b	
+Nt5e	Msl1	Eif1b	Kctd12b	
+Mier3	4930524J08Rik	Pfkl	Chsy3	
+Nars	Lmtk3	Stau1	Gm4392	
+Dhps		Dars	Gas6	
+Klf6	4930471M23Rik	Car4	Errfi1	
+5930434B04Rik	Stk3	Cabin1	2310030N02Rik	
+Acpl2		Ss18l1	Man2b2	
+Fkrp	Fam171a1	Eftud2	U2af2	
+Mapkapk5	Lrrc55	Hdgfrp2	Cd276	
+Slc12a8	Nr2c1	Trim32	Wdr91	
+Psen1	Epha2	Pik3r1		
+Glmn	Cir1	Rad9	Clps	
+	Zfp318	Trak2	Il10rb	
+Gcdh	Creg1	Serpine2		
+Uqcr11	Psmd7	Zfp711	Tspan2	
+Sult2b1	Zdhhc9	Col23a1	Amdhd1	
+Gal3st4	Ms4a6d	Fars2		
+Gmppb	Mfng	Anapc11	Map3k8	
+Psip1	Id4	Spast	Fbxo42	
+Ss18l1	Tmprss3	Bmp2	Car12	
+Tbccd1	Zfp937	Haus3	Sat2	
+Nol3	4833424O15Rik	Dffa	Rrp15	
+2810428I15Rik	Phka1	Metap2	Arap3	
+Nr1d1	Akirin2	AU040320	1500012F01Rik	
+Rbbp8	Nol7			
+Ckmt1	Pank3	Pofut1	Sec61b	
+Slc7a8	Galk2	Ing4	Zfp608	
+Mapk3		Snrpa1	Rbp4	
+Wipi2	Zfp879	Zfp688	Nms	
+Tradd	BC023814		Rps29	
+Spc25	Slco3a1	Dph3b-ps	Igfbp4	
+Ypel4	Kifc3	Gltp	Myst3	
+Vstm2b	Golph3	Prkar2a	Atp13a2	
+Tbce	Baiap2	Wt1	Nr2c1	
+Slc35b1	Wdr16		Pex5	
+Mecr		Glul	Anxa11	
+Rgs3	Cdsn	0610010K14Rik	Cnp	
+	Prkg2	2610039C10Rik	Eml3	
+Tcp11	Tmem164	Ing1	Zfp90	
+Vsig10	Bcl2l15	Syngr1	Bdh2	
+Triap1	Csk	ND4L	Adam10	
+Zfp948	Reln	Actb	Sgk3	
+Mfsd4	Spice1	Acbd4	Wdr1	
+Dhrs1	Synj1	Slc6a11	Rnpepl1	
+Slc4a8	Mcpt4	Surf4	Shh	
+Chrdl2	Gpr133	Kndc1	Layn	
+Mpv17	Pgm2l1	Ndufaf3	Mapk7	
+Stmn4	Rpap1	Cab39l	Klhl4	
+Picalm	Cdc42se1		Terf2ip	
+Ptpn12	Arid1a	Mavs	Ncs1	
+Klhdc4	1300018I17Rik	BC006965	Kirrel2	
+Btbd1	Gxylt1	Nlrp9c	Ppt2	
+Naf1	Tapbpl	B4galt3	Stag2	
+1500012F01Rik	Bend5	Itgax	Ndrg1	
+2610002J02Rik	Mocs2	Rasal2	Stard3	
+Hdac9	Itgb7	Rpl21-ps5	Ddc	
+Sorcs2	Orc3	Gnb1l	Rpl31	
+Fech	Aox4	Gt(ROSA)26Sor	Trappc10	
+Pcca	Atp1b1	Mina	Rspo3	
+Ugdh	Rxrg	Tspan7		
+Mrpl28	Dapk1	Zfr2	Ykt6	
+Syngr1	1700106N22Rik	Hsd17b7	Apoe	
+Fancm	Mycbpap	Rab34	Rps4x	
+Adck4	Rnf6	Ngfrap1	March1	
+Rassf4	Snrpa1	Cebpg	Rufy1	
+Tceal3		Trpm2	D17Wsu92e	
+Fbxo17	Lrrc59	Ywhaq	Prss12	
+Mpg	Prim1		Stk4	
+Ufm1	Ddit3	2310003F16Rik	Pigs	
+Nudt10	Pank4		Dynlt3	
+Ear6			Pou6f1	
+Alas2	Gm9927	Msl1	Arfip2	
+Dcaf12l2	1700027D21Rik	Park7	Rps3a	
+Per3	Tspyl2	Gm561	Zmym6	
+	Rrp15	Clic4	Prkrip1	
+Chaf1b	Atf6b	Kdelr2		
+Otof	Tmc6	Dbnl		
+Traip	Ptpn12	Ppm1m	Lin28b	
+Rpl13	Lsr	Bai3	Zcchc18	
+	Hdgfrp3	ND4	Nfic	
+Sox6	Rpl22l1	Cep57	Met	
+Mtif3	Ppapdc1a	Ndufa13	Sec14l4	
+Oprd1		Tmem20	Tmem59	
+Mapk7	Cops6	Rgs3	Msln	
+Ercc5	Gm8709	Spg7	Fgf23	
+Cul4b	Gltscr2	Stard3	Ccdc123	
+Ankra2	Agl	Cox7b	Zfp28	
+Dapk2	Ing1	Sp110	Slc30a3	
+Bcas1	9030617O03Rik	Decr2	Alg3	
+Eif4a2	Wdr41	1110065P20Rik	Vrk3	
+Lemd2		Emx2	Evc2	
+Kcnu1	Wdr89	Cwc25	Nkd1	
+Ctnnb1	Cenpt	Tmc6	Snrpd2	
+Bglap-rs1	Wdr91		Acot10	
+	Sh3gl2	Cspg5	Ppm1m	
+Dapk3	Zfyve21	Ano6	Il6ra	
+Mtch2	Ppp3r1	Setdb2	Psmd12	
+Dlat		Fbxo2		
+Aass		Paxip1	Eif4a2	
+C1qbp	Slc12a8	Slc12a8	Kif2a	
+Unc13b	Dnajc8	Kdm3a	Tsc1	
+Trim59	Zfp93	St6galnac3	Ttyh2	
+Cog2	Dgcr6	Mtap1s	Tmem134	
+Chst7	Camsap1	Ybx2	Cyp26b1	
+Aagab	Rheb	Zfp937	Dhx9	
+Scand1	2510003E04Rik	Crlf3	Prmt8	
+Ddx47	Ikbip	Rbp4	Smarcd1	
+Nisch	Slc7a7	Shisa4	Nup35	
+Fbln1	Lair1	Pex16	Atp2c1	
+C1qtnf7		Slc5a10	Gm16477	
+Lrfn1	Napa	Mki67ip	Ankra2	
+Npy	Kdm4b	Omp	Fdft1	
+Ndufb2	Kif5a	Gm1006	Mgst3	
+	Hmox1	D330028D13Rik	2210013O21Rik	
+Ttc32	Adamtsl2	Esrrb	Cdkl4	
+	Pnma1	Arhgef16	Siglec5	
+Ech1	Adra1b	Acsl4	Tlr6	
+Lat2	Suox	Rad23b	Twist1	
+Trim32	Dnaja2	Btg1	Fam108b	
+Phb2	Rcbtb2	AK129341	Kctd20	
+Gtf2f1	D17Wsu92e	Myst3	Rcan3	
+Pbrm1	Rer1	Tomm22		
+Gjd2	Rptor	Slmo2	Cdc23	
+Slc35d3	3200002M19Rik	Zfp932	Tmem131	
+Slc35e2	Tle4	Ndrg3	Gyg	
+Dtx1	Rps29	Nme4		
+Nkx6-1	Tmem45a	Dmwd	Stxbp1	
+Mre11a	Grin2d		Bglap2	
+Psmc4	Npw	Gcsh	Ncaph	
+Dcdc2a	Klhl11	Ghitm	Atrn	
+Tor3a	Otud5	Mtif3	Sbno1	
+Isca1	Pomp	Pim2	Ikbkb	
+Atp6v0c	Tbkbp1	Ncbp1		
+Ccnk	Clic5	Lrrc55	Ntan1	
+Cox6b1	1500035N22Rik	2010317E24Rik	Tll1	
+Ccdc22	Bdh2	Ybx1	Polr2e	
+Srsf6	Slc4a8	Mknk2	Ncoa2	
+Wif1	Nme6	Cxcl16	St3gal6	
+March5	Slc18a2	Rassf9	Usp16	
+Gm15348	Ybx1	Dhdds	Il17d	
+Sdccag1	Slc39a7	Pnrc2	Nacad	
+	Btf3	Dscr3	Akap8l	
+Cbln1	Serpine2	Pgm2l1	Acta1	
+Fbxo8	Psmc3	Gm9104	B3gnt2	
+	Amd2	Tspyl2	Wisp1	
+Kcnip3	Mrps15	Ap3b2	Rptor	
+Sorl1	Mat2a	Med29	Rusc2	
+Nup54	2410001C21Rik	Cxadr	Wdr89	
+Spryd3	Nkx6-1	Phc2	Carhsp1	
+Pcgf2	Akap17b	Amigo2	Dhfr	
+Wisp1	Zfp180	Foxe1	Gm2382	
+Pnma1	Rassf4	Lsp1	2700049A03Rik	
+Igfbp3	Aldh6a1	Bglap-rs1	Arfgef2	
+Atp5c1	Helq	Sorbs3	Set	
+Ccdc34	Tymp	Fen1	Pank4	
+Acaa2	Disp2	Nup160	Col23a1	
+Sdhaf2	Ranbp2	Chsy3	2310028O11Rik	
+Lum	Fbxo2	Eri1	Atp6v1e2	
+Ppp1r3c	Clec4n	1110049F12Rik	Scg5	
+Trim25	Syngr1	Ncaph	AI462493	
+Cct4	Ppp4r4		Osgepl1	
+Ninj1	Ctdnep1	Crispld2	Slc46a1	
+Plcxd2	Kcnd3	Slc7a7	Armc6	
+Apbb1ip	Srxn1	N6amt1	Tceal8	
+Tcp11l2	Vstm2b	Zbtb34	Phb	
+Tnfrsf13c	Cbx2	Trim28	Kcnj9	
+Nkiras1	Gabrg1	9030617O03Rik	Ablim1	
+Gm5751	Erlin2		Coq7	
+Slc22a13	A230046K03Rik	Eif3h	Klhl21	
+Dnajc19	Grlf1	Ddah1	Hsp90ab1	
+Obfc2b	Ralbp1	Plxnb1	Rab14	
+Lass2	Ptgs2	Sssca1	Nprl2	
+Ddx54		Nacad		
+Nt5c	Usp16	Zfp27	Map2k1	
+Atp2b4	Actr6	Ube2v1	Sgsh	
+Parvb	Ccdc115	Cox7a2	Ccnt1	
+Lbx1	Ndufs6	E2f6	Cldn11	
+Parg	Ankrd56	Dnajb1	Zfp217	
+Katnb1	2210013O21Rik	Ctcf	Ap2a2	
+Tars	Hist1h2ba	Sirt6		
+Rit2	Nkrf	Acad10	Rapgef6	
+Rbbp4	Tmem47	2310030N02Rik	Slc7a5	
+Rnf166	Tst	Rpl13	Dmrtb1	
+1700037H04Rik	Dusp23	Tceal6	Ndufaf3	
+Fastk	Slc25a47	Eed		
+Zfp771	Tcp11l2		Fggy	
+Lingo4	Cstf2	Fam134b	Agpat5	
+Ndrg4	Slc25a10	Myh4	Recql	
+Asb16	Rhobtb1	Gmnn	Otp	
+Cryga	2310030N02Rik	Mical2	Gm13157	
+Rpa3	Safb	Nrxn2	Psmb6	
+Pgls	Rps27l	Pgpep1	Mex3c	
+Mllt4	Btbd1	Srsf12	P2ry1	
+Dars	Nfic	Mfap1a		
+Cdk16	Mfap4	H1fx	Ap2m1	
+Dpf1	Per1		Ptpn2	
+Nme6	Mlc1	Uba6	Sesn2	
+6820431F20Rik	Hist4h4	Set	Kctd10	
+Trim11	Calm1	Arl6ip6	H47	
+Mat2b	Mcf2l	Homer1	3110043O21Rik	
+Psmg2	6430573F11Rik	Tmprss3	Ankfy1	
+Ube2b	Ppp1r7	Tbccd1	Dgka	
+Vps33a	Fsd1l	Rsrc1	Pcdh18	
+Kcnk1	Figf	Btbd3	Rdh10	
+	Tead2	Adcy10	Pldn	
+Krt5		Rfc4	Selenbp1	
+Dolk	BC005537	Cdc42bpg	Exosc10	
+Gnpda2	Slc6a9	Setd1a	Ebi3	
+	Snd1	Glt28d2	Triobp	
+Fkbp7	Dtnbp1	Phkg2	Sec11c	
+Snx1	Nr3c1	Psmc1	Zrsr2	
+AI316807	Sft2d2	Srebf2	Naa10	
+Adam19	B4galt3	Prex2		
+Trank1	Hcn3	1810020D17Rik	Atp6v0a4	
+Rfwd3	Gch1	Nup93	Hmgb2	
+Mafb	Spg7	Lrrc20	Sorbs3	
+Tulp4	Actn1	5133401N09Rik	Sfxn1	
+Erbb4	Eif3j	Gtf2a2	Polm	
+Tab3	Erbb4	Eif4a2	Eif4e	
+Scyl1	Cks1b	Krt10	Zfp882	
+Nmd3	Rpp14	Mrpl47	Wdr77	
+Capza1	Gucy1a2	Nt5e	Tspan17	
+Fam125b	Slitrk6	Dlat	Aldh1b1	
+Traf3	Gxylt2	Pabpc1	Ephx1	
+Ttc19	Nexn	Serpina1f	C030046I01Rik	
+Bclaf1	Enc1	C1qc	Ttll1	
+Dctn3	Selenbp1	Apc2	Alg2	
+D2Wsu81e	Gng2	Chst7	Cdc25a	
+Hnrnpm	Atf4	Col12a1	Prkcc	
+Pou6f1	Cul7	Tle4	Rnaseh2c	
+Dhx38	Gpank1	Fut8	Isg20	
+Prosc	Ddx5	Zdhhc17	Fam195b	
+Rgs8	Limch1	Sh3gl2	Gtf2f2	
+Cep164	Agpat5	Rcc2	Ncoa6	
+A2ld1	Rtn4rl1	Dus4l	Ankrd56	
+Ogdh	Rbm28	Slc38a7	Ywhab	
+Evc	Ms4a7	Gapdh	Ephx3	
+4833424O15Rik		2510003E04Rik	Sfrs18	
+Rock1	Ndufb9	Sf3b3	Kcnk6	
+9630033F20Rik	Rabac1	Wwc1	Slc9a5	
+Fars2	Xpot	Slco3a1	Rangap1	
+Stk3	Gm14431	Exosc10	Snx12	
+Polrmt	Rnf8	Igsf1	Scarb1	
+Cdh11	R74862	Actr6	Msx1	
+Atp5g1	Gm5341	Zfp11	Flt3	
+Cntnap1	Ctnnb1	Spice1	Lrrc8b	
+Usp13	Wdr73	4930524L23Rik	Hspb8	
+	Pdk4	Kctd15	Kifc2	
+Amfr	5430411K18Rik	Pldn	Hoga1	
+Zfp956	Vldlr	Rfng	Zfp646	
+Xab2	Baiap2l1	Atp1b1	Ncbp2	
+Oprk1	Fam45a	Nme2	Urm1	
+Prmt6	Maml3	Rpl17	Apc2	
+Ndrg3	Ranbp1	Glrx3	Cox6a1	
+Pvrl2	Lrsam1	Atr	Pdxk-ps	
+		Csdc2	Zdhhc17	
+Rsad1	Dedd	Nsa2	Rtp2	
+Tsen54	Dctn6	Uqcrq		
+Lbh	Fgfr1op2	Il33	Cyp4a31	
+Zmynd8	Nedd4	Spata7	Copg2	
+Pcgf5	Naa10	Psmb3	Pgr	
+Usp45	Cpne1	Gm10639	Rexo4	
+Lrfn3	Serpina3b	Sema4d	Sirt6	
+Reps1	Rnf214	Arhgap42	Atxn7l2	
+Zhx1		COX2	Atoh7	
+S100a10	Eif3i	Nfs1	Rps20	
+Zfp866	Tmem195	Scn1a	Sox11	
+Myst3	Ipmk	Pcsk6	Wbp1	
+Nutf2	Fcho1		C130039O16Rik	
+Gdap2	Csnk1g2	Frmd4b	Clip1	
+Kdm3a	Pik3cb	Grm7	Eif3h	
+1190007F08Rik		Slc6a9	Gad1	
+2610039C10Rik	Rpl11	Ddx1	Epb4.1l4b	
+Radil	Sirt3	Stat3	Lcp1	
+Usp2	Tmem25	U2af1	Chmp7	
+Gm15645		Arhgef15	Hsp90aa1	
+Tbk1	Gabbr1	Nr1h5	Nckap1l	
+Aifm1	Fam186b	Slc30a6	Srp68	
+Paics	Pdgfc	Rbbp8	Trank1	
+Rnf26	Bri3	Dpysl4	Mbd4	
+Bglap2		Lrrc8b	Mrpl38	
+Crkl	D330028D13Rik	2610002J02Rik		
+Nudt21	Sat1	Lingo1	Prune2	
+Tpr	Plod3	Trim41	Trmt112	
+	Aph1b	Xpo1	Sesn1	
+Pcdh18	Stau1	Crcp	Avp	
+Ccnc	Spata7	Tll1	Ppp4r4	
+Tprkb	Fam32a	Ppp4r1l-ps	Prdx6	
+1700028P14Rik	Eml5	Fgd1	Pdk4	
+Ghsr	Ccl24	Fdft1	Lhfpl4	
+Klrg1	Rangap1	Ppcs	Cd9	
+Ndufa12	Lap3	Gpr39	Cbln1	
+Srsf12	Dhdds	Zfp326	Fam155a	
+Gpr39	Rps20	Ranbp2	Agrn	
+Glyr1	Coq4	Gm14160	Eif2b4	
+Ppic	Unc50	Cdc34	Snrpa1	
+Zfp192	Adm	Nup188	Arhgef10	
+Pnma3	Ly6k	2610018G03Rik	Ttll11	
+	Neurod6	Kcnj14	Slco3a1	
+Bnip1		1190002N15Rik	Polr3e	
+	Adcy10	Smndc1	Rb1	
+Sars	Map2k1	Isy1		
+Cd4	Zfp932	Slc24a2	Rab4a	
+Slmo2	Ndufa8	Gjc1	Trim67	
+	Tmem210	Adamtsl2		
+Ash1l	Hnrnpul1	Cd276	Dlst	
+Rplp0	Zfp28	Mcf2	Rhog	
+Zhx3	Hs3st1	Baz2a	Pyroxd1	
+Zranb2		Csnk1g2	Relt	
+BC016495	ND5	Oxa1l	Snd1	
+Dpp7	Pmpcb	Polr2j	Mettl5	
+Tor1aip2	ND4L	Spata3	Slc25a11	
+Limd2	Vwa5b2	Tmtc1	Mars	
+Mafk	Rps6ka1	Tmem98	Arap2	
+Stmn2	Suv39h1	Polr2i	Thnsl1	
+Gchfr	Zfyve26	Slc9a9	Gxylt2	
+Arhgef16	Bnip3	Vmn1r65	Gm9927	
+Nat10	H2afz	Acadm	Apln	
+Cdkn1c	2310004I24Rik	Gm5617	Adpgk	
+Chd4	Cxcl14		Pex16	
+Klhl9	Pea15a	Tcfap4	Slc19a2	
+Arhgap26	Slc9a9	Pcdh18	Coasy	
+Fntb	Zfyve1	Rnf8	Ndufa2	
+Pbld2	Cntfr	Oxct1	Ttc33	
+Gltp		Edem2	Fth1	
+Ikbkap	Ncs1	Slc30a3		
+Gtpbp10	1110049F12Rik	Snx1	4732414G09Rik	
+Cyp2r1	3110043O21Rik		Fem1b	
+	Apobec1	Mfsd9	Otud5	
+1700069B07Rik	Htra2	Ldlrad3	Slc22a13	
+Thap3	Klf15	Psmd2	Gm2a	
+St6galnac3	1110067D22Rik	Apba2	Tmx1	
+Cngb1	Smc2	Fbxw11	Dpysl4	
+Cebpg	Cd320	Dedd	Acbd4	
+1700027D21Rik	Hsph1	Ccdc53	Mcf2l	
+Tspo2	Rdh10	Sytl1	Nexn	
+Hmg20a	Ppif	Plin3	Bin1	
+Rab34	Wdr1	Ddit4	Ndufa8	
+Bcat1	BC006965	B4galt5	Gp5	
+Tada2a	Dazl	Ubqln1	Hsd3b7	
+Smu1	Klc3	Rpp14	Erbb4	
+Foxl2	Dcakd	Sumf2	Herc3	
+Eef2k		Plekha2	Tbcd	
+Atp5d	Zfp41	Pxn	Slitrk1	
+Aox4	Fcgr2b	Lgals8	Fxyd7	
+Taf1c	E4f1		Epha7	
+Palmd	4930529M08Rik	Cyp2t4	Arfgap3	
+Ppp1r8	Twist1	Lrsam1	Pik3r1	
+	Tmem131	Plekhg3	Lrrc59	
+Gas1	Foxi1	Dhx9		
+Acr	1810062O18Rik	Map2k6	Hs3st1	
+Pxk	Gm6030	Spint2	Sulf2	
+Ap3s2	Hoxa7	Zfyve28	Dpp3	
+Stk25	Trpm3	Ift172	Yif1b	
+Mlst8	Surf4	Rbms1	March3	
+Pld5	Fam53b	Bcl2l15	Cenpt	
+Eif1b	Osbpl7	Rbm28	Trim11	
+Prkg2	Obfc2a	Crygd	Sra1	
+Pcmtd1	Nt5e	Gm6030	Dfna5	
+Rab37	Hist1h1e	Vwa5b2	Fbxo5	
+Ccdc57	Sccpdh	Anxa11	Nr1i3	
+Ube3b	Rasl11a	Sox17	Atp4b	
+Fads1	Papd4	U2af2	Mcart1	
+0610009D07Rik	6720401G13Rik		Th1l	
+1700073E17Rik	Lrfn3	Rpl8	Pomp	
+Pdlim2	Chmp2a	Katnal1	Ddx5	
+Foxj1	Tspo2	Cel	Wif1	
+Creg1	Zfp688	Dlgap4	Slfn9	
+P2ry13	0610010K14Rik	Coro2a	Dok5	
+Adamtsl5	Reep6	Thnsl2	Tbccd1	
+Upk1a	Man2b2	Cyba	Clec11a	
+Psmc3	5730577I03Rik	Psma5	Krt9	
+Lrrc42	Emd	Smc2	Nup54	
+Atp5l		Hcrt	Cntn5	
+Pir	Camk4	Tspan17	Trim13	
+2900073G15Rik	Cbx5	Btf3	Nenf	
+Gxylt2	Vangl1	Mfsd6		
+3110040N11Rik	2010110P09Rik	Narfl	Ift172	
+Prrc2b	Cetn4	Tecpr1	Zfp11	
+Il17d	Nkd1		Igsf1	
+Gm10697	Mtmr11	1110067D22Rik	Vamp2	
+Cep63	A330021E22Rik	Otud7a		
+Hdhd3		Uba5	Gapdh	
+Gm16379	Rock1	Ranbp1	Rab8b	
+Il6ra	Ampd2	Pdk3	Agl	
+Rab40b	Tub	Tmed8	Ciz1	
+Eif4ebp3	Fem1b	Bri3	Sap18	
+Ppp3r1		Nprl2	Ccz1	
+Hcn3	Nacad	1300001I01Rik	Mtmr6	
+Vbp1	Ptger1	Zfp292	Csdc2	
+Hlcs	Tbccd1	Wdyhv1	Atp1a2	
+Thra	Ntrk3	Rint1	Nkd2	
+Tdp1	Nr5a1	Zfp414	Psmd7	
+Slc1a6	Rnf103	Fam3a	Rgs3	
+Ppp2r5b		Fam116b	Skap2	
+Senp7	Slc36a1	Ndufb8	Pola1	
+Kcna2	Kif22	Hsph1	BC034090	
+Lef1	Tuba4a	Uqcrh	Smarcd2	
+Lamp2	Eef1d	Map3k7	Stmn4	
+Sfxn3	Tradd			
+Tlk2	2610018G03Rik	Inpp5k	Ralbp1	
+Pnpla7	AI462493	Psmb6	Irgm1	
+Etfdh	Fbxo5	Yif1b	Ppp1r8	
+	Psmb3		Preb	
+Tmem50b	Hjurp	Dusp16	Srebf2	
+Sim2	Ddost	2810405K02Rik	Polr2a	
+Eya1	Kcnip1	Cbx5	Pstpip1	
+Slc25a17	Rras2	Cdk19	Mobp	
+Mdh1	Eif3m	Wnt11	Pls3	
+Pdha1	Asph	Trim16	Gm7935	
+Scaf8	Cyba	E2f7	Meaf6	
+Osbpl7	Gm13157	Stx17	Adora2b	
+Sdhb	Grpel2	Slc35b1	Amd2	
+Elmod1	Fxc1	Rnf144b	Spink2	
+Pvalb	Apex1	Pdxk-ps	Jkamp	
+Gng10	Rab42-ps	Adck4	Kcnj14	
+Gm16477	Rpl8	Rasl10a	Homer1	
+6720401G13Rik	Rad23b	Sdhb	Enc1	
+Slc25a5	Lrp11	Uhrf2	Cdsn	
+Dcaf10		Olfm1	Hip1r	
+2700078K21Rik		Prkdc	Ccdc86	
+Sumo3	Bmp2	Atf1	Defa21	
+E430025E21Rik	Ubqln1	Baiap2	Med12	
+Cntn4	Cxcl16	Kdm4b	Ano10	
+Atad2b	Spnb3	6330408A02Rik	Rps27l	
+Derl2	Ufm1	Kif22		
+Abcb9	Gt(ROSA)26Sor	Ptpru	Nkrf	
+Rnf113a1	Zkscan5	Pdgfc	Aldh8a1	
+Sgpp2	Cdc42bpb	Kcna2	Cxadr	
+Il33	Slc39a2		Zfp30	
+	Polr2i	Slc7a5	Ptprf	
+Tox4	Prkar1a	Glt25d1	Hjurp	
+C330005M16Rik	Dlst	Pmpca	Dpagt1	
+Kcnj14	Fxyd2	Ppp1r7	Glt25d1	
+D330028D13Rik	Stmn4	Selenbp1	Pgap3	
+Cnot4	Trim36	Xiap	Serhl	
+Pm20d1	Setd1a	Rhobtb1	Lysmd1	
+H2-Ab1	Gna14	Msx1	Rps6-ps2	
+Aaas	Cenpa	Nes	Grhl3	
+Chpt1	Mfsd9	Mapt	Rps15a	
+Uhrf2	Nrxn2	Fam20c	Kcnd3	
+Frmpd1	Mapk8ip1	Slc7a3	Rab40c	
+Zglp1	Pfkl	Tmem161a	Rhot1	
+Phyhipl		Rab9	Crispld2	
+Cby3	Igsf9	Rapgefl1	Dync1li2	
+Gcc1	Gm2382	Slc35a2	Ywhaq	
+Smyd2	Bche	Grb2	Siva1	
+Plod2	Fam126b	Pou6f1	Dapk1	
+	Pdlim7	Psmg1	Rap1b	
+Hgs	5133401N09Rik	Cnot6	Maoa	
+Gch1		Cycs	H1fx	
+Trim2	Atf7ip	Pgr	Rpl22l1	
+0910001L09Rik	Ppil1	Snd1	Adcy1	
+Lrrc58	Trpm2	Hibch	Pdia5	
+	Slc25a11	Alx3	Il1b	
+Dazap2	Clip1	Gm11818	Slco4a1	
+Cs	Esrrb	Gm9927	Uqcr11	
+Arid4b	Kctd12b	Adra1b	Fgf9	
+Fahd2a	1700112E06Rik	Rpap1		
+Ddx52	Cox7a2	Eif3i	Fam171a1	
+N4bp3	Wnt9b	Rab8b	B4galt3	
+Prdx3	Eif2b4	Cd81	Tekt4	
+Rnf152	Chsy3	Ttll1	Olfr629	
+Pank1	Glrx5	Usp16	Jmjd5	
+Nenf	Tns3		Rarb	
+Arhgap39	Ppp4r1l-ps	2500003M10Rik		
+Alkbh4	Mettl5	Kctd3	Bcl2l15	
+Ywhab	Wbscr27	AI464131	Abcg1	
+Zdhhc12	Arx	1500035N22Rik		
+	Olfm1	Slc2a4	Smc2	
+Aldh1a3	Denr	Baiap2l1	N4bp3	
+Pank3	Ddx1	Msln		
+Slu7		2310046K01Rik	Hook2	
+Cel	Rala	Rcbtb2	Wdr75	
+Eif3j	Cstb	Dpysl5	Crkl	
+Tnfrsf21	Lrfn5	Grpel2	Snrnp35	
+Sft2d3	Rin1	Ttll11	Sult2a1	
+Cryab	Vgll2	Aqp2	Slmo2	
+Pkia	Rcan3	Rpl21-ps4	Tomm40	
+Twsg1	Ndrg1	Ndufs7	2900092E17Rik	
+Gp1bb	Mat2b	Emd	Xpot	
+Mrpl45	Gapdh	Lrig1	Park2	
+Mrto4	Pttg1ip	1700009P17Rik		
+BC030500	Rnf181	Syne2	Btbd1	
+Tnfrsf12a	Rbms1	Armc3	Gt(ROSA)26Sor	
+Gca	Pdcd2	Btbd1	Rbks	
+Tceal8	Acvr1c		Tradd	
+Dusp23	Recql	Ubash3b	Prf1	
+Dok6		Bmpr1a	A330021E22Rik	
+Ecel1	Gp5	Jmjd8	Kpna6	
+Dhcr24	Vrk3	Acot10	Aox4	
+Twf1	BC030500	Wdr41	Cd48	
+Sik2		A230046K03Rik	Afmid	
+Spryd4	Cox7b	Lpgat1	Stx17	
+Ldlrad3	1110051M20Rik	Atf5		
+Cpd	Atp6v0e2	Prim2	Blcap	
+Nploc4	Tbx15	Slc39a4	Zfp593	
+Atp6v0b	Blcap	4930529M08Rik	Cdh26	
+	Gm1604b	Kifc2	Pqlc3	
+	Pex11a	Ctr9	Plrg1	
+Pck2	Rrm2	Gm10697	Rpl23	
+Gnb2	Crcp	Lap3	Acaca	
+Scn4a	Lrrc23	Rbpjl	Slc6a15	
+Cdk10	Pdxk-ps	Haus1	Ms4a8a	
+Ppm1h	Tcap	Csnk1d	Abcc4	
+Msl2	Krt10	Cx3cr1	Trappc5	
+Acsl1	Rps10	Cdh2	Slc7a7	
+Dbr1	Gm13251	Tmem131	Sytl1	
+H2-Q2	Acsl1	Cdh26	Vldlr	
+Foxn3	Ncoa2	Wdr1	Hspa9	
+Acot11	Lingo1		Otos	
+Rpl7	Phb	Vcp	Depdc1b	
+Kif9	Hbs1l	Phka1	Tmem91	
+9030409G11Rik	Hook2	Kif17		
+Rhoq	Eif3h	Slc1a3	Pfkl	
+Ap2b1	Ruvbl2	Ppp4r4	Prkg2	
+Nfx1	Slc15a2	Phrf1		
+Timp3	Scn1b	Galk2	Glg1	
+Fbxw9	Htatsf1	A030009H04Rik	Cstf2	
+Ly6k	Cacna2d4	Hmgb2	Rrad	
+Pld6	Lrrc20	Mpp3	Pank3	
+Kcnk9	Stx17	Atf6b	Creg1	
+Mettl2	Aurka	Dach1	Rnf103	
+Idua	Dhx57	BC023814	Meg3	
+Adamts1	Ssr1		Fdxacb1	
+Eif2s1	Rgs3	Fxyd5	Igsf9	
+Zc3h15	Zbtb8b	Cdh6	Ryr2	
+Crybg3	Osgepl1	Kdm2b	Cln8	
+Sprn	Meaf6	Sec14l3		
+Fkbp1b	Brms1l	Dcdc2a	Erp29	
+Nkrf	Cxcr4	Clec4n	Uhrf2	
+Cacna1a	Fam155a	Diablo	Coq2	
+Snrpf	Lsp1	Adar	Cacng6	
+Fam171a2	Apbb1ip		Arhgef7	
+Rab27b	Phyhip	Usp39	Tubgcp4	
+Cdc25a	Dlg2	Prkg2	Rhoq	
+Ankrd54	Dnm2	Tgfa	Asxl2	
+Ndufa8	Dnmt3l	Nexn	Baiap2	
+Camk2b	Vsig10l	Pank3	Pomc	
+Ppp1cb	Cntnap5b	Trim25	Anxa5	
+Mfn2	March5	Psmd3	Cdc34	
+Gnai3	Bai2	Suv39h1	Prkcz	
+Havcr2	Mcm2	Man2b2	Gprc5c	
+Ric8b	Kctd3	Lrrc3	Serf2	
+Idh3g	Hoga1	Tomm5	Evc	
+Col23a1	Il17d	Lims2	P2rx6	
+Rnpepl1	Rcn1	Rexo4	Plekhh3	
+Zfp119b	Polm	1700029G01Rik		
+Upp2	Grm7		Atf5	
+Cog1	Gm5617	Vstm2b		
+Acot2	Pnrc2	Clec2d	Asb8	
+Plek	Pdk3	Aif1	Npr1	
+Snrpd2	Tll1	Fastk	Atg7	
+Sap18	1700009P17Rik	Gas6	Tmprss3	
+Tpd52l1	Hvcn1	Ccbl1	Cog4	
+Diablo	Ccl17	Arhgef40	Slc18a2	
+Slitrk4	Cdc23	Gspt1	Slc5a10	
+Ptpn1	Cycs	Gnal	Kcnc1	
+	Zfyve20	Xrn1	Kcna2	
+Cope	Cdh26	Pcdha11		
+Dcun1d1	Edc4	Casq2	Fam149b	
+Fbxo4	Kcnd2		Trit1	
+Irx1	Trim16	Zfyve20	Cnih	
+Csnk1g2	Bcl7c	Trp53bp2	Fam82a1	
+Bdh2	B230118H07Rik	Cacna2d4	Msl1	
+Tmc6	Trmt2b	Cd209f	Gm5341	
+Trib2	Myo9a	Ece2	Phf19	
+Tesk1	Prpf31	Stxbp1	Fam176a	
+Gtf3c3	Pxk	D330045A20Rik	Ppif	
+Alg13	Clip4	Lpcat3	Map2k3	
+Ibtk	Edn1	Elovl2	Minpp1	
+Zkscan14	Plcb1	Cpxm2	Mbip	
+Lpin3	Gspt1	Dcakd	Xpo1	
+Ipmk	Nudt11	Aox4	Clec2d	
+Pdk2	AA986860	Zbtb8b	Wac	
+Rnf217	Dido1	Neurod6	Adcy9	
+Paxip1			Tfb1m	
+Snx2		2010305A19Rik	Sec14l3	
+Mrpl46	Chst12	Sulf2	Thsd1	
+Dnase1l2	Flot1	Sptlc2	Trim39	
+Kdm5a	Phactr4	Ahcy	Sf3b3	
+Rasal1	Eml3		BC016495	
+Ntrk2	Csdc2	Tmem25	Fxyd2	
+Ctdspl	Zrsr2	Eya1	Sp140	
+Pja1	Dnd1	Agrn	Ndufa13	
+Hvcn1	Metap2	Pdpn	Fnip2	
+Tmem167b	Pisd	Ndufv3	Sez6l2	
+Plekhm3	Tsks	Dclk1	Pim2	
+Lrrfip2	Narfl	Top2b	Zfp324	
+Slc2a4	Dnm1	Ptprf	Epha5	
+Nova2	Pdpk1	Orc6	Kdm4b	
+Vrk2	Siglec5	Gabrg1	Lrrc27	
+Bcl7b	Rabgef1	Ccdc23	1300018I17Rik	
+Npm2	Tmem123	Aldh6a1	Tsg101	
+Kcnj5	Mtap1s	Plat	Ccdc13	
+	Gfer	Dctn6	Zfyve19	
+Rnf219	Fastkd1	Rps6ka1	Spag1	
+Rbmxrt		Ddx41	Plagl1	
+Gprc5b	Tmem33	Fam126b	Ap1s1	
+	Rpl13	Zfp655	Ppp1r14c	
+Myadml2	Ecel1	Slc18a2	Abcg4	
+Fam173b	Anapc7	Nutf2	4833424O15Rik	
+Ap3d1	Nrip1	Hprt	Rock1	
+Amacr	Kirrel2	Lhfp	Zfyve1	
+Alg6	Gjc1	Ttc8	Alg5	
+Rps21	Opa1	Hic2	Chpt1	
+Pak6	Alox5	Cplx1	Lrp11	
+Pms2	Trim32	N4bp3	Xrn1	
+1700015F17Rik	Cdh6		Chrnb2	
+Naa35	Sytl1	Rps14	Paqr8	
+Grhl3	Ghitm	Atl2		
+Atp5k		D10Bwg1379e	Kif5a	
+Gopc	Gm5751	Mcm2	Hist1h2aa	
+Ptcd1	Aagab	Eif2ak4	Ccdc71	
+Sspn		Ddx5	BC006965	
+	2310046K01Rik	Cntnap1	Dyx1c1	
+E130309D02Rik	Rpl7	Epb4.1l4b	Fxc1	
+Tshz2	Rbmx	Pion	Spata7	
+Sema3e	Tlr6		Gabrr1	
+Eef1e1	Polr3e	Nanos1	Eif3j	
+Eif3g	Ece2	Aldh1l1	Clec4a2	
+	Acadl	Slc35d3	Itpk1	
+Asb5	Npr3	Adamtsl5	2310045N01Rik	
+Cxcr4	Tm9sf3	Gm8709	Il12rb1	
+Ccdc71	Lrp6	Ap2a2	2500003M10Rik	
+Nfatc3	Nutf2	Gabbr1	Myd88	
+Lhx2	Rexo4	Arhgef9	Pkd2	
+Dcxr	Foxs1	Sgsh	Vax2	
+Synpo2	Rnf141	Cstb	Gm9104	
+Gm11127	Uba5	Zfp423	Tapbpl	
+Ccdc85a	Oscar	Acsl1	Kif1a	
+Bex2	Sntb1	Ank	Ptpn9	
+Sall1	Pdzd8	Ncf4	Ets1	
+Lnp	Esrrg	Plxna3	Irf6	
+Six4			Id4	
+2610305D13Rik	Isg20	Pdlim7	Cep192	
+Pafah1b1	Ccdc13	6820431F20Rik	Car4	
+Hsp90ab1	Asns	Prps2	Lsm1	
+2410042D21Rik	Fmo1	Cntn2	Glp2r	
+Llgl2	Gm3099	Clock	Atp6v0e	
+Ndufb9	Cntn2	Ndufb9	Hsph1	
+Ogfr	Psmd3	Cdc42se1	A230046K03Rik	
+		Htra2	Zfp956	
+Psmb5	Igfbp4	Gm5751	Pdxk	
+Tef	Amz2	Lmtk3	Commd2	
+Chrna4	Epha5	Crk	1110008J03Rik	
+		Rfwd3	Lrrc49	
+Ahsa1	Hdhd2		Pecam1	
+Pde7b	Mapk1	Epor	Mki67ip	
+Prdm1	Abcb1b	Zfp41	Lgr4	
+Rbms1	Acot2	Wdr12	Krtcap3	
+Stra13	Nsun2	Rbx1	Lrrc56	
+Foxn2		Gfra4	Casp9	
+E130311K13Rik		Sema6c	Eif2ak4	
+Hist4h4		Tlr1	Rab34	
+Sympk	Kcnq4	Rxrg	Basp1	
+Dom3z	Kars	Naf1	Osbpl7	
+Tmem29	Slc39a12	G6pdx	Gnb2	
+Ndufa13	Evc2	Cnr1	A530098C11Rik	
+Pask	Chst11	Atf7ip	Abtb2	
+Rasa3	Rfxank	Prrx2	Vps28	
+Fbxo33	4930524L23Rik	Farp1	BC055324	
+Slc6a9	Glo1	Rasgrp4	Arr3	
+Foxs1	Cebpg	3200002M19Rik	Dtx1	
+Rab3gap1	Med14	Abcb8	Capn9	
+Adck3	Setd5	Cbx3	Hao1	
+LOC668917	Klf13	Tymp	Dnd1	
+Ercc3	Rnf215	Gsto2	Cpsf4	
+Dync1li1	Myl2	Arap2	Rhobtb1	
+Rreb1	Tfb1m	Rad54l2	Grem2	
+Plxnb3	Pdpn	Dok6	Cfc1	
+Asph		Fgfr1op2	Edn1	
+Atg16l2	Armc3	Pask	Pea15a	
+Adck5	Klk1b24	Il17d		
+Rpl22		Lair1	Anapc7	
+Rpl4	Mcm10	Mylk	Olfr411	
+Fbxo32	Slc5a10	Eif3m	Stab2	
+Slpi	Nup35	Fxyd2	Parp14	
+Lrp1	BC028777	Gxylt2	Slc15a2	
+Zfp827	Irak1	4930534B04Rik	Tada1	
+Ptpdc1	Rusc2		Abi3	
+Hist1h2af	Serhl	Amph	F8a	
+	Fbxo39	Gin1	Arl8b	
+Taf11	Zfp11	Fem1a	Ganc	
+Inpp5j	Nucb1	Wbscr27	Zfp706	
+Eny2	Cdc34	Rnf168	Tdgf1	
+Ttyh2	Fam82a1	Trim13	Zfp58	
+Prickle1	Lrrc27	5330417C22Rik		
+Ddost	Lphn1	Pink1	Mat2b	
+Atp6v1a	Herc3	Tsfm	Olfm1	
+Klhl12	Smg7	Dolpp1	Caml	
+Rnf170	Bcap31		Smg7	
+Cenpm	Haus3	Tial1	Egfl8	
+Phf21a	Galntl6	Acta1	Zfp187	
+Nfix	Psmd2	Rab11fip3	Nfyc	
+Zfp182	Tpbg	Trpc4ap	Tead2	
+Donson	Kcna2	1110034B05Rik		
+Rcbtb2	Cox5a	Anapc13	Tmed8	
+Clip3	Myst3	Fam125b		
+Inha	Sox11	Anapc7	Creg2	
+Rybp	Pcdh18	1110051M20Rik	Gzmm	
+Leprel4	Fam120c	Fancl	Slc1a2	
+Pigp	Rps14	Ccl24	Ninj2	
+Slc41a2	Kdm5c	Kcna7	Tgm3	
+Nppc	Pdgfrb	Gm8580	Lass2	
+Amigo2	Fank1	Sfrs18	Lrrc55	
+Dnajb1	Klhl36	Cdt1	Myl3	
+Mapre1	Akap1	Foxp4	Lrrc52	
+Wipf1	Ndrg3	Parg	Zfp503	
+Crebbp	Pvr	Osbpl7	Tmem108	
+Erbb2ip	Gm71	Atoh7	C1qtnf7	
+Dusp26	Rfc4	Hist1h1c	Stk30	
+Plxdc2	Fbxo30	Smg1	Snrpd3	
+Zfp329	F3	Cd109	Pgpep1	
+Stx3	Prrt4	Rps25	Alpl	
+Gps1		Cant1	Sag	
+Aldh8a1	Set	2700081O15Rik	Cspg5	
+Lars2	Arl6ip6	Pecam1	Lsm10	
+Idh1	Efemp2	Dmd	Auh	
+Lrrc8b	Ttc28	Polr3e	Nans	
+Atp6v1b2	Slc41a2	Snrpd3	Chst7	
+Slc16a1	Abat	Glrb	Brms1l	
+Uchl5	Ccnt1	Peci	Gm12298	
+Chmp7	Jkamp	Zfp930	Adamts17	
+Npy5r	Fam58b		Sepx1	
+Tet3	Gstz1	Ptdss1		
+Ccdc53	Atp6v1a	Bcs1l	4921523A10Rik	
+Ephb1	Cycs	Cpsf4	Npc1l1	
+Cobll1	Pom121	Cstf2	Ccdc90b	
+	Stat5a	Ppp3r1	Phkg2	
+Mterf	Fbxw11	Phb		
+Shmt1	Manbal	Reep6	Psmb2	
+Hmgcs2	Rufy1	Dck	Slain1	
+Shroom2	Speg	Erlin2	Thap11	
+Pank4	Ttc8	Riok2	Gm166	
+Rab30	Cldnd1	Rbbp9	Smpd2	
+Nrbf2	Afmid	Map3k1	Nrxn2	
+Zfp78	Grik3	Gm13157	Pcmtd1	
+Tcfap4	Xpo1	Ofd1	1190002N15Rik	
+Patl1	Atp5g2	Ncln	Atrx	
+Serf2	Cbx3	Cd48		
+Ccdc9	Cntn5	2410001C21Rik	Jak2	
+Csf2ra	Cd9	Sec14l4	Eftud2	
+Muc20	Zfyve28	Prpf19	Cpne3	
+	Ubb	Grlf1	Fhl1	
+Grm8		Tmem167	Hmgn5	
+Bbs1	Glul	Clip1	1700008A04Rik	
+Mycbpap	Tspan7	Dnmt3l	Psmc3ip	
+Las1l	Edem2	Telo2	Rcc2	
+Pex14	Cops3	Slc39a1	Dscr3	
+Tcirg1	Npm1	Klhl21	Gch1	
+Spop	Gm1673			
+Eif2ak2	Bcs1l	Unc50	Phf20	
+Ccdc91	Pask	Lrrc23	4930404A10Rik	
+Cdc42se1	Dok5	Hoxb6	Lgals1	
+Cnot7	Slc25a30	Arid1a	Eif3m	
+Orc6	Spns1	Rps20	Dtd1	
+Akr1a4	Anapc13	Asb5	Vsig10	
+Npb	3110082D06Rik	Coq9	Slc35a1	
+Dll1	0610009D07Rik	Cyhr1	Cldnd1	
+Hip1r	Cyp2j6	Smpd2	Clec18a	
+Vps4b	Lama4	Sik1		
+Sav1	Vav3	Polb	Hoxc9	
+Trafd1	Mtif3	Cdsn	Pcnt	
+Zbtb9	Sorbs3	Pdlim2	Ecsit	
+Vmn1r65	Smoc1	Acat2	Nudt16l1	
+Gm71	Abcf2	Prss12	Synpo2l	
+Gpr172b	Copb1	Dnaja2	Rtp4	
+Acly	Prkar2a	Plod3	Gabrg1	
+Dynlrb2	Fggy	Mtx1	Dnase2b	
+Stx7	Usp43			
+	Arhgap6	Meaf6	Ldlrap1	
+Slc25a20	Nrbf2	Rpsa	Mup2	
+Irf2	Slc3a2	Aimp2	Ms4a6d	
+Asxl2	Sp8	Skil	1700106N22Rik	
+Dct	Cd209f	Cdk15	Dsg1a	
+Nmt2	6430531B16Rik	Ngb	0910001L09Rik	
+Nupl2	1810010H24Rik	Abcc4	Gstm3	
+Vps11	Tmem167	LOC100504710	Plekhg5	
+Brcc3	Pabpc1	Rcn1	Snapin	
+Nudt11	Poldip3	Fam53b	Polr3c	
+Mov10	Grb7	4930524J08Rik	Cst3	
+Grin2a	Gm11818	Grb7	Asb2	
+Zfp292	Gprin1	Adam11	Gstz1	
+Exosc10	Sema6a	2700078K21Rik	Spint3	
+Dcc	Nosip	Pi16	Pld5	
+Gstk1	Nup54	Nsmce2	Mkrn2	
+Kcnj10	Thbd	Hip1r	Prkd2	
+	Cyp2d22	Hspb8	Gmip	
+Hmgn1	Gm22	Cldnd1	Kcnd2	
+4930563E22Rik	Lhfpl4	Rassf4	Dhdds	
+Syngr2	Gpx4	Rbmx	Cd109	
+4732414G09Rik	Ddx19a	Adam10	Atxn1	
+Erh	Npc1l1	Cyp2j6	Rbm45	
+Tapbp	Acbd4	Chrm4	Gpr98	
+Mcpt4	Coq9	Pdzd8	AI467606	
+Gabra4	Ehhadh	Csnk1g3	Top2b	
+Mlf2	Arap2	Gm1604b	Nme6	
+Gm16516	Myd88	Dhx57	Arid1a	
+Sec63	Glrb	Hpgd	Prkcq	
+Lyl1		Pex11a	Elmod1	
+Olig2	Coq2		Mavs	
+Cops3	Dcun1d1	Usf1	Ctdspl	
+Sdad1	Hoxc9	Gnb1	C030034I22Rik	
+Sugp2	Lpcat3	Cetn2	Fmo1	
+Dnajc11	Sulf2	Sat1	Edil3	
+C80913	Arl8b	Tlr12	Usp43	
+Cnp	Adcy9	Yipf6	Slc4a10	
+Xylb	Acat2	Vldlr	Ankrd13a	
+Dlc1	Zfp677	Evc	Guf1	
+E330020D12Rik	Npas3	Amd2	Zmynd15	
+4930522L14Rik	Pde7b	Pacs2	Pom121	
+Zfp61	Pacs1	Ahcy	Insig1	
+BC034090	Orc6	Slc11a2	Hmox1	
+Zfp41	Otub1	Zfand2b	Atp5j2	
+Aox1	Kdm2b	2310004I24Rik	2700060E02Rik	
+Ing3	Rplp2	Ascl2	Eif2s3x	
+Pllp	Vmn1r65	Ash2l	Tcf25	
+2610035D17Rik	Ccdc53	Hist1h2aa	Podxl2	
+Pcyt1b	Dck	Smarcb1	Psmd5	
+4933440N22Rik	Ogg1		Dazl	
+Rbl1	Fut10	Cnga2	Tle1	
+Apcdd1	Ttc13	Dll1		
+4933434E20Rik	Rap1b	Chst12		
+Abca2	Pdxk	Me1		
+Serpinf2	Cdc37	Lage3	Oraov1	
+Mical2	Trank1	Amz2	Hif3a	
+4933400A11Rik	Rps16	Rnf215	Slc39a7	
+	Snx12	Ndufa8	Rpl5	
+Csrnp3	Ets2	Pex14	Guca2b	
+Zfp58	Ticam1	Trim9	Iqcb1	
+Serpine2	Ppp5c	Phf23		
+Ndufa5	Zfp948	Ttpal	Tmub1	
+Fam186b	A030009H04Rik	Nup54	Trpc4ap	
+Gnal	Ccdc90a	Pnmt	Sacs	
+Echs1	Alas2	Ufsp2	Rpl8	
+Ints9	Laptm5	Ppapdc1b	S100a9	
+Sart1	Cyp4f14	Cst3	Acvr2b	
+Hk1	Arih2	Pgk1		
+Tada1	Ngrn		Myl7	
+Map4k1	Kctd10	Trim11	Arl6ip6	
+Acta1	Ttpal	Pcgf2	Hdgfrp2	
+Gpam	Hmgn1	Tns3		
+Plekhg3	Pdzd9	Nrm	Farp1	
+Wdr45	Ccnh	Tradd	Churc1	
+Cplx2	Ncaph2		Fam83e	
+Pttg1	Prps2	Ttc13	Sv2c	
+Rpl23	Atp6v0a1	Dnajc8		
+Depdc1b	Aldh1l1		Asns	
+Grb7	1700015F17Rik	Hoga1	Vps54	
+Pim1	Zfp414	Cspp1	Gm13157	
+Anxa5	Meis1	Hook2	Synm	
+Sgta	Tmed8	Slc22a4	Nisch	
+Zfp295	Eno2	E330020D12Rik	B3galt2	
+Arhgef10	Ccdc24	Arpc1a		
+Foxo3	Dap	Def8	Wipi1	
+Prok2	Cpsf4	Calm1		
+Cmas	Fam96a	Ctnna1	Pin4	
+Smad3	Myst2	Ccl17	Plxnb2	
+Ttc28	Trim39	Alox5	Tmem167	
+Mtap1s	Cog6	Nek8	Ms4a3	
+Cdc25b	Lekr1	Klf13	Pdcd2	
+Klk1b24	Hadh	Aurka	H2-Q2	
+Klf12	Cab39	Zfyve26	Tlr1	
+Neil1	Farp1	Rasal1	Vegfb	
+Fam114a2	Itih3	Mdm2	2410003K15Rik	
+Snap29	Pak1ip1	Fcho1	Rasa4	
+Yaf2	Lgals1	Slc3a2	Srek1ip1	
+Trap1	Pkd2l2	Slc39a12	Dok6	
+Wdr89	Fen1	Gosr2	Ppp3r1	
+Jmjd4	Copa	1700106N22Rik	Dffa	
+Slc12a4	Ank		Sema5b	
+Abcg1	Gm8994	Dynlt3	Fam129a	
+Cul1	Rab30	Vdac2		
+Haao	Gin1	Nedd4	Atp11a	
+Rpl10a	Thoc3	Cyth1	Nos3	
+Gm1673	Nos3	Ecel1	Tmem184a	
+Epb4.1l5		Stap2		
+Lingo1	2810405K02Rik	Gtf2f2	Tmem25	
+Msh2	Zbtb7c	Nbn	1810013L24Rik	
+Lgals8	Numa1	Lrrc8a	F630043A04Rik	
+Crcp	Cct4	Hmgb3	Zfp655	
+Kcng3	Bmp8a	Sept3	Smurf2	
+Mex3c	Hspb8	Ccdc85a	Sytl3	
+Dcp1a	Sdha	Slc25a10	Spg21	
+Rbm28	2700081O15Rik	Polr1d	Atp5g2	
+Xrra1	Ppard	Mrps15	Slc5a5	
+Cenpa	Synpo2l	Cpsf2	Unk	
+Pde4c	Tnfrsf23	Atxn1	Klhl38	
+Ica1	Rfng	Apex2	Ass1	
+Zfp92	Dnajc13	Dap	Rbm11	
+Copb1	Grm4	Trmt2b	Ogfrl1	
+Hsd17b7	Atl2	Zfp707	Chst11	
+Wbp7	Ccdc23	Cpsf3	Ccnh	
+Zfp617	Pptc7	Cops3	Slc20a2	
+Tsta3	Ccr5	Zc3hav1	Ercc5	
+	Exosc10	Cand1	Dync2h1	
+Sdcbp2	Lix1l		Tnfrsf12a	
+Serinc2	Lcorl	Dnajc13	Med18	
+Gclc	Atp5j2	Atp6v1g2	Arhgdia	
+BC049715	Rpa3	BC006779	Lat2	
+Gm9790	Pdxp	Pdpk1	Mobkl3	
+	Paqr9	Hoxc9	Kcnh6	
+Phactr4	Eng	Id4		
+Brsk1	Dynlrb2	Spink5	Larp4	
+C1qc	Bmp4	Dolk	Palld	
+Atp9a	Rap2a	Amacr	Lrsam1	
+1810027O10Rik	Wipi1	Srp72	Zdhhc9	
+Rilpl2	Rhobtb2	Cpsf6	Ap4s1	
+Fabp5l2	Ngfrap1	Nup35	Snx33	
+Fam118b	Mapk13	Oprd1	Cops3	
+Pick1	Adar	Spag4	Hddc3	
+Mrpl18	Tcfe3		Gm5077	
+Gm5069	Plcd1	Ndufa6	Slc3a2	
+Mrpl37	Hdhd3	Me3	Fbxo30	
+Zscan18	Usf1	C330007P06Rik	Tmem195	
+Chgb	BC005624			
+	Ldlrap1	Hjurp	Cwf19l2	
+Cplx1	Pgpep1	Ssxa1	Rpp14	
+	Ythdc2	C87436	Edc4	
+Pigc	Sacs	Ccdc88c	Gab1	
+4930461C15Rik	Hnrnpa1	Zfyve21	Krtap4-8	
+Fgd3	Plekhg5	Stat5a	Myo1h	
+Kdm2b	Adck4	Pde4dip	6430573F11Rik	
+Eef1a2	Mpv17	Hsf4	Xiap	
+Sec14l3	S100a11	Ecsit	Alox5	
+Rps11	Npy5r	Pdss1	Zbtb7b	
+Ppm1e	Cplx2	Itgb1	Ksr1	
+AI854703	Rpl7l1		Gm8709	
+Rnf130	Lgals8	Mcat	Lcor	
+Ndufv2	Spna2	Lcp2	Wnt2b	
+	Ass1	Mapk1	Cct4	
+Trem1	Ston2	Tmem204	Slpi	
+Daam1	Lyl1		Mtrf1	
+Gtf2f2	Plxna3	Nup205	Mtap1s	
+Aprt	Dap3	Vrk3	Zfp14	
+Bet1	Sap18	Pars2	Tomm22	
+Gas7	Zmym6	Alg5	Emd	
+Ndufa11	Spag4	Pacs1	Suox	
+	Cdkn1b	Ran	Gnb1l	
+Carhsp1	Cdh5	Zfp882	Fam83d	
+Dok4	Psma5	Fcgr2b	Lrrc51	
+Mrps2	Gmppa	Sbds	0610010K14Rik	
+Glt25d1	Alpl	Sez6l2	Ift88	
+Fpgs	Fahd2a	Fbxw10	Cnga2	
+Atxn1	Cdc14a	Maea	Zfp688	
+Tmem117	Map3k7	Rbm5	Cebpb	
+Abcc5		Ube2s		
+Baiap2	Cstf3	Prf1	Ddx19a	
+Cd2ap	Camk2a	Rrm2	Eif2c4	
+Aff1	C3	Hoxa7	Cyp2d12	
+Prr18	Sema5b	Hmgb1	Hps4	
+Xrcc5	Mbtps2	Nol7		
+Dmd	Zfp646	Nr2e1	Nudc	
+Spp1	Fdx1	Arhgap6	Tox2	
+Vdac2	Slc22a2	Plxdc1		
+Ccnd2	Kif1a	E4f1	Wdr61	
+Dcaf17	Akr1c18	Srsf13b	Arsg	
+Cpne1	Pi16	Hnrnpul1	Gm5617	
+Arap3	Prss36			
+Ccnh	B4galt5	Ets2	Hdgfrp3	
+Erlin2	Hspb6	Bad	Dck	
+Lysmd1	Prss12	Eif2ak2	Rasl11a	
+Tmem119	Rnf217	Itpa	Manbal	
+2610029I01Rik	Rpl36a	Ogfrl1	Asph	
+Bcap31	Casp6	Ccnb2	Map3k7	
+Cenpj	Afg3l1	Thy1	Rbmx	
+Fkbp8	Epha10	Gipc2	Zfp444	
+Zfp71-rs1	Abtb1	Isg20	Rnf41	
+Cst3	Cbln1	Rps27l	4930404N11Rik	
+Casp4	Vipr1	Myo9a	Armc5	
+Dpysl2	Thumpd1	Ddx19a	Rpain	
+Gzmm	Klhl1	2210013O21Rik	Phax	
+Tlr3	Plagl1	E130311K13Rik	Tom1	
+Gm9927	Snx25	Ano10	Serpinf2	
+Fto	Pds5a	Slc29a2	Chga	
+Ccdc24	Igfbp5	Fabp5l2	Fxyd5	
+Pde4a	Phkg2	Gpank1	4930550L24Rik	
+Nsmaf	Csrp2bp	Zkscan14	Slc34a1	
+Lix1l	Phc2	Zfp773	Rgs10	
+Klf15	Trim8	BC016495	Obfc1	
+Slc25a45	Telo2	Mctp2	Hist1h2ba	
+Qrfpr	Gpr3	Kcnq4	Rpgr	
+Tmed5	Prkrip1	Mmgt2	Laptm4a	
+	Gng8	Med12	Utp11l	
+Myo9a	Rasal1	Cdh5	Akap10	
+Ptprt	Inpp5k	Synm	Btbd19	
+Ccndbp1	Adam11	Pdcd2	Zbtb22	
+Man2b2	Pcdha11	Cbx3	Akap11	
+Spcs2	Zfp608	Denr	Tmem50a	
+C330021F23Rik	Phf19	Zfp161	Fahd2a	
+Shfm1	Ano8	Lst1	Npas3	
+Scn11a	Nanp		Bop1	
+Zfp958	Kcnab3	Klhl11	Bag1	
+Lzts1	Sbds	Eif2b4	Pla2g3	
+Abl2	Samm50	Camk4	Bcat1	
+Scd2	Chpt1	Atg7	Galnt2	
+AA987161	Kcnc1	Rabac1	Chd1l	
+Rasa4	Tomm40	Arl3	Mtch1	
+Prdm2	Usp13	Prkar1a	Atp6v0a1	
+Bnip3l	Rbpjl	Ptpdc1	Thumpd1	
+Rdh5	Bglap-rs1	Cdc42bpb	Ptger1	
+1110007C09Rik		Slc4a8	Wdr74	
+Akr1c18	Tmco3	Trappc6b	Fli1	
+Sp4	Maea	Tshz2	Rasal1	
+Rpl21	Trpc4ap	Wdr89	Cbx2	
+Pldn	Slc6a15	Tnks2	Gm1673	
+Stam	Aff3	Sepx1	Phyhip	
+Pif1	Rpl9	Rusc2	Copg	
+Heyl	Gm4831	Ncs1	Nyx	
+Ghr	Nod1	Tuba4a	Gpr3	
+Nip7	Uba6	Aasdh	Ptplb	
+1810024B03Rik	Slc25a26	Tas2r131	1700001O22Rik	
+Ccna1	LOC100504710	Tub	Bad	
+Ptges3	Nrf1	Egfl8	Tbx22	
+Cacna1d	Abcc4	Eif1a	Unc50	
+	Cep192	E2f3	Cycs	
+Npas2	Slc24a2	Zkscan1	Gm4937	
+Mad1l1	Cpsf3	Cd200r4	Ppp1r7	
+B3gat1	2310045N01Rik		Cspp1	
+Fgf23	Chrnb4	Nanp	5730577I03Rik	
+Kcnc1	Polr1d		Dcun1d4	
+Uqcrfs1	Arl9	Grinl1a	Rnd2	
+Cldn23	Slc29a2	AA986860	Casp8	
+Mbd4	Lat2		Rnf25	
+Wdr41	Slc7a5	Pold1	Vmn1r71	
+Pgam1	Aifm2	A630007B06Rik	Aldh1l1	
+Got2	Dhx40	Stxbp4	Srpk3	
+	Cnp		Trim41	
+Rock2	Snca	Mcpt4	1700009P17Rik	
+Park2	Srsf13b	Afmid	Itgb2	
+Hibadh	Tnip2	Rab37	Gm10399	
+Litaf	Ppp3cc	Pom121	Ccdc59	
+Kif22	Ilf3	Mnda	9030617O03Rik	
+Rg9mtd2	Yipf6	B4galt6	Hnf1a	
+Agbl4	C1qtnf7	Vezf1	Ptpru	
+Gab1	Ube2q2	Cks1b	Spink4	
+2700029M09Rik	Ift88	Rpl7	Rlim	
+Grik3	Fut8	Mmd	Ywhaz	
+Sort1	Poln	6330512M04Rik	Exoc3l2	
+Col25a1	E2f3	Cog1	Psmc3	
+Bgn	Flt1	3110043O21Rik	Sp8	
+Cnksr3	Lrrc40	Scyl3	Slc25a30	
+Gpr98	Atf1	Ephx1	Fbln1	
+Rcn1	Cdkl3	Igsf10	A430078G23Rik	
+Zfp518a	Polg2	Suox	Galk2	
+Surf1	Stap2	Slc39a7	Il2rg	
+Gjb1	Zfp687	5430411K18Rik	C87436	
+Rfc2	Polr3g	H2-Q2	Fig4	
+Dapk1	Phpt1	Apobec1	Fcrla	
+Enoph1	Pgk1		4632428N05Rik	
+Sdc2	Aimp2	Bche	Htra2	
+Calr	Riok2	Stx7	Atf4	
+Bbs4	Ctsz	Fbxo4	Hic2	
+1700030K09Rik	Stip1	Akap17b	Rtn3	
+Ipo4	Wac	Grm4	Arl8a	
+Alg8	Sik1	Nde1	C8g	
+Sdc4	Fbp1	Eif4g1	Gm9112	
+Gstz1	Hspa4	Ina	Itih3	
+Crhbp	Slc2a4		Rpusd3	
+Rtbdn	Vsig10	Mat2a	Rnf157	
+Nacc2		Tfip11	Kcnc3	
+Hagh	Pigs	Pea15a	Vps16	
+Pus10	Fam13b	Rnf217	Usp13	
+Mtmr11	Mipep	Id3	Srp72	
+Maml3	Rdx	Hspb6	Tpcn1	
+Rad1	Mgat5	Tmem127	Arhgef40	
+Pcbd2	Panx1	Zfp281	Pppde1	
+Poc1a	Pds5b	Pknox1	Tlr3	
+Zbtb48	Psmc1	Ccdc90a		
+Psmb2	Gprc5b	Rasl11a	Cyp3a11	
+Adpgk	Aplp1	Mbd4		
+Mtf2	Tspan17		Hbs1l	
+Hectd3	Foxp4	Tmem164	Adamtsl5	
+Asah2	Rbm33	BC031181	March5	
+Trit1		Rpl6		
+Smug1	Clock		Nras	
+Expi	Fuk	2310009B15Rik	Doc2g	
+Plxdc1	Foxd1	Chmp2a	2410001C21Rik	
+Polr3a	Gckr	Napa	Tcf7l1	
+Nudt2	Muted	Wrn	Cdc14a	
+Sdhd	Ogfrl1	Disp2	Smoc1	
+Uchl1	Arnt2	5730494M16Rik	2310079G19Rik	
+Wdr45l	2210012G02Rik	Ipmk	Med20	
+Ranbp1	Slc11a2	Nosip	Cog3	
+Fstl3	H3f3a	Orai1	Hnrnpm	
+Set	Celf3	Flt1	Med14	
+Sfpq	Grin2a	Tinf2	Grlf1	
+Cc2d2a	Smarcc2	B230118H07Rik		
+Snrnp200	F2rl2	2700049A03Rik	Ranbp2	
+Ptgr2	Gm2a	Klf15	Epha2	
+Sp110	Nup188	Tpt1	Dppa5a	
+Pik3r4	Nr1h5	BC147527	Mfsd6	
+Spg7	Zmynd15	Acp1		
+	Il6ra	Cdc25a	Csnk1g2	
+Abcb10	Atp6ap2	Got1	0610009D07Rik	
+Uhrf1bp1	Carhsp1		Gm15348	
+Cycs	Tcfap4	Pigs	Serpina3a	
+Mmp24	Rps25	Tnfrsf23	Gpank1	
+Errfi1	Smarcd1	Cdc14a	Cbr3	
+Slc36a1	Hnrnpm	Foxd1		
+Vim	Mcat	Hp	Hadh	
+Plbd2	Atad2	Ntrk3	Akap1	
+Lmcd1	Cdkn2aip	Usp42	Fzd6	
+Plk2	Rab11fip3	Snx12	E330020D12Rik	
+Abat	Cd63	Fhl1	Fam160b1	
+Adnp	Mfsd6	R74862	Fbxw10	
+Tex10	Gtpbp6	Gp5	Rpl6	
+Krr1	Pim1	Rabgef1	Cuedc1	
+Ppard	Pef1	Tsg101	Spata24	
+Rab39b	Ccdc47	Ttc28		
+Timm50	Inadl	Lekr1	Eml5	
+Kctd20	Cox7a2l	Hmgn1		
+Cdsn	Arhgef9		Scand1	
+Stk24	Ciz1	Pnma1	Cyp2c38	
+Gas6	Rybp	Akr1c18	Fstl5	
+Pusl1	Sephs2	Chn2	Mcpt4	
+Neurl1b	Zdhhc24	Foxn2	Ing4	
+Gorab	Trub2	Pkia	Gpr155	
+Hexdc	6330512M04Rik	Ppp5c	Hmg20b	
+Cdkn2c	Yif1b	Hnrnpa1	Fastkd1	
+Kif5a	L3mbtl2	Fam195b	Spdya	
+Ttll3		0610037P05Rik	Ndufv3	
+Acy1	Mcoln1	Klhl22	Pbrm1	
+Itgam	Nagk	Ghr	Ift140	
+Pnma5	Nek11	Pfdn5	Brca1	
+Fam53a	Gm166	Csgalnact2	Krt10	
+Gm8709			Tjp2	
+Rcan2	Cyp2d12	Epha10	Inpp5a	
+Cpsf6	Epha7	Cnih3	Mrps15	
+Ddit3	Zkscan1		Hps1	
+Arhgef17	Slc7a3	Tnfrsf13b	Traf6	
+Calm1	Hint3	Nkd1	Pcm1	
+Tnfaip3	Polr1b	Numa1	Slc6a1	
+Zdhhc4	Rpgr		Prokr1	
+Dpm1	Gzmm	Sntb1	Mrps11	
+Mafa	C87436	Plekhg5	Gm11744	
+Txndc16	Gp1bb	Dusp4	Rpl11	
+Mettl11a	Akap8l	Zfp677	Rnf166	
+Bysl	Hook3	Galnt11	Trim28	
+Epha10	Psmc2	Mlc1	Rbm4b	
+Anks6	Ptplb	Spock3		
+Usp1	Pld5	Uhrf1bp1	Sirt2	
+Pnpla6	Pdgfb	Osgepl1	Fcho1	
+Rnaseh2c	Acvr2b	Fastkd1	Tph2	
+Tnfrsf11b	Chn2	Lcorl	Atg10	
+Csf1r	Tpt1	Sdha	Vcam1	
+Casc1	Slc39a1	Slmap	Cgref1	
+Cno	Apba2	Mta1	Edem2	
+Ywhaq	Inpp5a	Myo1h	Ocel1	
+Gfra4	Hmgb2	Thbd	BC100451	
+Wars	Fkbp8	Hint3	Pih1d1	
+Rhobtb2	Smad3			
+Kcnab3	Myo1h	Myl3	Rbbp8	
+Tmem106b	Meg3	Slc6a8	9430038I01Rik	
+Rhbdl1	Hist1h2aa	Cab39	Lgi1	
+Dnajc1	Laptm4a	Pank4	Wdr73	
+Tomm40l	Acp2	Pip5k1c	Man2a2	
+A1bg	Psmg1	Celf3	Sp110	
+Polr1e	Cnot6	BC028777	Usp54	
+	Pip5k1c	Asph	Rsph6a	
+Akirin2	Otos	Trak1	Hvcn1	
+Zfp62	Csgalnact2	Dfna5	Ercc1	
+Cox7a2l	Sptlc2		B230118H07Rik	
+Hck	Hmgb3	Gm9970	Lrrc69	
+Polr2a	Blmh	Kcnip1	Ndufa12	
+Ndufc1	Coro2a	Ikbip	Phtf2	
+Col17a1	Nagpa	Prdm2	Snx25	
+Tead2	Id3	Sccpdh	Samm50	
+Fam96a	Lrrtm2	Rfxank	Chka	
+	Trmt1	Rps18	2010317E24Rik	
+Grm4	Msh3	Rab13	Flt1	
+Zfp473	Pex3	Pex3	Med4	
+	Slc22a4	Pfkm		
+Dhx32	Hmgb1	Acot2	Ilf3	
+Opa3	Pigx	Pdzd9	Adprhl2	
+Mterfd3	Dapp1	6720401G13Rik	Prkar2a	
+Lrp12	Acad10	Snrnp35	Mfng	
+Cnbp	Lingo3	Snupn	Spsb1	
+Slit2	Igfbp2	Zkscan5	Sirpb1a	
+Spon1	Tsg101	Blcap	BC061237	
+Dock3	Abcf3	Poli	Zfp518a	
+Cdc14b	Per2	Arx	Tmem126a	
+Ell3	Zfp930		Zfp532	
+	Atp6v1c1	Tnip2	Txndc16	
+Caly	Nras	Jmjd5	Cwc25	
+Lipg	Dzip1l	Slc25a47	Gspt1	
+2900006K08Rik	Lims2	Myd88	Trmt61b	
+Ccm2	Ndufa2	Manbal	Msh3	
+Mlx	Sec14l4	Nucb1	Tmem164	
+Mccc1	Cpsf2	Acot4	Tectb	
+Ccdc13	Coasy	Tm9sf3	Ccdc40	
+Purg	Stxbp2	Krr1	Nedd4	
+Trim8	Cdt1	2310057J16Rik	Rnf26	
+Mmaa	Anxa4	Tmem123	Fam13b	
+Pcdhb13	Ccnb2	Med14	Prrx2	
+Zbtb7b	Sdhb	Lef1	Prr18	
+Fermt2	Slc19a1		Gp1bb	
+Itgb4	Fzd6	Tnfaip6	Cntn6	
+Elp3	Sepx1	Psma7	2610019F03Rik	
+Rbm12	Disc1	Pdzd7	Dkk2	
+Mal	Gorab	Asns	Duox1	
+Cacna2d3	Cth	Tmco3	Ank1	
+	Frem1	1300018I17Rik	Nphs1as	
+Tomm7	Ahcyl1		4933409K07Rik	
+Hip1	Nmi	Dapk1	4933440N22Rik	
+Cadps2	Alg3	Nmt1	Timp3	
+Plp1	Anxa11	Ncaph2	Fbxo9	
+Glrx5	Phf20	Ckmt2	Chmp2a	
+Hist1h2ak	Dcps	Kctd10	Trim32	
+Tsen2	Nhlrc1	Mllt4	Rrp9	
+Elp4	Il27	Ddx3y	Pdgfrb	
+Arhgef15	Cdk19	Tomm40	Cat	
+Rasa2	Rnaseh2c	Eif4g2	Htatsf1	
+Dynlt3	C130039O16Rik	Samhd1	Dhx34	
+Tjp2	Gm13375	Sema6b	Ano8	
+Nfic	Lnp	Unc93a	Tuba4a	
+Ankfy1	Chst10	Ccdc24	Rabl2	
+Ckap5		Rnf214	Olfr1354	
+	Gm10697	Ywhah	Atp1b3	
+Rbm17	Slc1a2	Myl6b	Dnajb6	
+Mid1	Serpina11	Rpl7l1	Cs	
+Rabl2	Gabrr1	Osbpl2	Ccr5	
+Nr1d2	Spata24	Gm3099	Cnot7	
+Cept1	Sema3e	Cd52	Nes	
+	Plat	Chst11	Rnf6	
+Ube2v1	Gm10318	Spna2	Pomt2	
+Ilkap	Clic4	L3mbtl2	Bche	
+Nagpa	Agbl4	Gm16516	Ruvbl2	
+Gstp2	Pcmtd1	Ubb	C130073F10Rik	
+Plekha2	Acadm	Rras2	Chrm1	
+Wipf3	Nmt1	Flot1	Fam113a	
+Tuba1a	Plk2	Pld5	Vars	
+AI836003	Adamtsl5	Pdxk	Gtpbp2	
+Gm5670	Jund	Snai3	Cyp2d22	
+Txn2	Mta1			
+Amn1	Asb2	Coasy	Ttpal	
+Uts2r	Taf5l	Sdhaf2	Ndufa7	
+Ssbp1	Rab15	Zfp318	Pef1	
+2510039O18Rik	Osbpl2	Mad2l2	Surf4	
+Dedd	Bgn	Fgr	1110049F12Rik	
+Cacng5	Nufip1	Rpsa		
+Dok1		Ears2	Plxna3	
+Vipr1	Gab1	Acox3	Rab37	
+Specc1	Vamp3	H3f3a	Snx3	
+Iqcc	Cpxm2	Cd320	Gm9104	
+Npm1	Tmem173	Amd2	Rab1b	
+Fzd8	Impa1	Ltc4s	Stard4	
+Akr1b10	Fam176a	Mterfd3		
+Kctd5	Pias3	Gm13375	Zfyve26	
+Carm1	Akap11		Ccdc9	
+Nup160	Foxc1	Nudt21	Btla	
+Col4a5		Mier3	Ear1	
+Tcea2	Vasp	Agl	Cxcr3	
+Klhl1	Cd109	Nsun2	Nqo2	
+Iigp1	D10Bwg1379e	Rock1	Sit1	
+Synj1		Acp2	Polh	
+Nedd4	Zfp187	Sox11	Nhp2	
+Hnrnpa3	Rbck1	Ctsz	Adamtsl2	
+Lin28b	Il1b	Mapk8ip1	Fam186b	
+1700106N22Rik	2700078K21Rik		Phrf1	
+		Zfpl1	Vwa5b2	
+Tceal7	Gm694	Mrps11	Pnrc2	
+Cpne3	Mmp9	Meg3	Fem1a	
+	Chrnb2	Macc1		
+Klhl29	Fxyd7	1110007C09Rik	Dhcr24	
+Hmgn2	Ufsp2	Herpud2	Ap3b2	
+Surf4	Zfp773	Slc5a5	Reep6	
+Slc12a2	Tshz2	Gtf2h1	Psmg1	
+Tubb5	Tmbim4	Adam15	Psma7	
+Cstb	St6galnac3	Srpk3	Cdkn1b	
+Fastkd1	Ncln	Hist1h1e	Fbf1	
+Ndufs8	Ehd4	Kbtbd8	Theg	
+Tert	Crygd	Slc39a3	Nup205	
+Gm4736	Rtn3	Spdya	Crtc1	
+Fah	Gmppb	Rdh10	Chrnb4	
+Snx7	Stom	Nup107	Slc7a3	
+Pde6d	Fgf3	Arrdc4	Pcyt2	
+Gna11	Crk		H2afy2	
+Lgr4	Zfp239	Lrfn3	Stip1	
+Celf3		Spag1	Ythdc2	
+Bcl2l15		Gm13157	Hist4h4	
+AI462493	Chrm1	Smurf2	Clec4n	
+Zfp451	Fip1l1	Foxo3	4930435E12Rik	
+Aldoc	Eif1a	Epha5	Foxm1	
+Clic5	Rpa2	Cln3	Mapk8ip1	
+Setd5	Xab2			
+Lpp	Pnmt	Nkx6-1	Rxfp4	
+Trmt6	Fkbp7	Zmynd10	Polr3f	
+Sv2a	Itpa	Rab42-ps	Hmgb1	
+Naga	0610010O12Rik	Npw	Actr1b	
+Tekt4	Ipp	Ndrg1	Nbl1	
+Mtrf1		Sspn	Chst10	
+2610005L07Rik	Eif2c4	Psma3	Ddit3	
+Wdr26	Btbd19	Cox8a	Dnajc9	
+Gnptg	Gmeb1	Rap2a	Tpt1	
+Tnk2	Prkcq	Rps15	Ddx28	
+Ifngr1	Usp5	Agbl4	Rin1	
+Ttc14	Cdh2	Ear6		
+	E2f6	Cdkl3	Yipf6	
+Sox9	Lamp2	Dnm2		
+D830030K20Rik	Hdlbp	Dnalc1	Cyhr1	
+Ndufb4	Rhog	Fam120c	Cul2	
+Myeov2	Fnip2	Prkrip1	Hsf4	
+BC020535	Atg7	Eif4a1	Cdkn2aip	
+Ftsj1	Nat10	3110047P20Rik	Pex14	
+Polr1c	Dnajb1	Vipr1	Cc2d1a	
+Nup107	Smarca4	Cd63	Nat10	
+Sh3bgrl3	Tfip11	Tbcd	Slc38a4	
+Gmpr	Gpx2	Wdr73	B4galt5	
+Eapp	Tmem8b	Plk5	Defa-rs1	
+9430015G10Rik	Itgax	Fank1	Cstf2t	
+Gria2	Jmjd8	Dennd5a	Cphx	
+Grk4	Rbm4b	Rpain		
+Orai1	Adc		Zkscan5	
+Apoc3	4831426I19Rik	Ftsj3	Ybx1	
+Tmeff1	Loxl3	Dnajc9	Tspyl2	
+Corin	Gtf2f2	Prpf31	Mat2a	
+BC147527	Rdh14	Zfp593	Scn3a	
+Mki67ip	Plcg1	Mycbpap	Cdc42ep1	
+Stk19	Sdhaf2	Rpl37	Ssr3	
+Kctd18	Diras1	Ppil1	Rplp2	
+Pfdn2	Ankrd16	Ccdc112	Fbxo39	
+CYTB	Gm15348	Dip2a	Fam20c	
+Alx3	Pcyt2	Nagk	Nfatc2	
+Tceb1	BC030867	Cenpt	Fam32a	
+Rras2	Mrps11	Gorab	Rrp8	
+	Nbl1	Mrps14	Polr3b	
+Lmnb2	1500011K16Rik	Herc1	Nod1	
+Tspan2	Clasp2	Mudeng	Dmbx1	
+Baiap2l1	Tmem87a	Ccdc90b		
+Gorasp2	Vars	2900006K08Rik	Foxc1	
+Nfatc4	Tcf20	Ptprj	Mmp28	
+Eaf1	Reck	Rps11	Ear10	
+Tox2	Prmt2	Nup43	Csrnp3	
+Slc35a2	Clec18a	Mzt2	Gltscr2	
+Elf5	Fhl1	Thoc3	Ctsh	
+Rab14	Pars2	Rybp	Tor3a	
+Pgrmc1	Rab3d	Zfp644	Pias1	
+Mcm10	Zfp593	Adrm1	Nsun2	
+Slc46a3	Magt1	Bmp8a	Ikbip	
+Nacad	0910001L09Rik	Fstl5	Slc22a4	
+Rps29	Pfdn5	Pi4k2b	Gm5434	
+Ddx49	Atf2	Tug1	Cacna2d4	
+Ccdc59	Dnajc9	Ticam1	Pnmt	
+Dgka	Loxl2	Cerkl	Gm10324	
+Ino80	Kcnn3	Dnaic2	Mc3r	
+Mcat	Syt9	Tubgcp3	Mipep	
+Aif1	Tmem216	Serhl	Fam3a	
+Fgfrl1	Tmem204	Rab15	Sco1	
+Npr2	Nsmce2	Man2c1	Prss2	
+Apip	Mpa2l	Lrrc40	Nr2f1	
+Fam32a	Zfp346	Gm5341	Ccdc85a	
+Palm2	Paqr8	Tmem126a	Cox8b	
+Thumpd1	Pkd2	Pdgfa	Pdf	
+Ebag9	Hnrnph1	0610009D07Rik	Sirt3	
+Tsen15	Ets1	Hspa4	Postn	
+Ptprn	Mtrf1l		Gnal	
+Ncor2	Ipo4	Adck2	Dlg2	
+Tlr1	Fam113a			
+Acot5	Gm4392	Ogg1	Ccdc24	
+Wfdc1	Gm5087	Gm4831	Tmem8b	
+Capn3	Tmem161a	Mtmr11	Acsl1	
+Fbxo5	Mtx1	Cep164	Nags	
+2010204K13Rik		Shmt2	Cytip	
+Grin2d	Nanos1	Serf2	Scyl1	
+Usp22	Camta1	Mrps16		
+Rabggta	4930522L14Rik	Gm14431	1700025K23Rik	
+Tceal5	Slc30a6	Scaf4	Nlrp6	
+Tbx15	Nfyc	Kif1a	Prpf31	
+	Tmem69	Cdc37	Hnrnpa0	
+Ruvbl1	Slc35e2	Fam13b	Mrps2	
+Wdfy1	Galnt4	Ercc1	Syce1	
+Cep192	2610019F03Rik	Gpm6a	Mapk12	
+2310003L22Rik	Pias2	Tmub1		
+Nfkbia	Tnfrsf1a	AI836003	Kcna7	
+Plat	Taf13		Fgb	
+Pcdha11	Amph	Phactr4	Pdpk1	
+Igsf11	Atp6v0e	AI462493	Trmt1	
+	2610028H24Rik	Pisd	E330012B07Rik	
+Rpap1	Hip1r	Prrt4	Slc40a1	
+Acp6	Hnrnpr	Bcl7c	3110099E03Rik	
+Dock8	Dok1	Phax		
+Chst15	H47	Arl6ip4	Ccm2	
+Ksr1	Trappc6b	Mcoln1	Tymp	
+Pik3r3	Efna4		Dnahc17	
+Stk40	Igsf11	S100a16	E2f3	
+Mgmt	Rhpn2	Foxb1	Atp5c1	
+Slc39a13	Gm9970	Ppif	Disc1	
+Ddx5	Ercc1	Spns1	Fndc3c1	
+Gemin7	Prss41	Oscar	Leo1	
+Arpc1a	Irgm1	Galnt4	Calm1	
+Lgals4	2700060E02Rik	Rimklb	Tmtc1	
+Pi4k2b	Rpl13	Dlst	Col12a1	
+	Klhl30	Ndufaf4	Syt9	
+Sec13	Coro1a	Lrp8	Grm7	
+Mpp1	Dolk	Plrg1	4921530D09Rik	
+Fam108b	Dfna5	Atp5j2	Sft2d2	
+Kdm5c	Gtf2a2	Il27	Ccdc23	
+Bbs2	Gnal	Alpl	Tmem150b	
+Clcn7	Mmgt2	Cyp51		
+Kif26b	Fanci	Naa35	Slc5a8	
+Ccdc81	Ddc	Cdkn2aip	Rnf141	
+Cacng8		Rangrf	Cd320	
+Snx3	Fam89a	Fkbp8	Leprot	
+Eif2a		Mycn	Ampd1	
+Pla2g3	Radil	Lat2	Heatr5b	
+Cpped1	Mc3r	Plcd1	Mtm1	
+Phc2	Defb45	Nbl1	Gm8580	
+Cyb5b	2310057J16Rik	Bdh2	Nkx6-3	
+Rps7	Dgka	Atp5d	F2rl2	
+Cdt1	Car5b	Sdccag3	Sema6b	
+Epha5	Mapt	Tkt	Snap29	
+Mc1r	2310003F16Rik	Mcf2l	Rxrg	
+Prkab1	Tada2b	Tm4sf1	Col4a3bp	
+Cenpc1	A630007B06Rik	Tmem195	Tspo2	
+Slc45a4	Sardh	Carm1	Dio1	
+Ccdc123		Igsf9	Stxbp3a	
+Sccpdh	Ell	2510012J08Rik		
+Recql	Cd300lf	Slc36a1	Prpf39	
+Cox4i2	Mad2l2	Slc30a1		
+Anxa11	Eme1	Zfp217	Gm1527	
+Cxcr6	Hist1h1b	Blmh	Kcnip1	
+Rab28	Pcbp3	Smarcd1	Pik3r3	
+Irak1	Mllt4	Car12	Lrrc48	
+Meis3	Shmt2	Kcnj5	Fbxw21	
+Gm8709	Srpr	Kars	Sbds	
+Ror2	Dynlt3	Per2	Rnf139	
+Klc3	Tex15	Cdkn1b	Tmem41b	
+Hk2	Hax1	Banf1	1700123I01Rik	
+Lrrc4	Nme1	H47	Nudt11	
+Glt8d1	Mospd1	Ptger1	Ppid	
+Sfxn2	Rg9mtd3	Lnp	A530058N18Rik	
+Flii	Nfatc2	Tars	Mcm7	
+Gapdh	Rac2	Tfb1m	Slc25a34	
+Hexim1	Cabin1	Gm1141	Bace2	
+Msl3	Uhrf1bp1	Lrp6	Arhgap21	
+Smarce1	Maoa	Pydc3	En2	
+Tmem195	Xiap	Otud5	Gabbr1	
+Scarb1	6330408A02Rik	Pcsk4	Parva	
+Bend5		Slco1c1	Prm1	
+Maf1	Kbtbd8	Cyp4f14	Smok4a	
+Scaf4	Sntg1	Il6ra		
+Itgb1	Usp25	Eml3	Napa	
+Denr	Ssr3		Ndufv2	
+Egf	Rasl11b		Slc2a4	
+Nup93	Kifc2	BC005624		
+Aldh9a1	Abcf1	Panx1	Shc4	
+Cetn2	1810013L24Rik	F13b	Mtmr3	
+Ppp1r15b	Lrrc51	Fuk	Ddx42	
+Trim39	Smarcd2	Igf2r	Cab39l	
+Npcd	P2ry1	Nagpa	Tenc1	
+Itpa	Adh5	Map1lc3b	Akr1b7	
+Zfp85-rs1	Phf23	Reep5	Ss18l1	
+Bfsp1	Gcfc1	Grin2d	Msl3	
+Stat3		Enoph1	Gne	
+Mettl5	Kdm3a	Zfp579	Pak6	
+1810010H24Rik	Srp72	Gpr61	Cog6	
+Plod1	Gfpt2	Vamp3	Crhbp	
+2610018G03Rik	4632428N05Rik	Erc1	Parm1	
+1500002O20Rik	Coro7	Afg3l1		
+D10Bwg1379e	Fzd4	Sema6a	1700058C13Rik	
+Cbll1	Pqlc3	Fam89a	Rnf8	
+Atg13	Slc5a5	Phf13	Mcm2	
+Adam10	Nudc	Ppp3cc	Helt	
+Dtx4	Tmem180	Dhx40	T	
+Adamts10	Ofd1	Hvcn1	Shpk	
+Ulk3	Scyl3	Uvrag	Acyp1	
+Slc25a11	Tle1	Sh3d19	Rad23b	
+Apoa2	Hsf4	C3	Vangl1	
+Nek6	Arrdc4	Slc25a26	Lrp2bp	
+Usp42	1110007C09Rik	Rnf31	Ugdh	
+	Ctnna1	Grin3b	Rpa2	
+Pex26		Laptm5	Pld6	
+Arnt2	Mudeng	Aplp1	Rs1	
+Apol7d	Bcl2a1d			
+Igfbp5	Rabif		Ctns	
+Ptma	Slc45a1	Rptor	Prps2	
+Sar1b	Slitrk1	Cdh15		
+Znrd1	Ubash3b	H3f3b	Cd226	
+Hpcal4	H2-DMb1	Gm14047	Negr1	
+Steap1	Sipa1l2	Gbas	Lrfn3	
+Eif4e	Rspo3	Gzmm	Lcorl	
+Bmyc	Ctnnbip1	Rangap1	Extl2	
+Urgcp	Pcgf2	Kcnd2	Opa3	
+	Ptpru	Fmo1	Lair1	
+Dynlrb1	P2ry13	Ccnt1	Pvrl4	
+Aatk	Six4	Fut10	Rbm5	
+Chmp4b	Zfp959	Polg2	Cndp1	
+Eif4a3	Sfmbt2	Gpx4	Kif26b	
+Tceb2	Rps18	Vangl1	Aff3	
+Nrm	Gnb1	Stxbp2	Sntb1	
+Ddhd2	Dio2	Tdg	Sult1c2	
+Ppargc1a	Slc38a7			
+Cd109	Pkia	Cops6	Gatad2b	
+Zfp936	Egfl8	Grik5	Lrrc33	
+Cebpa	Lrrc1	Fbxw4	AK129341	
+B3galt1	Tmem98	Igsf11	Scaf8	
+Rfng	2400003C14Rik	Cpped1	Tbx4	
+Rsu1	Mcm7	Opa3	B3gnt5	
+Tpbg	Eif4g1	Zfp629	Heatr7b1	
+Fbp1	Pdcd10	Klb	Tmem98	
+Shf	Gm1332	Trank1	1500011K16Rik	
+Cdh26	Trp53inp1	Pvr	Rpl34	
+Casz1	Lmna	Gm1673	Anapc1	
+	Cerk	Vps13d		
+Chst2	Bad	Loxl2	Zfp446	
+Uba6	Cryl1	Adc		
+Ppcs	Btbd3	Prmt6	Hpgd	
+Aldh1l1	Ssxa1	Aff3	Dnajb13	
+Mfsd2b	Vipar	Gab1	Ap3m1	
+Otos	Rtp2	Cstf3	Narf	
+Cyp2b13		Acbd3	ND5	
+C130039O16Rik	Cstf1	Cox7a2l	Ccdc88c	
+C85492	4931406P16Rik	Ifitm5	Pde7b	
+	E2f7	Clcn2	March4	
+Dnajc12	Snx20	Coq2	Ndrg3	
+Ubd	Slc38a4	Coro7	Bahd1	
+Rasl10a	St6galnac2	Serpina3k		
+Nr2c2ap	Gng10	Fam117b	6330408A02Rik	
+Fuca1	Dmrta2	Ubxn1	Kcnab3	
+Pvrl3	Pex14	Slc19a3	Fpgs	
+Lama5	Exoc4	Adcy9	Npl	
+N6amt1	H3f3b	Tmem44	Arhgap4	
+	Smurf2	Zbtb46	ND4	
+Klhdc1	Tsfm		Nrf1	
+Gm2382	Fxyd6	Mtrf1l	Clvs2	
+Nfe2l3	Sema6b	Fam113a	Polr1b	
+Xrcc3	Zbtb41	Dcps	Gsr	
+Taf8	Wdr12	Eml5	Cand2	
+Olig1	Fam166b	Cmpk2	Gm10345	
+Pcnt	Mkrn2	Brap	BC002230	
+Itih5	2700049A03Rik	1810009A15Rik	Atf7ip	
+Ccbe1	Npl	Cyp2b10	Krtap16-8	
+Nhp2	Wdr74	Psen2	Srcin1	
+Neurod6	Morf4l2	Ndufb3	Qrfpr	
+Med29	Baz2a	Zxdc	Bcs1l	
+Bud31	Ctnnal1	Atox1		
+Baz1b	H2-Ab1	Mtch1	Rbck1	
+Pcgf6	Eif6	1700112E06Rik	Ghrl	
+Arhgap42	Slc35b1	Mbtps2	Fank1	
+Vma21	Podxl	Axin1	Kdm5c	
+Trp53i11	Fth1	Fam155a	Pex1	
+Sparcl1	Eif3b	Capn9	3200002M19Rik	
+	Tuba1b			
+Cd27	Pmpca	Donson		
+Tas1r3	Psmd14	Ero1lb	Rfxank	
+Gfpt2	Slitrk4		Tpbg	
+Pcsk7	Ecsit	Tmem47	Ap1g2	
+Gm11818	Itga10	Magi3	Lgals8	
+Kcnd3	Rpl6	Pan3	Dgkd	
+Prkcsh	Gne	Jund	Cdt1	
+Cacna1s		Lix1l	Ppp1cb	
+Nck2	Arhgap29	Ehhadh	Pdss1	
+Esrrb	Svop	Tceal7	BC005537	
+	Galnt2	Psma1	Klrc1	
+2310009B15Rik	Zfp281	BC030500	Rabgef1	
+Dhx34		Zfp706	Arl6ip4	
+Pigs	Wnt11	Luzp1	Polr3d	
+Golt1b	Hpse	Cpd	Fam173b	
+Ap3m1	Pnpla6	Nat10	Flot1	
+Hnrnpu	Lass2	Smarcc2	Fgd1	
+Rpl15	Fstl5	Gucy1a2	Sema6a	
+Rint1	Snx6	Polr3g	Itgb4	
+Lgi4	Ccdc90b	Abtb2	Mcoln2	
+Srsf13b	Dync1li1	Zscan12	Ywhah	
+Atad5	Mfn1	Tmem173	Zfp354a	
+Rps25	Arhgef10	Slc39a2	Xab2	
+Tspo	Rpn2	Uts2r	Bcl7c	
+A330050B17Rik	Arl3	Mpp2	Ino80c	
+Lrrc19	Cited1	Med18	Mycn	
+Dclre1c	Izumo4	Snrpb	Hoxd12	
+Anxa9	1500012F01Rik	Bglap2	Prss36	
+AA881470	Bend7	Gng8	Ces1c	
+Kcnc2	Clvs2		Gm13084	
+	Uts2r	Eef2k		
+Trim21	Ccdc28b	Pef1	Diras1	
+Synj2	Ncbp1	Epn3	Rbm3	
+Prmt2	Cog1	Nmd3	Agtr2	
+Lmnb1	Islr	Rabif	S100a11	
+Mnt	Gm13152	Rasal3	Alb	
+Cldn15	Man2c1	Fez1	Shoc2	
+Elovl1	Cpped1	Nrip1	Aifm2	
+Vapa	Tnfrsf4	Klk1b27	Ccdc126	
+Sftpc	Sema6c	Acvr1	Avpr1a	
+Slc7a1	2310003H01Rik	Rin1	Ccl25	
+Smad7	Hrsp12	Ccr5	Kdelr2	
+Dph1	Il12rb1	Gm7168	Reck	
+Mpi	Tpcn1	Thg1l	Gucy1a2	
+Hoxb1	Oprl1	Igbp1	Polg2	
+Exosc7	Ppcs	Ruvbl2		
+Itpk1	Meis3	Pfdn4	Tmem87a	
+Ric8	Stag1	Rhog	Arhgap6	
+Apoa1bp	Uqcrq	Usp3	Dynlrb2	
+Ak2	Pld6	0610010O12Rik		
+Lepr		Dynlrb2	Vps33a	
+1700021C14Rik	Srebf1	Obfc2b	BC005624	
+Abcd1	Wt1	Sap18	Klhl36	
+Ndufv3	C8g	Pex19	Rala	
+Ltn1	Tmem59	Radil	Tekt3	
+2810008M24Rik	Slco1c1	Edf1		
+Oaz2-ps	Trim9	Prss41	Wdr45	
+Wdr13	Psma7		Smarcal1	
+Srsf1	Fstl3		Fam53a	
+Gm4978	Map3k1	Mpa2l	Paqr3	
+Mrps36	Arl4c	Ucp1	Smtn	
+Helb	Nol11	Slc25a11	Inadl	
+Mcm2	Cant1	Itgal	Ppp3cc	
+Aifm2	Alg9		Golga5	
+Ugp2	Ptchd3	Rhbdl1	Ccdc115	
+Npw	Bglap2	Cited2	Nfkbia	
+Parp1	Pion	Cog6	Prrt4	
+Nif3l1	Ap1s1	Tmem222	Orai1	
+Fxc1	Ghrl	Vasp	Slc7a8	
+Hbb-b1	Dhcr24	Med11	Evi2a	
+2510003E04Rik		Slc47a2	Nedd1	
+Agap3	Apcdd1	Rpl41		
+Cndp2		Slc22a2	Rad17	
+Elovl4	Gdi1	Tpm4	Lrrc7	
+Car7	Serpina3k	Smarca4	Cryl1	
+Hddc2	Srpk3	Hnrnph1	Aimp2	
+Sf3b1	Arhgdia	Gm10318	Arrdc2	
+Epha2	Ear1	Taf3	1700014N06Rik	
+Glrb	Zhx1	Tspo	Tmem44	
+Vps37d	Abca14	Btbd19	Ugt2b5	
+Ddx3y	Arfgap3	Kctd12b	Ndufs6	
+Bid	Arhgap4	Mycbp	Dnaja2	
+Plscr2	Zfp51	Rbm38	Sh3bgrl3	
+Trak1	Tshz1	Cnp	Nt5c3l	
+Ppp1r16a	Ocel1	6430531B16Rik	Olfr1385	
+Ccnl1	Stk30	Dok1	Zfp292	
+Ppp1r14a	Nup160	Lrrn4		
+Phb		Acadl	Gfi1	
+Ift140	Gosr2	Cntn5	Tnfrsf1a	
+Thrap3	C80913		Dap	
+Pdcl	Ttyh2	Gm694	Psmg2	
+Uqcrb	Ccdc59		St6galnac2	
+Tubgcp2	Rab1b	Eif6	Phpt1	
+Eif3e	Tekt4	Sema3e	Hadhb	
+Cyp2j6	Phax	Pms1	Hsdl2	
+Pim3	Itga6	Bcl2a1d	Fam89a	
+Gp2	Gm5077	Ttll5		
+Cyb5r3	Polb	Ilf3	C3	
+Mta1		Myst2	Gfm2	
+St13	Mobp	Pnpla6	Ugt2b34	
+Lst1	Tcf12	Foxs1	Tnnc2	
+Ptpru		Glp1r	Tada2b	
+Hnrnpul1	Cplx1	Cryzl1	Nmi	
+Nexn	Gfra4	5530601H04Rik	Cbx3	
+Ntan1	Traf6	Usp25	Usp5	
+Tnfrsf9	Pnrc1	Snx6	Anapc5	
+Csnk2a1	Nyx	Aifm2	Etv1	
+Ublcp1	Opa3	Rnf141		
+Syn2	Ash2l	Galntl6	Gm5622	
+Rps6kb1	Ftsj3	Bmp4		
+Lyst	Zhx3	B4galnt4		
+Lgals1	Cd52	Hmg20b		
+Msrb3	Inha	Defb45		
+Rbm14	Kcnc3	Creg1		
+Ppm1d	Nudt16l1	Plagl1		
+Mast2	Mnda	Rnf114		
+Mkrn3	Atxn7l2	Ubl5		
+Synpo2l	Syne2	Npy5r		
+Mppe1	Fgd1	Nrxn3		
+Rpl13	Zfp354a	Ccdc59		
+B230369F24Rik	Strn4	Mcm7		
+Pcsk9	Eri1	Slc25a30		
+2500003M10Rik	Zfp27	Tmsb15b2		
+Zfp11	Cst3	Cd200		
+Mdn1	Tnnc2			
+Dph3	Zfpl1	Nudt10		
+Papd5	Kpna6	Ccl5		
+Atp5g2	Egln1	Apom		
+Casp1	Src	Glo1		
+Hdhd2	Rad9	Uqcc		
+Tle1	Actl6a	Tspo2		
+Ufsp2	Itgad	Tapbpl		
+Fzd9	Cgref1	Wnt2b		
+Pdk4	Ina	Eng		
+Dhx30	Sox17	Fbxo39		
+Tpt1	Slx4	Slc6a15		
+Cbx3	Brap	2010002M12Rik		
+Dak	Sesn1	Ttc25		
+Mmp11				
+Armc6		Qser1		
+Psmd3	Nr2e1	Crebbp		
+Acvr1	Errfi1	Gabarapl1		
+Ccdc99	Kif2a	Olfr464		
+Ccdc28b	Nedd1			
+Acads	Cfc1	Mfap3l		
+Mthfsd	Krt18	Rbm45		
+Psmd13	4933440N22Rik	Hnrnpr		
+Sik1	2610002J02Rik	Cpm		
+Amph	Cebpb	Rps6-ps2		
+Mypop	Mex3c	Srsf10		
+Airn	Spdya			
+Glipr1	Rab13	Aifm1		
+Decr1	Psma1	3110082D06Rik		
+Ass1	Hmg20b	2610019F03Rik		
+	Pax6	Rpn2		
+C87414	Dnajb6			
+Gm885	Krtcap3	Timm44		
+Atrip	Iscu			
+Psmd7	Slc30a1	Dytn		
+Trim16	Alg6	Clcn5		
+	Zc3h8	Serpina11		
+Mapk14		Nfyc		
+Rasl11a	Txndc16	Tmem216		
+Pdhb	Foxe1	F3		
+Ltbp3	Mid1	Gm4392		
+Cul7	Leo1	Nhlrc1		
+Pabpc1l	Tmub1	Gmppb		
+Tmprss4	Fancl			
+Dsn1	Blvrb	Rpl9		
+Birc3	Slmo2			
+Tmsb15b2	Zfp58	Plcd3		
+Ccin	Top2b			
+Zfp119a	Fbln1	Gprin1		
+Sidt2	Nme4	Fbxo30		
+Adam15	Itgb1	Anapc1		
+Cxcl16	Hprt	Ift88		
+AB124611	Rbm45	Tbpl1		
+Kif2a	5730494M16Rik	Pcbp3		
+Rspo2	Kcnq3	Muted		
+2210015D19Rik	Rhbdl1			
+	Fig4	Gm13251		
+Sox2	Anapc1			
+Rnf139	Atox1	Cd300lf		
+Tmsb15b1	Gemin8	Gtpbp6		
+Selk	Homer2	Tnnc2		
+Tmem20	Cnih3	Pbx1		
+Ifitm2	Kcnj5	Fam45a		
+Wdsub1	Echdc1	Eif4e2		
+Alad	Tinf2	Csrnp3		
+	Cntn4	Tcfe3		
+Srr	Fabp5l2	Polr3c		
+Cdkn2b	Ddx42	Slc41a3		
+Igsf1	Rrp9	Tead2		
+Ebi3	Prpf39	Dnm1		
+Aarsd1	Epn3	Phpt1		
+Etv4	Gm1027	Ndufb11		
+Mkln1	Polr3c	Mtmr2		
+COX2	Tspan2	Sf1		
+Cnr1	Cdkn1c	Foxc1		
+BC065397	Rpl21	Map3k15		
+0610010K14Rik	Slc27a1	Gstz1		
+Polr3h	Fau	Itgae		
+	Pex1	Hand2		
+Ager	Fcrla	Srprb		
+Ttbk2	Mxd3	Igfbp5		
+Trpc4ap	Ear6	Zfp944		
+Kif3b	Spg11	Scube3		
+Ssx2ip	Snupn	Mettl5		
+Creb3l4	Prkx	S100b		
+	Stx7	Tbx6		
+Ppp2r4	Parg	Dek		
+Wbp4	Nop58	Skap2		
+Mlf1	Stk4	Hcrtr2		
+Ddx39	Cd84	Chmp2b		
+Fancg	Scp2	Shd		
+Rpsa	Upk3a	Nod1		
+Sstr4	B4galt6	Papd4		
+Cdk4	Pms2	Ssr1		
+Dtd1	Actr1b	Nme1		
+Btbd6	Spink5	Lman2		
+	Aifm1	Sp140		
+Akap17b	Grinl1a	Snx7		
+Sema3d	Pknox1	Vegfc		
+Clp1	Rasgrp4	Vsig10l		
+Gm5145	Mycn	Oprl1		
+Chd1l	Lef1	Hat1		
+Xpot	Tgfbr1	Pax4		
+Zfp580	Srprb	1110008J03Rik		
+Ptpn4	Tox4	Poc1b		
+Entpd4	Mrc2	Krtcap3		
+Zfand1	Memo1	Znrd1as		
+Tm9sf3		Sacs		
+Pgap3	1110002B05Rik	Psmc2		
+Dusp10	Ankrd22			
+Bcl7a	Triap1	Cryl1		
+Hadha	Tcea2	Mxd1		
+Tal1	Gan	Slc45a1		
+Ptplad2	Alg5	Rab10		
+Trmu	Rimklb	Abcf2		
+Fbxo30	Magi3	Ube3b		
+Brdt	Mier3	Dlg2		
+Tgs1	Taf8	Fsd1l		
+Irf7	Vnn1	Ipo4		
+Egln1	Grb2	Pex13		
+Rexo4	Rrad	Gtpbp10		
+Spata3	Zcchc11	Vnn1		
+Psmd6	Ccdc40	Gmppa		
+Sytl5	Smug1	Gna14		
+	Crebbp	Kcnc1		
+Mrpl30	Gpm6a			
+Usp19	Ush1g			
+Nfe2l2	Slc39a3	Gm8994		
+Srd5a3	Otp	Ddx42		
+Nadk	Hmbs	Ap1s1		
+R3hcc1	Serf2			
+Maob	Cd1d1	2310045N01Rik		
+Clk2	Slc6a11	Pptc7		
+Hap1	Gcc1	Src		
+Zfp14	Wdr77	Pttg1ip		
+Rpl26-ps2	N4bp3	Rcan3		
+Sik3	A430033K04Rik	Hspbp1		
+Tgfbr1		Smarcd2		
+Tmem63a	Asxl3	Bst2		
+Ifit3	Pms1	Rpa2		
+Zeb2	1810022C23Rik	Aph1b		
+Sos2	A530098C11Rik	Lphn1		
+Fam45a	Map2k5	Stk24		
+Tmem55a	Asgr1	2700060E02Rik		
+Acot3	Dok2	2610028H24Rik		
+Ciz1	Cpa3	Pde4b		
+Vmn2r24	Zfp580	Kctd14		
+Por	Alox12b	Anxa9		
+Cetn1	Leprot	Sephs2		
+Brms1l	Polr2j	Cep192		
+Kcnc3	Tinag	Lbx2		
+Rgs16	Ccdc125	Hyou1		
+	AW011738	H2-Ob		
+Slc39a2	Psma3	Zfhx3		
+Sgk2	Pdf	Olfr611		
+Pde4dip	Zfp706	Mospd1		
+Gmnn	Chmp4b	Serpinf2		
+Zfp654	Reep5	Trim59		
+Gm5215	Scn1a	Cyp2d12		
+Heatr5b	Ndufv3	Tlx3		
+Kin	Man2a2	Rhpn2		
+Rhog	Abcg1	Slc35e2		
+	Cbr2	Rgs16		
+Fggy	Lgr4	Slc15a2		
+St6gal1	Pcnt			
+Impact	Rnf4	Trim63		
+Nr3c1	Tm4sf1	Rnf4		
+ND1	Dars2	Car5b		
+	Dek	Cth		
+Tpd52l2	Prss50	Spnb3		
+Tnfsf10	Dmrt3	Dvl3		
+D430042O09Rik	Ndufa7	Gcfc1		
+S100b	Mtch1	Gm5087		
+Zranb3	Zc3h12b	Smc1a		
+Zcrb1	Akr7a5	Itgb7		
+	Trak1	Rhof		
+Ocln	Atp5e	Depdc1b		
+Crtc1	Plekhh3	Asb16		
+Mrc2	Rps15	Cbx2		
+2210013O21Rik	Oxct1			
+Cstf1	Acp1	Zdhhc24		
+Trnp1	Wdr75	Actl6a		
+Cldn11	Actr2	Zfp51		
+	P2rx7			
+Spn	Smad6	Rbm12		
+	Pold1	Podxl2		
+Ppox	BC051019	Itga5		
+Chia	Ugdh	Lztfl1		
+BC048403	Rbm12	Gemin6		
+Lpcat3	Mtpap			
+Rassf9	Csmd3			
+Junb	Atp5sl	Alg9		
+Nthl1	Vps33a	Tet3		
+Myef2	Trim2	Trim38		
+Trim45	Vac14	Hcrtr1		
+Kcnk12	Trim26	Msh3		
+Rrm1	Tmem44	Armcx3		
+Hiatl1	Fez1	Lancl1		
+Bub3	Avp	Ctla2a		
+Epc1	Slc11a1	Alas2		
+Il18bp	Obfc1	Ampd2		
+Cux1	Donson	Wac		
+	Stab2	Tmem180		
+Ddx50				
+Ptpn11	S100a9	Ercc6		
+Zfp687	Tmem121	Slc38a1		
+Atp11a	Tox2	Izumo4		
+Trmt2b	Tap1	Lingo3		
+Zfp260		Foxk1		
+	2410003K15Rik	Armc2		
+	Sec11c	Igfbp4		
+Herpud2	Erp44	B230307C23Rik		
+Slc5a3	Zscan12	Cops7a		
+Gm5640	Ddx26b	Adh5		
+Flt3	Flnb	Havcr2		
+5430403G16Rik	Ero1lb	Gm5820		
+Rbbp6	Tek	Sardh		
+Samd4	BC006779	Fkbp7		
+Gm6377	Abcb8	Tmem167b		
+Maged1	Sirt5	Gdi1		
+Tmem80	Rnf31	Zrsr2		
+Sf3b2	Nipal3	Hnrnpm		
+Chst12	6330503K22Rik	Fam55b		
+Tmem45a	Clec2d	Diras1		
+Rasl12	Rpain	Fdx1		
+Phkg2	Pacsin1	Rala		
+Ugcg	Rad54b	Abhd5		
+Tgfa	Copg2	Vipar		
+Nkx6-2	Itgal	Serpinb9e		
+Cdc23	Lancl1	Fbxl3		
+Nt5m	Hexim1	Nsl1		
+		Pa2g4		
+Eif2b2	Tmem57	Nfatc2		
+	5930434B04Rik	Rpa3		
+Dbt	Cct2	Cbln1		
+Rassf1	Slc38a3	Hpse		
+Mysm1	Nup43	1500011K16Rik		
+Maged2	Rlim	Arl4c		
+Psmd11	Zmynd8	Kif3b		
+Sap30bp	Bin1	Cldn23		
+Rfxank	Tmem126a	Inpp5a		
+Rpsa	Snx13	Ttc39d		
+Ehd2	Rbm38			
+Ints12	Tenc1	Ccdc28b		
+Avp	Pkp3	BC048609		
+Bnip3l	Zfp943	Slc25a1		
+Zfp108	Med9	Atp6v0a1		
+Cog6	Ctss	Slitrk4		
+Cisd3	Timp3	Sag		
+Zfp444	Tbx21	Edn1		
+2700023E23Rik	Mrpl28	Ugp2		
+F5	Thg1l	Golga3		
+Gtf3c4	Zfp161	Kcnn3		
+Gm13152	Cs	Lgals1		
+Pkn1	Mterfd3	Tec		
+Clic1	Rdh12	Zfp943		
+Dr1	Cand1	Slc38a2		
+Fstl5		Pigx		
+Gbp1	Galnt1	Slitrk6		
+Igsf8	Cntnap1	Syce1		
+Pomc	Zfp654	1700029H14Rik		
+Tnni1	Zfp579	Tmbim4		
+Prkaca	Mta3	Zfp239		
+Shank1	Ccdc9	Nmi		
+Arrdc3	Atp6v0a4			
+Tle3	Gcc2	Thumpd1		
+	Fastk	Slc25a42		
+Cacybp	Bst2	Itga10		
+Wdr85	Dph3b-ps	Zfp108		
+Crat	1700029G01Rik	Gm1027		
+Uba7	Cln3	Anxa4		
+Chmp6	Mfap3l	Otos		
+	Ap2a2	Glis2		
+Atp6ap2	Klc1	Gnai3		
+Rilp	Prmt6	Snx25		
+Pdcd7	BC065397	Clasp2		
+Myl9	Shd	Itm2c		
+Ptplad1	Usp54	Api5		
+2610028H24Rik	Axin1	Gne		
+Bin1		Sdad1		
+Atp6v1g2	Gm684	Nol11		
+Sbf1	Rfc5	Spata24		
+	Vps4a	Ano8		
+Zfp954	Serpinb9e	Bmf		
+Phtf2	Nespas	Pgap3		
+Limd1	Gdap2	Rab35		
+Dynll2	Dnalc1	Tcfap2c		
+	Mrps16	Slc27a1		
+Tec	Suv420h1	Zfp879		
+Snupn	Zfp295	Ptplb		
+Gabrr1	Spg21	Maff		
+Adamtsl4	Lst1	Tcf12		
+Trnau1ap	Gprc5c	Ddx26b		
+Nlgn3	Tceal7	Flnb		
+Mtpap	Arl6ip4	Lemd2		
+Scube2				
+Lamp3	Fkbp4	Ugt2a3		
+Pdia3	Hibch	Lrrtm2		
+Hadhb	Krt8	Klhl1		
+Sbno1	Cyp3a13	Efemp2		
+Tecr	Acacb	Gimap4		
+Ctu2	Foxb1	Rab1b		
+Gadd45a	Lbx1	Snx14		
+D230025D16Rik	Dis3	Csmd3		
+Ndp		Pdxp		
+Fabp4	H2-Ob	Pias2		
+Pxmp4	Mxd1	Rab7		
+Tsc1	Eif2b3	Otub1		
+Psma3	Zfp532	Copa		
+	Rpl37	Tpd52l2		
+Rnf32	Rnd2	Gp1bb		
+Smc1a	Zfp830	Cd9		
+Runx1t1	Anxa9	Ctnnal1		
+Chd2	Rpsa	Ttll3		
+Poc1b	Tet3	Trim66		
+Kifc3	Myod1	Fam166b		
+Gimap4	Zfp771	Dcun1d4		
+Nme3	Scaf4	S100a11		
+Creb3l1	Ndrg4	Arl5a		
+Rbm25	Rad54l2	Zfp251		
+Syt8	Amtn	Dbf4		
+Rrp15	Polr3d	Osbpl11		
+Rangrf	Dusp4	Zfp229		
+Terf2ip	Tspo	Jmjd6		
+Wnt9b	Spink4	Itih3		
+Zfp944	Kctd14	Gm9885		
+Krtap5-5	Kif3b	Bin1		
+Decr2	Caml	Farsb		
+Gsr	Mpp6	Ube2a		
+D8Ertd82e	Mrpl41	Galnt2		
+Nid1	Nckap1l	Atp8b2		
+Polr3e	Eif4e2	Maf		
+Ddx59	Nog	Vars		
+6430531B16Rik		Smad1		
+Alkbh6	Efcab10	Adcy4		
+Sgsm1	Ryr2	Smad6		
+Mrpl17	Pih1d1	Pcnt		
+Atp5o	Ifit3	H13		
+	Rasal3	Gpx2		
+	Bace2	Wipi1		
+Dusp19	Snx33	Dio2		
+Rtcd1	Ugt2a3	Gm684		
+Pef1	Rpsa	Ext2		
+Slbp	Olfr76	Eno2		
+Sbno2	Dub1	Ppp3cb		
+Kirrel2	Rbbp5	Sephs1		
+Ptgs2	Adcy4	Arih1		
+4930525M21Rik	Edf1	Rplp2		
+Ebf4	Azi2			
+Sykb	Ufsp1			
+3230401D17Rik	Rabl2	Hcn3		
+Txlnb	Vcp			
+	Slc30a10			
+Lhfpl4	Ptdss1	Lace1		
+Serpina3b	Glb1l	Efna4		
+Mkks	Slc38a1	Tle1		
+Cacna1i	Rab35	Nostrin		
+Rps14	Olfr596	Clec18a		
+Prodh	Ears2	4930522L14Rik		
+Sec11c	Klhl22	Ube2q2		
+Hes6	Plekhg6	Krit1		
+Chchd7	Gm15056	Zfp92		
+D330045A20Rik	Sspn	Sass6		
+Dbc1	Atp2c1	Prpf40b		
+Psme1	Actn3	Wtip		
+	Ptpn4	Gng10		
+Omp	Slc22a13	Atp5g2		
+Sh3kbp1	Lman2	Tuba1c		
+Vamp3	Klhl2	Myod1		
+Sft2d2	Iqub	Gm5321		
+Slc9a3r2	Gm14160	Dgka		
+Gm5868		Upk2		
+Enpep	Cited2	Sumf1		
+Zmynd10	Tkt	Bap1		
+Lrrc61	Gp9	Stra13		
+Kirrel	Il10ra	Hook3		
+Itgb7	Clcn2	Psmd5		
+Rtp2	Prpf3	Prss50		
+		Plcz1		
+Bai2	Myh4	AW011738		
+Tnfrsf14	Col3a1	Car5a		
+Gm6498	Rasl10a	Wdr16		
+Igf1	Lcmt1	Prrx1		
+Appl2	Foxc2	Asb3		
+Zbtb37	Rnf168	Rpl29		
+Stambpl1	Naf1	Zfyve1		
+Pcm1	Sp110	Zfp580		
+Hp1bp3	Pfkm	Eif2c4		
+Sema6c	Serac1	Hunk		
+Hist2h2ac	Atp6v1g2			
+Rgs9	Csrnp3	Zbtb7c		
+Fam129a	Smarcb1	Riok1		
+Cox6a1	Slc19a3			
+Lrrc27	Havcr2	Hist3h2a		
+Rpl29	Cep57	Phospho2		
+Saa1		Vps4a		
+Rdh12	Ube3b			
+Rccd1	Snx7	BC028528		
+Tle2	Pomc	Snx10		
+Mpp3	Fli1	BC051019		
+Foxm1	Mpp2	Gprc5b		
+Ccdc47	Lemd2	Trpv4		
+Myo1c	0610037P05Rik	Ap4b1		
+Ppp1r13l	6720456B07Rik	Ift140		
+Ccdc88c	Exoc8	Zfp28		
+Ift88	Rnf219	Adss		
+Coq2	Taok2	Homer3		
+Gm10775		Gm13078		
+1810022C23Rik	D19Bwg1357e	Akap8l		
+Ubox5	Tpm1	Rpl13		
+Ncs1	Snx8	Casc5		
+Tmem164	Coq7	Suv420h1		
+Drd3	Smndc1	Rnf32		
+Ube2i	March4	Lass2		
+Mfhas1	Stag3	Nos2		
+Kif5b	Sv2c	Prr14		
+4930513O06Rik	Prg4	Lepr		
+Rfwd2	Sirt6			
+4930529M08Rik	Atp9a	Klhl2		
+Rer1	Adi1	Arpc5l		
+5730494M16Rik		Clec4a1		
+Ubxn6	Mettl2	Fli1		
+Zfp706	Tmem222	Stard9		
+Kcnh6	Srd5a1	Acacb		
+Fam89a	Vezf1	Igfbp2		
+Lima1	Ak2			
+Cbr4	Cyp20a1	Cd2bp2		
+Thg1l	Osbpl11	Cntnap5b		
+Gprc2a-rs5	Itm2c	Brdt		
+Fst	Gm13157	Kcna3		
+Hdlbp	Zfp932			
+Rps3a	Cyp2b10	Ctns		
+Isg15	Clns1a	Olfr1115		
+Yif1b	Nr1i3	6030419C18Rik		
+3110082D06Rik	Usp40	Ttyh2		
+Pars2	Casc5	Morf4l2		
+Agrn	Tnks2	Ddx17		
+	Lrp8	Atp6v1c1		
+Farp1	Trim38	Dzip1l		
+Sec14l4	Preb	Pabpn1		
+	Sass6			
+Fam175a	Oxa1l	A430033K04Rik		
+Yeats4	Zmynd10	Pdk4		
+Cdc42bpb	5730403B10Rik	Nras		
+Mms19	Snrnp35	Trim39		
+Exosc3		D19Bwg1357e		
+Layn	Pafah1b3	Klrg1		
+Coasy	Mmd	Grin2a		
+Slc31a1	Sp140	Ctnnbip1		
+Tcte1	Rbm3	Pon3		
+Mesp2	Psmb5	Wwp1		
+Lins	Tnks	Rnpc3		
+Memo1	Nup107	Gfpt2		
+Tekt2	Grb10			
+Mobkl1b	Adrm1	Dync1li1		
+Cryzl1	Rfwd3	Cog3		
+Rbbp9	Cd2bp2	Mbtd1		
+Harbi1		Clip4		
+Alkbh1	Sh2b2			
+		Gabpb1		
+Bbs10	Hs3st6	Klhl30		
+	Glp1r	Msl2		
+Osgep	Pgap3	Ebag9		
+Cdkal1	Hyou1			
+Col9a2	Znrd1as	Vegfb		
+Tm7sf3	Hps4	Ncoa6		
+Sars2	Lpar2	Mrpl22		
+Snapc4	Dolpp1	Lcmt1		
+Hrg	Tfrc	Xab2		
+Vac14	Pfdn4	5730403B10Rik		
+	Cpd			
+Prss36	Galnt11	Anpep		
+Defb45	Park2	Ppap2a		
+Gm10778	1700084C01Rik	Wdr77		
+Homer2	Acox3	Bmper		
+Chst11	Rnf139	Dok5		
+Fxyd5	2310003L22Rik	Gm13907		
+Cnih	Ncl	Alox12b		
+Ppapdc1b	Cacna1i	Olfr1182		
+Exoc1	Slc41a3	Il1b		
+Cdh6	Glb1l2	Nsun5		
+Serpinh1	Gabarapl1	Maoa		
+L2hgdh	Jmjd6	Alg3		
+	Herpud2	Egln1		
+C030048B08Rik	Aasdh	Map2k5		
+Thap7	Casd1	Zfp346		
+Acot13	Csnk1g3	Dub1		
+Sepw1	Eif2s3x	Tmem57		
+Usp8	Arhgap21	Ipp		
+Zfp229	Ppap2a	Exoc4		
+Mrps5		S100a9		
+Chrm1	Rrp8	Bsg		
+Ly6g6d	Rasa4	Slc6a7		
+Anp32e	Taf1b	Cd84		
+Lrg1	Ttll10	H2-Ab1		
+Sp140	Adhfe1	Wdr45		
+Acp1	Crtc1	Fam57b		
+		Ghrh		
+	Edil3	Pkp3		
+Klk1b27	Etv1	Elk1		
+Mlh3	Rabepk	Mib2		
+Gpd1		Mbd2		
+Hsp90aa1	Apom	Vil1		
+Vars	D630037F22Rik	Nrf1		
+Cyp2j13	Nupr1	Cpox		
+Zkscan5	Plcl1	Acox1		
+Lrrc33	Acox1	Fau		
+Lancl1		Slc43a2		
+	Ptpn9	Pex26		
+	Yap1	Bgn		
+Ncstn	Thy1	Nos3		
+Nucb2	Rnmt	Nomo1		
+Tollip	Rabggta	Mmaa		
+Ing1	Uqcrh	Mlst8		
+Atp6v1e2	Cxxc1	Dapp1		
+6720489N17Rik	Rnf157	Kirrel2		
+Cyb5r2	Prm1	Evc2		
+Psma1	Cldn3	Slc16a8		
+Anapc10	Fam96b	Abcb1b		
+Ilf3	Foxp2	Nudt16l1		
+Dcaf7	Med18	Sipa1l2		
+Atf7	Ppid	Lrrc51		
+Cables2	Ssbp2	Laptm4a		
+Dpagt1	Prim2	Max		
+Mrpl49	Api5	Mpp6		
+Soat1	Atad2b	Zmynd8		
+Lrig1	Yipf3	Stx3		
+Tmem47	Rpl5	Naip2		
+Hoxa11	Jmjd5	Rabggta		
+Arfip2		Zhx1		
+Cpsf7	Pin4	Gcc2		
+Cox8a	Foxf2	1700084C01Rik		
+Atp5sl	Coro1b	Ctss		
+Kcne4	F8a	Bace2		
+Paox	Car12	Adi1		
+Tst	Stk24	Edil3		
+Ndufa2	Pdzd7	Zhx3		
+Sox10	Urm1	Ddx50		
+Pikfyve	Carm1	Sirt5		
+Ubb	Lphn3	Ppil2		
+H2-DMb1	1190002H23Rik	Csrp3		
+Ecm1	Tbx22	Pcyt2		
+Dlx6os1	Mrpl22	Mcm3		
+BC018242	Rrp1b	Fam82a1		
+Slc39a8	Xrcc6	Kif23		
+Meaf6	Chga	Mrpl41		
+Zfp831	Arih1	Gpd1		
+Lin28a	Nans	Pycard		
+Ube2s	Suz12	Nkap		
+Dnmt3l	Pemt	Ankrd16		
+B2m	Cldn5	Caml		
+Zkscan6	Cdk20	Tcf20		
+Abi3		Zmynd15		
+Rbm4b	Rsrc1	Pfas		
+Zfp300	Mylip	Ldlrap1		
+Cep57		Taf5		
+Pole4	Glmn	Ppie		
+Pla2g4e	Sumf1	Dnd1		
+4932438A13Rik	Hdac4			
+Npc1l1	Foxq1			
+Aff3	D630002G06Rik			
+Cd82	Lzts1			
+Acsl4	Fam171b			
+Pcx	Capn9			
+	2400001E08Rik			
+Jak2	1110034B05Rik			
+Sumo2	Lage3			
+Rit1	Egln2			
+Mocs1	Nudt8			
+Rab4a				
+Ttll10				
+Pms1	Cnksr3			
+Igfbp2	Palm2			
+Hadh	Rbm11			
+Cbx3	Klk1b27			
+Dkc1	1700001O22Rik			
+Gm6981	Gm4847			
+Rufy2				
+1700001O22Rik	Anpep			
+Gfer	Trmt61b			
+Ahcyl1	Plekha2			
+	Ubxn1			
+Gng4	Actr8			
+	Sdad1			
+Erbb2	Mlst8			
+Aes	Dytn			
+Reep6	Crhbp			
+Bnip2	Sh3tc1			
+Cct2	Hp			
+	Dusp16			
+Gm10837	Zkscan14			
+	Mycbp			
+Gjb6	Cenpc1			
+Ccdc148	B4galnt4			
+Aldh1l2	Atg4d			
+Abcc4	Actg2			
+Rac1	Chrna2			
+Glul	Phkb			
+Serhl	4930404N11Rik			
+Hnrnpa1	Gps2			
+Pex7	Gpt2			
+Acsf2	Mbd2			
+Kdelr1	Dazap1			
+Sh3d19	Zfyve16			
+Pgs1	Psen2			
+Snx20	Elf1			
+Xpc	Cnr1			
+Slc2a3	Rps6-ps2			
+Eme2	Thap11			
+Fam198b	Lztfl1			
+Tspan17	Adra2b			
+	Cxcl10			
+2610019F03Rik	Cpox			
+Mcoln3	Cox6a2			
+Tcf7l1	Plxdc1			
+Gnl2	Srp19			
+Supv3l1	Gm3086			
+Irf8	Cyp2c54			
+Zfr2	Prdx6			
+Nme4	Slc10a3			
+Arf6	Klre1			
+Zfp941	Eef2k			
+	Atp2a1			
+Guk1	Abtb2			
+Tspyl4	Rad18			
+Alpi	Bscl2			
+Nnmt	Alk			
+	Fbxo4			
+Pdgfa	Tug1			
+Hyou1	Vdr			
+1110051M20Rik	Vegfc			
+Lama4	BB014433			
+Tmem8b	Tollip			
+Mical1	Stard9			
+Zfp597	Srrd			
+	Churc1			
+S100a9	Jub			
+H1fx	Ada			
+Nsmce2	Gm15308			
+	Msrb3			
+D730039F16Rik				
+Tmed4	Sh3bp5l			
+Tmem208	Ccdc123			
+Ficd	Col1a2			
+Pnrc1	Thsd1			
+Rarres2	Tjap1			
+Actg1	Ubl3			
+5330417C22Rik				
+Kbtbd4	Uqcc			
+Umps	Gatad2b			
+AI467606	Pa2g4			
+Rorb	Hcrtr2			
+Scrn3	Mms19			
+Agtpbp1	Ndufa12			
+Amz1	Clec4a1			
+Tmem68	Rbfa			
+Opn1mw	Hspa9			
+Cops5	Pdss1			
+Frem1	Nr5a2			
+Homer3	Nup205			
+Slc37a3	Ddx27			
+Mdc1	Ap4b1			
+Stx17	C1rl			
+Leng9	Cuedc1			
+Tnfrsf23	Dvl1			
+Enc1	Mast1			
+Tmsb15l	Gm5820			
+Smarcc2	Vps13d			
+Mcee	Chmp2b			
+Gata6	Ap1g2			
+Ube4b	Cd47			
+4930568D16Rik	Dr1			
+Zfp932	Timm44			
+C8g	Klra17			
+Farsa	Cc2d2a			
+Pstk	Mup2			
+Lsm7	Slc35a5			
+Pkn3	COX3			
+E2f4	Ghrh			
+Yipf5	Pcolce			
+Brpf3	Fam117b			
+Mlycd	9430038I01Rik			
+Mettl3	Ttll5			
+Amotl1	Rad17			
+Ocel1				
+Ankrd5	Nfia			
+Pcgf1	Dennd5a			
+Mup2	Zfp326			
+Gal3st3	Mpp3			
+Cd48	Zfp259			
+Recql5	Gmip			
+Mterfd1	Rplp0			
+Csdc2	Tmem208			
+Eif2b3	Usp39			
+Acat3	Tuba1c			
+Lrp11	Pink1			
+Nans	Adck2			
+Ttll9	Slain1			
+Ndufb7	Pbx1			
+Kcnd2	Pfas			
+Abcc2	Pde4dip			
+Rnf212	Gng3			
+Plscr3	Acbd3			
+Tnks2	Enoph1			
+Pex1	Ptp4a1			
+Vangl2	Zfp629			
+Trappc10	1110038D17Rik			
+Mknk1	Xpc			
+Nsl1				
+Exoc8	BC055324			
+Tsg101	Echdc2			
+Mcl1	Myeov2			
+Lpar6	Fbxl13			
+Bach2	Slc6a3			
+Gpx2	Diablo			
+Erp29	Ccl25			
+Med21	Tyk2			
+9330159F19Rik	Atp13a5			
+Ogfod2	Far1			
+Trpm2	Shoc2			
+Ephx2	Krit1			
+Trak2	Pdia6			
+Vamp4	COX2			
+	Vegfb			
+Kbtbd12	Nudt21			
+Pcyox1	Kif26a			
+Clca2	Banf1			
+Gm906				
+Rpl10l	Robo1			
+	Msl3			
+Olfr1333	Trim59			
+Myst2	Snrpb			
+Chga	Gm10729			
+Mudeng	Scn4a			
+Sept1	Zdhhc13			
+Prmt5	Zbtb7b			
+Zfp423	Nt5c3l			
+Nkd1	Taf3			
+Morc4	Pabpn1			
+P2ry1	Pgcp			
+9430023L20Rik	Meox1			
+Strbp	Nbn			
+Clec4a4	Pias1			
+Tubg1	Lars2			
+Ppp4r4	Crebzf			
+Mapkapk2	Sumf2			
+B3gnt1	Rtp4			
+Pde4d	Spink2			
+Armc5	Arhgap18			
+Dennd5a	Dsg2			
+Dlx1as	Zcchc16			
+Supt3h	Chd1l			
+Nup210				
+Nap1l2	Gpr155			
+Klk14	Ighmbp2			
+Igsf9				
+Fbxo39	Lonrf1			
+Tceal6	Tifa			
+Mbd2				
+Zfp455	Slc25a1			
+Fermt1				
+Aurka	Lrrc56			
+Mtmr6	Gnai3			
+Yipf6	Pde3a			
+Espl1	Qser1			
+Atp6v0a4	Ltc4s			
+Canx	Me1			
+Atp2b1	Baz1b			
+Ube2k	Fnbp1			
+Eng	Mvd			
+Suv420h1	Ctns			
+Zfp783	Acads			
+Gm12942				
+Lyrm4	Acot8			
+Zfp358				
+Catsper2				
+				
+Cad				
+Ppih				
+Pitx3				
+Tbkbp1				
+Ercc6				
+Rgag4				
+Ugt2b38				
+Ghrh				
+Frmd5				
+Ints5				
+Usp34				
+Stoml2				
+Tbpl1				
+Cstf3				
+				
+Smad1				
+Dnase1l3				
+Ppwd1				
+2310015B20Rik				
+Crocc				
+Rptor				
+Mgrn1				
+Igf2r				
+				
+Prdm16				
+Gm10324				
+Sarnp				
+Tmem204				
+Zfp111				
+Aco2				
+Ggt6				
+Fgd6				
+Tmem189				
+				
+Rpl6				
+				
+Pecam1				
+Tmub2				
+Timm10				
+Herpud1				
+Tex261				
+Ctsz				
+Rnf41				
+Gpr30				
+				
+Snf8				
+Nedd9				
+A530098C11Rik				
+Oip5				
+Cryba4				
+Inpp5b				
+Slc22a4				
+Cnga3				
+Apoe				
+Fam171a1				
+Msx1				
+Tek				
+Mrap				
+Jmjd5				
+Alkbh2				
+Hjurp				
+Il10rb				
+Col16a1				
+9930111J21Rik1				
+Ndufs7				
+				
+C3				
+Pold4				
+Grn				
+Xpo7				
+Dyx1c1				
+Sulf2				
+Clvs1				
+BC028777				
+Npas3				
+Unc50				
+Sh3tc1				
+Cyth1				
+Plk5				
+Tmem132c				
+Ube2d3				
+Cxcl13				
+Mmrn2				
+Efemp2				
+Islr				
+Adm				
+				
+Gm3086				
+Uggt2				
+Sema6b				
+Rhoa				
+Trp53inp1				
+				
+Usp17l5				
+Hnrnph1				
+Cnot6l				
+Slc4a1				
+Klhl17				
+Foxp2				
+BC023814				
+				
+Commd7				
+Lipo1				
+				
+				
+				
+Gm6981				
+Nop58				
+Dnajc2				
+H2afj				
+Pgp				
+Dcdc2b				
+Atp5j				
+				
+Pgrmc2				
+As3mt				
+Insig1				
+Tmem43				
+				
+				
+Gys2				
+Adam26a				
+Mrpl12				
+Npepl1				
+Fkbp4				
+				
+Dbf4				
+Immp1l				
+Sqrdl				
+Trpt1				
+				
+				
+Trf				
+Ppan				
+Arf1				
+Ropn1				
+Fdxacb1				
+Msi1				
+				
+Terf2				
+Rnpep				
+Hes1				
+Aggf1				
+Ssna1				
+Fyttd1				
+Tacr1				
+Sae1				
+Phyh				
+Elmo3				
+Gstt1				
+1700009P17Rik				
+Golph3				
+Fig4				
+Ate1				
+Farsb				
+Taok2				
+Ankrd12				
+Srrd				
+Hddc3				
+Ppp1r2				
+Trim41				
+6030419C18Rik				
+Slc25a33				
+				
+Nlrp9c				
+Zfp955b				
+Pdcd2				
+Hsd17b1				
+Ticam1				
+Cd55				
+Prpf19				
+Nudt8				
+				
+Zfp54				
+Art4				
+Zfp551				
+Zcchc18				
+Elovl7				
+Zfp579				
+5430401F13Rik				
+Elmod2				
+Lcmt2				
+1700084C01Rik				
+Galnt11				
+Crbn				
+Src				
+B4galt6				
+Serpinb3a				
+Kdm6a				
+Tab1				
+Igf2as				
+Ndufb10				
+Sfrp2				
+Chordc1				
+Pfkl				
+Apol7c				
+Zfp420				
+Oxsm				
+Gm10081				
+Tmem199				
+Wdr76				
+Rcan3				
+Nus1				
+Ildr1				
+Nkx2-6				
+Smarcd2				
+Ubqln1				
+Ccdc111				
+				
+Nupl1				
+Ado				
+Fbxl21				
+Ppara				
+Gm5921				
+Atxn7l2				
+Vps52				
+Zfp932				
+Mcf2				
+Spata2				
+Lgals9				
+Mmd				
+				
+Mmgt2				
+Napg				
+Rtp4				
+Ctnnbl1				
+Pold2				
+Pemt				
+Jam3				
+Ina				
+Fgfr1op2				
+Glyctk				
+Prkdc				
+Flad1				
+1700025K23Rik				
+Atp5f1				
+Zfp27				
+Unc45b				
+Ifnar1				
+Mzt2				
+Alkbh3				
+Arhgef9				
+Ybx2				
+Abtb1				
+Npl				
+Gfm2				
+Arid1b				
+Bcan				
+Tmem9b				
+Tmem87a				
+8430410K20Rik				
+Golga1				
+Dusp16				
+Lrp2				
+Mettl1				
+Pdcd10				
+Alox5ap				
+Cenpp				
+Uqcrq				
+Eif4g3				
+Churc1				
+Atg4d				
+Tmbim1				
+Setd7				
+Spna1				
+				
+2310003C23Rik				
+Dhx29				
+Gucy1a2				
+Klhl26				
+Gabrg2				
+Tmem120b				
+Alkbh7				
+Cbx2				
+Eif3h				
+Hist1h1a				
+Rplp2				
+Upf3a				
+Gm4055				
+Gigyf2				
+Amd2				
+Npr3				
+Mir17hg				
+H19				
+Socs6				
+Mlkl				
+Arl4a				
+				
+Ebp				
+Dnajc10				
+Pydc3				
+H2afv				
+Snx16				
+Rnf40				
+Abhd12b				
+Vangl1				
+Cnst				
+Clec4d				
+Blcap				
+Cyp20a1				
+Optn				
+Thap8				
+Rab40c				
+Capza2				
+Slc7a3				
+1700057K13Rik				
+Fam119a				
+Setdb2				
+				
+2900092E17Rik				
+Polr2b				
+March4				
+Zfp933				
+Tmem18				
+Utp11l				
+2310043J07Rik				
+2900010J23Rik				
+Hsd17b2				
+Tssk3				
+Dapp1				
+Siah1b				
+Galk1				
+Alg9				
+Ppm1b				
+Capn1				
+Psen2				
+S100a16				
+Cdc5l				
+Klhl7				
+Ccdc124				
+Slc41a1				
+Zfp9				
+Slc22a5				
+Stard3				
+Utp23				
+				
+Fam57b				
+Dolpp1				
+Serpinb1b				
+Adm2				
+Gucy2f				
+Hhip				
+OTTMUSG00000016609				
+Tomm6				
+Ehhadh				
+Agpat5				
+Actb				
+				
+Dars2				
+Krtap16-8				
+1700058G18Rik				
+Klrk1				
+Eif1				
+Phf12				
+Tube1				
+C430048L16Rik				
+Rpl13a				
+Atxn3				
+Cep76				
+Poglut1				
+Pigu				
+Igbp1b				
+Armc3				
+Etv1				
+Rpgr				
+Fem1a				
+Lrrc56				
+Pih1d1				
+Drap1				
+Cks2				
+Gm2a				
+Gsc				
+				
+Prr14				
+				
+Gsdma2				
+5830454E08Rik				
+Impg1				
+Cwc15				
+Abcf3				
+Cda				
+C87436				
+Tbc1d7				
+Tnks1bp1				
+Inpp5a				
+Arl4c				
+Haghl				
+Lrfn5				
+Rasgrp4				
+Ankdd1a				
+Urb2				
+Tada2b				
+Chrnb3				
+Plekhg1				
+Tacc3				
+				
+Srgn				
+Nup188				
+Gm13476				
+Mobp				
+AY512915				
+Hapln2				
+Shank2				
+Pdcd5				
+Ryk				
+				
+Noxa1				
+Zfp629				
+Xrcc1				
+Pbx1				
+F9				
+Rpl8				
+Ccdc3				
+Pard6g				
+Cog7				
+Acot4				
+Klhl8				
+A830007P12Rik				
+Kcng4				
+Rasgrp3				
+Tmem115				
+Armc1				
+Gm4776				
+Tmem8				
+AI837181				
+l7Rn6				
+4833418N02Rik				
+Gabrr2				
+Spink3				
+Acin1				
+Nrip1				
+Ost4				
+Ston2				
+				
+Vps33b				
+Oas2				
+BC005624				
+Pik3r1				
+Fxyd2				
+Gm12359				
+Gm14047				
+2310067B10Rik				
+Ide				
+Adap2				
+Vhl				
+Ncapd3				
+Acvr2b				
+Tmem11				
+Ptrf				
+Fabp5				
+Gm10653				
+Myl3				
+Was				
+Elfn2				
+Gpaa1				
+Dnaja1				
+Colec10				
+Gm13271				
+				
+Nol11				
+Tmem5				
+Trappc6a				
+				
+Snx33				
+				
+Pdxdc1				
+Tgfb3				
+Plcb1				
+Stxbp4				
+Sf3a1				
+Hirip3				
+1700014N06Rik				
+Pecr				
+Col18a1				
+Gsdmc3				
+Pam16				
+Sclt1				
+Msn				
+BC024814				
+Gab3				
+Gm4392				
+Pdlim1				
+				
+Rbmx				
+				
+Dnm2				
+Cct7				
+Mrpl42				
+Akap12				
+Jup				
+Casp8ap2				
+Tnfrsf1a				
+Chst14				
+Ttc29				
+Txnip				
+Zcchc11				
+Larp7				
+Rcc2				
+Spink10				
+Zfyve19				
+Gtpbp3				
+Krtcap3				
+Cox6a2				
+Gm6471				
+Mthfr				
+Arsa				
+Taf7				
+Nit1				
+Fam166b				
+Rnf216				
+Wdr83				
+Arhgap12				
+Gm13157				
+Ttll4				
+Pdlim3				
+				
+Ezh1				
+Nfat5				
+Ctnnbip1				
+Glrx				
+Med20				
+Clip1				
+Defb36				
+Zfp943				
+Cul9				
+Cdc42				
+Snrpc				
+				
+Mogat1				

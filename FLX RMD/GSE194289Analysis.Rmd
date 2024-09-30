@@ -26,44 +26,42 @@ source("read_cpdb_tab.R")
 Use GEOquery to obtain the GEO series GSE194289.
 
 ```{r Get ExpressionSets}
-GSE194289=getGEO("GSE194289")
+set.seed(123)
 GSEname="GSE194289"
-getGEOSuppFiles(GSEname)
-untar("GSE194289/GSE194289_RAW.tar",exdir = "GSE194289_GSM")
-Files=list.files("GSE194289_GSM/",full.names = TRUE)
-getwd()
-for (i in Files) {
-  gunzip(i)
-}
-CountFiles=list.files("GSE194289_GSM/",full.names = TRUE)
-exGSE194289=read.table("GSE194289_GSM/GSM5832474_RRB001-counts.txt",header=FALSE,col.names = c("X","ToRemove"))
-for (i in CountFiles){
-  exGSE194289=merge(exGSE194289,read.table(i,header=FALSE,col.names = c("X",substr(i,1,10))))
-}
-exGSE194289=select(exGSE194289,!ToRemove)
-rownames(exGSE194289)=exGSE194289$X
-fexGSE194289=filter(exGSE194289,str_detect(X,"ENSR"))
-fexGSE194289=select(fexGSE194289,!X)
-saveRDS(fexGSE194289,"CountTableGSE194289.rds")
+GSE194289=getGEO(GSEname)
+SampleData=GSE194289[[1]]@phenoData@data
+SampleData$TreatmentRegion=paste(SampleData$`brain region name:ch1`,SampleData$`treatment:ch1`,sep = "_")
+SampleData$Treatment=factor(SampleData$`treatment:ch1`,levels = c("Sham","Fluoxetine"))
+#getGEOSuppFiles(GSEname)
+#untar("GSE194289/GSE194289_RAW.tar",exdir = "GSE194289_GSM")
+#Files=list.files("GSE194289_GSM/",full.names = TRUE)
+#getwd()
+#for (i in Files) {
+#  gunzip(i)
+#}
+#CountFiles=list.files("GSE194289_GSM/",full.names = TRUE)
+#exGSE194289=read.table("GSE194289_GSM/GSM5832474_RRB001-counts.txt",header=FALSE,col.names = c("X","ToRemove"))
+#for (i in CountFiles){
+#  exGSE194289=merge(exGSE194289,read.table(i,header=FALSE,col.names = c("X",substr(i,15,24))))
+#}
+#exGSE194289=dplyr::select(exGSE194289,!ToRemove)
+#rownames(exGSE194289)=exGSE194289$X
+#fexGSE194289=filter(exGSE194289,str_detect(X,"ENSR"))
+#fexGSE194289=dplyr::select(fexGSE194289,!X)
+#saveRDS(fexGSE194289,"CountTableGSE194289.rds")
+
+fexGSE194289=readRDS("CountTableGSE194289.rds")
 
 ```
 
 ```{r}
-fexGSE194289=readRDS("CountTableGSE194289.rds")
 boxplot(log2(fexGSE194289+0.1),las=2)
 
 ```
 
-
 ##DESeq2
 
 ```{r DESeq2}
-GSE194289=getGEO("GSE194289")
-SampleData=GSE194289[[1]]@phenoData@data
-SampleData$TreatmentRegion=paste(SampleData$`brain region name:ch1`,SampleData$`treatment:ch1`,sep = "_")
-SampleData$Treatment=factor(SampleData$`treatment:ch1`,levels = c("Sham","Fluoxetine"))
-fexGSE194289=readRDS("CountTableGSE194289.rds")
-
 dds <- DESeqDataSetFromMatrix(countData = fexGSE194289,
                               colData = SampleData,
                               design= ~ Treatment)
@@ -84,7 +82,7 @@ FlxSamples=levels(as.factor(SampleData$TreatmentRegion))[seq(4,54,2)],
 ShamSamples=levels(as.factor(SampleData$TreatmentRegion))[seq(5,55,2)],
 Tissue=levels(as.factor(SampleData$`brain region name:ch1`))[3:28])
 
-for (i in 4:nrow(ContrastTable))
+for (i in 1:nrow(ContrastTable))
   {
   restemp=results(dds2,contrast = c("TreatmentRegion",ContrastTable[i,2],ContrastTable[i,3]))
   saveRDS(restemp,paste("../FLX_datasets/GSE194289/",ContrastTable[i,4],"_DESeqResGSE194289.rds",sep = ""))
@@ -96,7 +94,6 @@ saveRDS(resArc,"../FLX_datasets/GSE194289/Arc_DESeqResGSE194289.rds")
 ```
 
 ```{r volcanoplot, fig.height = 10, fig.width = 12}
-#res=readRDS("../FLX_datasets/GSE194289/DESeqResGSE194289.rds")
 EnhancedVolcano(res,
   lab = rownames(res),
   x = "log2FoldChange",
@@ -138,22 +135,23 @@ UniqueGenes=as.data.frame(res)%>%
 ```{r GSEA using fgsea}
 #Pathways list using mouse Ensembl gene IDs
 CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+
+DElist=list()
+
+#Combined
+DElist$AllCombined=rownames(UniqueGenes[UniqueGenes$pvalue<0.05,])
+DEbackground=rownames(UniqueGenes)
 #Stats vector treatment vs control (stat and gene symbols) using filtered genes list
 pstats=filter(UniqueGenes)$stat
 names(pstats)=UniqueGenes$GENE_SYMBOL
 #Pathway enrichment
-GeneEnrich=fgsea(pathways = CPDBpaths, stats = pstats, minSize  = 10)
-head(arrange(GeneEnrich,padj),n=20)
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = pstats, minSize  = 10, nPermSimple=10000)
 saveRDS(GeneEnrich,"../FLX_datasets/GSE194289/GSEA_GSE194289.rds")
 plotEnrichment(CPDBpaths[["Calcium signaling pathway - Mus musculus (mouse) | KEGG"]], pstats)
 
-```
-
-```{r}
-CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
-ResFiles=list.files("../FLX_datasets/GSE194289/")
+#Brain Regions
+ResFiles=list.files("../FLX_datasets/GSE194289/",full.names = TRUE)
 ResFiles=ResFiles[grepl("_DESeqResGSE194289.rds",ResFiles)]
-
 for (i in 1:length(ResFiles))
   {
   tempres=readRDS(ResFiles[i])
@@ -162,24 +160,15 @@ for (i in 1:length(ResFiles))
     arrange(desc(baseMean))%>%
     filter(!duplicated(GENE_SYMBOL))%>%
     filter(GENE_SYMBOL!=""&!is.na(log2FoldChange)&!is.na(padj))
+  DElist=c(DElist,list(rownames(UniqueGenesTemp[UniqueGenesTemp$pvalue<0.05,])))
+  names(DElist)[length(DElist)]=gsub("_DESeqResGSE194289.rds","",ResFiles[i])
   tempstats=filter(UniqueGenesTemp)$stat
   names(tempstats)=UniqueGenesTemp$GENE_SYMBOL
-  GeneEnrichTemp=fgsea(pathways = CPDBpaths, stats = tempstats, minSize  = 10)
-  saveRDS(GeneEnrichTemp, paste("../FLX_datasets/GSE194289/",gsub("_DESeqResGSE194289.rds","",ResFiles[i]),"_GSEA_GSE194289.rds",sep = ""))
+  GeneEnrichTemp=fgsea(pathways = CPDBpaths, stats = tempstats, minSize  = 10, nPermSimple=10000)
+  saveRDS(GeneEnrichTemp, paste(gsub("_DESeqResGSE194289.rds","",ResFiles[i]),"_GSEA_GSE194289.rds",sep = ""))
 }
 
-head(arrange(GeneEnrichTemp,padj),n=20)
+write.table(t(plyr::ldply(DElist,rbind)),"../FLX_datasets/GSE194289/GSE194289-DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DEbackground,"../FLX_datasets/GSE194289/GSE194289-DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
 
 ```
-
-
-
-```{r Heatmap GSEA}
-TargetGenes=CPDBpaths[["Signaling by GPCR | Reactome"]]
-TargetTranscripts=UniqueGenes3$Loci[match(TargetGenes,UniqueGenes3$GENE_SYMBOL)][!is.na(TargetTranscripts)]
-ExSubset=filter(fexGSE194289,rownames(fexGSE194289)%in%TargetTranscripts)
-pheatmap(ExSubset)#,annotation_col = rColumnNames,scale = "row")
-
-
-```
-

@@ -27,6 +27,7 @@ source("read_cpdb_tab.R")
 Use GEOquery to obtain the GEO series GSE48951. 
 
 ```{r Get ExpressionSets}
+set.seed(123)
 GSE=getGEO("GSE48951")
 exGSE=GSE[[1]]
 
@@ -65,13 +66,10 @@ plotPCA(exGSE, groups = as.numeric(as.factor(exGSE$RepGroup)), groupnames = leve
 
 ```{r PCA Highlight batches}
 pData(exGSE)$Index=1:ncol(exGSE)
-
 plotPCA(exGSE, groups = as.numeric(exGSE$Index),outside=TRUE)
-
-PCA=prcomp(t(exprs(exGSE)))
-dim(PCA)
-view(PCA$x)
-plot(PCA$x[,1])
+#PCA=prcomp(t(exprs(exGSE)))
+#view(PCA$x)
+#plot(PCA$x[,1])
 
 ```
 
@@ -108,7 +106,6 @@ plotPCA(h4exGSE, groups = as.numeric(as.factor(h4exGSE$RepGroup)), groupnames = 
 plotPCA(h8exGSE, groups = as.numeric(as.factor(h8exGSE$`drug:ch1`)), groupnames = levels(as.factor(h8exGSE$`drug:ch1`)),outside=TRUE)
 #Rep groups
 plotPCA(h8exGSE, groups = as.numeric(as.factor(h8exGSE$RepGroup)), groupnames = levels(as.factor(h8exGSE$RepGroup)),outside=TRUE)
-
 
 ```
 
@@ -214,55 +211,71 @@ UniqueGenes3=filter(UniqueGenes2,MouseEnsembl!="")
 ```{r GSEA using fgsea}
 #Pathways list using mouse Ensembl gene IDs
 CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+
+DElist=list()
+
 #GSEA
-StatsFilter=UniqueGenes3%>%mutate(t=fit2$t[,"TreatmentFluoxetine"][match(UniqueGenes3$Loci,rownames(fit2$t))])
+StatsFilter=topTable(fit2, coef = "TreatmentFluoxetine", number = Inf)%>%filter(ID%in%UniqueGenes3$Loci)
+StatsFilter$MouseEnsembl=UniqueGenes3$MouseEnsembl[match(StatsFilter$ID,UniqueGenes3$Loci)]
+DElist$XFTU=StatsFilter[StatsFilter$P.Value<0.05,]$Symbol
+DEbackground=StatsFilter$Symbol
 tstats=StatsFilter$t
 names(tstats)=StatsFilter$MouseEnsembl
-GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10)
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
 head(arrange(GeneEnrich,padj),n=20)
 plotEnrichment(CPDBpaths[["Formyl peptide receptors bind formyl peptides and many other ligands | Reactome"]], tstats)
 saveRDS(GeneEnrich,"../FLX_datasets/GSE48951/GSEA_GSE48951.rds")
 
 #GSEA h1
-h1StatsFilter=UniqueGenes3%>%mutate(t=h1fit2$t[,"h1TreatmentFluoxetine"][match(UniqueGenes3$Loci,rownames(h1fit2$t))])
+h1StatsFilter=topTable(h1fit2, coef = "h1TreatmentFluoxetine", number = Inf)%>%filter(ID%in%UniqueGenes3$Loci)
+h1StatsFilter$MouseEnsembl=UniqueGenes3$MouseEnsembl[match(h1StatsFilter$ID,UniqueGenes3$Loci)]
+DElist$XFTU1=h1StatsFilter[h1StatsFilter$P.Value<0.05,]$Symbol
 h1tstats=h1StatsFilter$t
 names(h1tstats)=h1StatsFilter$MouseEnsembl
-h1GeneEnrich=fgsea(pathways = CPDBpaths, stats = h1tstats, minSize  = 10)
+h1GeneEnrich=fgsea(pathways = CPDBpaths, stats = h1tstats, minSize  = 10, nPermSimple=10000)
 head(arrange(h1GeneEnrich,padj),n=20)
 saveRDS(h1GeneEnrich,"../FLX_datasets/GSE48951/GSEA_h1_GSE48951.rds")
 
 #GSEA h2
-h2StatsFilter=UniqueGenes3%>%mutate(t=h2fit2$t[,"h2TreatmentFluoxetine"][match(UniqueGenes3$Loci,rownames(h2fit2$t))])
+h2StatsFilter=topTable(h2fit2, coef = "h2TreatmentFluoxetine", number = Inf)%>%filter(ID%in%UniqueGenes3$Loci)
+h2StatsFilter$MouseEnsembl=UniqueGenes3$MouseEnsembl[match(h2StatsFilter$ID,UniqueGenes3$Loci)]
+DElist$XFTU2=h2StatsFilter[h2StatsFilter$P.Value<0.05,]$Symbol
 h2tstats=h2StatsFilter$t
 names(h2tstats)=h2StatsFilter$MouseEnsembl
-h2GeneEnrich=fgsea(pathways = CPDBpaths, stats = h2tstats, minSize  = 10)
+h2GeneEnrich=fgsea(pathways = CPDBpaths, stats = h2tstats, minSize  = 10, nPermSimple=10000)
 head(arrange(h2GeneEnrich,padj),n=20)
 saveRDS(h2GeneEnrich,"../FLX_datasets/GSE48951/GSEA_h2_GSE48951.rds")
 
 #GSEA h4
-h4StatsFilter=UniqueGenes3%>%mutate(t=h4fit2$t[,"h4TreatmentFluoxetine"][match(UniqueGenes3$Loci,rownames(h4fit2$t))])
+h4StatsFilter=topTable(h4fit2, coef = "h4TreatmentFluoxetine", number = Inf)%>%filter(ID%in%UniqueGenes3$Loci)
+h4StatsFilter$MouseEnsembl=UniqueGenes3$MouseEnsembl[match(h4StatsFilter$ID,UniqueGenes3$Loci)]
+DElist$XFTU4=h4StatsFilter[h4StatsFilter$P.Value<0.05,]$Symbol
 h4tstats=h4StatsFilter$t
 names(h4tstats)=h4StatsFilter$MouseEnsembl
-h4GeneEnrich=fgsea(pathways = CPDBpaths, stats = h4tstats, minSize  = 10)
+h4GeneEnrich=fgsea(pathways = CPDBpaths, stats = h4tstats, minSize  = 10, nPermSimple=10000)
 head(arrange(h4GeneEnrich,padj),n=20)
 saveRDS(h4GeneEnrich,"../FLX_datasets/GSE48951/GSEA_h4_GSE48951.rds")
 
 #GSEA h8
-h8StatsFilter=UniqueGenes3%>%mutate(t=h8fit2$t[,"h8TreatmentFluoxetine"][match(UniqueGenes3$Loci,rownames(h8fit2$t))])
+h8StatsFilter=topTable(h8fit2, coef = "h8TreatmentFluoxetine", number = Inf)%>%filter(ID%in%UniqueGenes3$Loci)
+h8StatsFilter$MouseEnsembl=UniqueGenes3$MouseEnsembl[match(h8StatsFilter$ID,UniqueGenes3$Loci)]
+DElist$XFTU8=h8StatsFilter[h8StatsFilter$P.Value<0.05,]$Symbol
 h8tstats=h8StatsFilter$t
 names(h8tstats)=h8StatsFilter$MouseEnsembl
-h8GeneEnrich=fgsea(pathways = CPDBpaths, stats = h8tstats, minSize  = 10)
+h8GeneEnrich=fgsea(pathways = CPDBpaths, stats = h8tstats, minSize  = 10, nPermSimple=10000)
 head(arrange(h8GeneEnrich,padj),n=20)
 saveRDS(h8GeneEnrich,"../FLX_datasets/GSE48951/GSEA_h8_GSE48951.rds")
 
+write.table(t(plyr::ldply(DElist,rbind)),"../FLX_datasets/GSE48951/GSE48951-DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DEbackground,"../FLX_datasets/GSE48951/GSE48951-DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
 
 ```
 
 ```{r Heatmaps GSEA}
 TargetGenes=CPDBpaths[["Formyl peptide receptors bind formyl peptides and many other ligands | Reactome"]]
-TargetTranscripts=UniqueGenes3$Loci[match(TargetGenes,UniqueGenes3$MouseEnsembl)][!is.na(TargetTranscripts)]
+TargetTranscripts=UniqueGenes3$Loci[match(TargetGenes,UniqueGenes3$MouseEnsembl)]
+TargetTranscripts=na.omit(TargetTranscripts)
 ExSubset=filter(as.data.frame(exprs(exGSE)),rownames(exGSE)%in%TargetTranscripts)
-
 ColumnNames=data.frame(Timepoint=exGSE$`timepoint:ch1`,Treatment=exGSE$`drug:ch1`)
 rownames(ColumnNames)=exGSE$geo_accession
 pheatmap(ExSubset,annotation_col = ColumnNames,scale = "row")

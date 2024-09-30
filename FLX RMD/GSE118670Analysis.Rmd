@@ -27,6 +27,7 @@ Use GEOquery to obtain the GEO series GSE118670. This is a SuperSeries that cons
 https://bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html
 
 ```{r Get ExpressionSets}
+set.seed(123)
 GSE118670=getGEO("GSE118670")
 exGSE118670=GSE118670[[1]]
 #exprs(exGSE118670)=log2(exprs(exGSE118670))
@@ -126,42 +127,55 @@ UniqueGenes3a=filter(UniqueGenes2a,MouseEnsembl!="")
 
 X=intersect(UniqueGenes3$MouseEnsembl,UniqueGenes3a$MouseEnsembl)
 
-View(listAttributes(ensembl))
-
-table(is.na(GenesMouse$entrezgene_id))
-
 ```
 
 ```{r GSEA using fgsea}
 #Pathways list using mouse Ensembl gene IDs
 CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+
+PFC_DElist=list()
+DG_DElist=list()
+
 #PFC GSEA
-PFCStatsFilter=UniqueGenes3%>%mutate(t=PFCfit2$t[,"Treatmenttreatment: fluoxetine"][match(UniqueGenes3$Loci,rownames(PFCfit2$t))])
+PFCStatsFilter=topTable(PFCfit2, coef = "Treatmenttreatment: fluoxetine", number = Inf)%>%filter(ID%in%UniqueGenes3$Loci)
+PFCStatsFilter$MouseEnsembl=UniqueGenes3$MouseEnsembl[match(PFCStatsFilter$ID,UniqueGenes3$Loci)]
+PFC_DElist$XFTU=PFCStatsFilter[PFCStatsFilter$P.Value<0.05,]$Gene.Symbol
+PFC_DEbackground=PFCStatsFilter$Gene.Symbol
+#PFCStatsFilter=UniqueGenes3%>%mutate(t=PFCfit2$t[,"Treatmenttreatment: fluoxetine"][match(UniqueGenes3$Loci,rownames(PFCfit2$t))])
 PFCtstats=PFCStatsFilter$t
 names(PFCtstats)=PFCStatsFilter$MouseEnsembl
-GeneEnrich=fgsea(pathways = CPDBpaths, stats = PFCtstats, minSize  = 10)
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = PFCtstats, minSize  = 10, nPermSimple=10000)
 head(arrange(GeneEnrich,padj),n=20)
 plotEnrichment(CPDBpaths[["Cytokine-cytokine receptor interaction - Mus musculus (mouse) | KEGG"]], PFCtstats)
 saveRDS(GeneEnrich,"../FLX_datasets/GSE118668/GSEA_PFC_GSE118670.rds")
+
+write.table(t(plyr::ldply(PFC_DElist,rbind)),"../FLX_datasets/GSE118668/GSE118668-PFC_DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(PFC_DEbackground,"../FLX_datasets/GSE118668/GSE118668-PFC_DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
+
 #DG GSEA
-DGStatsFilter=UniqueGenes3%>%mutate(t=DGfit2$t[,"Treatmenttreatment: fluoxetine"][match(UniqueGenes3$Loci,rownames(DGfit2$t))])
+DGStatsFilter=topTable(PFCfit2, coef = "Treatmenttreatment: fluoxetine", number = Inf)%>%filter(ID%in%UniqueGenes3$Loci)
+DGStatsFilter$MouseEnsembl=UniqueGenes3$MouseEnsembl[match(DGStatsFilter$ID,UniqueGenes3$Loci)]
+DG_DElist$XFTU=DGStatsFilter[DGStatsFilter$P.Value<0.05,]$Gene.Symbol
+DG_DEbackground=DGStatsFilter$Gene.Symbol
+#DGStatsFilter=UniqueGenes3%>%mutate(t=DGfit2$t[,"Treatmenttreatment: fluoxetine"][match(UniqueGenes3$Loci,rownames(DGfit2$t))])
 DGtstats=DGStatsFilter$t
 names(DGtstats)=DGStatsFilter$MouseEnsembl
-GeneEnrich=fgsea(pathways = CPDBpaths, stats = DGtstats, minSize  = 10)
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = DGtstats, minSize  = 10, nPermSimple=10000)
 head(arrange(GeneEnrich,padj),n=30)
 plotEnrichment(CPDBpaths[["RNA Polymerase II Transcription | Reactome"]], DGtstats)
 saveRDS(GeneEnrich,"../FLX_datasets/GSE118669/GSEA_DG_GSE118670.rds")
 
+write.table(t(plyr::ldply(DG_DElist,rbind)),"../FLX_datasets/GSE118669/GSE118669-DG_DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DG_DEbackground,"../FLX_datasets/GSE118669/GSE118669-DG_DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
+
 ```
 
 ```{r Heatmaps GSEA}
-TargetGenes=CPDBpaths[["Processing of Capped Intron-Containing Pre-mRNA | Reactome"]]
-TargetTranscripts=UniqueGenes3$Loci[match(TargetGenes,UniqueGenes3$MouseEnsembl)][!is.na(TargetTranscripts)]
-ExSubset=filter(as.data.frame(exprs(exTreated)),rownames(exTreated)%in%TargetTranscripts)
-
-ColumnNames=data.frame(Tissue=exTreated$characteristics_ch1.2,Treatment=exTreated$characteristics_ch1.3)
-rownames(ColumnNames)=exTreated$geo_accession
-pheatmap(ExSubset,annotation_col = ColumnNames,scale = "row")
+#TargetGenes=CPDBpaths[["Processing of Capped Intron-Containing Pre-mRNA | Reactome"]]
+#TargetTranscripts=UniqueGenes3$Loci[match(TargetGenes,UniqueGenes3$MouseEnsembl)][!is.na(TargetTranscripts)]
+#ExSubset=filter(as.data.frame(exprs(exTreated)),rownames(exTreated)%in%TargetTranscripts)
+#ColumnNames=data.frame(Tissue=exTreated$characteristics_ch1.2,Treatment=exTreated$characteristics_ch1.3)
+#rownames(ColumnNames)=exTreated$geo_accession
+#pheatmap(ExSubset,annotation_col = ColumnNames,scale = "row")
 
 ```
-

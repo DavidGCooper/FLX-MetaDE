@@ -1,0 +1,15 @@
+INFO [2024-02-12 13:59:02] $x
+INFO [2024-02-12 13:59:02] list(`Full Set` = summariesCompare$Pathway[summariesCompare$Max.all < 
+INFO [2024-02-12 13:59:02]     0.05], `Mouse Only` = summariesCompare$Pathway[summariesCompare$Max.mouse < 
+INFO [2024-02-12 13:59:02]     0.05], `Mouse/Brain Only` = summariesCompare$Pathway[summariesCompare$Max < 
+INFO [2024-02-12 13:59:02]     0.05])
+INFO [2024-02-12 13:59:02] 
+INFO [2024-02-12 13:59:02] $filename
+INFO [2024-02-12 13:59:02] [1] "../Figures/ComparisonFigures/vennRN_All-mouse-brain_pmax.tiff"
+INFO [2024-02-12 13:59:02] 
+INFO [2024-02-12 13:59:02] $height
+INFO [2024-02-12 13:59:02] [1] 2500
+INFO [2024-02-12 13:59:02] 
+INFO [2024-02-12 13:59:02] $width
+INFO [2024-02-12 13:59:02] [1] 2500
+INFO [2024-02-12 13:59:02] 

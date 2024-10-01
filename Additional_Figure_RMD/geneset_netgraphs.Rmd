@@ -77,7 +77,8 @@ pheatmap::pheatmap(cpdb.mat, color = c("white", "black"),
                    annotation_row = cpdb_rowannot,
                    filename = "../Figures/GSEA/AllSFRNgsea/RN_overlapHM.tiff",
                    height = 5, width = 11,
-                   fontsize_row = 8)
+                   fontsize_row = 8,
+                   legend = FALSE)
 
 ```
 
@@ -90,12 +91,13 @@ pheatmap::pheatmap(cpdb.mat[,colSums(cpdb.mat) >= 2], color = c("white", "black"
                    annotation_row = cpdb_rowannot,
                    filename = "../Figures/GSEA/AllSFRNgsea/RN_overlapHM_atLeast2.tiff",
                    height = 5, width = 10,
-                   fontsize_row = 8)
+                   fontsize_row = 8,
+                   legend = FALSE)
 
 ```
 
 
-**Treated vs. untreated (stressed)** Gene sets to adjacency matrix to network graph
+**Treated vs. untreated (stressed)** Also identified by Freq50
 
 ```{r}
 
@@ -104,13 +106,14 @@ summariesTU <- dat[,14:19]
 summariesTU$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summariesTU$Pathway), reactome_hs$Name)]
 summariesTU$ReactomeTop <- reactome_hs$top_level_name[match(summariesTU$ReactomeID, reactome_hs$ID)]
 
-TU.signif <- summariesTU[summariesTU$Max < 0.05 & abs(summariesTU$Vote) >= 3, ]
+TU.signif <- summariesTU[summariesTU$Max < 0.05 & summariesTU$Freq >= 7, ]
 TU.signif$ReactomeTop[is.na(TU.signif$ReactomeTop)] <- "KEGG Database"
 TU.signif$ReactomeTop[!(TU.signif$ReactomeTop %in% names(npgColors))] <- "Other Reactome"
 TU.signif$Pathway <- gsub(" \\|.*", "", TU.signif$Pathway)
 
+letters_x <- c(letters, "aa", "bb", "cc", "dd", "ee", "ff")
 TU.signif <- TU.signif %>% arrange(Max) %>%
-  mutate(Pathway_let = letters[1:length(Pathway)])
+  mutate(Pathway_let = letters_x[1:length(Pathway)])
 
 cpdb.signif <- cpdb[TU.signif$Pathway]
 cpdb.mat <- t(table(stack(cpdb.signif)))
@@ -207,7 +210,7 @@ pheatmap::pheatmap(cpdb.mat, color = c("white", "black"),
                    show_colnames = FALSE,
                    annotation_row = cpdb_rowannot,
                    filename = "../Figures/GSEA/AllFTUgsea/TU_overlapHM.tiff",
-                   height = 4, width = 8,
+                   height = 4, width = 12,
                    fontsize_row = 10)
 
 ```

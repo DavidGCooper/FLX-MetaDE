@@ -1,0 +1,69 @@
+---
+title: "MaxP_forPoster"
+author: "Caleb Class"
+date: "2024-09-27"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(plotly)
+
+source("../FLX RMD/read_cpdb_tab.R")
+reactome_hs <- readRDS("../FLX RMD/Reactome_HS_withTopLevel.rds")
+cpdb <- read_cpdb_tab("../FLX RMD/CPDB_pathways_genes_mouse.tab")
+#names(cpdb) <- gsub(" \\|.*| \\- Mus.*", "", names(cpdb))
+npgColors <- readRDS("../npgColors.rds")
+npgFill <- readRDS("../npgFill.rds")
+```
+
+
+## Responder vs. non-responder
+
+```{r, fig.width = 9, fig.height = 5}
+
+
+
+# Resp v. NR
+dat <- readRDS("../MetaDE RDS/OldSFRNgsea.rds")
+
+pvals <- dat[,1:9]
+summariesRN <- dat[,10:15]
+
+
+summariesRN$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", summariesRN$Pathway), reactome_hs$Name)]
+summariesRN$ReactomeTop <- reactome_hs$top_level_name[match(summariesRN$ReactomeID, reactome_hs$ID)]
+
+# This shows the categories of pathways with q < 0.05 by P-Max
+table(summariesRN$ReactomeTop[summariesRN$Max < 0.05])
+
+RN.signif <- summariesRN[summariesRN$Max < 0.05, ]
+RN.signif$ReactomeTop[is.na(RN.signif$ReactomeTop)] <- "KEGG Database"
+RN.signif$Pathway <- gsub(" \\|.*", "", RN.signif$Pathway)
+
+RN.signif$Pathway[c(8,12,15)] <- c("L13a-mediated translational silencing of\nCeruloplasmin expression",
+                                   "Nonsense Mediated Decay (NMD) independent\nof the Exon Junction Complex (EJC)",
+                                   "TRAF6 mediated induction of NFkB and MAP\nkinases upon TLR7/8 or 9 activation")
+
+RN.ord <- RN.signif %>% arrange(Max) %>%
+  mutate(Pathway_let = factor(Pathway, levels = rev(Pathway)),
+         ReactomeTop = factor(ReactomeTop, levels = names(npgColors)))
+
+ggplot(RN.ord, aes(x = -log10(Max), y = Pathway_let)) +
+  geom_col(aes(fill = ReactomeTop), color = "black", size = 1) + 
+  geom_vline(xintercept = -log10(0.05), linetype = "dashed", linewidth = 1, color = "#DC0000") +
+  geom_point(aes(x = -log10(Max) + 0.35, color = Vote), size = 6, show.legend = FALSE) +
+  geom_text(aes(x = -log10(Max) + 0.35, y = Pathway_let, label = Vote), color = "white", fontface = "bold") +
+  scale_color_gradient2(low = "blue",high = "red", mid = "gray30", breaks = c(-5, 0, 3), minor_breaks = -5:5) +
+  xlab("-log10(q)") + ylab("") +
+  xlim(0, 4.8) +
+  theme(axis.text.y = element_text(size = 8.5)) +
+  npgFill +
+  guides(fill = guide_legend(title = "Pathway Category")) +
+  theme_classic() +
+  theme(axis.text.y = element_text(size = 8.5),
+        legend.position = c(0.78, 0.22))
+ggsave("../../../Grants/NIH_R15_2024/maxP_bargraph.tiff", width = 6.5, height = 5)
+
+```

@@ -64,6 +64,7 @@ fisher.test(resMerged$padj.Mm < 0.05, resMerged$padj.Hs < 0.05)
 ```
 
 
+
 ```{r}
 
 resSignif <- resMerged %>% filter(padj.Mm < 0.05 & padj.Hs < 0.05) %>% arrange(desc(padj.Hs))
@@ -91,14 +92,14 @@ resPlot <- rbind(resSignif[,c("pathway", "padj.Mm", "NES.Mm", "ReactomeTop", "DS
                  use.names = FALSE)
 colnames(resPlot) <- gsub("\\..*", "", colnames(resPlot))
 #resPlot$pathway <- paste0(resPlot$pathway, " (", resPlot$ReactomeTop, ")")
-resPlot$p.adj <- ifelse(resPlot$padj < 0.0001, yes = "< 0.0001",
+resPlot$`q-val` <- ifelse(resPlot$padj < 0.0001, yes = "< 0.0001",
                         no = ifelse(resPlot$padj < 0.001, yes = "< 0.001",
                         no = ifelse(resPlot$padj < 0.01, yes = "< 0.01", no = "< 0.05")))
 
-ggplot(resPlot, aes(x = DS, y = pathway, color = NES, size = p.adj)) +
+ggplot(resPlot, aes(x = DS, y = pathway, color = NES, size = `q-val`)) +
   geom_point() +
   scale_size_manual(values = c(6, 5, 3.75, 2.5)) +
-  scale_color_gradientn(limits = c(-2.7, 2.7),
+  scale_color_gradientn(limits = c(-2.75, 2.75),
                         colors = c("blue", "gray20", "red"),
                         breaks = c(-2, 0, 2)) +
   theme_classic() +

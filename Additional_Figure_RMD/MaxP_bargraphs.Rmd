@@ -90,17 +90,17 @@ TU.ord <- TU.signif %>% arrange(Max) %>%
 ggplot(TU.ord, aes(x = -log10(Max), y = Pathway_let)) +
   geom_col(aes(fill = ReactomeTop), color = "black", size = 1) + 
   geom_vline(xintercept = -log10(0.05), linetype = "dashed", linewidth = 1, color = "#DC0000") +
-  geom_point(aes(x = -log10(Max) + 0.7, color = Vote), size = 6, show.legend = FALSE) +
-  geom_text(aes(x = -log10(Max) + 0.7, y = Pathway_let, label = Vote), size = 3, color = "white", fontface = "bold") +
+  geom_point(aes(x = -log10(Max) + 0.8, color = Vote), size = 6, show.legend = FALSE) +
+  geom_text(aes(x = -log10(Max) + 0.8, y = Pathway_let, label = Vote), size = 3, color = "white", fontface = "bold") +
   scale_color_gradient2(low = "blue",high = "red", mid = "gray30", breaks = c(-5, 0, 3), minor_breaks = -5:5) +
   xlab("-log10(q)") + ylab("") +
-  xlim(0, 4.2) +
+  xlim(0, 10.5) +
   theme(axis.text.y = element_text(size = 8.5)) +
   npgFill +
   guides(fill = guide_legend(title = "Pathway Category")) +
   theme_classic()
   
-ggsave("../Figures/GSEA/AllFTUgsea/AllTU_pathways_pmax_bar.tiff", width = 6.3, height = 3)
+ggsave("../Figures/GSEA/AllFTUgsea/AllTU_pathways_pmax_bar.tiff", width = 9, height = 5)
 
 ```
 
@@ -147,21 +147,28 @@ ggsave("../Figures/GSEA/AllSFTUgsea/AllSTU_pathways_pmax_bar.tiff", width = 12, 
 
 ```
 
-Only showing pathways with absolute vote sums of 3 or greater
+Only showing pathways also identified by Freq50
 
 ```{r, fig.width = 6, fig.height = 6}
 
-STU.ord2 <- STU.signif %>% arrange(Max) %>%
-  filter(abs(Vote) >= 3) %>%
-  mutate(Pathway_let = paste0(Pathway, " (", letters[1:length(Pathway)], ")")) %>%
-  mutate(Pathway_let = factor(Pathway_let, levels = rev(Pathway_let)),
+STU.signif <- summariesS[summariesS$Max < 0.05 & summariesS$Freq >= 7, ]
+STU.signif$ReactomeTop[is.na(STU.signif$ReactomeTop)] <- "KEGG Database"
+STU.signif$ReactomeTop[!(STU.signif$ReactomeTop %in% names(npgColors))] <- "Other Reactome"
+STU.signif$Pathway <- gsub(" \\|.*", "", STU.signif$Pathway)
+STU.signif$Pathway[16] <- "Nonsense Mediated Decay (NMD) independent\nof the Exon Junction Complex (EJC)"
+
+letters_x <- c(letters, "aa", "bb", "cc", "dd", "ee", "ff")
+STU.ord <- STU.signif %>% arrange(Max) %>%
+  mutate(Pathway_let = paste0(Pathway, " (", letters_x[1:length(Pathway)], ")")) %>%
+  mutate(Pathway = factor(Pathway_let, levels = rev(Pathway_let)),
          ReactomeTop = factor(ReactomeTop, levels = names(npgColors)))
 
-ggplot(STU.ord2, aes(x = -log10(Max), y = Pathway_let)) +
+
+ggplot(STU.ord, aes(x = -log10(Max), y = Pathway)) +
   geom_col(aes(fill = ReactomeTop), color = "black", size = 1) + 
   geom_vline(xintercept = -log10(0.05), linetype = "dashed", linewidth = 1, color = "#DC0000") +
-  geom_point(aes(x = -log10(Max) + 0.45, color = Vote), size = 6, show.legend = FALSE) +
-  geom_text(aes(x = -log10(Max) + 0.45, y = Pathway_let, label = Vote), size = 3, color = "white", fontface = "bold") +
+  geom_point(aes(x = -log10(Max) + 0.4, color = Vote), size = 6, show.legend = FALSE) +
+  geom_text(aes(x = -log10(Max) + 0.4, y = Pathway, label = Vote), size = 4, color = "white", fontface = "bold") +
   scale_color_gradient2(low = "blue",high = "red", mid = "gray30", breaks = c(-5, 0, 3), minor_breaks = -5:5) +
   xlab("-log10(q)") + ylab("") +
   xlim(0, 8) +
@@ -169,9 +176,9 @@ ggplot(STU.ord2, aes(x = -log10(Max), y = Pathway_let)) +
   guides(fill = guide_legend(title = "Pathway Category")) +
   theme_classic() +
   theme(axis.text.y = element_text(size = 8.5),
-        legend.position = c(0.7, 0.2)) 
+        legend.position = c(0.7, 0.2))
 
-ggsave("../Figures/GSEA/AllSFTUgsea/AllSTU_pathways_pmax_bar_Vote3.tiff", width = 6, height = 6)
+ggsave("../Figures/GSEA/AllSFTUgsea/AllSTU_pathways_pmax_freq50_bar.tiff", width = 6, height = 8)
 ```
 
 ## Treated vs. untreated (unstressed)

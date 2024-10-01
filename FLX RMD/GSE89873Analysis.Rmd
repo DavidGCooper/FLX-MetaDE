@@ -27,6 +27,7 @@ Use GEOquery to obtain the GEO series GSE89873. GSEMatrix=FALSE will pull out al
 https://bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html
 
 ```{r Get ExpressionSets}
+set.seed(123)
 GSEname="GSE89873"
 GSE=getGEO(GSEname)
 exGSE=GSE[[1]]
@@ -125,7 +126,7 @@ rownames(Design)=Names
 fit5=lmFit(LexFlx,Design)
 fit6=eBayes(fit5)
 colnames(fit6) #To identify coef name to use in topTable
-topTable(fit6,coef = "Treatmenttreatment: unteated")
+topTable(fit6,coef = "Treatmenttreatment: fluoxetine")
 saveRDS(fit6,"../FLX_datasets/GSE89873/DE_GSE89873.rds")
 
 ```
@@ -169,16 +170,22 @@ UniqueGenes=filter(UniqueGenes,MOUSE_GENE!="")%>%filter(!duplicated(MOUSE_GENE))
 ```{r GSEA using fgsea}
 #Pathways list using mouse ensembl gene symbol (Mouse)
 CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+DElist=list()
 #Stats vector
-StatsFilter=data.frame(Loci=fit6$genes$ID,t=fit6$t[,"Treatmenttreatment: unteated"])%>%filter(Loci%in%UniqueGenes$LOCI)
-StatsFilter$MouseGene=UniqueGenes$MOUSE_GENE[match(StatsFilter$Loci,UniqueGenes$LOCI)]
+StatsFilter=topTable(fit6,coef = "Treatmenttreatment: fluoxetine",number = Inf)%>%filter(ID%in%UniqueGenes$LOCI)
+StatsFilter$MouseGene=UniqueGenes$MOUSE_GENE[match(StatsFilter$ID,UniqueGenes$LOCI)]
+DElist$XFTU=StatsFilter[StatsFilter$P.Value<0.05,]$Symbol
+DEbackground=StatsFilter$Symbol
 tstats=StatsFilter$t
 names(tstats)=StatsFilter$MouseGene
 #FGSEA
-GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10)
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
 head(arrange(GeneEnrich,padj),n=20)
 plotEnrichment(CPDBpaths[["Respiratory electron transport | Reactome"]], tstats)
 saveRDS(GeneEnrich,"../FLX_datasets/GSE89873/GSEA_GSE89873.rds")
+
+write.table(t(plyr::ldply(DElist,rbind)),"../FLX_datasets/GSE89873/GSE89873-DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DEbackground,"../FLX_datasets/GSE89873/GSE89873-DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
 
 ```
 

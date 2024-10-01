@@ -1,0 +1,126 @@
+---
+title: "PMID26008736 Analysis"
+author: "David Cooper"
+date: "2022-09-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(GEOquery)
+library(limma)
+library("affycoretools")
+library(affy)
+library(tidyverse)
+library(fgsea)
+library(data.table)
+library(preprocessCore)
+library(pheatmap)
+library(biomaRt)
+source("read_cpdb_tab.R")
+
+```
+
+## Data Acquisition
+
+```{r Get ExpressionSets}
+set.seed(123)
+GSElines=readLines("41380_2016_BFmp201557_MOESM438_ESM.txt")
+table(lengths(strsplit(GSElines,"  ")))
+GSElines=GSElines[nchar(GSElines)>0]
+GSElines[lengths(strsplit(GSElines,"  "))==22]=paste0("NA  ",GSElines[lengths(strsplit(GSElines,"  "))==22])
+GSElinesplit=strsplit(GSElines,"  ")
+table(lengths(GSElinesplit))
+
+GSE=as.data.frame(t(as.data.frame(GSElinesplit)))
+colnames(GSE)=GSE[1,]
+GSE=GSE[-1,]
+rownames(GSE)=GSE$Probeset
+GSE[,4:23]=sapply(GSE[,4:23],as.numeric)
+summary(GSE)
+
+saveRDS(GSE,"PMID26008736DEtable.rds")
+
+```
+
+```{r Remove Duplicate Genes}
+GSE=readRDS("PMID26008736DEtable.rds")
+
+#Get the average expression as average of Mean_Control, Mean_Remitted, and Mean_current
+GSE$Avg_Expr=rowMeans(GSE[,15:17])
+GSEfilter=GSE %>% arrange(desc(Avg_Expr)) %>%
+  filter(!duplicated(Gene)) %>%
+  filter(Gene!="NA")
+
+```
+
+B value is positive when the denominator is greater than the numerator
+
+```{r DE plots}
+GSEfilter$MeanDiffRemCurr=GSEfilter$Mean_Remitted-GSEfilter$Mean_Current
+GSEfilter$MeanDiffRemControl=GSEfilter$Mean_Remitted-GSEfilter$Mean_Control
+GSEfilter$MeanDiffCurrControl=GSEfilter$Mean_Current-GSEfilter$Mean_Control
+GSEfilter$MeanDiffTreatControl=(GSEfilter$Mean_Remitted+GSEfilter$Mean_Current)-GSEfilter$Mean_Control
+
+
+plot(GSEfilter$B_remitted_vs_Current,GSEfilter$MeanDiffRemCurr)
+plot(GSEfilter$B_control_vs_remitted,GSEfilter$MeanDiffRemControl)
+plot(-log10(GSEfilter$P_remitted_vs_Current),abs(GSEfilter$B_remitted_vs_Current))
+
+```
+
+## Gene Set Enrichment Analysis
+
+Use fgsea to analyze gene set enrichment.
+
+```{r GSEA using fgsea}
+#Pathways list using mouse ensembl gene symbol (Mouse)
+CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_symbol.tab")
+
+DElist=list()
+
+#Remitter vs current (response)
+GSEfilter$RemCurrLogP=-log10(GSEfilter$P_remitted_vs_Current)*(GSEfilter$MeanDiffRemCurr/abs(GSEfilter$MeanDiffRemCurr))
+DElist$RemVsCurr=GSEfilter[GSEfilter$P_remitted_vs_Current<0.05,]$Gene
+DEbackground=GSEfilter$Gene
+StatsFilter=filter(GSEfilter,RemCurrLogP!="NaN")
+tstats=StatsFilter$RemCurrLogP
+names(tstats)=StatsFilter$Gene
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
+saveRDS(GeneEnrich,"GSEA_RemCurr_PMID26008736.rds")
+head(arrange(GeneEnrich,padj),n=20)
+
+#Remitter vs control (responders)
+GSEfilter$RemConLogP=-log10(GSEfilter$P_control_vs_remitted)*(GSEfilter$MeanDiffRemCurr/abs(GSEfilter$MeanDiffRemCurr))
+DElist$RemVsCon=GSEfilter[GSEfilter$P_control_vs_remitted<0.05,]$Gene
+StatsFilter=filter(GSEfilter,RemConLogP!="NaN")
+tstats=StatsFilter$RemConLogP
+names(tstats)=StatsFilter$Gene
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
+saveRDS(GeneEnrich,"GSEA_RemCon_PMID26008736.rds")
+head(arrange(GeneEnrich,padj),n=20)
+
+#Current vs control (non-responders)
+GSEfilter$CurrConLogP=-log10(GSEfilter$P_control_vs_current)*(GSEfilter$MeanDiffCurrControl/abs(GSEfilter$MeanDiffCurrControl))
+DElist$CurrVsCon=GSEfilter[GSEfilter$P_control_vs_current<0.05,]$Gene
+StatsFilter=filter(GSEfilter,CurrConLogP!="NaN")
+tstats=StatsFilter$CurrConLogP
+names(tstats)=StatsFilter$Gene
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
+saveRDS(GeneEnrich,"GSEA_CurrCon_PMID26008736.rds")
+head(arrange(GeneEnrich,padj),n=20)
+
+#Remitter + Current vs control (treatment)
+GSEfilter$TreatControlLogP=-log10(GSEfilter$`P_Control_vs_Remitted_+_Current`)*(GSEfilter$MeanDiffTreatControl/abs(GSEfilter$MeanDiffTreatControl))
+DElist$TreatControl=GSEfilter[GSEfilter$`P_Control_vs_Remitted_+_Current`<0.05,]$Gene
+StatsFilter=filter(GSEfilter,TreatControlLogP!="NaN")
+tstats=StatsFilter$TreatControlLogP
+names(tstats)=StatsFilter$Gene
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
+saveRDS(GeneEnrich,"GSEA_TreatControl_PMID26008736.rds")
+head(arrange(GeneEnrich,padj),n=20)
+
+write.table(t(plyr::ldply(DElist,rbind)),"PMID26008736-DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DEbackground,"PMID26008736-DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
+
+```

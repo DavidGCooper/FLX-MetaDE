@@ -42,6 +42,7 @@ N - Non-responder (Treated)
 X - unused
 
 
-6 - unused
+6 - Dosage
 
+0-9 - Dosages (category or dose)
 X - unused

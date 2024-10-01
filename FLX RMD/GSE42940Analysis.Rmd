@@ -28,6 +28,7 @@ Use GEOquery to obtain the GEO series GSE42940. GSEMatrix=FALSE will pull out al
 https://bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html
 
 ```{r Get ExpressionSets}
+set.seed(123)
 GSEname="GSE42940"
 GSE=getGEO(GSEname)
 exGSE=GSE[[1]]
@@ -151,16 +152,24 @@ UniqueGenes=filter(UniqueGenes,MOUSE_GENE!="")%>%filter(!duplicated(MOUSE_GENE))
 #CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_symbol.tab")
 #Pathways list using mouse ensembl gene symbol (Mouse)
 CPDBpaths=read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
+
+DElist=list()
+
 #Stats vector
-StatsFilter=data.frame(Loci=fit2$genes$ID,t=fit2$t[,"TreatmentPNFLX"])%>%filter(Loci%in%UniqueGenes$LOCI)
-StatsFilter$MouseGene=UniqueGenes$MOUSE_GENE[match(StatsFilter$Loci,UniqueGenes$LOCI)]
+StatsFilter=topTable(fit2, coef = "TreatmentPNFLX", number = Inf)%>%filter(ID%in%UniqueGenes$LOCI)
+StatsFilter$MouseGene=UniqueGenes$MOUSE_GENE[match(StatsFilter$ID,UniqueGenes$LOCI)]
+DElist$XFTU=StatsFilter[StatsFilter$P.Value<0.05,]$GB_ACC
+DEbackground=StatsFilter$GB_ACC
 tstats=StatsFilter$t
 names(tstats)=StatsFilter$MouseGene
 #FGSEA
-GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10)
+GeneEnrich=fgsea(pathways = CPDBpaths, stats = tstats, minSize  = 10, nPermSimple=10000)
 head(arrange(GeneEnrich,padj),n=20)
 plotEnrichment(CPDBpaths[["Olfactory transduction - Mus musculus (mouse) | KEGG"]], tstats)
 saveRDS(GeneEnrich,"../FLX_datasets/GSE42940/GSEA_GSE42940.rds")
+
+write.table(t(plyr::ldply(DElist,rbind)),"../FLX_datasets/GSE42940/GSE42940-DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DEbackground,"../FLX_datasets/GSE42940/GSE42940-DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
 
 ```
 

@@ -25,29 +25,14 @@ source("read_cpdb_tab.R")
 ```{r}
 #Count data prepped from geo supp file including only wild type and flx treated samples
 countData <- read_csv('GSE150431/DE_read_data2.3.csv')
-
 colData <- read_csv('GSE150431/DE_metadata2.csv')
-colData
-
-which(duplicated(countData$external_gene_name))
-countData2 <- countData[!duplicated(countData$external_gene_name),]
-
-write_csv(countData2, 'GSE150431/CountTable_GSE150431.csv')
-
-```
-
-```{r}
-countData_official <- read_csv('GSE150431/CountTable_GSE150431.csv')
-
+countData_official <- countData[!duplicated(countData$external_gene_name),]
+write_csv(countData_official, 'GSE150431/CountTable_GSE150431.csv')
 countData_official <- as.data.frame(countData_official)
 countData_official <- na.omit(countData_official)
 rownames(countData_official) <- countData_official[,1]
 countData_official <- countData_official[,-1]
-
 countData_official_int <- as.data.frame(round(countData_official[,-1]))
-#rownames(countData_official_int) <- rownames(countData_official)
-countData_official
-countData_official_int
 
 ```
 
@@ -62,45 +47,37 @@ boxplot(log2(countData_official_int))
 dds <- DESeqDataSetFromMatrix(countData = countData_official_int,
                               colData = colData,
                               design = ~ fluox)
-
 dds <- DESeq(dds)
 saveRDS(dds,"../FLX_datasets/GSE150431/DESeqDataGSE150431.rds")
-
 resultsNames(dds) # lists the coefficients
 res <- results(dds, name = "fluox_flx_vs_control")
 saveRDS(res,"../FLX_datasets/GSE150431/DESeqResGSE150431.rds")
-
 
 ```
 
 ## GSEA
 
 ```{r}
-res=readRDS("../FLX_datasets/GSE150431/DESeqResGSE150431.rds")
-final_countData_dds_results=na.omit(as.data.frame(res))
-
 gs.db <- read_cpdb_tab('CPDB_pathways_genes_mouse.tab')
 
+DElist=list()
+
+final_countData_dds_results=na.omit(as.data.frame(res))
+DElist$SFTU=rownames(final_countData_dds_results[final_countData_dds_results$pvalue<0.05,])
+DEbackground=rownames(final_countData_dds_results)
 tstats <- final_countData_dds_results$stat
 names(tstats) <- rownames(final_countData_dds_results)
-
-gsea.res <- fgsea(pathways = gs.db,
-                  stats = tstats,
-                  minSize = 10)
-
+gsea.res <- fgsea(pathways = gs.db, stats = tstats, minSize = 10, nPermSimple=10000)
 saveRDS(gsea.res,"../FLX_datasets/GSE150431/GSEA_GSE150431.rds")
+
+write.table(t(plyr::ldply(DElist,rbind)),"../FLX_datasets/GSE150431/GSE150431-DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DEbackground,"../FLX_datasets/GSE150431/GSE150431-DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
 
 ```
 
 ```{r}
-gsea.res=readRDS("../FLX_datasets/GSE150431/GSEA_GSE150431.rds")
 gsea.res <- gsea.res[order(gsea.res$pval, decreasing = FALSE),]
-head(gsea.res)
-
-plotEnrichment(gs.db[["Binding and Uptake of Ligands by Scavenger Receptors"]], tstats2)
-
+plotEnrichment(gs.db[["Binding and Uptake of Ligands by Scavenger Receptors"]], tstats)
 leading_edge <- unlist(gsea.res$leadingEdge[gsea.res$pathway == "Binding and Uptake of Ligands by Scavenger Receptors"])
-leading_edge
 
 ```
-

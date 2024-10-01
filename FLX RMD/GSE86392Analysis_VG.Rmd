@@ -7,7 +7,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
 library(GEOquery)
 library(DESeq2)
 library(apeglm)
@@ -19,25 +18,25 @@ library(pheatmap)
 source("read_cpdb_tab.R")
 
 ```
-Gathering the data into the R Markdown
-```{r insert data}
-dataset <- getGEO("GSE86392")[[1]]
-class(dataset)
-getGEOSuppFiles("GSE86392")
-gunzip("GSE86392/GSE86392_expressed_gene_reads.txt.gz")
-datanumbers<-read.csv("GSE86392/GSE86392DataSet.csv", row.names = 1)
 
-```
-Here we are loading the data into R markdown
-```{r 1}
-pData(dataset)
-substr("A_C", 1,1)
-Sampledata<-data.frame(treatment = (substr(colnames(datanumbers),1,1)), tissue =(substr(colnames(datanumbers),3,3)),row.names = colnames(datanumbers))
+Gathering the data into the R Markdown
+
+```{r load data}
+set.seed(123)
+dataset <- getGEO("GSE86392")[[1]]
+#getGEOSuppFiles("GSE86392")
+#gunzip("GSE86392/GSE86392_expressed_gene_reads.txt.gz")
+datanumbers<-read.csv("GSE86392/GSE86392DataSet.csv", row.names = 1)
+Sampledata<-data.frame(treatment = (substr(colnames(datanumbers),1,1)), 
+                       tissue =(substr(colnames(datanumbers),3,3)),
+                       row.names = colnames(datanumbers))
 Sampledata$treatment<-factor(x=Sampledata$treatment,levels = c("M","Z","F","A"))
 
 ```
-Boxplot
-```{r}
+
+Raw data visualization
+
+```{r boxplots}
 #Boxplot with all samples
 boxplot(log2(datanumbers),las=2)
 #Quantile plot with all samples
@@ -45,8 +44,10 @@ qs=t(apply(log2(datanumbers),2,quantile,prob=c(0.05,0.25,0.5,0.75,0.95)))
 matplot(qs,type="l",lty=1)
 
 ```
-Here we are getting groups of each of the data.
-```{r 2}
+
+Differential Expression Analysis
+
+```{r DESeq}
 dds<- DESeqDataSetFromMatrix(countData = datanumbers,
                               colData = Sampledata,
                               design= ~ treatment + tissue)
@@ -54,279 +55,96 @@ dds<- DESeq(dds)
 resultsNames(dds) # lists the coefficients
 saveRDS(dds,"../FLX_datasets/GSE86392/DESeqDataGSE86392.rds")
 
-```
-Here we are gaining the data to compare M (Stressed) and Z (control) and then plotting
-```{r M vs Z}
-MvsZ <- results(dds, contrast = c("treatment","M", "Z")) #this is used to compare M (Stressed) and Z(control)
+#M (Stressed) vs Z (control)
+MvsZ <- results(dds, contrast = c("treatment","M", "Z"))
 saveRDS(MvsZ,"../FLX_datasets/GSE86392/Stress_DESeqRes_GSE86392.rds")
-# or to shrink log fold changes association with condition:
-#summary(MvsZ)
-#MvsZ <- lfcShrink(dds, coef = "treatment_Z_vs_M", type="apeglm")
-#saveRDS(MvsZ,"DESeqLFC_MvsZ_GSE86392.rds")
 plotMA(MvsZ, ylim=c(-2,2))
 
-```
-Here we are gaining the data to compare M (Stressed) and A (Acupuncture) and then plotting
-```{r M vs A}
-MvsA <- results(dds, contrast = c("treatment","M", "A")) #this is used to compare M (Stressed) and A(Acupuncture)
-# or to shrink log fold changes association with condition:
-#summary(MvsA)
-#MvsA <- lfcShrink(dds, coef = "treatment_A_vs_M", type="apeglm")
-#saveRDS(MvsA,"DESeqLFC_MvsA_GSE86392.rds")
+#M (Stressed) vs A (Acupuncture)
+MvsA <- results(dds, contrast = c("treatment","M", "A"))
 plotMA(MvsA, ylim=c(-2,2))
 
-```
-Here we are gaining the data to compare M (Stressed) and F (Fluoxetine) and then plotting
-```{r M vs F}
-MvsF <- results(dds, contrast = c("treatment","F", "M")) #this is used to compare M (Stressed) and F(Fluoxetine)
+#F (Fluoxetine) vs M (Stressed)
+MvsF <- results(dds, contrast = c("treatment","F", "M"))
 saveRDS(MvsF,"../FLX_datasets/GSE86392/Flx_DESeqRes_GSE86392.rds")
-# or to shrink log fold changes association with condition:
-#summary(MvsF)
-#MvsF <- lfcShrink(dds, coef = "treatment_F_vs_M", type="apeglm")
-#saveRDS(MvsF,"DESeqLFC_MvsF_GSE86392.rds")
 plotMA(MvsA, ylim=c(-2,2))
 
 ```
-Here we are creating a ggplot of M vs Z
-```{r ggplot M vs Z}
+
+DESeq results Volcano plots
+
+```{r DESeq Volcano plots}
 ggplot(data = as.data.frame(MvsZ)) + 
   geom_point(mapping = aes(x = log2FoldChange, y = -log10(pvalue), color = padj<.01)) +
   scale_color_manual(values=c("red","green","blue"))
 
-```
-Here we are changing the Rat Gene Names into Mouse Gene Names
-```{r 3}
-# change rats to mouse, use code from last time, but you don't need to use transcripts because its going from genes to genes. want to filter the padj column n/a out. also filter out n/a gene symbols (once you have the mouse genes column). its "stat" here instead of "t"
-
-#If you do not know which biomart or dataset you want, you would follow these steps:
-listEnsembl()
-
-#You probably want the genes biomart which you can make without specifying an organism
-ensembl <- useEnsembl(biomart = "genes")
-
-#Identify which datasets (organisms) exist in the genes biomart
-datasets <- listDatasets(ensembl)
-
-#You can determine which dataset you want specifically by searching for a pattern, such as a specific organism
-searchDatasets(mart = ensembl, pattern = "Rat")
-
-#If you know which biomart and dataset you want, you can start here (example for rat):
-#Create a "Mart" for rat
-ensembl <- useEnsembl(biomart="genes",dataset = "rnorvegicus_gene_ensembl")
-
-#List attributes (gene symbols, start sites, homologous gene symbols, etc.)
-attributes <- listAttributes(ensembl)
-
-#Pull down rat ensembl IDs and mouse ensembl IDs
-MouseHomologGeneList <- getBM(mart=ensembl,attributes = c("ensembl_gene_id","mmusculus_homolog_ensembl_gene"))
-
-MvsZ=as.data.frame(MvsZ)
-
-MvsZ$MouseGenes <- MouseHomologGeneList$mmusculus_homolog_ensembl_gene[match(rownames(MvsZ), MouseHomologGeneList$ensembl_gene_id)]
-
-head(MvsZ)
-
-```
-Here we are filtering out all of the Na Mousegenes
-```{r 4}
-# two ways of doing this
-#MvsZ_filtered<-filter(as.data.frame(MvsZ), grepl("ENSMUSG", MvsZ$MouseGenes, ignore.case = FALSE, perl = FALSE, fixed = FALSE, useBytes = FALSE))
-#or
-MvsZ_filtered<-filter(as.data.frame(MvsZ), MouseGenes != "")
-
-```
-Here we are checking for duplicates
-```{r check for duplicates MvsZ}
-any(duplicated(MvsZ_filtered$MouseGenes))
-MvsZ_baseMean<-arrange(MvsZ_filtered, desc(baseMean))
-MvsZ_filtered2<-filter(MvsZ_baseMean, duplicated(MouseGenes)== FALSE&is.na(padj)==FALSE)
-any(duplicated(MvsZ_filtered2$MouseGenes))
-
-```
-Here we are filtering out so only the stats from MvsZ is available
-```{r MvsZ stats}
-MvsZ_stats<-MvsZ_filtered2$stat
-names(MvsZ_stats)<-MvsZ_filtered2$MouseGenes
-head(MvsZ_stats)
-
-```
-Here we are creating a ggplot of M vs Z
-```{r ggplot M vs A}
 ggplot(data = as.data.frame(MvsA)) + 
   geom_point(mapping = aes(x = log2FoldChange, y = -log10(pvalue), color = padj<.01)) +
   scale_color_manual(values=c("red","green","blue"))
 
-```
-Here we are changing the Rat Gene Names into Mouse Gene Names
-```{r 5}
-# change rats to mouse, use code from last time, but you don't need to use transcripts because its going from genes to genes. want to filter the padj column n/a out. also filter out n/a gene symbols (once you have the mouse genes column). its "stat" here instead of "t"
-
-#If you do not know which biomart or dataset you want, you would follow these steps:
-listEnsembl()
-
-#You probably want the genes biomart which you can make without specifying an organism
-ensembl <- useEnsembl(biomart = "genes")
-
-#Identify which datasets (organisms) exist in the genes biomart
-datasets <- listDatasets(ensembl)
-
-#You can determine which dataset you want specifically by searching for a pattern, such as a specific organism
-searchDatasets(mart = ensembl, pattern = "Rat")
-
-
-
-#If you know which biomart and dataset you want, you can start here (example for rat):
-#Create a "Mart" for rat
-ensembl <- useEnsembl(biomart="genes",dataset = "rnorvegicus_gene_ensembl")
-
-#List attributes (gene symbols, start sites, homologous gene symbols, etc.)
-attributes <- listAttributes(ensembl)
-
-#Pull down rat ensembl IDs and mouse ensembl IDs
-MouseHomologGeneList <- getBM(mart=ensembl,attributes = c("ensembl_gene_id","mmusculus_homolog_ensembl_gene"))
-
-MvsA$MouseGenes <- MouseHomologGeneList$mmusculus_homolog_ensembl_gene[match(rownames(MvsA), MouseHomologGeneList$ensembl_gene_id)]
-
-head(MvsA)
-
-```
-Here we are filtering out all of the Na Mousegenes
-```{r 6}
-# two ways of doing this
-MvsA_filtered<-filter(as.data.frame(MvsA), grepl("ENSMUSG", MvsA$MouseGenes, ignore.case = FALSE, perl = FALSE, fixed = FALSE, useBytes = FALSE))
-
-#or
-
-MvsA_filtered<-filter(as.data.frame(MvsA), MouseGenes != "")
-
-```
-Here we are checking for duplicates
-```{r check for duplicates Mvs A}
-any(duplicated(MvsA_filtered$MouseGenes))
-MvsA_baseMean<-arrange(MvsA_filtered, desc(baseMean))
-MvsA_filtered2<-filter(MvsA_baseMean, duplicated(MouseGenes)== FALSE&is.na(padj)==FALSE)
-any(duplicated(MvsA_filtered2$MouseGenes))
-
-```
-Here we are filtering out so only the stats from MvsA is available
-```{r MvsA stats}
-MvsA_stats<-MvsA_filtered2$stat
-names(MvsA_stats)<-MvsA_filtered2$MouseGenes
-head(MvsA_stats)
-
-```
-Here we are creating a ggplot of M vs Z
-```{r ggplot M vs F}
 ggplot(data = as.data.frame(MvsF)) + 
   geom_point(mapping = aes(x = log2FoldChange, y = -log10(pvalue), color = padj<.01)) +
   scale_color_manual(values=c("red","green","blue"))
 
 ```
-Here we are changing the Rat Gene Names into Mouse Gene Names
-```{r 7}
-# change rats to mouse, use code from last time, but you don't need to use transcripts because its going from genes to genes. want to filter the padj column n/a out. also filter out n/a gene symbols (once you have the mouse genes column). its "stat" here instead of "t"
 
-#If you do not know which biomart or dataset you want, you would follow these steps:
-listEnsembl()
+Gene Identifier Conversion
 
-#You probably want the genes biomart which you can make without specifying an organism
-ensembl <- useEnsembl(biomart = "genes")
-
-#Identify which datasets (organisms) exist in the genes biomart
-datasets <- listDatasets(ensembl)
-
-#You can determine which dataset you want specifically by searching for a pattern, such as a specific organism
-searchDatasets(mart = ensembl, pattern = "Rat")
-
-#If you know which biomart and dataset you want, you can start here (example for rat):
-#Create a "Mart" for rat
+```{r Convert Gene IDs}
 ensembl <- useEnsembl(biomart="genes",dataset = "rnorvegicus_gene_ensembl")
-
-#List attributes (gene symbols, start sites, homologous gene symbols, etc.)
-attributes <- listAttributes(ensembl)
-
-#Pull down rat ensembl IDs and mouse ensembl IDs
 MouseHomologGeneList <- getBM(mart=ensembl,attributes = c("ensembl_gene_id","mmusculus_homolog_ensembl_gene"))
 
+DElist=list()
+
+#M vs Z
+MvsZ$MouseGenes <- MouseHomologGeneList$mmusculus_homolog_ensembl_gene[match(rownames(MvsZ), MouseHomologGeneList$ensembl_gene_id)]
+MvsZ_filtered<-filter(as.data.frame(MvsZ), MouseGenes != "")
+MvsZ_baseMean<-arrange(MvsZ_filtered, desc(baseMean))
+MvsZ_filtered2<-filter(MvsZ_baseMean, duplicated(MouseGenes)== FALSE&is.na(padj)==FALSE)
+
+#M vs A
+MvsA$MouseGenes <- MouseHomologGeneList$mmusculus_homolog_ensembl_gene[match(rownames(MvsA), MouseHomologGeneList$ensembl_gene_id)]
+MvsA_filtered<-filter(as.data.frame(MvsA), MouseGenes != "")
+MvsA_baseMean<-arrange(MvsA_filtered, desc(baseMean))
+MvsA_filtered2<-filter(MvsA_baseMean, duplicated(MouseGenes)== FALSE&is.na(padj)==FALSE)
+
+#F vs M
 MvsF$MouseGenes <- MouseHomologGeneList$mmusculus_homolog_ensembl_gene[match(rownames(MvsF), MouseHomologGeneList$ensembl_gene_id)]
-
-head(MvsF)
-
-```
-Here we are filtering out all of the Na Mousegenes
-```{r 8}
-# two ways of doing this
-MvsF_filtered<-filter(as.data.frame(MvsF), grepl("ENSMUSG", MvsF$MouseGenes, ignore.case = FALSE, perl = FALSE, fixed = FALSE, useBytes = FALSE))
-
-#or
-
 MvsF_filtered<-filter(as.data.frame(MvsF), MouseGenes != "")
-
-```
-Here we are checking for duplicates
-```{r check for duplicates MvsF}
-any(duplicated(MvsF_filtered$MouseGenes))
 MvsF_baseMean<-arrange(MvsF_filtered, desc(baseMean))
 MvsF_filtered2<-filter(MvsF_baseMean, duplicated(MouseGenes)== FALSE&is.na(padj)==FALSE)
-any(duplicated(MvsF_filtered2$MouseGenes))
+
+DElist$SFTU=rownames(MvsF_filtered2[MvsF_filtered2$pvalue<0.05,])
+DEbackground=rownames(MvsF_filtered2)
+
+write.table(t(plyr::ldply(DElist,rbind)),"../FLX_datasets/GSE86392/GSE86392-DElist.txt",sep = "\t",na = "",quote = FALSE,col.names = FALSE,row.names = FALSE)
+write.table(DEbackground,"../FLX_datasets/GSE86392/GSE86392-DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
 
 ```
-Here we are filtering out so only the stats from MvsF is available
-```{r MvsF stat}
-MvsF_stats<-MvsF_filtered2$stat
-names(MvsF_stats)<-MvsF_filtered2$MouseGenes
-head(MvsF_stats)
 
-```
-Here we are getting the Mouse pathways and using fgsea for MvsZ
-```{r MvsZ fgsea}
+Gene Set Enrichment Analysis
+
+```{r GSEA}
 mouse_pathways<-read_cpdb_tab("CPDB_pathways_genes_mouse.tab")
 
-MvsZ_fgsea <- fgsea(pathways = mouse_pathways,stats = MvsZ_stats,minSize  = 10)
-#MvsZ_fsgeaordered <- MvsZ_fgsea[order(MvsZ_fgsea$padj, decreasing = FALSE)]
-#head(MvsZ_fsgeaordered)
-
+#MvsZ stats
+MvsZ_stats<-MvsZ_filtered2$stat
+names(MvsZ_stats)<-MvsZ_filtered2$MouseGenes
+#MvsZ fgsea
+MvsZ_fgsea <- fgsea(pathways = mouse_pathways,stats = MvsZ_stats,minSize  = 10, nPermSimple=10000)
 saveRDS(MvsZ_fgsea,"../FLX_datasets/GSE86392/Stress_GSEA_GSE86392.rds")
 
-```
-Here we are getting the Mouse pathways and using fgsea for MvsF
-```{r MvsF fgsea}
-MvsF_fgsea <- fgsea(pathways = mouse_pathways,stats = MvsF_stats,minSize  = 10)
-#MvsF_fsgeaordered <- MvsF_fgsea[order(MvsF_fgsea$padj, decreasing = FALSE)]
-#head(MvsF_fsgeaordered)
-
+#MvsF stat
+MvsF_stats<-MvsF_filtered2$stat
+names(MvsF_stats)<-MvsF_filtered2$MouseGenes
+#MvsF fgsea
+MvsF_fgsea <- fgsea(pathways = mouse_pathways,stats = MvsF_stats,minSize  = 10, nPermSimple=10000)
 saveRDS(MvsF_fgsea,"../FLX_datasets/GSE86392/Flx_GSEA_GSE86392.rds")
 
-```
-Here we are getting the Mouse pathways and using fgsea for MvsA
-```{r MvsA fgsea}
-MvsA_fgsea <- fgsea(pathways = mouse_pathways,stats = MvsA_stats,minSize  = 15,maxSize  = 500)
-MvsA_fsgeaordered <- MvsA_fgsea[order(MvsA_fgsea$padj, decreasing = FALSE)]
-head(MvsA_fsgeaordered)
+#MvsA stats
+MvsA_stats<-MvsA_filtered2$stat
+names(MvsA_stats)<-MvsA_filtered2$MouseGenes
+#MvsA fgsea
+MvsA_fgsea <- fgsea(pathways = mouse_pathways,stats = MvsA_stats,minSize  = 10, nPermSimple=10000)
 
-#saveRDS(MvsA_fsgeaordered,"GSE86392_MvsAfgsea.rds")
-```
-Here we had to normalize the RNA data
-```{r 9}
-#normalization for RNA data 
-dds_pheat<-vst(dds)
-```
-Her we created a pheatmap
-```{r MvsZ pheat map}
-annotation_col = data.frame(group=dds_pheat$treatment,tissue=dds_pheat$tissue)
-rownames(annotation_col)=colnames(dds_pheat)
-
-pheatmap(assay(dds_pheat[MvsZ_filtered2$MouseGenes%in%MvsZ_fsgeaordered$leadingEdge[[1]], ]), scale="row", annotation_col=annotation_col,)
-
-
-```
-Here is a pheatmap of solely tissue "C" data
-```{r pheatmap}
-annotation_col = data.frame(group=dds_pheat$treatment,tissue=dds_pheat$tissue)
-rownames(annotation_col)=colnames(dds_pheat)
-
-dds_pheat2<-assay(dds_pheat[MvsZ_filtered2$MouseGenes%in%MvsZ_fsgeaordered$leadingEdge[[1]],dds_pheat$tissue=="C"])
-head(dds_pheat2)
-
-pheatmap(dds_pheat2[apply(dds_pheat2,1,sd)>0, ], scale="row", annotation_col=annotation_col,cluster_cols = TRUE,cluster_rows = TRUE)
 ```

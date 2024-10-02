@@ -11,6 +11,37 @@ vs. the 7 mouse/brain comparisons.
 
 ```{r}
 
-datAll <- readRDS("../Meta")
+datAll <- readRDS("../MetaDE RDS/AllSFRNgsea.rds")
+datMouse <- readRDS("../MetaDE RDS/MouseSFRNgsea.rds")
+datBrain <- readRDS("../MetaDE RDS/BrainSFRNgsea.rds")
+
+```
+
+```{r}
+
+summariesCompare <- merge(datAll, datMouse, by = "Pathway", suffixes = c(".all", ".mouse"), all = FALSE)
+summariesCompare <- merge(summariesCompare, datBrain, by = "Pathway", all = FALSE)
+
+library(VennDiagram)
+venn.diagram(x = list("Full Set" = summariesCompare$Pathway[summariesCompare$Max.all < 0.05],
+                      "Mouse Only" = summariesCompare$Pathway[summariesCompare$Max.mouse < 0.05],
+                      "Mouse/Brain Only" = summariesCompare$Pathway[summariesCompare$Max < 0.05]),
+             filename = "../Figures/ComparisonFigures/vennRN_All-mouse-brain_pmax.tiff",
+             height=2500, width=2500)
+venn.diagram(x = list("Full Set" = summariesCompare$Pathway[summariesCompare$Fish.all < 0.05],
+                      "Mouse Only" = summariesCompare$Pathway[summariesCompare$Fish.mouse < 0.05],
+                      "Mouse/Brain Only" = summariesCompare$Pathway[summariesCompare$Fish < 0.05]),
+             filename = "../Figures/ComparisonFigures/vennRN_All-mouse-brain_fish.tiff",
+             height=2500, width=2500)
+
+
+```
+
+```{r}
+
+# Get names/votes of pathways
+summariesCompare[summariesCompare$Max.all >= 0.05 & summariesCompare$Max.mouse >= 0.05 & summariesCompare$Max < 0.05, c("Pathway", "Vote")]
+summariesCompare[summariesCompare$Max.all >= 0.05 & summariesCompare$Max.mouse < 0.05 & summariesCompare$Max < 0.05, c("Pathway", "Vote.mouse")]
+summariesCompare[summariesCompare$Max.all >= 0.05 & summariesCompare$Max.mouse < 0.05 & summariesCompare$Max >= 0.05, c("Pathway", "Vote.mouse")]
 
 ```

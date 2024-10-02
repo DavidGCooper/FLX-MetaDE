@@ -201,7 +201,7 @@ DataList=HumanDFTUDEList
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -212,7 +212,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -239,7 +239,7 @@ DataList=MouseFTUDEList
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -249,7 +249,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -276,7 +276,7 @@ DataList=MouseXFTUDEList
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -286,7 +286,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -313,7 +313,7 @@ DataList=MouseSFTUDEList
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -323,7 +323,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -350,7 +350,7 @@ DataList=RatDEDataList
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -360,7 +360,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -387,7 +387,7 @@ DataList=RatXFTUDEList
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -397,7 +397,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -424,7 +424,7 @@ DataList=RatSFTUDEList
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -434,7 +434,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -463,7 +463,7 @@ DataList=MouseSFRNDEList
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -473,7 +473,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -500,7 +500,7 @@ DataList=BrainMouseSFRNDEList
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -510,7 +510,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -537,7 +537,7 @@ DataList=MouseSFRCDEList
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -547,7 +547,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -574,7 +574,7 @@ DataList=MouseSFNCDEList
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -584,7 +584,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -614,7 +614,7 @@ IDref=AllGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -624,7 +624,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -652,7 +652,7 @@ IDref=AllGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -662,7 +662,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -690,7 +690,7 @@ IDref=AllGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -700,7 +700,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -728,7 +728,7 @@ IDref=HumanGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -738,7 +738,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -766,7 +766,7 @@ IDref=MouseGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -776,7 +776,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -804,7 +804,7 @@ IDref=MouseGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -814,7 +814,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -842,7 +842,7 @@ IDref=MouseGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -852,7 +852,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -880,7 +880,7 @@ IDref=RatGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -890,7 +890,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -918,7 +918,7 @@ IDref=RatGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -928,7 +928,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -956,7 +956,7 @@ IDref=RatGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -966,7 +966,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -996,7 +996,7 @@ IDref=AllGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -1006,7 +1006,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -1034,7 +1034,7 @@ IDref=AllGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -1044,7 +1044,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -1072,7 +1072,7 @@ IDref=AllGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -1082,7 +1082,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -1110,7 +1110,7 @@ IDref=AllGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -1120,7 +1120,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -1148,7 +1148,7 @@ IDref=MouseGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -1158,7 +1158,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -1186,7 +1186,7 @@ IDref=MouseGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -1196,7 +1196,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -1224,7 +1224,7 @@ IDref=MouseGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -1234,7 +1234,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -1268,7 +1268,7 @@ DataList=SAMouseXFTUDEList
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -1278,7 +1278,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -1310,7 +1310,7 @@ DataList=SARatXFTUDEList
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -1320,7 +1320,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -1353,7 +1353,7 @@ IDref=AllGSEADataMergeIDs
 MetaResFish=MetaDE.pvalue(x = DataList,
                           meta.method = "Fisher",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
                        stat = MetaResFish$meta.analysis$stat[,1], 
                        pval = MetaResFish$meta.analysis$pval[,1], 
@@ -1363,7 +1363,7 @@ MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
 MetaResMax=MetaDE.pvalue(x = DataList,
                           meta.method = "maxP",
                           rth = NULL,
-                          asymptotic = TRUE)
+                          parametric = TRUE)
 MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
                        stat = MetaResMax$meta.analysis$stat[,1], 
                        pval = MetaResMax$meta.analysis$pval[,1], 
@@ -2228,7 +2228,7 @@ ggplot(pvaluesDF)+
   theme_classic()+
   scale_x_continuous(breaks=seq(min(pvaluesDF$Vote),max(pvaluesDF$Vote),5))+ #breaks=seq(-X,X,X)
   scale_y_continuous(expand = c(0, 0), limits = c(0, NA))+
-  scale_fill_manual(name="Significant in:",limits= c("Fisher","Maximum p-value","Fisher & Maximum p-value","Neither"), label=c("Fisher","Maximum p-value","Fisher & Maximum p-value","Neither"),values=c("#21B0FE","#FED700","green","grey70"))+
+  scale_fill_manual(name="Significant in:",limits= c("Fisher","Fisher & Maximum p-value","Neither"), label=c("Fisher","Fisher & Maximum p-value","Neither"),values=c("#21B0FE","green","grey70"))+
   xlab("Expression Change Agreement (Vote)")+
   ylab("Density")+
   theme(axis.text = element_text(size=12),axis.title = element_text(size = 12),legend.position = c(0.8, 0.8))
@@ -2965,12 +2965,12 @@ ggplot(pivot_longer(data = FreqTableSummary,cols = c(Overlap,MaxP,Fisher)),aes(x
 ggsave("Figures/AllSFRNgsea_Bar.tiff",height = 5,width = 6)
 
 #Density graph for Fish and MaxP counts for each Vote value
-ggplot(pvaluesDF)+
+ggplot(pvaluesDF[pvaluesDF$Group!="Maximum p-value",])+
   geom_density(aes(x=Vote,fill=Group),alpha=0.3,linewidth=0.8)+
   theme_classic()+
   scale_x_continuous(breaks=seq(min(pvaluesDF$Vote),max(pvaluesDF$Vote),1))+ #breaks=seq(-X,X,X)
   scale_y_continuous(expand = c(0, 0), limits = c(0, NA))+
-  scale_fill_manual(name="Significant in:",limits= c("Fisher","Maximum p-value","Fisher & Maximum p-value","Neither"), label=c("Fisher","Maximum p-value","Fisher & Maximum p-value","Neither"),values=c("#21B0FE","#FED700","green","grey70"))+
+  scale_fill_manual(name="Significant in:",limits= c("Fisher","Fisher & Maximum p-value","Neither"), label=c("Fisher","Fisher & Maximum p-value","Neither"),values=c("#21B0FE","green","grey70"))+
   xlab("Expression Change Agreement (Vote)")+
   ylab("Density")+
   theme(axis.text = element_text(size=12),axis.title = element_text(size = 12),legend.position = c(0.8, 0.8))
@@ -4304,6 +4304,10 @@ diff_down_rn=data.frame(comparison=names(diff_exp_rn),Freq=sapply(diff_exp_rn,fu
 
 diff_Combined_up_counts=rbind(diff_up_hs,diff_up_mm,diff_up_rn)
 diff_Combined_down_counts=rbind(diff_down_hs,diff_down_mm,diff_down_rn)
+diff_Combined_merge=cbind(diff_Combined_up_counts,diff_Combined_down_counts)
+diff_Combined_merge$counts=rowSums(diff_Combined_merge[,c(2,4)])
+diff_Combined_merge$samples=ReplaceLabels$SamplesPerGroup[match(gsub("_DE_df","",diff_Combined_merge$comparison),ReplaceLabels$LongLabel)]
+diff_Combined_merge=diff_Combined_merge[,c(1,5,6)]
 
 ##PATHWAYS (GSEA)
 #Load Data
@@ -4320,8 +4324,24 @@ GSEA_down_rn=data.frame(comparison=names(GSEArn),Freq=sapply(GSEArn,function(x){
 
 GSEA_Combined_up_counts=rbind(GSEA_up_hs,GSEA_up_mm,GSEA_up_rn)
 GSEA_Combined_down_counts=rbind(GSEA_down_hs,GSEA_down_mm,GSEA_down_rn)
+GSEA_Combined_merge=cbind(GSEA_Combined_up_counts,GSEA_Combined_down_counts)
+GSEA_Combined_merge$counts=rowSums(GSEA_Combined_merge[,c(2,4)])
+GSEA_Combined_merge$samples=ReplaceLabels$SamplesPerGroup[match(gsub("_GSEA","",GSEA_Combined_merge$comparison),ReplaceLabels$LongLabel)]
+GSEA_Combined_merge=GSEA_Combined_merge[,c(1,5,6)]
 
 ```
+
+```{r Scatter Plot}
+ggplot(diff_Combined_merge)+
+  geom_point(aes(samples,counts),size=5)+
+  theme_classic()
+
+ggplot(GSEA_Combined_merge)+
+  geom_point(aes(samples,counts),size=5)+
+  theme_classic()
+
+```
+
 
 ```{r Human}
 ##DIFF EXPRESSION

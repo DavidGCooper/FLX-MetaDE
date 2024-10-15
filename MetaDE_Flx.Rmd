@@ -12,6 +12,7 @@ library(vctrs)
 library(scales)
 library(MetaDE)
 library(ggvenn)
+library(ggrepel)
 library(pheatmap)
 library(VennDiagram)
 library(biomaRt)
@@ -2231,7 +2232,7 @@ ggplot(pvaluesDF)+
   scale_fill_manual(name="Significant in:",limits= c("Fisher","Fisher & Maximum p-value","Neither"), label=c("Fisher","Fisher & Maximum p-value","Neither"),values=c("#21B0FE","green","grey70"))+
   xlab("Expression Change Agreement (Vote)")+
   ylab("Density")+
-  theme(axis.text = element_text(size=12),axis.title = element_text(size = 12),legend.position = c(0.8, 0.8))
+  theme(axis.text = element_text(size=12),axis.title = element_text(size = 12),legend.position = c(0.2, 0.8))
 ggsave("Figures/AllFTUgsea_Density.tiff",height = 5,width = 6)
 
 #Venn diagram for Fish, MaxP, and Freq50 (significant in at least 50% of comparisons)
@@ -4308,6 +4309,13 @@ diff_Combined_merge=cbind(diff_Combined_up_counts,diff_Combined_down_counts)
 diff_Combined_merge$counts=rowSums(diff_Combined_merge[,c(2,4)])
 diff_Combined_merge$samples=ReplaceLabels$SamplesPerGroup[match(gsub("_DE_df","",diff_Combined_merge$comparison),ReplaceLabels$LongLabel)]
 diff_Combined_merge=diff_Combined_merge[,c(1,5,6)]
+diff_Combined_merge$Stress=str_sub(diff_Combined_merge$comparison,-12,-12)
+diff_Combined_merge=mutate(diff_Combined_merge,Stress=recode(Stress,"S"="Stressed","X"="Unstressed","D"="MDD"))
+diff_Combined_merge$Organism=c(rep("Human",5),rep("Mouse",44),rep("Rat",33))
+diff_Combined_merge$StressOrganism=paste(diff_Combined_merge$Stress,diff_Combined_merge$Organism)
+diff_Combined_merge$TorR=str_sub(diff_Combined_merge$comparison,-10,-9)
+diff_Combined_merge$comparison=ReplaceLabels$ShortLabel[match(str_sub(rownames(diff_Combined_merge),1,-7),ReplaceLabels$LongLabel)]
+
 
 ##PATHWAYS (GSEA)
 #Load Data
@@ -4328,17 +4336,67 @@ GSEA_Combined_merge=cbind(GSEA_Combined_up_counts,GSEA_Combined_down_counts)
 GSEA_Combined_merge$counts=rowSums(GSEA_Combined_merge[,c(2,4)])
 GSEA_Combined_merge$samples=ReplaceLabels$SamplesPerGroup[match(gsub("_GSEA","",GSEA_Combined_merge$comparison),ReplaceLabels$LongLabel)]
 GSEA_Combined_merge=GSEA_Combined_merge[,c(1,5,6)]
+GSEA_Combined_merge$Stress=str_sub(GSEA_Combined_merge$comparison,-11,-11)
+GSEA_Combined_merge=mutate(GSEA_Combined_merge,Stress=recode(Stress,"S"="Stressed","X"="Unstressed","D"="MDD"))
+GSEA_Combined_merge$Organism=c(rep("Human",5),rep("Mouse",44),rep("Rat",33))
+GSEA_Combined_merge$StressOrganism=paste(GSEA_Combined_merge$Stress,GSEA_Combined_merge$Organism)
+GSEA_Combined_merge$TorR=str_sub(GSEA_Combined_merge$comparison,-9,-8)
+GSEA_Combined_merge$comparison=ReplaceLabels$ShortLabel[match(str_sub(rownames(GSEA_Combined_merge),1,-6),ReplaceLabels$LongLabel)]
 
 ```
 
 ```{r Scatter Plot}
-ggplot(diff_Combined_merge)+
-  geom_point(aes(samples,counts),size=5)+
-  theme_classic()
+ggplot(diff_Combined_merge,aes(samples,counts,color=StressOrganism,label=comparison))+
+  geom_point(size=5)+
+  #scale_y_continuous(transform = "log10")+
+  xlab("Samples per Group")+
+  ylab("Number of Significant Genes")+
+  theme_classic()+
+  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
 
-ggplot(GSEA_Combined_merge)+
-  geom_point(aes(samples,counts),size=5)+
-  theme_classic()
+ggsave("Figures/DiffGenesScatter.png",height = 5,width = 6)
+
+ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,label=comparison))+
+  geom_point(size=5)+
+  #scale_y_continuous(transform = "log10")+
+  xlab("Samples per Group")+
+  ylab("Number of Significant Genes")+
+  theme_classic()+
+  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
+
+ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,label=comparison))+
+  geom_point(size=5)+
+  #scale_y_continuous(transform = "log10")+
+  xlab("Samples per Group")+
+  ylab("Number of Significant Genes")+
+  theme_classic()+
+  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
+
+ggplot(GSEA_Combined_merge,aes(samples,counts,color=StressOrganism,label=comparison))+
+  geom_point(size=5)+
+  #scale_y_continuous(transform = "log10")+
+  xlab("Samples per Group")+
+  ylab("Number of Significant Pathways")+  
+  theme_classic()+
+  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
+
+ggsave("Figures/DiffPathsScatter.png",height = 5,width = 6)
+
+ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,label=comparison))+
+  geom_point(size=5)+
+  #scale_y_continuous(transform = "log10")+
+  xlab("Samples per Group")+
+  ylab("Number of Significant Pathways")+  
+  theme_classic()+
+  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
+
+ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,label=comparison))+
+  geom_point(size=5)+
+  #scale_y_continuous(transform = "log10")+
+  xlab("Samples per Group")+
+  ylab("Number of Significant Pathways")+  
+  theme_classic()+
+  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
 
 ```
 

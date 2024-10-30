@@ -184,6 +184,12 @@ AllSFNCgsea=AllGSEADataMerge[,grepl("FNC",colnames(AllGSEADataMerge))]
 AllSFNCgseaList=list(p=AllSFNCgsea[,seq(1,ncol(AllSFNCgsea),3)],NES=AllSFNCgsea[,seq(2,ncol(AllSFNCgsea),3)])
 AllSFNCgseaList$Vote=1*(AllSFNCgseaList$p<0.05)*((AllSFNCgseaList$NES>0)*2-1)
 
+jaccard <- function(a, b) {
+    intersection = length(intersect(a, b))
+    union = length(a) + length(b) - intersection
+    return (intersection/union)
+}
+
 ```
 
 ## MetaDE Analysis
@@ -3929,6 +3935,48 @@ pheatmap(AllSFRNNES,
          width = 6,
          filename = "Figures/AllSFRN_SigPaths_Heatmap.tiff")
 
+#Correlations
+AllSFRNNEScor=cor(AllSFRNNES%>%na.omit)
+pheatmap(AllSFRNNEScor,
+         show_rownames = TRUE,
+         scale = "none",
+         color = colorRampPalette(c("navy", "white", "red"))(50),
+         breaks = seq(-1,1,0.04),
+         annotation_col = ColumnAnnotations,
+         annotation_colors = AnnColors,
+         treeheight_row = 0,
+         filename = "Figures/AllSFRN_Corr_Heatmap.tiff")
+
+#Jaccard matrix
+OnlypvaluesDF=AllSFRNdf[,grepl("Value",colnames(AllSFRNdf))]
+SigList=list()
+for (i in 1:ncol(OnlypvaluesDF)) {
+  SigList[[i]]=rownames(OnlypvaluesDF[na.omit(OnlypvaluesDF[,i])<0.05,])
+}
+names(SigList)=gsub("P.Value_","",colnames(OnlypvaluesDF))
+Compares=expand.grid(names(SigList),names(SigList))
+JaccardValues=c()
+for (i in 1:nrow(Compares)) {
+  JaccardValues=c(JaccardValues,jaccard(SigList[[Compares[i,1]]],SigList[[Compares[i,2]]]))
+}
+Compares$jaccard=JaccardValues
+CompareMatrix=as.data.frame(pivot_wider(Compares,names_from = Var2,values_from = jaccard))
+rownames(CompareMatrix)=CompareMatrix$Var1
+CompareMatrix=CompareMatrix[,-1]
+colnames(CompareMatrix)=ReplaceLabels$ShortLabel[match(colnames(CompareMatrix),ReplaceLabels$LongLabel)]
+rownames(CompareMatrix)=ReplaceLabels$ShortLabel[match(rownames(CompareMatrix),ReplaceLabels$LongLabel)]
+
+#Jaccard Heatmap
+pheatmap(CompareMatrix,
+         show_rownames = TRUE,
+         scale = "none",
+         color = colorRampPalette(c("white","red"))(20),
+         breaks = seq(0,1,0.05),
+         annotation_col = ColumnAnnotations,
+         annotation_colors = AnnColors,
+         treeheight_row = 0,
+         filename = "Figures/AllSFRN_Jaccard_Heatmap.tiff")
+
 ```
 
 ```{r All RvN Max-P Significant pathways heatmap}
@@ -4002,6 +4050,48 @@ pheatmap(AllFTUNES,
          annotation_colors = AnnColors,
          width = 12,
          filename = "Figures/AllFTU_SigPaths_Heatmap.tiff")
+
+#Correlations
+AllFTUNEScor=cor(AllFTUNES%>%na.omit)
+pheatmap(AllFTUNEScor,
+         show_rownames = TRUE,
+         scale = "none",
+         color = colorRampPalette(c("navy", "white", "red"))(50),
+         breaks = seq(-1,1,0.04),
+         annotation_col = ColumnAnnotations,
+         annotation_colors = AnnColors,
+         treeheight_row = 0,
+         filename = "Figures/AllFTU_Corr_Heatmap.tiff")
+
+#Jaccard matrix
+OnlypvaluesDF=AllFTUdf[,grepl("Value",colnames(AllFTUdf))]
+SigList=list()
+for (i in 1:ncol(OnlypvaluesDF)) {
+  SigList[[i]]=rownames(OnlypvaluesDF[na.omit(OnlypvaluesDF[,i])<0.05,])
+}
+names(SigList)=gsub("P.Value_","",colnames(OnlypvaluesDF))
+Compares=expand.grid(names(SigList),names(SigList))
+JaccardValues=c()
+for (i in 1:nrow(Compares)) {
+  JaccardValues=c(JaccardValues,jaccard(SigList[[Compares[i,1]]],SigList[[Compares[i,2]]]))
+}
+Compares$jaccard=JaccardValues
+CompareMatrix=as.data.frame(pivot_wider(Compares,names_from = Var2,values_from = jaccard))
+rownames(CompareMatrix)=CompareMatrix$Var1
+CompareMatrix=CompareMatrix[,-1]
+colnames(CompareMatrix)=ReplaceLabels$ShortLabel[match(colnames(CompareMatrix),ReplaceLabels$LongLabel)]
+rownames(CompareMatrix)=ReplaceLabels$ShortLabel[match(rownames(CompareMatrix),ReplaceLabels$LongLabel)]
+
+#Jaccard Heatmap
+pheatmap(CompareMatrix,
+         show_rownames = TRUE,
+         scale = "none",
+         color = colorRampPalette(c("white","red"))(20),
+         breaks = seq(0,1,0.05),
+         annotation_col = ColumnAnnotations,
+         annotation_colors = AnnColors,
+         treeheight_row = 0,
+         filename = "Figures/AllFTU_Jaccard_Heatmap.tiff")
 
 ```
 
@@ -4077,6 +4167,48 @@ pheatmap(AllSFTUNES,
          annotation_colors = AnnColors,
          width = 7,
          filename = "Figures/AllSFTU_SigPaths_Heatmap.tiff")
+
+#Correlations
+AllSFTUNEScor=cor(AllSFTUNES%>%na.omit)
+pheatmap(AllSFTUNEScor,
+         show_rownames = TRUE,
+         scale = "none",
+         color = colorRampPalette(c("navy", "white", "red"))(50),
+         breaks = seq(-1,1,0.04),
+         annotation_col = ColumnAnnotations,
+         annotation_colors = AnnColors,
+         treeheight_row = 0,
+         filename = "Figures/AllSFTU_Corr_Heatmap.tiff")
+
+#Jaccard matrix
+OnlypvaluesDF=AllSFTUdf[,grepl("Value",colnames(AllSFTUdf))]
+SigList=list()
+for (i in 1:ncol(OnlypvaluesDF)) {
+  SigList[[i]]=rownames(OnlypvaluesDF[na.omit(OnlypvaluesDF[,i])<0.05,])
+}
+names(SigList)=gsub("P.Value_","",colnames(OnlypvaluesDF))
+Compares=expand.grid(names(SigList),names(SigList))
+JaccardValues=c()
+for (i in 1:nrow(Compares)) {
+  JaccardValues=c(JaccardValues,jaccard(SigList[[Compares[i,1]]],SigList[[Compares[i,2]]]))
+}
+Compares$jaccard=JaccardValues
+CompareMatrix=as.data.frame(pivot_wider(Compares,names_from = Var2,values_from = jaccard))
+rownames(CompareMatrix)=CompareMatrix$Var1
+CompareMatrix=CompareMatrix[,-1]
+colnames(CompareMatrix)=ReplaceLabels$ShortLabel[match(colnames(CompareMatrix),ReplaceLabels$LongLabel)]
+rownames(CompareMatrix)=ReplaceLabels$ShortLabel[match(rownames(CompareMatrix),ReplaceLabels$LongLabel)]
+
+#Jaccard Heatmap
+pheatmap(CompareMatrix,
+         show_rownames = TRUE,
+         scale = "none",
+         color = colorRampPalette(c("white","red"))(20),
+         breaks = seq(0,1,0.05),
+         annotation_col = ColumnAnnotations,
+         annotation_colors = AnnColors,
+         treeheight_row = 0,
+         filename = "Figures/AllSFTU_Jaccard_Heatmap.tiff")
 
 ```
 
@@ -4285,11 +4417,18 @@ venn.diagram(VennList,
 
 ```
 
-## Significant Genes/Pathways Bar Graph
+## Significant Genes/Pathways Bar Graph and Scatter Plot
 
 Bar graphs displaying the number of significant genes and pathways for each comparison.
 
 ```{r Load and Combine Organism Data for All Graphs}
+TissueTypes=read.csv("TissueSubtypes.csv",header = TRUE)
+npgColors=readRDS("npgColors.rds")
+StressOrganismColors=npgColors[c(3,4,2,8,5)]
+names(StressOrganismColors)=c("MDD Human","Stressed Mouse","Unstressed Mouse","Stressed Rat","Unstressed Rat")
+TissueShapes=c(1,2,3,0)
+names(TissueShapes)=c("Cortical","Hippocampus","Blood","Other")
+
 ##DIFF EXPRESSION
 #Load Data
 diff_exp_hs <- readRDS("Input RDS/Human_All_DE_List.rds")
@@ -4314,8 +4453,9 @@ diff_Combined_merge=mutate(diff_Combined_merge,Stress=recode(Stress,"S"="Stresse
 diff_Combined_merge$Organism=c(rep("Human",5),rep("Mouse",44),rep("Rat",33))
 diff_Combined_merge$StressOrganism=paste(diff_Combined_merge$Stress,diff_Combined_merge$Organism)
 diff_Combined_merge$TorR=str_sub(diff_Combined_merge$comparison,-10,-9)
+diff_Combined_merge$Tissue=TissueTypes$Subtype[match(str_match(rownames(diff_Combined_merge),"_(.*)_.*_DE_df")[,2],TissueTypes$Abbreviation)]
+diff_Combined_merge=mutate(diff_Combined_merge,Tissue=replace(Tissue,!(Tissue %in% names(TissueShapes)),"Other"))
 diff_Combined_merge$comparison=ReplaceLabels$ShortLabel[match(str_sub(rownames(diff_Combined_merge),1,-7),ReplaceLabels$LongLabel)]
-
 
 ##PATHWAYS (GSEA)
 #Load Data
@@ -4341,65 +4481,166 @@ GSEA_Combined_merge=mutate(GSEA_Combined_merge,Stress=recode(Stress,"S"="Stresse
 GSEA_Combined_merge$Organism=c(rep("Human",5),rep("Mouse",44),rep("Rat",33))
 GSEA_Combined_merge$StressOrganism=paste(GSEA_Combined_merge$Stress,GSEA_Combined_merge$Organism)
 GSEA_Combined_merge$TorR=str_sub(GSEA_Combined_merge$comparison,-9,-8)
+GSEA_Combined_merge$Tissue=TissueTypes$Subtype[match(str_match(rownames(GSEA_Combined_merge),"_(.*)_.*_GSEA")[,2],TissueTypes$Abbreviation)]
+GSEA_Combined_merge=mutate(GSEA_Combined_merge,Tissue=replace(Tissue,!(Tissue %in% names(TissueShapes)),"Other"))
 GSEA_Combined_merge$comparison=ReplaceLabels$ShortLabel[match(str_sub(rownames(GSEA_Combined_merge),1,-6),ReplaceLabels$LongLabel)]
 
 ```
 
 ```{r Scatter Plot}
-ggplot(diff_Combined_merge,aes(samples,counts,color=StressOrganism,label=comparison))+
-  geom_point(size=5)+
+#Differential Expression
+ggplot(diff_Combined_merge,aes(samples,counts,color=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
+  geom_point(size=5,stroke=2)+
   #scale_y_continuous(transform = "log10")+
+  scale_color_manual(values = StressOrganismColors)+
+  scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Genes")+
   theme_classic()+
   geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
-
 ggsave("Figures/DiffGenesScatter.png",height = 5,width = 6)
 
-ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,label=comparison))+
-  geom_point(size=5)+
-  #scale_y_continuous(transform = "log10")+
+#Response
+#No scale
+ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
+  geom_point(size=5,stroke=2)+
+  scale_color_manual(values = StressOrganismColors)+
+  scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Genes")+
   theme_classic()+
   geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
+ggsave("Figures/DiffGenesResponseScatter.png",height = 5,width = 6)
 
-ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,label=comparison))+
-  geom_point(size=5)+
-  #scale_y_continuous(transform = "log10")+
+#Log scale
+ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
+  geom_point(size=5,stroke=2)+
+  scale_y_continuous(transform = "log10")+
+  scale_x_continuous(transform = "log10")+
+  scale_color_manual(values = StressOrganismColors)+
+  scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Genes")+
   theme_classic()+
   geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
+ggsave("Figures/DiffGenesResponseScatterLog.png",height = 5,width = 6)
 
-ggplot(GSEA_Combined_merge,aes(samples,counts,color=StressOrganism,label=comparison))+
-  geom_point(size=5)+
+#Treatment
+#No scale
+ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
+  geom_point(size=5,stroke=2)+
+  scale_color_manual(values = StressOrganismColors)+
+  scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
+  xlab("Samples per Group")+
+  ylab("Number of Significant Genes")+
+  theme_classic()+
+  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
+ggsave("Figures/DiffGenesTreatmentScatter.png",height = 5,width = 6)
+
+#Log scale
+ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
+  geom_point(size=5,stroke=2)+
+  scale_y_continuous(transform = "log10")+
+  scale_x_continuous(transform = "log10")+
+  scale_color_manual(values = StressOrganismColors)+
+  scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
+  xlab("Samples per Group")+
+  ylab("Number of Significant Genes")+
+  theme_classic()+
+  geom_text_repel(data = filter(diff_Combined_merge[diff_Combined_merge$TorR=="TU",],counts>6),max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
+ggsave("Figures/DiffGenesTreatmentScatterLog.png",height = 5,width = 6)
+
+#GSEA
+ggplot(GSEA_Combined_merge,aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
+  geom_point(size=5,stroke=2)+
   #scale_y_continuous(transform = "log10")+
+  scale_color_manual(values = StressOrganismColors)+
+  scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Pathways")+  
   theme_classic()+
   geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
-
 ggsave("Figures/DiffPathsScatter.png",height = 5,width = 6)
 
-ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,label=comparison))+
-  geom_point(size=5)+
+#Response
+#No scale
+ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
+  geom_point(size=5,stroke=2)+
   #scale_y_continuous(transform = "log10")+
+  scale_color_manual(values = StressOrganismColors)+
+  scale_shape_manual(name="Tissue",values = c(1,2,3,0))+
   xlab("Samples per Group")+
   ylab("Number of Significant Pathways")+  
   theme_classic()+
   geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
+ggsave("Figures/DiffPathsResponseScatter.png",height = 5,width = 6)
 
-ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,label=comparison))+
-  geom_point(size=5)+
+#Log scale
+ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
+  geom_point(size=5,stroke=2)+
+  scale_y_continuous(transform = "log10")+
+  scale_x_continuous(transform = "log10")+
+  scale_color_manual(values = StressOrganismColors)+
+  scale_shape_manual(name="Tissue",values = c(1,2,3,0))+
+  xlab("Samples per Group")+
+  ylab("Number of Significant Pathways")+  
+  theme_classic()+
+  geom_text_repel(data = filter(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="RN",],counts>6),max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
+ggsave("Figures/DiffPathsResponseScatterLog.png",height = 5,width = 6)
+
+#Treatment
+#No scale
+ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
+  geom_point(size=5,stroke=2)+
   #scale_y_continuous(transform = "log10")+
+  scale_color_manual(values = StressOrganismColors)+
+  scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Pathways")+  
   theme_classic()+
   geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
+ggsave("Figures/DiffPathsTreatmentScatter.png",height = 5,width = 6)
+
+#Log scale
+ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
+  geom_point(size=5,stroke=2)+
+  scale_y_continuous(transform = "log10")+
+  scale_x_continuous(transform = "log10")+
+  scale_color_manual(values = StressOrganismColors)+
+  scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
+  xlab("Samples per Group")+
+  ylab("Number of Significant Pathways")+  
+  theme_classic()+
+  geom_text_repel(data = filter(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="TU",],counts>6),max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
+ggsave("Figures/DiffPathsTreatmentScatterLog.png",height = 5,width = 6)
 
 ```
 
+```{r Load and Prepare Annotations}
+npgColors=readRDS("npgColors.rds")
+#https://nanx.me/ggsci/reference/pal_npg.html
+#show_col(npgColors)
+names(npgColors)=c("Signal Transduction","Metabolism of proteins","Immune System","Cell Cycle","Metabolism of RNA",
+                   "Neuronal System","KEGG Database","Gene expression (Transcription)","Metabolism","Other") 
+StressColors=npgColors[c(2,5,10)]
+names(StressColors)=c("Stressed","Unstressed","Depressed")
+OrganismColors=npgColors[c(3,4,8)]
+names(OrganismColors)=c("Human","Mouse","Rat")
+TissueColors=npgColors[c(1,6,7,9)]
+names(TissueColors)=c("Cortical","Hippocampus","Blood","Other")
+
+AnnColors=list(Stress=StressColors,Organism=OrganismColors,Tissue=TissueColors,PathwayCategory=npgColors)
+
+ReactomeTop=readRDS("Reactome_HS_withTopLevel.rds")
+
+AllGSEADataMergeIDs$Path=gsub(" \\|.*","",AllGSEADataMergeIDs$pathway)
+AllGSEADataMergeIDs$DB=str_match(AllGSEADataMergeIDs$pathway," \\| (.*)")[,2]
+AllGSEADataMergeIDs$Top=ReactomeTop$top_level_name[match(gsub(" \\| Reactome","",AllGSEADataMergeIDs$pathway),ReactomeTop$Name)]
+AllGSEADataMergeIDs=mutate(AllGSEADataMergeIDs,DBorTop=coalesce(Top,DB))
+
+TissueTypes=read.csv("TissueSubtypes.csv",header = TRUE)
+
+```
 
 ```{r Human}
 ##DIFF EXPRESSION
@@ -5415,4 +5656,3 @@ ggsave("Figures/NOstressTvUPathsSig.png",arrangeGrob(gg1_pathway,gg.mid_pathway,
 
 
 ```
-

@@ -95,16 +95,16 @@ AllGSEADataList=readRDS("Input RDS/All_Merged_GSEA_List.rds")
 
 #Organism grouped data to filter into subsets
 #Human
-HumanGSEADataMerge=readRDS("Input RDS/Human_Merged_GSEA_df.rds")
+HumanGSEADataMerge=as.data.frame(readRDS("Input RDS/Human_Merged_GSEA_df.rds"))
 rownames(HumanGSEADataMerge)=paste(rep("ID",nrow(HumanGSEADataMerge)),1:nrow(HumanGSEADataMerge),sep ="")
 HumanGSEADataMergeIDs=dplyr::select(HumanGSEADataMerge,pathway)
 #Human TvU
-HumanDFTUgsea=HumanGSEADataMerge[,!grepl("GSE83386_Lympho_DFTUXX",colnames(HumanGSEADataMerge))&!grepl("GSE83386_Lympho_DFRNXX",colnames(HumanGSEADataMerge))]
+HumanDFTUgsea=HumanGSEADataMerge[,!grepl("GSE83386_Lympho_DFTUXX|GSE83386_Lympho_DFRNXX",colnames(HumanGSEADataMerge))]
 HumanDFTUgseaList=list(p=HumanDFTUgsea[,seq(2,ncol(HumanDFTUgsea),3)],NES=HumanDFTUgsea[,seq(3,ncol(HumanDFTUgsea),3)])
 HumanDFTUgseaList$Vote=1*(HumanDFTUgseaList$p<0.05)*((HumanDFTUgseaList$NES>0)*2-1)
 
 #Mouse
-MouseGSEADataMerge=readRDS("Input RDS/Mouse_Merged_GSEA_df.rds")
+MouseGSEADataMerge=as.data.frame(readRDS("Input RDS/Mouse_Merged_GSEA_df.rds"))
 rownames(MouseGSEADataMerge)=paste(rep("ID",nrow(MouseGSEADataMerge)),1:nrow(MouseGSEADataMerge),sep ="")
 MouseGSEADataMergeIDs=dplyr::select(MouseGSEADataMerge,pathway)
 #Mouse TvU All
@@ -133,7 +133,7 @@ MouseSFNCgseaList=list(p=MouseSFNCgsea[,seq(1,ncol(MouseSFNCgsea),3)],NES=MouseS
 MouseSFNCgseaList$Vote=1*(MouseSFNCgseaList$p<0.05)*((MouseSFNCgseaList$NES>0)*2-1)
 
 #Rat
-RatGSEADataMerge=readRDS("Input RDS/Rat_Merged_GSEA_df.rds")
+RatGSEADataMerge=as.data.frame(readRDS("Input RDS/Rat_Merged_GSEA_df.rds"))
 rownames(RatGSEADataMerge)=paste(rep("ID",nrow(RatGSEADataMerge)),1:nrow(RatGSEADataMerge),sep ="")
 RatGSEADataMergeIDs=dplyr::select(RatGSEADataMerge,pathway)
 #Rat TvU All 
@@ -150,7 +150,7 @@ RatSFTUgseaList=list(p=RatSFTUgsea[,seq(1,ncol(RatSFTUgsea),3)],NES=RatSFTUgsea[
 RatSFTUgseaList$Vote=1*(RatSFTUgseaList$p<0.05)*((RatSFTUgseaList$NES>0)*2-1)
 
 #All
-AllGSEADataMerge=readRDS("Input RDS/All_Merged_GSEA_df.rds")
+AllGSEADataMerge=as.data.frame(readRDS("Input RDS/All_Merged_GSEA_df.rds"))
 rownames(AllGSEADataMerge)=paste(rep("ID",nrow(AllGSEADataMerge)),1:nrow(AllGSEADataMerge),sep ="")
 AllGSEADataMergeIDs=dplyr::select(AllGSEADataMerge,pathway)
 #All TvU
@@ -167,7 +167,7 @@ AllSFTUgseaList=list(p=AllSFTUgsea[,seq(1,ncol(AllSFTUgsea),3)],NES=AllSFTUgsea[
 AllSFTUgseaList$Vote=1*(AllSFTUgseaList$p<0.05)*((AllSFTUgseaList$NES>0)*2-1)
 #All RvN
 AllSFRNgsea=AllGSEADataMerge[,grepl("FRN",colnames(AllGSEADataMerge))]
-AllSFRNgseaList=list(p=AllSFRNgsea[,seq(1,ncol(AllSFRNgsea),3)],NES=AllSFRNgsea[,seq(2,ncol(AllSFRNgsea),3)])
+AllSFRNgseaList=list(p=AllSFRNgsea[,seq(1,ncol(AllSFRNgsea),3),],NES=AllSFRNgsea[,seq(2,ncol(AllSFRNgsea),3)])
 AllSFRNgseaList$Vote=1*(AllSFRNgseaList$p<0.05)*((AllSFRNgseaList$NES>0)*2-1)
 #Brain Only RvN
 BrainSFRNgsea=AllGSEADataMerge[,grepl("FRN",colnames(AllGSEADataMerge))&
@@ -2233,7 +2233,7 @@ ggsave("Figures/AllFTUgsea_Bar.tiff",height = 5,width = 6)
 ggplot(pvaluesDF)+
   geom_density(aes(x=Vote,fill=Group),alpha=0.3,linewidth=0.8)+
   theme_classic()+
-  scale_x_continuous(breaks=seq(min(pvaluesDF$Vote),max(pvaluesDF$Vote),5))+ #breaks=seq(-X,X,X)
+  scale_x_continuous(breaks=seq(-30,15,5))+ #breaks=seq(-X,X,X)
   scale_y_continuous(expand = c(0, 0), limits = c(0, NA))+
   scale_fill_manual(name="Significant in:",limits= c("Fisher","Fisher & Maximum p-value","Neither"), label=c("Fisher","Fisher & Maximum p-value","Neither"),values=c("#21B0FE","green","grey70"))+
   xlab("Expression Change Agreement (Vote)")+
@@ -4492,7 +4492,7 @@ GSEA_Combined_merge$comparison=ReplaceLabels$ShortLabel[match(str_sub(rownames(G
 ggplot(diff_Combined_merge,aes(samples,counts,color=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
   geom_point(size=5,stroke=2)+
   #scale_y_continuous(transform = "log10")+
-  scale_color_manual(values = StressOrganismColors)+
+  scale_color_manual(name="Subject Type",values = StressOrganismColors)+
   scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Genes")+
@@ -4504,7 +4504,7 @@ ggsave("Figures/DiffGenesScatter.png",height = 5,width = 6)
 #No scale
 ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
   geom_point(size=5,stroke=2)+
-  scale_color_manual(values = StressOrganismColors)+
+  scale_color_manual(name="Subject Type",values = StressOrganismColors)+
   scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Genes")+
@@ -4517,7 +4517,7 @@ ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="RN",],aes(samples,counts,c
   geom_point(size=5,stroke=2)+
   scale_y_continuous(transform = "log10")+
   scale_x_continuous(transform = "log10")+
-  scale_color_manual(values = StressOrganismColors)+
+  scale_color_manual(name="Subject Type",values = StressOrganismColors)+
   scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Genes")+
@@ -4529,7 +4529,7 @@ ggsave("Figures/DiffGenesResponseScatterLog.png",height = 5,width = 6)
 #No scale
 ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
   geom_point(size=5,stroke=2)+
-  scale_color_manual(values = StressOrganismColors)+
+  scale_color_manual(name="Subject Type",values = StressOrganismColors)+
   scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Genes")+
@@ -4542,7 +4542,7 @@ ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="TU",],aes(samples,counts,c
   geom_point(size=5,stroke=2)+
   scale_y_continuous(transform = "log10")+
   scale_x_continuous(transform = "log10")+
-  scale_color_manual(values = StressOrganismColors)+
+  scale_color_manual(name="Subject Type",values = StressOrganismColors)+
   scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Genes")+
@@ -4554,7 +4554,7 @@ ggsave("Figures/DiffGenesTreatmentScatterLog.png",height = 5,width = 6)
 ggplot(GSEA_Combined_merge,aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
   geom_point(size=5,stroke=2)+
   #scale_y_continuous(transform = "log10")+
-  scale_color_manual(values = StressOrganismColors)+
+  scale_color_manual(name="Subject Type",values = StressOrganismColors)+
   scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Pathways")+  
@@ -4567,7 +4567,7 @@ ggsave("Figures/DiffPathsScatter.png",height = 5,width = 6)
 ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
   geom_point(size=5,stroke=2)+
   #scale_y_continuous(transform = "log10")+
-  scale_color_manual(values = StressOrganismColors)+
+  scale_color_manual(name="Subject Type",values = StressOrganismColors)+
   scale_shape_manual(name="Tissue",values = c(1,2,3,0))+
   xlab("Samples per Group")+
   ylab("Number of Significant Pathways")+  
@@ -4580,7 +4580,7 @@ ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="RN",],aes(samples,counts,c
   geom_point(size=5,stroke=2)+
   scale_y_continuous(transform = "log10")+
   scale_x_continuous(transform = "log10")+
-  scale_color_manual(values = StressOrganismColors)+
+  scale_color_manual(name="Subject Type",values = StressOrganismColors)+
   scale_shape_manual(name="Tissue",values = c(1,2,3,0))+
   xlab("Samples per Group")+
   ylab("Number of Significant Pathways")+  
@@ -4593,7 +4593,7 @@ ggsave("Figures/DiffPathsResponseScatterLog.png",height = 5,width = 6)
 ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
   geom_point(size=5,stroke=2)+
   #scale_y_continuous(transform = "log10")+
-  scale_color_manual(values = StressOrganismColors)+
+  scale_color_manual(name="Subject Type",values = StressOrganismColors)+
   scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Pathways")+  
@@ -4606,7 +4606,7 @@ ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="TU",],aes(samples,counts,c
   geom_point(size=5,stroke=2)+
   scale_y_continuous(transform = "log10")+
   scale_x_continuous(transform = "log10")+
-  scale_color_manual(values = StressOrganismColors)+
+  scale_color_manual(name="Subject Type",values = StressOrganismColors)+
   scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Pathways")+  

@@ -2002,6 +2002,75 @@ saveRDS(GSEASetList,"Input RDS/Rat_All_GSEA_List.rds")
 
 ```
 
+```{r Additional Human Datasets GSEA}
+#Clear Environment of All objects
+rm(list = objects())
+
+#PMID26008736_CurrCon
+PMID26008736_CurrCon_GSEA=readRDS("AdditionalDatasets/GSEA_CurrCon_PMID26008736.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(PMID26008736_CurrCon_GSEA)[colnames(PMID26008736_CurrCon_GSEA)=="pval"]="P.Value_PMID26008736_CurrCon"
+colnames(PMID26008736_CurrCon_GSEA)[colnames(PMID26008736_CurrCon_GSEA)=="NES"]="NES_PMID26008736_CurrCon"
+colnames(PMID26008736_CurrCon_GSEA)[colnames(PMID26008736_CurrCon_GSEA)=="padj"]="AdjP_PMID26008736_CurrCon"
+
+#PMID26008736_TreatControl
+PMID26008736_TreatControl_GSEA=readRDS("AdditionalDatasets/GSEA_TreatControl_PMID26008736.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(PMID26008736_TreatControl_GSEA)[colnames(PMID26008736_TreatControl_GSEA)=="pval"]="P.Value_PMID26008736_TreatControl"
+colnames(PMID26008736_TreatControl_GSEA)[colnames(PMID26008736_TreatControl_GSEA)=="NES"]="NES_PMID26008736_TreatControl"
+colnames(PMID26008736_TreatControl_GSEA)[colnames(PMID26008736_TreatControl_GSEA)=="padj"]="AdjP_PMID26008736_TreatControl"
+
+#PMID26008736_RemCon
+PMID26008736_RemCon_GSEA=readRDS("AdditionalDatasets/GSEA_RemCon_PMID26008736.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(PMID26008736_RemCon_GSEA)[colnames(PMID26008736_RemCon_GSEA)=="pval"]="P.Value_PMID26008736_RemCon"
+colnames(PMID26008736_RemCon_GSEA)[colnames(PMID26008736_RemCon_GSEA)=="NES"]="NES_PMID26008736_RemCon"
+colnames(PMID26008736_RemCon_GSEA)[colnames(PMID26008736_RemCon_GSEA)=="padj"]="AdjP_PMID26008736_RemCon"
+
+#PMID26008736_RemCurr
+PMID26008736_RemCurr_GSEA=readRDS("AdditionalDatasets/GSEA_RemCurr_PMID26008736.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(PMID26008736_RemCurr_GSEA)[colnames(PMID26008736_RemCurr_GSEA)=="pval"]="P.Value_PMID26008736_RemCurr"
+colnames(PMID26008736_RemCurr_GSEA)[colnames(PMID26008736_RemCurr_GSEA)=="NES"]="NES_PMID26008736_RemCurr"
+colnames(PMID26008736_RemCurr_GSEA)[colnames(PMID26008736_RemCurr_GSEA)=="padj"]="AdjP_PMID26008736_RemCurr"
+
+#GSE146446_Dlx0hResponse
+GSE146446_Dlx0hResponse_GSEA=readRDS("AdditionalDatasets/GSEA_Dlx0hResponse_GSE146446.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE146446_Dlx0hResponse_GSEA)[colnames(GSE146446_Dlx0hResponse_GSEA)=="pval"]="P.Value_GSE146446_Dlx0hResponse"
+colnames(GSE146446_Dlx0hResponse_GSEA)[colnames(GSE146446_Dlx0hResponse_GSEA)=="NES"]="NES_GSE146446_Dlx0hResponse"
+colnames(GSE146446_Dlx0hResponse_GSEA)[colnames(GSE146446_Dlx0hResponse_GSEA)=="padj"]="AdjP_GSE146446_Dlx0hResponse"
+
+#GSE146446_Dlx8hResponse
+GSE146446_Dlx8hResponse_GSEA=readRDS("AdditionalDatasets/GSEA_Dlx8hResponse_GSE146446.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE146446_Dlx8hResponse_GSEA)[colnames(GSE146446_Dlx8hResponse_GSEA)=="pval"]="P.Value_GSE146446_Dlx8hResponse"
+colnames(GSE146446_Dlx8hResponse_GSEA)[colnames(GSE146446_Dlx8hResponse_GSEA)=="NES"]="NES_GSE146446_Dlx8hResponse"
+colnames(GSE146446_Dlx8hResponse_GSEA)[colnames(GSE146446_Dlx8hResponse_GSEA)=="padj"]="AdjP_GSE146446_Dlx8hResponse"
+
+#GSE146446_Plb0hResponse
+GSE146446_Plb0hResponse_GSEA=readRDS("AdditionalDatasets/GSEA_Plb0hResponse_GSE146446.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE146446_Plb0hResponse_GSEA)[colnames(GSE146446_Plb0hResponse_GSEA)=="pval"]="P.Value_GSE146446_Plb0hResponse"
+colnames(GSE146446_Plb0hResponse_GSEA)[colnames(GSE146446_Plb0hResponse_GSEA)=="NES"]="NES_GSE146446_Plb0hResponse"
+colnames(GSE146446_Plb0hResponse_GSEA)[colnames(GSE146446_Plb0hResponse_GSEA)=="padj"]="AdjP_GSE146446_Plb0hResponse"
+
+#GSE146446_Plb8hResponse
+GSE146446_Plb8hResponse_GSEA=readRDS("AdditionalDatasets/GSEA_Plb8hResponse_GSE146446.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE146446_Plb8hResponse_GSEA)[colnames(GSE146446_Plb8hResponse_GSEA)=="pval"]="P.Value_GSE146446_Plb8hResponse"
+colnames(GSE146446_Plb8hResponse_GSEA)[colnames(GSE146446_Plb8hResponse_GSEA)=="NES"]="NES_GSE146446_Plb8hResponse"
+colnames(GSE146446_Plb8hResponse_GSEA)[colnames(GSE146446_Plb8hResponse_GSEA)=="padj"]="AdjP_GSE146446_Plb8hResponse"
+
+#GSE146446_PlbTreatment
+GSE146446_PlbTreatment_GSEA=readRDS("AdditionalDatasets/GSEA_PlbTreatment_GSE146446.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE146446_PlbTreatment_GSEA)[colnames(GSE146446_PlbTreatment_GSEA)=="pval"]="P.Value_GSE146446_PlbTreatment"
+colnames(GSE146446_PlbTreatment_GSEA)[colnames(GSE146446_PlbTreatment_GSEA)=="NES"]="NES_GSE146446_PlbTreatment"
+colnames(GSE146446_PlbTreatment_GSEA)[colnames(GSE146446_PlbTreatment_GSEA)=="padj"]="AdjP_GSE146446_PlbTreatment"
+
+#GSE146446_DlxTreatment
+GSE146446_DlxTreatment_GSEA=readRDS("AdditionalDatasets/GSEA_DlxTreatment_GSE146446.rds")%>%dplyr::select(pathway,pval,NES,padj)
+colnames(GSE146446_DlxTreatment_GSEA)[colnames(GSE146446_DlxTreatment_GSEA)=="pval"]="P.Value_GSE146446_DlxTreatment"
+colnames(GSE146446_DlxTreatment_GSEA)[colnames(GSE146446_DlxTreatment_GSEA)=="NES"]="NES_GSE146446_DlxTreatment"
+colnames(GSE146446_DlxTreatment_GSEA)[colnames(GSE146446_DlxTreatment_GSEA)=="padj"]="AdjP_GSE146446_DlxTreatment"
+
+GSEASetList=as.list(mget(objects()))
+saveRDS(GSEASetList,"Input RDS/HumanExtra_All_GSEA_List.rds")
+
+```
+
 ```{r Merge GSEA data}
 HumanGSEA=readRDS("Input RDS/Human_All_GSEA_List.rds")
 HumanGSEADataMerge=purrr::reduce(HumanGSEA,full_join,by="pathway")
@@ -2048,5 +2117,27 @@ AllGSEADataList=list(p=AllGSEADataMerge[,seq(2,ncol(AllGSEADataMerge),3)],
                      pathways=AllGSEADataMerge[,1])
 saveRDS(AllGSEADataList,"Input RDS/All_Merged_GSEA_List.rds")
 
+HumanGSEAextra=readRDS("Input RDS/HumanExtra_All_GSEA_List.rds")
+HumanGSEAextraDataMerge=purrr::reduce(HumanGSEAextra,full_join,by="pathway")
+HumanGSEAextraDataMerge=filter(HumanGSEAextraDataMerge,rowSums(is.na(HumanGSEAextraDataMerge))<(ncol(HumanGSEAextraDataMerge)*.5))
+HumanGSEAextraDataMerge$pathway=gsub("\\- Homo sapiens \\(human\\) ","",HumanGSEAextraDataMerge$pathway)
+saveRDS(HumanGSEAextraDataMerge,"Input RDS/HumanExtra_Merged_GSEA_df.rds")
+HumanGSEAextraDataList=list(p=HumanGSEAextraDataMerge[,seq(2,ncol(HumanGSEAextraDataMerge),3)],
+                       NES=HumanGSEAextraDataMerge[,seq(3,ncol(HumanGSEAextraDataMerge),3)],
+                       AdjP=HumanGSEAextraDataMerge[,seq(4,ncol(HumanGSEAextraDataMerge),3)],
+                       pathways=HumanGSEAextraDataMerge[,1])
+saveRDS(HumanGSEAextraDataList,"Input RDS/HumanExtra_Merged_GSEA_List.rds")
+
+AllGSEADataMergeExtra=full_join(full_join(full_join(MouseGSEADataMerge,RatGSEADataMerge),HumanGSEADataMerge),HumanGSEAextraDataMerge)
+AllGSEADataMergeExtra=AllGSEADataMergeExtra %>% 
+  filter(rowSums(is.na(AllGSEADataMergeExtra))<(ncol(AllGSEADataMergeExtra)*.5)) %>%
+  #filter(DB!='MouseCyc' & DB!='HumanCyc') %>% #Is not necessary because after the next filter only KEGG and Reactome pathways remain
+  filter(!is.na(P.Value_GSE128387_Blood_DFTUXX) | !is.na(P.Value_GSE83386_Lympho_DFTUXX))
+saveRDS(AllGSEADataMergeExtra,"Input RDS/AllExtra_Merged_GSEA_df.rds")
+AllGSEADataListExtra=list(p=AllGSEADataMergeExtra[,seq(2,ncol(AllGSEADataMergeExtra),3)],
+                     NES=AllGSEADataMergeExtra[,seq(3,ncol(AllGSEADataMergeExtra),3)],
+                     AdjP=AllGSEADataMergeExtra[,seq(4,ncol(AllGSEADataMergeExtra),3)],
+                     pathways=AllGSEADataMergeExtra[,1])
+saveRDS(AllGSEADataListExtra,"Input RDS/AllExtra_Merged_GSEA_List.rds")
 
 ```

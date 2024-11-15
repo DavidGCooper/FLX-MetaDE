@@ -1,0 +1,1451 @@
+---
+title: "DAVID_data_analysis"
+author: "Patrick Vo"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#library(GEOquery)
+#library(DESeq2)
+library(tidyverse)
+#library(fgsea)
+#library(data.table)
+library(preprocessCore)
+library(pheatmap)
+library(apeglm)
+library(EnhancedVolcano)
+library(biomaRt)
+library(stringr)
+#library("metapod")
+library(purrr)
+library(vctrs)
+library(scales)
+library(MetaDE)
+library(ggvenn)
+library(ggrepel)
+library(VennDiagram)
+library(grid)
+library(gridExtra)
+
+```
+
+## Load in Data
+
+```{r Load_Data eval = FALSE, echo = FALSE}
+#GSE28644_Cortex_XFRNXX
+GSE28644_Cortex_XFRNXX <- read.delim("DAVID results/GSE28644-DE_XFRN_output.txt")
+GSE28644_Cortex_XFRNXX_DE_list <- GSE28644_Cortex_XFRNXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE28644_Cortex_XFRNXX_DE_list) <- c("Term", "GSE28644_Cortex_XFRNXX_Category", "GSE28644_Cortex_XFRNXX_Count", "GSE28644_Cortex_XFRNXX_pval", "GSE28644_Cortex_XFRNXX_FE")
+rm(GSE28644_Cortex_XFRNXX)
+
+#GSE28644_Cortex_XFTUXX
+GSE28644_Cortex_XFTUXX <- read.delim("DAVID results/GSE28644-DE_XFTU_output.txt")
+GSE28644_Cortex_XFTUXX_DE_list <- GSE28644_Cortex_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE28644_Cortex_XFTUXX_DE_list) <- c("Term", "GSE28644_Cortex_XFTUXX_Category", "GSE28644_Cortex_XFTUXX_Count", "GSE28644_Cortex_XFTUXX_pval", "GSE28644_Cortex_XFTUXX_FE")
+rm(GSE28644_Cortex_XFTUXX)
+
+#GSE28644_Cortex_XFNCXX
+GSE28644_Cortex_XFNCXX <- read.delim("DAVID results/GSE28644-DE_XFNC_output.txt")
+GSE28644_Cortex_XFNCXX_DE_list <- GSE28644_Cortex_XFNCXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE28644_Cortex_XFNCXX_DE_list) <- c("Term", "GSE28644_Cortex_XFNCXX_Category", "GSE28644_Cortex_XFNCXX_Count", "GSE28644_Cortex_XFNCXX_pval", "GSE28644_Cortex_XFNCXX_FE")
+rm(GSE28644_Cortex_XFNCXX)
+
+#GSE28644_Cortex_XFRCXX
+GSE28644_Cortex_XFRCXX <- read.delim("DAVID results/GSE28644-DE_XFRC_output.txt")
+GSE28644_Cortex_XFRCXX_DE_list <- GSE28644_Cortex_XFRCXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE28644_Cortex_XFRCXX_DE_list) <- c("Term", "GSE28644_Cortex_XFRCXX_Category", "GSE28644_Cortex_XFRCXX_Count", "GSE28644_Cortex_XFRCXX_pval", "GSE28644_Cortex_XFRCXX_FE")
+rm(GSE28644_Cortex_XFRCXX)
+
+#GSE35761_S100a10_XFTUXX
+GSE35761 <- read.delim("DAVID results/GSE35761_output.txt")
+GSE35761_list <- GSE35761 %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE35761_list) <- c("Term", "GSE35761_S100a10_XFTUXX_Category", "GSE35761_S100a10_XFTUXX_Count", "GSE35761_S100a10_XFTUXX_pval", "GSE35761_S100a10_XFTUXX_FE")
+rm(GSE35761)
+
+#GSE35763_GLt25d2_XFTUXX
+GSE35763 <- read.delim("DAVID results/GSE35763_output.txt")
+GSE35763_list <- GSE35763 %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE35763_list) <- c("Term", "GSE35763_GLt25d2_XFTUXX_Category", "GSE35763_GLt25d2_XFTUXX_Count", "GSE35763_GLt25d2_XFTUXX_pval", "GSE35763_GLt25d2_XFTUXX_FE")
+rm(GSE35763)
+
+#GSE42940_Hippocampus_XFTUXX
+GSE42940 <- read.delim("DAVID results/GSE42940_output.txt")
+GSE42940_list <- GSE42940 %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE42940_list) <- c("Term", "GSE42940_Hippocampus_XFTUXX_Category", "GSE42940_Hippocampus_XFTUXX_Count", "GSE42940_Hippocampus_XFTUXX_pval", "GSE42940_Hippocampus_XFTUXX_FE")
+rm(GSE42940)
+
+#GSE43261_DDG_SFNCXX
+GSE43261_DDGDE_SFNC <- read.delim("DAVID results/GSE43261-DDGDE-SFNC_output.txt")
+GSE43261_DDGDE_SFNC_list <- GSE43261_DDGDE_SFNC %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE43261_DDGDE_SFNC_list) <- c("Term", "GSE43261_DDG_SFNCXX_Category", "GSE43261_DDG_SFNCXX_Count", "GSE43261_DDG_SFNCXX_pval", "GSE43261_DDG_SFNCXX_FE")
+rm(GSE43261_DDGDE_SFNC)
+
+#GSE43261_DDG_SFRCXX
+GSE43261_DDGDE_SFRC <- read.delim("DAVID results/GSE43261-DDGDE-SFRC_output.txt")
+GSE43261_DDGDE_SFRC_list <- GSE43261_DDGDE_SFRC %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE43261_DDGDE_SFRC_list) <- c("Term", "GSE43261_DDG_SFRCXX_Category", "GSE43261_DDG_SFRCXX_Count", "GSE43261_DDG_SFRCXX_pval", "GSE43261_DDG_SFRCXX_FE")
+rm(GSE43261_DDGDE_SFRC)
+
+#GSE43261_DDG_SFRNXX
+GSE43261_DDGDE_SFRN <- read.delim("DAVID results/GSE43261-DDGDE-SFRN_output.txt")
+GSE43261_DDGDE_SFRN_list <- GSE43261_DDGDE_SFRN %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE43261_DDGDE_SFRN_list) <- c("Term", "GSE43261_DDG_SFRNXX_Category", "GSE43261_DDG_SFRNXX_Count", "GSE43261_DDG_SFRNXX_pval", "GSE43261_DDG_SFRNXX_FE")
+rm(GSE43261_DDGDE_SFRN)
+
+#GSE43261_DDG_SFTUXX
+GSE43261_DDGDE_SFTU <- read.delim("DAVID results/GSE43261-DDGDE-SFTU_output.txt")
+GSE43261_DDGDE_SFTU_list <- GSE43261_DDGDE_SFTU %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE43261_DDGDE_SFTU_list) <- c( "Term", "GSE43261_DDG_SFTUXX_Category", "GSE43261_DDG_SFTUXX_Count", "GSE43261_DDG_SFTUXX_pval", "GSE43261_DDG_SFTUXX_FE")
+rm(GSE43261_DDGDE_SFTU)
+
+#GSE43261_VDG_SFNCXX
+GSE43261_VDGDE_SFNC <- read.delim("DAVID results/GSE43261-VDGDE-SFNC_output.txt")
+GSE43261_VDGDE_SFNC_list <- GSE43261_VDGDE_SFNC %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE43261_VDGDE_SFNC_list) <- c("Term", "GSE43261_VDG_SFNCXX_Category", "GSE43261_VDG_SFNCXX_Count", "GSE43261_VDG_SFNCXX_pval", "GSE43261_VDG_SFNCXX_FE")
+rm(GSE43261_VDGDE_SFNC)
+
+#GSE43261_VDG_SFRCXX
+GSE43261_VDGDE_SFRC <- read.delim("DAVID results/GSE43261-VDGDE-SFRC_output.txt")
+GSE43261_VDGDE_SFRC_list <- GSE43261_VDGDE_SFRC %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE43261_VDGDE_SFRC_list) <- c( "Term", "GSE43261_VDG_SFRCXX_Category","GSE43261_VDG_SFRCXX_Count", "GSE43261_VDG_SFRCXX_pval", "GSE43261_VDG_SFRCXX_FE")
+rm(GSE43261_VDGDE_SFRC)
+
+#GSE43261_VDG_SFRNXX
+GSE43261_VDGDE_SFRN <- read.delim("DAVID results/GSE43261-VDGDE-SFRN_output.txt")
+GSE43261_VDGDE_SFRN_list <- GSE43261_VDGDE_SFRN %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE43261_VDGDE_SFRN_list) <- c("Term", "GSE43261_VDG_SFRNXX_Category", "GSE43261_VDG_SFRNXX_Count", "GSE43261_VDG_SFRNXX_pval", "GSE43261_VDG_SFRNXX_FE")
+rm(GSE43261_VDGDE_SFRN)
+
+#GSE43261_VDG_SFTUXX
+GSE43261_VDGDE_SFTU <- read.delim("DAVID results/GSE43261-VDGDE-SFTU_output.txt")
+GSE43261_VDGDE_SFTU_list <- GSE43261_VDGDE_SFTU %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE43261_VDGDE_SFTU_list) <- c("Term", "GSE43261_VDG_SFTUXX_Category", "GSE43261_VDG_SFTUXX_Count", "GSE43261_VDG_SFTUXX_pval", "GSE43261_VDG_SFTUXX_FE")
+rm(GSE43261_VDGDE_SFTU)
+
+#Not included
+#GSE48951_DEl_XTFU <- read.delim("DAVID results/GSE48951-DEl_XTFU_output.txt")
+#GSE48951_DEl_XTFU_list <- GSE48951_DEl_XTFU %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+#colnames(GSE48951_DEl_XTFU_list) <- c("Term", "GSE48951_DEl_XTFU_Category", "GSE48951_DEl_XTFU_Count", "GSE48951_DEl_XTFU_pval", "GSE48951_DEl_XTFU_FE")
+#rm(GSE48951_DEl_XTFU)
+
+#GSE48951_Striatum_XFTU1X
+GSE48951_DEl_XTFU1 <- read.delim("DAVID results/GSE48951-DEl_XTFU1_output.txt")
+GSE48951_DEl_XTFU1_list <- GSE48951_DEl_XTFU1  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE48951_DEl_XTFU1_list) <- c("Term", "GSE48951_Striatum_XFTU1X_Category", "GSE48951_Striatum_XFTU1X_Count", "GSE48951_Striatum_XFTU1X_pval", "GSE48951_Striatum_XFTU1X_FE")
+rm(GSE48951_DEl_XTFU1)
+
+#GSE48951_Striatum_XFTU2X
+GSE48951_DEl_XTFU2 <- read.delim("DAVID results/GSE48951-DEl_XTFU2_output.txt")
+GSE48951_DEl_XTFU2_list <- GSE48951_DEl_XTFU2  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE48951_DEl_XTFU2_list) <- c("Term", "GSE48951_Striatum_XFTU2X_Category", "GSE48951_Striatum_XFTU2X_Count", "GSE48951_Striatum_XFTU2X_pval", "GSE48951_Striatum_XFTU2X_FE")
+rm(GSE48951_DEl_XTFU2)
+
+#GSE48951_Striatum_XFTU4X
+GSE48951_DEl_XTFU4 <- read.delim("DAVID results/GSE48951-DEl_XTFU4_output.txt")
+GSE48951_DEl_XTFU4_list <- GSE48951_DEl_XTFU4  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE48951_DEl_XTFU4_list) <- c("Term", "GSE48951_Striatum_XFTU4X_Category", "GSE48951_Striatum_XFTU4X_Count", "GSE48951_Striatum_XFTU4X_pval", "GSE48951_Striatum_XFTU4X_FE")
+rm(GSE48951_DEl_XTFU4)
+
+#GSE48951_Striatum_XFTU8X
+GSE48951_DEl_XTFU8 <- read.delim("DAVID results/GSE48951-DEl_XTFU8_output.txt")
+GSE48951_DEl_XTFU8_list <- GSE48951_DEl_XTFU8  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE48951_DEl_XTFU8_list) <- c("Term", "GSE48951_Striatum_XFTU8X_Category", "GSE48951_Striatum_XFTU8X_Count", "GSE48951_Striatum_XFTU8X_pval", "GSE48951_Striatum_XFTU8X_FE")
+rm(GSE48951_DEl_XTFU8)
+
+#GSE56028_DG_SFTUXX
+GSE56028_SFTU <- read.delim("DAVID results/GSE56028_SFTU_output.txt")
+GSE56028_SFTU_list <- GSE56028_SFTU  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE56028_SFTU_list) <- c("Term", "GSE56028_DG_SFTUXX_Category", "GSE56028_DG_SFTUXX_Count", "GSE56028_DG_SFTUXX_pval", "GSE56028_DG_SFTUXX_FE")
+rm(GSE56028_SFTU)
+
+#Not included
+#GSE56028_XFTU <- read.delim("DAVID results/GSE56028_XFTU_output.txt")
+#GSE56028_XFTU_list <- GSE56028_XFTU  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+#colnames(GSE56028_XFTU_list) <- c("Term", "GSE56028_XFTU_Category", "GSE56028_XFTU_Count", "GSE56028_XFTU_pval", "GSE56028_XFTU_FE")
+#rm(GSE56028_XFTU)
+
+#GSE83386_Lympho_DFNCXX
+GSE83386_DE_DFNC <- read.delim("DAVID results/GSE83386-DE_DFNC_output.txt")
+GSE83386_DE_DFNC_list <- GSE83386_DE_DFNC  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE83386_DE_DFNC_list) <- c("Term", "GSE83386_Lympho_DFNCXX_Category", "GSE83386_Lympho_DFNCXX_Count", "GSE83386_Lympho_DFNCXX_pval", "GSE83386_Lympho_DFNCXX_FE")
+rm(GSE83386_DE_DFNC)
+
+#GSE83386_Lympho_DFRCXX
+GSE83386_DE_DFRC <- read.delim("DAVID results/GSE83386-DE_DFRC_output.txt")
+GSE83386_DE_DFRC_list <- GSE83386_DE_DFRC  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE83386_DE_DFRC_list) <- c("Term", "GSE83386_Lympho_DFRCXX_Category", "GSE83386_Lympho_DFRCXX_Count", "GSE83386_Lympho_DFRCXX_pval", "GSE83386_Lympho_DFRCXX_FE")
+rm(GSE83386_DE_DFRC)
+
+#GSE83386_Lympho_DFRNXX
+GSE83386_DE_DFRN <- read.delim("DAVID results/GSE83386-DE_DFRN_output.txt")
+GSE83386_DE_DFRN_list <- GSE83386_DE_DFRN  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE83386_DE_DFRN_list) <- c("Term", "GSE83386_Lympho_DFRNXX_Category", "GSE83386_Lympho_DFRNXX_Count", "GSE83386_Lympho_DFRNXX_pval", "GSE83386_Lympho_DFRNXX_FE")
+rm(GSE83386_DE_DFRN)
+
+#GSE83386_Lympho_DFTUXX
+GSE83386_DE_DFTU <- read.delim("DAVID results/GSE83386-DE_DFTU_output.txt")
+GSE83386_DE_DFTU_list <- GSE83386_DE_DFTU  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE83386_DE_DFTU_list) <- c("Term", "GSE83386_Lympho_DFTUXX_Category", "GSE83386_Lympho_DFTUXX_Count", "GSE83386_Lympho_DFTUXX_pval", "GSE83386_Lympho_DFTUXX_FE")
+rm(GSE83386_DE_DFTU)
+
+#GSE84183_ACC_SFNCXX
+GSE84183_CG_DE_SFNC <- read.delim("DAVID results/GSE84183_CG_DE_SFNC_output.txt")
+GSE84183_CG_DE_SFNC_list <- GSE84183_CG_DE_SFNC  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84183_CG_DE_SFNC_list) <- c("Term", "GSE84183_ACC_SFNCXX_Category", "GSE84183_ACC_SFNCXX_Count", "GSE84183_ACC_SFNCXX_pval", "GSE84183_ACC_SFNCXX_FE")
+rm(GSE84183_CG_DE_SFNC)
+
+#GSE84183_ACC_SFRCXX
+GSE84183_CG_DE_SFRC <- read.delim("DAVID results/GSE84183_CG_DE_SFRC_output.txt")
+GSE84183_CG_DE_SFRC_list <- GSE84183_CG_DE_SFRC  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84183_CG_DE_SFRC_list) <- c("Term", "GSE84183_ACC_SFRCXX_Category", "GSE84183_ACC_SFRCXX_Count", "GSE84183_ACC_SFRCXX_pval", "GSE84183_ACC_SFRCXX_FE")
+rm(GSE84183_CG_DE_SFRC)
+
+#GSE84183_ACC_SFRNXX
+GSE84183_CG_DE_SFRN <- read.delim("DAVID results/GSE84183_CG_DE_SFRN_output.txt")
+GSE84183_CG_DE_SFRN_list <- GSE84183_CG_DE_SFRN  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84183_CG_DE_SFRN_list) <- c("Term", "GSE84183_ACC_SFRNXX_Category", "GSE84183_ACC_SFRNXX_Count", "GSE84183_ACC_SFRNXX_pval", "GSE84183_ACC_SFRNXX_FE")
+rm(GSE84183_CG_DE_SFRN)
+
+#GSE84183_ACC_SFTUXX
+GSE84183_CG_DE_STFU <- read.delim("DAVID results/GSE84183_CG_DE_STFU_output.txt")
+GSE84183_CG_DE_STFU_list <- GSE84183_CG_DE_STFU  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84183_CG_DE_STFU_list) <- c("Term", "GSE84183_ACC_SFTUXX_Category", "GSE84183_ACC_SFTUXX_Count", "GSE84183_ACC_SFTUXX_pval", "GSE84183_ACC_SFTUXX_FE")
+rm(GSE84183_CG_DE_STFU)
+
+#GSE84183_ACC_XFTUXX
+GSE84183_CG_DE_XTFU <- read.delim("DAVID results/GSE84183_CG_DE_XTFU_output.txt")
+GSE84183_CG_DE_XTFU_list <- GSE84183_CG_DE_XTFU  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84183_CG_DE_XTFU_list) <- c("Term", "GSE84183_ACC_XFTUXX_Category", "GSE84183_ACC_XFTUXX_Count", "GSE84183_ACC_XFTUXX_pval", "GSE84183_ACC_XFTUXX_FE")
+rm(GSE84183_CG_DE_XTFU)
+
+#GSE84183_DG_SFNCXX
+GSE84183_DG_DE_SFNC <- read.delim("DAVID results/GSE84183_DG_DE_SFNC_output.txt")
+GSE84183_DG_DE_SFNC_list <- GSE84183_DG_DE_SFNC  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84183_DG_DE_SFNC_list) <- c("Term", "GSE84183_DG_SFNCXX_Category", "GSE84183_DG_SFNCXX_Count", "GSE84183_DG_SFNCXX_pval", "GSE84183_DG_SFNCXX_FE")
+rm(GSE84183_DG_DE_SFNC)
+
+#GSE84183_DG_SFRCXX
+GSE84183_DG_DE_SFRC <- read.delim("DAVID results/GSE84183_DG_DE_SFRC_output.txt")
+GSE84183_DG_DE_SFRC_list <- GSE84183_DG_DE_SFRC  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84183_DG_DE_SFRC_list) <- c("Term", "GSE84183_DG_SFRCXX_Category", "GSE84183_DG_SFRCXX_Count", "GSE84183_DG_SFRCXX_pval", "GSE84183_DG_SFRCXX_FE")
+rm(GSE84183_DG_DE_SFRC)
+
+#GSE84183_DG_SFTUXX
+GSE84183_DG_DE_SFTU <- read.delim("DAVID results/GSE84183_DG_DE_SFTU_output.txt")
+GSE84183_DG_DE_SFTU_list <- GSE84183_DG_DE_SFTU  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84183_DG_DE_SFTU_list) <- c("Term", "GSE84183_DG_SFTUXX_Category", "GSE84183_DG_SFTUXX_Count", "GSE84183_DG_SFTUXX_pval", "GSE84183_DG_SFTUXX_FE")
+rm(GSE84183_DG_DE_SFTU)
+
+#GSE84183_DG_SFRNXX
+GSE84183_DG_DE_SFRN <- read.delim("DAVID results/GSE84183_DG_DE_SFRN_output.txt")
+GSE84183_DG_DE_SFRN_list <- GSE84183_DG_DE_SFRN  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84183_DG_DE_SFRN_list) <- c("Term", "GSE84183_DG_SFRNXX_Category", "GSE84183_DG_SFRNXX_Count", "GSE84183_DG_SFRNXX_pval", "GSE84183_DG_SFRNXX_FE")
+rm(GSE84183_DG_DE_SFRN)
+
+#GSE84183_DG_XFTUXX
+GSE84183_DG_DE_XTFU <- read.delim("DAVID results/GSE84183_DG_DE_XTFU_output.txt")
+GSE84183_DG_DE_XTFU_list <- GSE84183_DG_DE_XTFU  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84183_DG_DE_XTFU_list) <- c("Term", "GSE84183_DG_XFTUXX_Category", "GSE84183_DG_XFTUXX_Count", "GSE84183_DG_XFTUXX_pval", "GSE84183_DG_XFTUXX_FE")
+rm(GSE84183_DG_DE_XTFU)
+
+#GSE84184_Blood_SFNCXX
+GSE84184_BL_DE_SFNC <- read.delim("DAVID results/GSE84184-BL_DE_SFNC_output.txt")
+GSE84184_BL_DE_SFNC_list <- GSE84184_BL_DE_SFNC  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84184_BL_DE_SFNC_list) <- c("Term", "GSE84184_Blood_SFNCXX_Category", "GSE84184_Blood_SFNCXX_Count", "GSE84184_Blood_SFNCXX_pval", "GSE84184_Blood_SFNCXX_FE")
+rm(GSE84184_BL_DE_SFNC)
+
+#GSE84184_Blood_SFRCXX
+GSE84184_BL_DE_SFRC <- read.delim("DAVID results/GSE84184-BL_DE_SFRC_output.txt")
+GSE84184_BL_DE_SFRC_list <- GSE84184_BL_DE_SFRC  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84184_BL_DE_SFRC_list) <- c("Term", "GSE84184_Blood_SFRCXX_Category", "GSE84184_Blood_SFRCXX_Count", "GSE84184_Blood_SFRCXX_pval", "GSE84184_Blood_SFRCXX_FE")
+rm(GSE84184_BL_DE_SFRC)
+
+#GSE84184_Blood_SFRNXX
+GSE84184_BL_DE_SFRN <- read.delim("DAVID results/GSE84184-BL_DE_SFRN_output.txt")
+GSE84184_BL_DE_SFRN_list <- GSE84184_BL_DE_SFRN  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84184_BL_DE_SFRN_list) <- c("Term", "GSE84184_Blood_SFRNXX_Category", "GSE84184_Blood_SFRNXX_Count", "GSE84184_Blood_SFRNXX_pval", "GSE84184_Blood_SFRNXX_FE")
+rm(GSE84184_BL_DE_SFRN)
+
+#GSE84184_Blood_SFTUXX
+GSE84184_BL_DE_STFU <- read.delim("DAVID results/GSE84184-BL_DE_STFU_output.txt")
+GSE84184_BL_DE_STFU_list <- GSE84184_BL_DE_STFU  %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84184_BL_DE_STFU_list) <- c("Term", "GSE84184_Blood_SFTUXX_Category", "GSE84184_Blood_SFTUXX_Count", "GSE84184_Blood_SFTUXX_pval", "GSE84184_Blood_SFTUXX_FE")
+rm(GSE84184_BL_DE_STFU)
+
+#GSE84184_Blood_XFTUXX
+GSE84184_BL_DE_XTFU <- read.delim("DAVID results/GSE84184-BL_DE_XTFU_output.txt")
+GSE84184_BL_DE_XTFU_list <- GSE84184_BL_DE_XTFU %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE84184_BL_DE_XTFU_list) <- c("Term", "GSE84184_Blood_XFTUXX_Category", "GSE84184_Blood_XFTUXX_Count", "GSE84184_Blood_XFTUXX_pval", "GSE84184_Blood_XFTUXX_FE")
+rm(GSE84184_BL_DE_XTFU)
+
+#GSE86392_Brain_SFTUXX
+GSE86392 <- read.delim("DAVID results/GSE86392_output.txt")
+GSE86392_list <- GSE86392 %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE86392_list) <- c("Term", "GSE86392_Brain_SFTUXX_Category", "GSE86392_Brain_SFTUXX_Count", "GSE86392_Brain_SFTUXX_pval", "GSE86392_Brain_SFTUXX_FE")
+rm(GSE86392)
+
+#GSE89873_Glioma_XFTUXX
+GSE89873_DElist <- read.delim("DAVID results/GSE89873-DElist_output.txt")
+GSE89873_DElist_list <- GSE89873_DElist %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE89873_DElist_list) <- c("Term", "GSE89873_Glioma_XFTUXX_Category", "GSE89873_Glioma_XFTUXX_Count", "GSE89873_Glioma_XFTUXX_pval", "GSE89873_Glioma_XFTUXX_FE")
+rm(GSE89873_DElist)
+
+#GSE109445_Hippocampus_SFTUXX
+GSE109445_SFTU <- read.delim("DAVID results/GSE109445_SFTU_output.txt")
+GSE109445_SFTU_list <- GSE109445_SFTU %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE109445_SFTU_list) <- c("Term", "GSE109445_Hippocampus_SFTUXX_Category", "GSE109445_Hippocampus_SFTUXX_Count", "GSE109445_Hippocampus_SFTUXX_pval", "GSE109445_Hippocampus_SFTUXX_FE")
+rm(GSE109445_SFTU)
+
+#GSE118668_PFC_XFTUXX
+GSE118668_XFTU <- read.delim("DAVID results/GSE118668_XFTU.txt")
+GSE118668_XFTU_list <- GSE118668_XFTU %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE118668_XFTU_list) <- c("Term", "GSE118668_PFC_XFTUXX_Category", "GSE118668_PFC_XFTUXX_Count", "GSE118668_PFC_XFTUXX_pval", "GSE118668_PFC_XFTUXX_FE")
+rm(GSE118668_XFTU)
+
+#GSE118669_DG_XFTUXX
+GSE118669_XFTU <- read.delim("DAVID results/GSE118669_XFTU.txt")
+GSE118669_XFTU_list <- GSE118669_XFTU %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE118669_XFTU_list) <- c("Term", "GSE118669_DG_XFTUXX_Category", "GSE118669_DG_XFTUXX_Count", "GSE118669_DG_XFTUXX_pval", "GSE118669_DG_XFTUXX_FE")
+rm(GSE118669_XFTU)
+
+#GSE128387_Blood_DFTUXX
+GSE128387_DFTU <- read.delim("DAVID results/GSE128387_DFTU.txt")
+GSE128387_DFTU_list <- GSE128387_DFTU %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE128387_DFTU_list) <- c("Term", "GSE128387_Blood_DFTUXX_Category", "GSE128387_Blood_DFTUXX_Count", "GSE128387_Blood_DFTUXX_pval", "GSE128387_Blood_DFTUXX_FE")
+rm(GSE128387_DFTU)
+
+#GSE150431_Amygdala_XFTUXX
+GSE150431_SFTU <- read.delim("DAVID results/GSE150431_SFTU.txt")
+GSE150431_SFTU_list <- GSE150431_SFTU %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE150431_SFTU_list) <- c("Term", "GSE150431_Amygdala_XFTUXX_Category", "GSE150431_Amygdala_XFTUXX_Count", "GSE150431_Amygdala_XFTUXX_pval", "GSE150431_Amygdala_XFTUXX_FE")
+rm(GSE150431_SFTU)
+
+#GSE194289_Arc_XFTUXX
+GSE194289_Arc_XFTUXX <- read.delim("DAVID results/GSE194289_Arc_output.txt")
+GSE194289_Arc_XFTUXX_list <- GSE194289_Arc_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_Arc_XFTUXX_list) <- c("Term", "GSE194289_Arc_XFTUXX_Category", "GSE194289_Arc_XFTUXX_Count", "GSE194289_Arc_XFTUXX_pval", "GSE194289_Arc_XFTUXX_FE")
+rm(GSE194289_Arc_XFTUXX)
+
+#GSE194289_BLA_XFTUXX
+GSE194289_BLA_XFTUXX <- read.delim("DAVID results/GSE194289_BLA_output.txt")
+GSE194289_BLA_XFTUXX_list <- GSE194289_BLA_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_BLA_XFTUXX_list) <- c("Term", "GSE194289_BLA_XFTUXX_Category", "GSE194289_BLA_XFTUXX_Count", "GSE194289_BLA_XFTUXX_pval", "GSE194289_BLA_XFTUXX_FE")
+rm(GSE194289_BLA_XFTUXX)
+
+#GSE194289_BNST_XFTUXX
+GSE194289_BNST_XFTUXX <- read.delim("DAVID results/GSE194289_BNST_output.txt")
+GSE194289_BNST_XFTUXX_list <- GSE194289_BNST_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_BNST_XFTUXX_list) <- c("Term", "GSE194289_BNST_XFTUXX_Category", "GSE194289_BNST_XFTUXX_Count", "GSE194289_BNST_XFTUXX_pval", "GSE194289_BNST_XFTUXX_FE")
+rm(GSE194289_BNST_XFTUXX)
+
+#GSE194289_CGC_XFTUXX
+GSE194289_CGC_XFTUXX <- read.delim("DAVID results/GSE194289_CGC_output.txt")
+GSE194289_CGC_XFTUXX_list <- GSE194289_CGC_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_CGC_XFTUXX_list) <- c("Term", "GSE194289_CGC_XFTUXX_Category", "GSE194289_CGC_XFTUXX_Count", "GSE194289_CGC_XFTUXX_pval", "GSE194289_CGC_XFTUXX_FE")
+rm(GSE194289_CGC_XFTUXX)
+
+#GSE194289_CMA_XFTUXX
+GSE194289_CMA_XFTUXX <- read.delim("DAVID results/GSE194289_CMA_output.txt")
+GSE194289_CMA_XFTUXX_list <- GSE194289_CMA_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_CMA_XFTUXX_list) <- c("Term", "GSE194289_CMA_XFTUXX_Category", "GSE194289_CMA_XFTUXX_Count", "GSE194289_CMA_XFTUXX_pval", "GSE194289_CMA_XFTUXX_FE")
+rm(GSE194289_CMA_XFTUXX)
+
+#GSE194289_dorCA1_XFTUXX
+GSE194289_dorCA1_XFTUXX <- read.delim("DAVID results/GSE194289_dorCA1_output.txt")
+GSE194289_dorCA1_XFTUXX_list <- GSE194289_dorCA1_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_dorCA1_XFTUXX_list) <- c("Term", "GSE194289_dorCA1_XFTUXX_Category", "GSE194289_dorCA1_XFTUXX_Count", "GSE194289_dorCA1_XFTUXX_pval", "GSE194289_dorCA1_XFTUXX_FE")
+rm(GSE194289_dorCA1_XFTUXX)
+
+#GSE194289_dorDG_XFTUXX
+GSE194289_dorDG_XFTUXX <- read.delim("DAVID results/GSE194289_dorDG_output.txt")
+GSE194289_dorDG_XFTUXX_list <- GSE194289_dorDG_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_dorDG_XFTUXX_list) <- c("Term", "GSE194289_dorDG_XFTUXX_Category", "GSE194289_dorDG_XFTUXX_Count", "GSE194289_dorDG_XFTUXX_pval", "GSE194289_dorDG_XFTUXX_FE")
+rm(GSE194289_dorDG_XFTUXX)
+
+#GSE194289_HB_XFTUXX
+GSE194289_HB_XFTUXX <- read.delim("DAVID results/GSE194289_HB_output.txt")
+GSE194289_HB_XFTUXX_list <- GSE194289_HB_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_HB_XFTUXX_list) <- c("Term", "GSE194289_HB_XFTUXX_Category", "GSE194289_HB_XFTUXX_Count", "GSE194289_HB_XFTUXX_pval", "GSE194289_HB_XFTUXX_FE")
+rm(GSE194289_HB_XFTUXX)
+
+#GSE194289_ILC_XFTUXX
+GSE194289_ILC_XFTUXX <- read.delim("DAVID results/GSE194289_ILC_output.txt")
+GSE194289_ILC_XFTUXX_list <- GSE194289_ILC_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_ILC_XFTUXX_list) <- c("Term", "GSE194289_ILC_XFTUXX_Category", "GSE194289_ILC_XFTUXX_Count", "GSE194289_ILC_XFTUXX_pval", "GSE194289_ILC_XFTUXX_FE")
+rm(GSE194289_ILC_XFTUXX)
+
+#GSE194289_InsularCortex_XFTUXX
+GSE194289_InsularCortex_XFTUXX <- read.delim("DAVID results/GSE194289_InsularCortex_output.txt")
+GSE194289_InsularCortex_XFTUXX_list <- GSE194289_InsularCortex_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_InsularCortex_XFTUXX_list) <- c("Term", "GSE194289_InsularCortex_XFTUXX_Category", "GSE194289_InsularCortex_XFTUXX_Count", "GSE194289_InsularCortex_XFTUXX_pval", "GSE194289_InsularCortex_XFTUXX_FE")
+rm(GSE194289_InsularCortex_XFTUXX)
+
+#GSE194289_LC_XFTUXX
+GSE194289_LC_XFTUXX <- read.delim("DAVID results/GSE194289_LC_output.txt")
+GSE194289_LC_XFTUXX_list <- GSE194289_LC_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_LC_XFTUXX_list) <- c("Term", "GSE194289_LC_XFTUXX_Category", "GSE194289_LC_XFTUXX_Count", "GSE194289_LC_XFTUXX_pval", "GSE194289_LC_XFTUXX_FE")
+rm(GSE194289_LC_XFTUXX)
+
+#GSE194289_LH_XFTUXX
+GSE194289_LH_XFTUXX <- read.delim("DAVID results/GSE194289_LH_output.txt")
+GSE194289_LH_XFTUXX_list <- GSE194289_LH_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_LH_XFTUXX_list) <- c("Term", "GSE194289_LH_XFTUXX_Category", "GSE194289_LH_XFTUXX_Count", "GSE194289_LH_XFTUXX_pval", "GSE194289_LH_XFTUXX_FE")
+rm(GSE194289_LH_XFTUXX)
+
+#GSE194289_LS_XFTUXX
+GSE194289_LS_XFTUXX <- read.delim("DAVID results/GSE194289_LS_output.txt")
+GSE194289_LS_XFTUXX_list <- GSE194289_LS_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_LS_XFTUXX_list) <- c("Term", "GSE194289_LS_XFTUXX_Category", "GSE194289_LS_XFTUXX_Count", "GSE194289_LS_XFTUXX_pval", "GSE194289_LS_XFTUXX_FE")
+rm(GSE194289_LS_XFTUXX)
+
+#GSE194289_MDT_XFTUXX
+GSE194289_MDT_XFTUXX <- read.delim("DAVID results/GSE194289_MDT_output.txt")
+GSE194289_MDT_XFTUXX_list <- GSE194289_MDT_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_MDT_XFTUXX_list) <- c("Term", "GSE194289_MDT_XFTUXX_Category", "GSE194289_MDT_XFTUXX_Count", "GSE194289_MDT_XFTUXX_pval", "GSE194289_MDT_XFTUXX_FE")
+rm(GSE194289_MDT_XFTUXX)
+
+#GSE194289_MPOA_XFTUXX
+GSE194289_MPOA_XFTUXX <- read.delim("DAVID results/GSE194289_MPOA_output.txt")
+GSE194289_MPOA_XFTUXX_list <- GSE194289_MPOA_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_MPOA_XFTUXX_list) <- c("Term", "GSE194289_MPOA_XFTUXX_Category", "GSE194289_MPOA_XFTUXX_Count", "GSE194289_MPOA_XFTUXX_pval", "GSE194289_MPOA_XFTUXX_FE")
+rm(GSE194289_MPOA_XFTUXX)
+
+#GSE194289_MS_XFTUXX
+GSE194289_MS_XFTUXX <- read.delim("DAVID results/GSE194289_MS_output.txt")
+GSE194289_MS_XFTUXX_list <- GSE194289_MS_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_MS_XFTUXX_list) <- c("Term", "GSE194289_MS_XFTUXX_Category", "GSE194289_MS_XFTUXX_Count", "GSE194289_MS_XFTUXX_pval", "GSE194289_MS_XFTUXX_FE")
+rm(GSE194289_MS_XFTUXX)
+
+#GSE194289_NaCcore_XFTUXX
+GSE194289_NaCcore_XFTUXX <- read.delim("DAVID results/GSE194289_NaCcore_output.txt")
+GSE194289_NaCcore_XFTUXX_list <- GSE194289_NaCcore_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_NaCcore_XFTUXX_list) <- c("Term", "GSE194289_NaCcore_XFTUXX_Category", "GSE194289_NaCcore_XFTUXX_Count", "GSE194289_NaCcore_XFTUXX_pval", "GSE194289_NaCcore_XFTUXX_FE")
+rm(GSE194289_NaCcore_XFTUXX)
+
+#GSE194289_NaCshell_XFTUXX
+GSE194289_NaCshell_XFTUXX <- read.delim("DAVID results/GSE194289_NaCshell_output.txt")
+GSE194289_NaCshell_XFTUXX_list <- GSE194289_NaCshell_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_NaCshell_XFTUXX_list) <- c("Term", "GSE194289_NaCshell_XFTUXX_Category", "GSE194289_NaCshell_XFTUXX_Count", "GSE194289_NaCshell_XFTUXX_pval", "GSE194289_NaCshell_XFTUXX_FE")
+rm(GSE194289_NaCshell_XFTUXX)
+
+#GSE194289_PAG_XFTUXX
+GSE194289_PAG_XFTUXX <- read.delim("DAVID results/GSE194289_PAG_output.txt")
+GSE194289_PAG_XFTUXX_list <- GSE194289_PAG_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_PAG_XFTUXX_list) <- c("Term", "GSE194289_PAG_XFTUXX_Category", "GSE194289_PAG_XFTUXX_Count", "GSE194289_PAG_XFTUXX_pval", "GSE194289_PAG_XFTUXX_FE")
+rm(GSE194289_PAG_XFTUXX)
+
+#GSE194289_PLC_XFTUXX
+GSE194289_PLC_XFTUXX <- read.delim("DAVID results/GSE194289_PLC_output.txt")
+GSE194289_PLC_XFTUXX_list <- GSE194289_PLC_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_PLC_XFTUXX_list) <- c("Term", "GSE194289_PLC_XFTUXX_Category", "GSE194289_PLC_XFTUXX_Count", "GSE194289_PLC_XFTUXX_pval", "GSE194289_PLC_XFTUXX_FE")
+rm(GSE194289_PLC_XFTUXX)
+
+#GSE194289_PVN_XFTUXX
+GSE194289_PVN_XFTUXX <- read.delim("DAVID results/GSE194289_PVN_output.txt")
+GSE194289_PVN_XFTUXX_list <- GSE194289_PVN_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_PVN_XFTUXX_list) <- c("Term", "GSE194289_PVN_XFTUXX_Category", "GSE194289_PVN_XFTUXX_Count", "GSE194289_PVN_XFTUXX_pval", "GSE194289_PVN_XFTUXX_FE")
+rm(GSE194289_PVN_XFTUXX)
+
+#GSE194289_Raphe_XFTUXX
+GSE194289_Raphe_XFTUXX <- read.delim("DAVID results/GSE194289_Raphe_output.txt")
+GSE194289_Raphe_XFTUXX_list <- GSE194289_Raphe_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_Raphe_XFTUXX_list) <- c("Term", "GSE194289_Raphe_XFTUXX_Category", "GSE194289_Raphe_XFTUXX_Count", "GSE194289_Raphe_XFTUXX_pval", "GSE194289_Raphe_XFTUXX_FE")
+rm(GSE194289_Raphe_XFTUXX)
+
+#GSE194289_SNT_XFTUXX
+GSE194289_SNT_XFTUXX <- read.delim("DAVID results/GSE194289_SNT_output.txt")
+GSE194289_SNT_XFTUXX_list <- GSE194289_SNT_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_SNT_XFTUXX_list) <- c("Term", "GSE194289_SNT_XFTUXX_Category", "GSE194289_SNT_XFTUXX_Count", "GSE194289_SNT_XFTUXX_pval", "GSE194289_SNT_XFTUXX_FE")
+rm(GSE194289_SNT_XFTUXX)
+
+#GSE194289_venCA1_XFTUXX
+GSE194289_venCA1_XFTUXX <- read.delim("DAVID results/GSE194289_venCA1_output.txt")
+GSE194289_venCA1_XFTUXX_list <- GSE194289_venCA1_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_venCA1_XFTUXX_list) <- c("Term", "GSE194289_venCA1_XFTUXX_Category", "GSE194289_venCA1_XFTUXX_Count", "GSE194289_venCA1_XFTUXX_pval", "GSE194289_venCA1_XFTUXX_FE")
+rm(GSE194289_venCA1_XFTUXX)
+
+#GSE194289_venDG_XFTUXX
+GSE194289_venDG_XFTUXX <- read.delim("DAVID results/GSE194289_venDG_output.txt")
+GSE194289_venDG_XFTUXX_list <- GSE194289_venDG_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_venDG_XFTUXX_list) <- c("Term", "GSE194289_venDG_XFTUXX_Category", "GSE194289_venDG_XFTUXX_Count", "GSE194289_venDG_XFTUXX_pval", "GSE194289_venDG_XFTUXX_FE")
+rm(GSE194289_venDG_XFTUXX)
+
+#GSE194289_VMH_XFTUXX
+GSE194289_VMH_XFTUXX <- read.delim("DAVID results/GSE194289_VMH_output.txt")
+GSE194289_VMH_XFTUXX_list <- GSE194289_VMH_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_VMH_XFTUXX_list) <- c("Term", "GSE194289_VMH_XFTUXX_Category", "GSE194289_VMH_XFTUXX_Count", "GSE194289_VMH_XFTUXX_pval", "GSE194289_VMH_XFTUXX_FE")
+rm(GSE194289_VMH_XFTUXX)
+
+#GSE194289_VTA_XFTUXX
+GSE194289_VTA_XFTUXX <- read.delim("DAVID results/GSE194289_VTA_output.txt")
+GSE194289_VTA_XFTUXX_list <- GSE194289_VTA_XFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE194289_VTA_XFTUXX_list) <- c("Term", "GSE194289_VTA_XFTUXX_Category", "GSE194289_VTA_XFTUXX_Count", "GSE194289_VTA_XFTUXX_pval", "GSE194289_VTA_XFTUXX_FE")
+rm(GSE194289_VTA_XFTUXX)
+
+#GSE202172_Cell_SFTUXX
+GSE202172_Cell_SFTUXX <- read.delim("DAVID results/GSE202172_IN_Flx_Sh_output.txt")
+GSE202172_Cell_SFTUXX_list <- GSE202172_Cell_SFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE202172_Cell_SFTUXX_list) <- c("Term", "GSE202172_Cell_SFTUXX_Category", "GSE202172_Cell_SFTUXX_Count", "GSE202172_Cell_SFTUXX_pval", "GSE202172_Cell_SFTUXX_FE")
+rm(GSE202172_Cell_SFTUXX)
+
+#GSE202172_Cell_SFRNXX
+GSE202172_Cell_SFRNXX <- read.delim("DAVID results/GSE202172_IN_Norm_Anx_output.txt")
+GSE202172_Cell_SFRNXX_list <- GSE202172_Cell_SFRNXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE202172_Cell_SFRNXX_list) <- c("Term", "GSE202172_Cell_SFRNXX_Category", "GSE202172_Cell_SFRNXX_Count", "GSE202172_Cell_SFRNXX_pval", "GSE202172_Cell_SFRNXX_FE")
+rm(GSE202172_Cell_SFRNXX)
+
+#GSE202172_Cell_SFRCXX
+GSE202172_Cell_SFRCXX <- read.delim("DAVID results/GSE202172_IN_Norm_Sh_output.txt")
+GSE202172_Cell_SFRCXX_list <- GSE202172_Cell_SFRCXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE202172_Cell_SFRCXX_list) <- c("Term", "GSE202172_Cell_SFRCXX_Category", "GSE202172_Cell_SFRCXX_Count", "GSE202172_Cell_SFRCXX_pval", "GSE202172_Cell_SFRCXX_FE")
+rm(GSE202172_Cell_SFRCXX)
+
+#GSE202172_Cell_SFNCXX
+GSE202172_Cell_SFNCXX <- read.delim("DAVID results/GSE202172_IN_Anx_Sh_output.txt")
+GSE202172_Cell_SFNCXX_list <- GSE202172_Cell_SFNCXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE202172_Cell_SFNCXX_list) <- c("Term", "GSE202172_Cell_SFNCXX_Category", "GSE202172_Cell_SFNCXX_Count", "GSE202172_Cell_SFNCXX_pval", "GSE202172_Cell_SFNCXX_FE")
+rm(GSE202172_Cell_SFNCXX)
+
+#GSE202172_TRAP_SFTUXX
+GSE202172_TRAP_SFTUXX <- read.delim("DAVID results/GSE202172_TRP_Flx_Sh_output.txt")
+GSE202172_TRAP_SFTUXX_list <- GSE202172_TRAP_SFTUXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE202172_TRAP_SFTUXX_list) <- c("Term", "GSE202172_TRAP_SFTUXX_Category", "GSE202172_TRAP_SFTUXX_Count", "GSE202172_TRAP_SFTUXX_pval", "GSE202172_TRAP_SFTUXX_FE")
+rm(GSE202172_TRAP_SFTUXX)
+
+#GSE202172_TRAP_SFRNXX
+GSE202172_TRAP_SFRNXX <- read.delim("DAVID results/GSE202172_TRP_Norm_Anx_output.txt")
+GSE202172_TRAP_SFRNXX_list <- GSE202172_TRAP_SFRNXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE202172_TRAP_SFRNXX_list) <- c("Term", "GSE202172_TRAP_SFRNXX_Category", "GSE202172_TRAP_SFRNXX_Count", "GSE202172_TRAP_SFRNXX_pval", "GSE202172_TRAP_SFRNXX_FE")
+rm(GSE202172_TRAP_SFRNXX)
+
+#GSE202172_TRAP_SFRCXX
+GSE202172_TRAP_SFRCXX <- read.delim("DAVID results/GSE202172_TRP_Norm_Sh_output.txt")
+GSE202172_TRAP_SFRCXX_list <- GSE202172_TRAP_SFRCXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE202172_TRAP_SFRCXX_list) <- c("Term", "GSE202172_TRAP_SFRCXX_Category", "GSE202172_TRAP_SFRCXX_Count", "GSE202172_TRAP_SFRCXX_pval", "GSE202172_TRAP_SFRCXX_FE")
+rm(GSE202172_TRAP_SFRCXX)
+
+#GSE202172_TRAP_SFNCXX
+GSE202172_TRAP_SFNCXX <- read.delim("DAVID results/GSE202172_TRP_Anx_Sh_output.txt")
+GSE202172_TRAP_SFNCXX_list <- GSE202172_TRAP_SFNCXX %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE202172_TRAP_SFNCXX_list) <- c("Term", "GSE202172_TRAP_SFNCXX_Category", "GSE202172_TRAP_SFNCXX_Count", "GSE202172_TRAP_SFNCXX_pval", "GSE202172_TRAP_SFNCXX_FE")
+rm(GSE202172_TRAP_SFNCXX)
+
+#GSE205325_Hippocampus_SFTUXX
+GSE205352 <- read.delim("DAVID results/GSE205352_output.txt")
+GSE205352_list <- GSE205352 %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE205352_list) <- c("Term", "GSE205325_Hippocampus_SFTUXX_Category", "GSE205325_Hippocampus_SFTUXX_Count", "GSE205325_Hippocampus_SFTUXX_pval", "GSE205325_Hippocampus_SFTUXX_FE")
+rm(GSE205352)
+
+#Additional/New Studies
+GSE146446_DRN8 <- read.delim("DAVID results/GSE146446_DRN8.txt")
+GSE146446_DRN8_list <- GSE146446_DRN8 %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE146446_DRN8_list) <- c("Term", "GSE146446_DRN8_Category", "GSE146446_DRN8_Count", "GSE146446_DRN8_pval", "GSE146446_DRN8_FE")
+rm(GSE146446_DRN8)
+
+GSE146446_DRN0 <- read.delim("DAVID results/GSE146446_DRN0.txt")
+GSE146446_DRN0_list <- GSE146446_DRN0 %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE146446_DRN0_list) <- c("Term", "GSE146446_DRN0_Category", "GSE146446_DRN0_Count", "GSE146446_DRN0_pval", "GSE146446_DRN0_FE")
+rm(GSE146446_DRN0)
+
+GSE146446_PRN8 <- read.delim("DAVID results/GSE146446_PRN8.txt")
+GSE146446_PRN8_list <- GSE146446_PRN8 %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE146446_PRN8_list) <- c("Term", "GSE146446_PRN8_Category", "GSE146446_PRN8_Count", "GSE146446_PRN8_pval", "GSE146446_PRN8_FE")
+rm(GSE146446_PRN8)
+
+GSE146446_PRN0 <- read.delim("DAVID results/GSE146446_PRN0.txt")
+GSE146446_PRN0_list <- GSE146446_PRN0 %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE146446_PRN0_list) <- c("Term", "GSE146446_PRN0_Category", "GSE146446_PRN0_Count", "GSE146446_PRN0_pval", "GSE146446_PRN0_FE")
+rm(GSE146446_PRN0)
+
+GSE146446_DTU <- read.delim("DAVID results/GSE146446_DTU.txt")
+GSE146446_DTU_list <- GSE146446_DTU %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE146446_DTU_list) <- c("Term", "GSE146446_DTU_Category", "GSE146446_DTU_Count", "GSE146446_DTU_pval", "GSE146446_DTU_FE")
+rm(GSE146446_DTU)
+
+GSE146446_PTU <- read.delim("DAVID results/GSE146446_PTU.txt")
+GSE146446_PTU_list <- GSE146446_PTU %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(GSE146446_PTU_list) <- c("Term", "GSE146446_PTU_Category", "GSE146446_PTU_Count", "GSE146446_PTU_pval", "GSE146446_PTU_FE")
+rm(GSE146446_PTU)
+
+PMID26008736_DElist <- read.delim("DAVID results/PMID26008736-DElist_output.txt")
+PMID26008736_DElist_list <- PMID26008736_DElist %>% dplyr::select(Term, Category, Count, PValue, Fold.Enrichment)
+colnames(PMID26008736_DElist_list) <- c("Term", "PMID26008736_DElist_Category", "PMID26008736_DElist_Count", "PMID26008736_DElist_pval", "PMID26008736_DElist_FE")
+rm(PMID26008736_DElist)
+
+```
+
+## Bind Data
+
+```{r Bind_Data eval = FALSE, echo = FALSE}
+#BINDING
+SetList = as.list(mget(objects()))
+for (i in 1:length(SetList)) {
+    SetList[[i]]$Term=gsub("rno|mmu|hsa([0-9]{5}:.*)","\\1",SetList[[i]]$Term)
+}
+saveRDS(SetList,"DAVID results/All_Lists.rds")
+
+All_list_Merge_df=purrr::reduce(SetList,full_join,by="Term")
+
+All_list_Merge_df=filter(All_list_Merge_df,rowSums(is.na(All_list_Merge_df))<(ncol(All_list_Merge_df)*.5))
+#ncol(All_list_Merge_df)*.5 = 112.5
+
+rownames(All_list_Merge_df)=All_list_Merge_df$Term
+saveRDS(All_list_Merge_df,"DAVID results/All_Lists_df.rds")
+
+All_list_Merge_list= list(count = All_list_Merge_df[,seq(3,ncol(All_list_Merge_df),4)],
+                      pval = All_list_Merge_df[,seq(4,ncol(All_list_Merge_df),4)],
+                      FE = All_list_Merge_df[,seq(5,ncol(All_list_Merge_df),4)])
+saveRDS(All_list_Merge_list,"DAVID results/All_Lists_final.rds")
+
+```
+
+## Load combined Data
+
+Only need to run two previous code chunks once ever. This chunk will load in the saved output.
+
+```{r}
+SetList=readRDS("DAVID results/All_Lists.rds")
+All_list_Merge_df=readRDS("DAVID results/All_Lists_df.rds")
+All_list_Merge_list=readRDS("DAVID results/All_Lists_final.rds")
+HumanStudies=c("GSE83386","GSE128387")
+MouseStudies=c("GSE28644","GSE43261","GSE84183","GSE84184","GSE202172","GSE35761","GSE35763","GSE48951","GSE118668","GSE118669","GSE150431")
+RatStudies=c("GSE42940","GSE56028","GSE86392","GSE89873","GSE109445","GSE194289","GSE205325")
+Mouse_list_Merge_df=All_list_Merge_df[,grepl(paste(MouseStudies,collapse="|"),colnames(All_list_Merge_df))]
+Rat_list_Merge_df=All_list_Merge_df[,grepl(paste(RatStudies,collapse="|"),colnames(All_list_Merge_df))]
+
+```
+
+## MetaDE Analysis
+
+## DAVID Responders VS Non-responders Analysis
+
+```{r All RvN MetaDE Analysis}
+#Prepare list
+Data=All_list_Merge_df[,grepl("FRN",colnames(All_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/AllRvN_DAVID.rds")
+
+```
+
+```{r Brain Only RvN MetaDE Analysis}
+#Prepare list
+Data=All_list_Merge_df[,grepl("FRN",colnames(All_list_Merge_df))&!grepl("GSE84184|GSE83386",colnames(All_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/BrainSFRN_DAVID.rds")
+
+```
+
+```{r All RvC MetaDE Analysis}
+#Prepare list
+Data=All_list_Merge_df[,grepl("FRC",colnames(All_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/AllSFRC_DAVID.rds")
+
+```
+
+```{r All NvC MetaDE Analysis}
+#Prepare list
+Data=All_list_Merge_df[,grepl("FNC",colnames(All_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/AllSFNC_DAVID.rds")
+
+```
+
+```{r Mouse RvN MetaDE Analysis}
+#Prepare list
+Data=All_list_Merge_df[,grepl("FRN",colnames(All_list_Merge_df))&!grepl("GSE83386",colnames(All_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/MouseSFRN_DAVID.rds")
+
+```
+
+```{r Mouse RvC MetaDE Analysis}
+#Prepare list
+Data=All_list_Merge_df[,grepl("FRC",colnames(All_list_Merge_df))&!grepl("GSE83386",colnames(All_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/MouseSFRC_DAVID.rds")
+
+```
+
+```{r Mouse NvC MetaDE Analysis}
+#Prepare list
+Data=All_list_Merge_df[,grepl("FNC",colnames(All_list_Merge_df))&!grepl("GSE83386",colnames(All_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/MouseSFNC_DAVID.rds")
+
+```
+
+## DAVID Treated VS Untreated Analysis
+
+```{r All TvU All MetaDE Analysis}
+#Prepare list
+Data=All_list_Merge_df[,grepl("FTU",colnames(All_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/AllFTU_DAVID.rds")
+
+```
+
+```{r All TvU No Stress MetaDE Analysis}
+#Prepare list
+Data=All_list_Merge_df[,grepl("XFTU",colnames(All_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/AllXFTU_DAVID.rds")
+
+```
+
+```{r All TvU Stress MetaDE Analysis}
+#Prepare list
+Data=All_list_Merge_df[,grepl("[SD]FTU",colnames(All_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/AllSFTU_DAVID.rds")
+
+```
+
+```{r Human TvU MetaDE Analysis}
+#Prepare list
+Data=All_list_Merge_df[,grepl("GSE83386_Lympho_DFNCXX|GSE83386_Lympho_DFRCXX|GSE128387_Blood_DFTUXX",colnames(All_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/HumanFTU_DAVID.rds")
+
+```
+
+```{r Mouse TvU All MetaDE Analysis}
+#Prepare list
+Data=Mouse_list_Merge_df[,grepl("FTU",colnames(Mouse_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/MouseFTU_DAVID.rds")
+
+```
+
+```{r Mouse TvU No stress MetaDE Analysis}
+#Prepare list
+Data=Mouse_list_Merge_df[,grepl("XFTU",colnames(Mouse_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/MouseXFTU_DAVID.rds")
+
+```
+
+```{r Mouse TvU Stress MetaDE Analysis}
+#Prepare list
+Data=Mouse_list_Merge_df[,grepl("SFTU",colnames(Mouse_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/MouseSFTU_DAVID.rds")
+
+```
+
+```{r Rat TvU All MetaDE Analysis}
+#Prepare list
+Data=Rat_list_Merge_df[,grepl("FTU",colnames(Rat_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/RatFTU_DAVID.rds")
+
+```
+
+```{r Rat TvU No stress MetaDE Analysis}
+#Prepare list
+Data=Rat_list_Merge_df[,grepl("XFTU",colnames(Rat_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/RatXFTU_DAVID.rds")
+
+```
+
+```{r Rat TvU Stress MetaDE Analysis}
+#Prepare list
+Data=Rat_list_Merge_df[,grepl("SFTU",colnames(Rat_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+saveRDS(pvaluesDF,"MetaDE RDS/RatSFTU_DAVID.rds")
+
+```
+
+## MetaDE Results Visualization
+
+## GSEA Responders VS Non-responders Graphs
+
+```{r All RvN Graphs}
+pvaluesDF=readRDS("MetaDE RDS/AllRvN_DAVID.rds")
+Data=All_list_Merge_df[,grepl("FRN",colnames(All_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+
+#Bar graph for Fish and MaxP counts for each Freq value
+FreqTableSummary=group_by(pvaluesDF,Freq)%>%
+  summarise(Overlap=sum(Fish<0.05&Max<0.05),MaxP=sum(Fish>=0.05&Max<0.05),Fisher=sum(Max>=0.05&Fish<0.05))%>%
+  dplyr::rename(SignificantComparison=Freq)
+ggplot(pivot_longer(data = FreqTableSummary,cols = c(Overlap,MaxP,Fisher)),aes(x=as.factor(SignificantComparison),y=value,fill=name))+
+  geom_col(position = position_dodge(),color="black",linewidth=0.8)+
+  theme_classic()+
+  scale_x_discrete(limits=as.character(seq(0,nrow(FreqTableSummary),1)),breaks=as.character(seq(0,nrow(FreqTableSummary),1)))+
+  scale_fill_manual(name="Significant in:",label=c("Fisher","Maximum p-value","Fisher & Maximum p-value"),values=c("#21B0FE","#FED700","green"))+
+  ylab("Pathways")+
+  xlab("Number of Significant Comparisons")+
+  theme(axis.text = element_text(size=12),axis.title = element_text(size = 12),legend.position = c(0.8, 0.8))
+ggsave("Figures/AllRvN_DAVID_Bar.tiff",height = 5,width = 6)
+
+#Venn diagram for Fish, MaxP, and Freq50 (significant in at least 50% of comparisons)
+VennList=list_drop_empty(list(Fisher=rownames(pvaluesDF[pvaluesDF$Fish<0.05,]),
+                              MaxP=rownames(pvaluesDF[pvaluesDF$Max<0.05,]),
+                              Frequency50=rownames(pvaluesDF[pvaluesDF$Freq>(length(DataList[[1]])/2),])))
+
+#Venn Scaled
+venn.diagram(VennList,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Fisher","MaxP","Freq50"),
+             fill=c(alpha("#21B0FE",0.4),alpha("#FED700",0.4),alpha("#FE218B",0.4)), 
+             col=c("#21B0FE","#FED700","#FE218B"),
+             lty=rep("solid", 3), 
+             cex=3, 
+             cat.cex=3,
+             cat.dist=rep(0.07,3),
+             margin=0.1,
+             disable.logging=TRUE,
+             cat.col=c("#21B0FE","#FED700","#FE218B"),
+             filename = "Figures/AllRvN_DAVID_ScaledVenn.tiff")
+#Venn Non-scaled
+venn.diagram(VennList,
+             euler.d = FALSE, scaled=FALSE, 
+             category=c("Fisher","MaxP","Freq50"),
+             fill=c(alpha("#21B0FE",0.4),alpha("#FED700",0.4),alpha("#FE218B",0.4)), 
+             col=c("#21B0FE","#FED700","#FE218B"),
+             lty=rep("solid", 3), 
+             cex=3, 
+             cat.cex=3,
+             cat.dist=rep(0.07,3),
+             margin=0.1,
+             disable.logging=TRUE,
+             cat.col=c("#21B0FE","#FED700","#FE218B"),
+             filename = "Figures/AllRvN_DAVID_Venn.tiff")
+
+```
+
+## GSEA Treated VS Untreated Graphs
+
+```{r All TvU All Graphs}
+pvaluesDF=readRDS("MetaDE RDS/AllFTU_DAVID.rds")
+Data=All_list_Merge_df[,grepl("FTU",colnames(All_list_Merge_df))]
+DataPvalues=Data[,seq(3,ncol(Data),4)]
+DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
+DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
+              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
+              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+
+#Bar graph for Fish and MaxP counts for each Freq value
+FreqTableSummary=group_by(pvaluesDF,Freq)%>%
+  summarise(Overlap=sum(Fish<0.05&Max<0.05),MaxP=sum(Fish>=0.05&Max<0.05),Fisher=sum(Max>=0.05&Fish<0.05))%>%
+  dplyr::rename(SignificantComparison=Freq)
+ggplot(pivot_longer(data = FreqTableSummary,cols = c(Overlap,MaxP,Fisher)),aes(x=as.factor(SignificantComparison),y=value,fill=name))+
+  geom_col(position = position_dodge(),color="black",linewidth=0.8)+
+  theme_classic()+
+  scale_x_discrete(limits=as.character(seq(0,nrow(FreqTableSummary),1)),breaks=as.character(seq(0,nrow(FreqTableSummary),1)))+
+  scale_fill_manual(name="Significant in:",label=c("Fisher","Maximum p-value","Fisher & Maximum p-value"),values=c("#21B0FE","#FED700","green"))+
+  ylab("Pathways")+
+  xlab("Number of Significant Comparisons")+
+  theme(axis.text = element_text(size=12),axis.title = element_text(size = 12),legend.position = c(0.8, 0.8))
+ggsave("Figures/AllFTU_DAVID_Bar.tiff",height = 5,width = 6)
+
+
+#Venn diagram for Fish, MaxP, and Freq50 (significant in at least 50% of comparisons)
+VennList=list_drop_empty(list(Fisher=rownames(pvaluesDF[pvaluesDF$Fish<0.05,]),
+                              MaxP=rownames(pvaluesDF[pvaluesDF$Max<0.05,]),
+                              Frequency50=rownames(pvaluesDF[pvaluesDF$Freq>(length(DataList[[1]])/2),])))
+
+#Venn Scaled
+venn.diagram(VennList,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Fisher","MaxP","Freq50"),
+             fill=c(alpha("#21B0FE",0.4),alpha("#FED700",0.4),alpha("#FE218B",0.4)), 
+             col=c("#21B0FE","#FED700","#FE218B"),
+             lty=rep("solid", 3), 
+             cex=3, 
+             cat.cex=3,
+             cat.dist=rep(0.07,3),
+             margin=0.1,
+             disable.logging=TRUE,
+             cat.col=c("#21B0FE","#FED700","#FE218B"),
+             filename = "Figures/AllFTU_DAVID_ScaledVenn.tiff")
+#Venn Non-scaled
+venn.diagram(VennList,
+             euler.d = FALSE, scaled=FALSE, 
+             category=c("Fisher","MaxP","Freq50"),
+             fill=c(alpha("#21B0FE",0.4),alpha("#FED700",0.4),alpha("#FE218B",0.4)), 
+             col=c("#21B0FE","#FED700","#FE218B"),
+             lty=rep("solid", 3), 
+             cex=3, 
+             cat.cex=3,
+             cat.dist=rep(0.07,3),
+             margin=0.1,
+             disable.logging=TRUE,
+             cat.col=c("#21B0FE","#FED700","#FE218B"),
+             filename = "Figures/AllFTU_DAVID_Venn.tiff")
+
+```
+
+
+
+

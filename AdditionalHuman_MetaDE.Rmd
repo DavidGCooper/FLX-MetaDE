@@ -1,0 +1,183 @@
+---
+title: "AdditionalHuman_MetaDE"
+author: "David Cooper"
+date: "2024-11-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(vctrs)
+library(scales)
+library(MetaDE)
+library(ggvenn)
+library(ggrepel)
+library(pheatmap)
+library(VennDiagram)
+library(biomaRt)
+library(grid)
+library(gridExtra)
+
+```
+
+## Load Data
+
+```{r Additional Datasets}
+#Load Pathway-level Gene Set Enrichment Analysis (GSEA) data
+HumanGSEAextraDataMerge=readRDS("Input RDS/HumanExtra_Merged_GSEA_df.rds")
+rownames(HumanGSEAextraDataMerge)=paste(rep("ID",nrow(HumanGSEAextraDataMerge)),1:nrow(HumanGSEAextraDataMerge),sep ="")
+HumanGSEAextraDataMergeIDs=dplyr::select(HumanGSEAextraDataMerge,pathway)
+
+HumanGSEAextraDataList=readRDS("Input RDS/HumanExtra_Merged_GSEA_List.rds")
+
+AllGSEADataListExtra=readRDS("Input RDS/AllExtra_Merged_GSEA_List.rds")
+
+AllGSEADataMergeExtra=readRDS("Input RDS/AllExtra_Merged_GSEA_df.rds")
+rownames(AllGSEADataMergeExtra)=paste(rep("ID",nrow(AllGSEADataMergeExtra)),1:nrow(AllGSEADataMergeExtra),sep ="")
+AllGSEADataMergeExtraIDs=dplyr::select(AllGSEADataMergeExtra,pathway)
+
+#All TvU
+AllFTUgsea=AllGSEADataMergeExtra[,grepl("FTU|GSE146446_DlxTreatment|PMID26008736_TreatControl",colnames(AllGSEADataMergeExtra))]
+AllFTUgseaList=list(p=AllFTUgsea[,seq(1,ncol(AllFTUgsea),3)],NES=AllFTUgsea[,seq(2,ncol(AllFTUgsea),3)])
+AllFTUgseaList$Vote=1*(AllFTUgseaList$p<0.05)*((AllFTUgseaList$NES>0)*2-1)
+#All RvN
+AllSFRNgsea=AllGSEADataMergeExtra[,grepl("FRN|GSE146446_Dlx8hResponse|PMID26008736_RemCurr",colnames(AllGSEADataMergeExtra))]
+AllSFRNgseaList=list(p=AllSFRNgsea[,seq(1,ncol(AllSFRNgsea),3),],NES=AllSFRNgsea[,seq(2,ncol(AllSFRNgsea),3)])
+AllSFRNgseaList$Vote=1*(AllSFRNgseaList$p<0.05)*((AllSFRNgseaList$NES>0)*2-1)
+
+jaccard <- function(a, b) {
+    intersection = length(intersect(a, b))
+    union = length(a) + length(b) - intersection
+    return (intersection/union)
+}
+
+```
+
+## Meta Analysis
+
+```{r All RvN MetaDE Analysis}
+DataList=AllSFRNgseaList
+IDref=AllGSEADataMergeExtraIDs
+
+#Fisher
+MetaResFish=MetaDE.pvalue(x = DataList,
+                          meta.method = "Fisher",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryFish=data.frame(ind.p = MetaResFish$ind.p,
+                       stat = MetaResFish$meta.analysis$stat[,1], 
+                       pval = MetaResFish$meta.analysis$pval[,1], 
+                       FDR = MetaResFish$meta.analysis$FDR[,1])
+
+#Maximum P-value
+MetaResMax=MetaDE.pvalue(x = DataList,
+                          meta.method = "maxP",
+                          rth = NULL,
+                          parametric = TRUE)
+MetaSummaryMax=data.frame(ind.p = MetaResMax$ind.p,
+                       stat = MetaResMax$meta.analysis$stat[,1], 
+                       pval = MetaResMax$meta.analysis$pval[,1], 
+                       FDR = MetaResMax$meta.analysis$FDR[,1])
+
+#Graphs
+#Combined p-value table
+pvaluesDF=as.data.frame(DataList$p)
+pvaluesDF$Freq=rowSums(pvaluesDF<0.05, na.rm = TRUE )
+pvaluesDF$Fish=MetaSummaryFish$FDR
+pvaluesDF$Max=MetaSummaryMax$FDR
+pvaluesDF$Pathway=IDref$pathway[match(rownames(pvaluesDF),rownames(IDref))]
+pvaluesDF$Vote=rowSums(DataList$Vote,na.rm = TRUE)
+pvaluesDF$Group=ifelse(pvaluesDF$Fish<0.05, ifelse(pvaluesDF$Max<0.05, "Fisher & Maximum p-value","Fisher"),ifelse(pvaluesDF$Max<0.05,"Maximum p-value","Neither"))
+pvaluesDF=filter(pvaluesDF,!is.na(Fish) & !is.na(Max))
+AllSFRNdf=pvaluesDF
+
+```
+
+```{r}
+#Comparison Labels
+ReplaceLabels=read.csv("ComparisonLabels.csv",header = TRUE)
+ReplaceLabels[83,]=c("GSE146446_Dlx8hResponse","Sup1","","",NA,NA)
+ReplaceLabels[84,]=c("PMID26008736_RemCurr","Sup2","","",NA,NA)
+
+npgColors=readRDS("npgColors.rds")
+#https://nanx.me/ggsci/reference/pal_npg.html
+#show_col(npgColors)
+names(npgColors)=c("Signal Transduction","Metabolism of proteins","Immune System","Cell Cycle","Metabolism of RNA",
+                   "Neuronal System","KEGG Database","Gene expression (Transcription)","Metabolism","Other") 
+StressColors=npgColors[c(2,5,10)]
+names(StressColors)=c("Stressed","Unstressed","Depressed")
+OrganismColors=npgColors[c(3,4,8)]
+names(OrganismColors)=c("Human","Mouse","Rat")
+TissueColors=npgColors[c(1,6,7,9)]
+names(TissueColors)=c("Cortical","Hippocampus","Blood","Other")
+
+AnnColors=list(Stress=StressColors,Organism=OrganismColors,Tissue=TissueColors,PathwayCategory=npgColors)
+
+TissueTypes=read.csv("TissueSubtypes.csv",header = TRUE)
+
+```
+
+```{r}
+#MetaDE output file with Fish & MaxP results
+#AllSFRNdf
+#Input file with NES values
+AllSFRNNES=AllSFRNgseaList$NES
+#Filter NES dataframe to only include significant pathways
+AllSFRNNES=AllSFRNNES[match(rownames(AllSFRNdf[AllSFRNdf$Fish<0.05,]),rownames(AllSFRNNES)),]
+colnames(AllSFRNNES)=str_sub(colnames(AllSFRNNES),5,-1)
+#Annotations
+ColumnAnnotations=data.frame(Stress=c(str_sub(colnames(AllSFRNNES[,1:9]),-6,-6),"D","D"),
+                            Organism=c(rep("Mouse",8),rep("Human",3)),
+                            Tissue=c(TissueTypes$Subtype[match(str_match(colnames(AllSFRNNES[,1:9]),"_(.*)_")[,2],
+                                                             TissueTypes$Abbreviation)],"Blood","Blood"))%>%
+  mutate(Stress=recode(Stress,"S"="Stressed","X"="Unstressed","D"="Depressed"))%>%
+  mutate(Tissue=replace(Tissue,!(Tissue %in% names(TissueColors[1:3])),"Other"))
+colnames(AllSFRNNES)=ReplaceLabels$ShortLabel[match(colnames(AllSFRNNES),ReplaceLabels$LongLabel)]
+rownames(ColumnAnnotations) = colnames(AllSFRNNES)
+
+#Correlations
+AllSFRNNEScor=cor(AllSFRNNES%>%na.omit)
+pheatmap(AllSFRNNEScor,
+         show_rownames = TRUE,
+         scale = "none",
+         color = colorRampPalette(c("navy", "white", "red"))(50),
+         breaks = seq(-1,1,0.04),
+         annotation_col = ColumnAnnotations,
+         annotation_colors = AnnColors,
+         treeheight_row = 0,
+         filename = "Figures/AllSFRNExtra_Corr_Heatmap.tiff")
+
+#Jaccard matrix
+OnlypvaluesDF=AllSFRNdf[,grepl("Value",colnames(AllSFRNdf))]
+SigList=list()
+for (i in 1:ncol(OnlypvaluesDF)) {
+  SigList[[i]]=rownames(OnlypvaluesDF[na.omit(OnlypvaluesDF[,i])<0.05,])
+}
+names(SigList)=gsub("P.Value_","",colnames(OnlypvaluesDF))
+Compares=expand.grid(names(SigList),names(SigList))
+JaccardValues=c()
+for (i in 1:nrow(Compares)) {
+  JaccardValues=c(JaccardValues,jaccard(SigList[[Compares[i,1]]],SigList[[Compares[i,2]]]))
+}
+Compares$jaccard=JaccardValues
+CompareMatrix=as.data.frame(pivot_wider(Compares,names_from = Var2,values_from = jaccard))
+rownames(CompareMatrix)=CompareMatrix$Var1
+CompareMatrix=CompareMatrix[,-1]
+colnames(CompareMatrix)=ReplaceLabels$ShortLabel[match(colnames(CompareMatrix),ReplaceLabels$LongLabel)]
+rownames(CompareMatrix)=ReplaceLabels$ShortLabel[match(rownames(CompareMatrix),ReplaceLabels$LongLabel)]
+
+#Jaccard Heatmap
+pheatmap(CompareMatrix,
+         show_rownames = TRUE,
+         scale = "none",
+         color = colorRampPalette(c("white","red"))(20),
+         breaks = seq(0,1,0.05),
+         annotation_col = ColumnAnnotations,
+         annotation_colors = AnnColors,
+         treeheight_row = 0,
+         filename = "Figures/AllSFRNExtra_Jaccard_Heatmap.tiff")
+
+
+```
+

@@ -4509,8 +4509,9 @@ ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="RN",],aes(samples,counts,c
   xlab("Samples per Group")+
   ylab("Number of Significant Genes")+
   theme_classic()+
-  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
-ggsave("Figures/DiffGenesResponseScatter.png",height = 5,width = 6)
+  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)+
+  guides(color=FALSE,shape=FALSE)
+ggsave("Figures/DiffGenesResponseScatter.png",height = 4,width = 4)
 
 #Log scale
 ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
@@ -4523,19 +4524,20 @@ ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="RN",],aes(samples,counts,c
   ylab("Number of Significant Genes")+
   theme_classic()+
   geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
-ggsave("Figures/DiffGenesResponseScatterLog.png",height = 5,width = 6)
+ggsave("Figures/DiffGenesResponseScatterLog.png",height = 4,width = 6)
 
 #Treatment
 #No scale
-ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
+ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
   geom_point(size=5,stroke=2)+
   scale_color_manual(name="Subject Type",values = StressOrganismColors)+
   scale_shape_manual(name="Tissue",values = c(1,2,3,0))+  
   xlab("Samples per Group")+
   ylab("Number of Significant Genes")+
   theme_classic()+
-  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
-ggsave("Figures/DiffGenesTreatmentScatter.png",height = 5,width = 6)
+  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)+
+  guides(color=FALSE,shape=FALSE)
+ggsave("Figures/DiffGenesTreatmentScatter.png",height = 5,width = 4)
 
 #Log scale
 ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
@@ -4564,7 +4566,7 @@ ggsave("Figures/DiffPathsScatter.png",height = 5,width = 6)
 
 #Response
 #No scale
-ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
+ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
   geom_point(size=5,stroke=2)+
   #scale_y_continuous(transform = "log10")+
   scale_color_manual(name="Subject Type",values = StressOrganismColors)+
@@ -4572,8 +4574,9 @@ ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="RN",],aes(samples,counts,c
   xlab("Samples per Group")+
   ylab("Number of Significant Pathways")+  
   theme_classic()+
-  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
-ggsave("Figures/DiffPathsResponseScatter.png",height = 5,width = 6)
+  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)+
+  theme(legend.position= c(0.8,0.7))
+ggsave("Figures/DiffPathsResponseScatter.png",height = 4,width = 4)
 
 #Log scale
 ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="RN",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
@@ -4590,7 +4593,7 @@ ggsave("Figures/DiffPathsResponseScatterLog.png",height = 5,width = 6)
 
 #Treatment
 #No scale
-ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
+ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+
   geom_point(size=5,stroke=2)+
   #scale_y_continuous(transform = "log10")+
   scale_color_manual(name="Subject Type",values = StressOrganismColors)+
@@ -4598,8 +4601,9 @@ ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="TU",],aes(samples,counts,c
   xlab("Samples per Group")+
   ylab("Number of Significant Pathways")+  
   theme_classic()+
-  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)
-ggsave("Figures/DiffPathsTreatmentScatter.png",height = 5,width = 6)
+  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)+
+  theme(legend.position= c(0.8,0.68))
+ggsave("Figures/DiffPathsTreatmentScatter.png",height = 5,width = 4)
 
 #Log scale
 ggplot(GSEA_Combined_merge[GSEA_Combined_merge$TorR=="TU",],aes(samples,counts,color=StressOrganism,fill=StressOrganism,shape=factor(Tissue,levels =c("Cortical","Hippocampus","Blood","Other")),label=comparison))+

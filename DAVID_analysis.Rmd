@@ -7,18 +7,13 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-#library(GEOquery)
-#library(DESeq2)
 library(tidyverse)
-#library(fgsea)
-#library(data.table)
 library(preprocessCore)
 library(pheatmap)
 library(apeglm)
 library(EnhancedVolcano)
 library(biomaRt)
 library(stringr)
-#library("metapod")
 library(purrr)
 library(vctrs)
 library(scales)
@@ -1322,130 +1317,96 @@ saveRDS(pvaluesDF,"MetaDE RDS/RatSFTU_DAVID.rds")
 
 ## MetaDE Results Visualization
 
-## GSEA Responders VS Non-responders Graphs
-
-```{r All RvN Graphs}
-pvaluesDF=readRDS("MetaDE RDS/AllRvN_DAVID.rds")
-Data=All_list_Merge_df[,grepl("FRN",colnames(All_list_Merge_df))]
-DataPvalues=Data[,seq(3,ncol(Data),4)]
-DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
-DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
-              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
-              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
-
-
-#Bar graph for Fish and MaxP counts for each Freq value
-FreqTableSummary=group_by(pvaluesDF,Freq)%>%
-  summarise(Overlap=sum(Fish<0.05&Max<0.05),MaxP=sum(Fish>=0.05&Max<0.05),Fisher=sum(Max>=0.05&Fish<0.05))%>%
-  dplyr::rename(SignificantComparison=Freq)
-ggplot(pivot_longer(data = FreqTableSummary,cols = c(Overlap,MaxP,Fisher)),aes(x=as.factor(SignificantComparison),y=value,fill=name))+
-  geom_col(position = position_dodge(),color="black",linewidth=0.8)+
-  theme_classic()+
-  scale_x_discrete(limits=as.character(seq(0,nrow(FreqTableSummary),1)),breaks=as.character(seq(0,nrow(FreqTableSummary),1)))+
-  scale_fill_manual(name="Significant in:",label=c("Fisher","Maximum p-value","Fisher & Maximum p-value"),values=c("#21B0FE","#FED700","green"))+
-  ylab("Pathways")+
-  xlab("Number of Significant Comparisons")+
-  theme(axis.text = element_text(size=12),axis.title = element_text(size = 12),legend.position = c(0.8, 0.8))
-ggsave("Figures/AllRvN_DAVID_Bar.tiff",height = 5,width = 6)
-
-#Venn diagram for Fish, MaxP, and Freq50 (significant in at least 50% of comparisons)
-VennList=list_drop_empty(list(Fisher=rownames(pvaluesDF[pvaluesDF$Fish<0.05,]),
-                              MaxP=rownames(pvaluesDF[pvaluesDF$Max<0.05,]),
-                              Frequency50=rownames(pvaluesDF[pvaluesDF$Freq>(length(DataList[[1]])/2),])))
-
-#Venn Scaled
-venn.diagram(VennList,
-             euler.d = TRUE, scaled=TRUE, 
-             category=c("Fisher","MaxP","Freq50"),
-             fill=c(alpha("#21B0FE",0.4),alpha("#FED700",0.4),alpha("#FE218B",0.4)), 
-             col=c("#21B0FE","#FED700","#FE218B"),
-             lty=rep("solid", 3), 
-             cex=3, 
-             cat.cex=3,
-             cat.dist=rep(0.07,3),
-             margin=0.1,
-             disable.logging=TRUE,
-             cat.col=c("#21B0FE","#FED700","#FE218B"),
-             filename = "Figures/AllRvN_DAVID_ScaledVenn.tiff")
-#Venn Non-scaled
-venn.diagram(VennList,
-             euler.d = FALSE, scaled=FALSE, 
-             category=c("Fisher","MaxP","Freq50"),
-             fill=c(alpha("#21B0FE",0.4),alpha("#FED700",0.4),alpha("#FE218B",0.4)), 
-             col=c("#21B0FE","#FED700","#FE218B"),
-             lty=rep("solid", 3), 
-             cex=3, 
-             cat.cex=3,
-             cat.dist=rep(0.07,3),
-             margin=0.1,
-             disable.logging=TRUE,
-             cat.col=c("#21B0FE","#FED700","#FE218B"),
-             filename = "Figures/AllRvN_DAVID_Venn.tiff")
-
-```
-
-## GSEA Treated VS Untreated Graphs
+## KEGG pathway overlap GSEA vs DAVID
 
 ```{r All TvU All Graphs}
+GSEApvaluesDF=readRDS("MetaDE RDS/AllFTUgsea.rds")
+GSEApvaluesDF$Pathway=gsub(" \\| KEGG","",GSEApvaluesDF$Pathway)
+
 pvaluesDF=readRDS("MetaDE RDS/AllFTU_DAVID.rds")
-Data=All_list_Merge_df[,grepl("FTU",colnames(All_list_Merge_df))]
-DataPvalues=Data[,seq(3,ncol(Data),4)]
-DataFilter=filter(Data, !(rowSums(is.na(DataPvalues)) > 0.5 * ncol(DataPvalues)))
-DataList=list(p = DataFilter[,seq(3,ncol(DataFilter),4)],
-              count = DataFilter[,seq(2,ncol(DataFilter),4)], 
-              FE = DataFilter[,seq(4,ncol(DataFilter),4)])
+pvaluesDF$Pathway=gsub("[0-9]{5}:","",rownames(pvaluesDF))
 
-#Bar graph for Fish and MaxP counts for each Freq value
-FreqTableSummary=group_by(pvaluesDF,Freq)%>%
-  summarise(Overlap=sum(Fish<0.05&Max<0.05),MaxP=sum(Fish>=0.05&Max<0.05),Fisher=sum(Max>=0.05&Fish<0.05))%>%
-  dplyr::rename(SignificantComparison=Freq)
-ggplot(pivot_longer(data = FreqTableSummary,cols = c(Overlap,MaxP,Fisher)),aes(x=as.factor(SignificantComparison),y=value,fill=name))+
-  geom_col(position = position_dodge(),color="black",linewidth=0.8)+
+NewpvaluesDF=merge(GSEApvaluesDF[,55:61],pvaluesDF[,55:60],by = "Pathway",all = FALSE,
+                   suffixes = c(".GSEA",".DAVID"))
+
+ggplot(NewpvaluesDF,aes(-log10(Fish.GSEA),-log10(Fish.DAVID),label=Pathway))+
+  geom_point(size=4)+
+  xlab("-log10(q) | GSEA")+
+  ylab("-log10(q) | DAVID")+
   theme_classic()+
-  scale_x_discrete(limits=as.character(seq(0,nrow(FreqTableSummary),1)),breaks=as.character(seq(0,nrow(FreqTableSummary),1)))+
-  scale_fill_manual(name="Significant in:",label=c("Fisher","Maximum p-value","Fisher & Maximum p-value"),values=c("#21B0FE","#FED700","green"))+
-  ylab("Pathways")+
-  xlab("Number of Significant Comparisons")+
-  theme(axis.text = element_text(size=12),axis.title = element_text(size = 12),legend.position = c(0.8, 0.8))
-ggsave("Figures/AllFTU_DAVID_Bar.tiff",height = 5,width = 6)
+  geom_text_repel(data = filter(NewpvaluesDF,Fish.GSEA<1E-50|Fish.DAVID<1E-20),max.overlaps = 20,size=4,box.padding   = 0.5, point.padding = 0.5)+
+  theme(axis.text = element_text(size=12),axis.title = element_text(size = 12))
+ggsave("Figures/AllFTUgsea-DAVID.tiff",height = 5,width = 6)
 
-
-#Venn diagram for Fish, MaxP, and Freq50 (significant in at least 50% of comparisons)
-VennList=list_drop_empty(list(Fisher=rownames(pvaluesDF[pvaluesDF$Fish<0.05,]),
-                              MaxP=rownames(pvaluesDF[pvaluesDF$Max<0.05,]),
-                              Frequency50=rownames(pvaluesDF[pvaluesDF$Freq>(length(DataList[[1]])/2),])))
-
-#Venn Scaled
-venn.diagram(VennList,
-             euler.d = TRUE, scaled=TRUE, 
-             category=c("Fisher","MaxP","Freq50"),
-             fill=c(alpha("#21B0FE",0.4),alpha("#FED700",0.4),alpha("#FE218B",0.4)), 
-             col=c("#21B0FE","#FED700","#FE218B"),
-             lty=rep("solid", 3), 
-             cex=3, 
-             cat.cex=3,
-             cat.dist=rep(0.07,3),
-             margin=0.1,
-             disable.logging=TRUE,
-             cat.col=c("#21B0FE","#FED700","#FE218B"),
-             filename = "Figures/AllFTU_DAVID_ScaledVenn.tiff")
-#Venn Non-scaled
-venn.diagram(VennList,
-             euler.d = FALSE, scaled=FALSE, 
-             category=c("Fisher","MaxP","Freq50"),
-             fill=c(alpha("#21B0FE",0.4),alpha("#FED700",0.4),alpha("#FE218B",0.4)), 
-             col=c("#21B0FE","#FED700","#FE218B"),
-             lty=rep("solid", 3), 
-             cex=3, 
-             cat.cex=3,
-             cat.dist=rep(0.07,3),
-             margin=0.1,
-             disable.logging=TRUE,
-             cat.col=c("#21B0FE","#FED700","#FE218B"),
-             filename = "Figures/AllFTU_DAVID_Venn.tiff")
+ggplot(NewpvaluesDF,aes(-log10(Max.GSEA),-log10(Max.DAVID)))+
+  geom_point()
 
 ```
 
+```{r Stress TvU All Graphs}
+GSEApvaluesDF=readRDS("MetaDE RDS/AllSFTUgsea.rds")
+GSEApvaluesDF$Pathway=gsub(" \\| KEGG","",GSEApvaluesDF$Pathway)
+
+pvaluesDF=readRDS("MetaDE RDS/AllSFTU_DAVID.rds")
+pvaluesDF$Pathway=gsub("[0-9]{5}:","",rownames(pvaluesDF))
+
+NewpvaluesDF=merge(GSEApvaluesDF[,14:19],pvaluesDF[,14:18],by = "Pathway",all = FALSE,
+                   suffixes = c(".GSEA",".DAVID"))
+
+ggplot(NewpvaluesDF,aes(-log10(Fish.GSEA),-log10(Fish.DAVID),label=Pathway))+
+  geom_point(size=4)+
+  xlab("-log10(q) | GSEA")+
+  ylab("-log10(q) | DAVID")+
+  theme_classic()+
+  geom_text_repel(data = filter(NewpvaluesDF,Fish.GSEA<1E-30|Fish.DAVID<1E-20),max.overlaps = 20,size=4,box.padding   = 0.5, point.padding = 0.5)+
+  theme(axis.text = element_text(size=12),axis.title = element_text(size = 12))
+ggsave("Figures/AllSFTUgsea-DAVID.tiff",height = 5,width = 6)
+
+ggplot(NewpvaluesDF,aes(-log10(Max.GSEA),-log10(Max.DAVID)))+
+  geom_point()
+
+```
+
+```{r No stress TvU All Graphs}
+GSEApvaluesDF=readRDS("MetaDE RDS/AllXFTUgsea.rds")
+GSEApvaluesDF$Pathway=gsub(" \\| KEGG","",GSEApvaluesDF$Pathway)
+
+pvaluesDF=readRDS("MetaDE RDS/AllXFTU_DAVID.rds")
+pvaluesDF$Pathway=gsub("[0-9]{5}:","",rownames(pvaluesDF))
+
+NewpvaluesDF=merge(GSEApvaluesDF[,42:48],pvaluesDF[,42:47],by = "Pathway",all = FALSE,
+                   suffixes = c(".GSEA",".DAVID"))
+
+ggplot(NewpvaluesDF,aes(-log10(Fish.GSEA),-log10(Fish.DAVID),label=Pathway))+
+  geom_point(size=4)+
+  xlab("-log10(q) | GSEA")+
+  ylab("-log10(q) | DAVID")+
+  theme_classic()+
+  geom_text_repel(data = filter(NewpvaluesDF,Fish.GSEA<1E-40|Fish.DAVID<1E-20),max.overlaps = 20,size=4,box.padding   = 0.5, point.padding = 0.5)+
+  theme(axis.text = element_text(size=12),axis.title = element_text(size = 12))
+ggsave("Figures/AllXFTUgsea-DAVID.tiff",height = 5,width = 6)
+
+ggplot(NewpvaluesDF,aes(-log10(Max.GSEA),-log10(Max.DAVID)))+
+  geom_point()
+
+```
+
+```{r All RvN All Graphs}
+GSEApvaluesDF=readRDS("MetaDE RDS/AllSFRNgsea.rds")
+GSEApvaluesDF$Pathway=gsub(" \\| KEGG","",GSEApvaluesDF$Pathway)
+
+pvaluesDF=readRDS("MetaDE RDS/AllRvN_DAVID.rds")
+pvaluesDF$Pathway=gsub("[0-9]{5}:","",rownames(pvaluesDF))
+
+NewpvaluesDF=merge(GSEApvaluesDF[,10:15],pvaluesDF[,10:14],by = "Pathway",all = FALSE,
+                   suffixes = c(".GSEA",".DAVID"))
 
 
+ggplot(NewpvaluesDF,aes(-log10(Fish.GSEA),-log10(Fish.DAVID)))+
+  geom_point()
 
+ggplot(NewpvaluesDF,aes(-log10(Max.GSEA),-log10(Max.DAVID)))+
+  geom_point()
+
+
+```

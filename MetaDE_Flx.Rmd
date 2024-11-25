@@ -4535,7 +4535,7 @@ ggplot(diff_Combined_merge[diff_Combined_merge$TorR=="TU",],aes(samples,counts,c
   xlab("Samples per Group")+
   ylab("Number of Significant Genes")+
   theme_classic()+
-  geom_text_repel(max.overlaps = 20,size=3,box.padding   = 0.5, point.padding = 0.5)+
+  geom_text_repel(max.overlaps = 6,size=3,box.padding   = 0.5, point.padding = 0.5)+
   guides(color=FALSE,shape=FALSE)
 ggsave("Figures/DiffGenesTreatmentScatter.png",height = 5,width = 4)
 

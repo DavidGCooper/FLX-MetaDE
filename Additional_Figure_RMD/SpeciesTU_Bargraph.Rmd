@@ -1,0 +1,87 @@
+---
+title: "Significant changes by species for Treated vs. Untreated"
+author: "Caleb Class"
+date: "2024-10-16"
+output: html_document
+---
+
+Load data
+```{r}
+
+library(tidyverse)
+
+DE_Results <- list(Human_SFTU = readRDS("../MetaDE RDS/HumanFTUDE.rds"),
+                   Rat_SFTU = readRDS("../MetaDE RDS/RatSFTUDE.rds"),
+                   Mouse_SFTU = readRDS("../MetaDE RDS/MouseSFTUDE.rds"),
+                   Rat_XFTU = readRDS("../MetaDE RDS/RatXFTUDE.rds"),
+                   Mouse_XFTU = readRDS("../MetaDE RDS/MouseXFTUDE.rds"))
+
+GSEA_Results <- list(Human_SFTU = readRDS("../MetaDE RDS/HumanFTUgsea.rds"),
+                   Rat_SFTU = readRDS("../MetaDE RDS/RatSFTUgsea.rds"),
+                   Mouse_SFTU = readRDS("../MetaDE RDS/MouseSFTUgsea.rds"),
+                   Rat_XFTU = readRDS("../MetaDE RDS/RatXFTUgsea.rds"),
+                   Mouse_XFTU = readRDS("../MetaDE RDS/MouseXFTUgsea.rds"))
+
+
+```
+
+Count # of significant genes/pathways by meta-analysis.
+```{r}
+
+
+meta.genes <- data.frame(Comparison = c("Human | Stressed", "Rat | Stressed", "Mouse | Stressed",
+                                          "Rat | Unstressed", "Mouse | Unstressed"),
+                         type = "DE",
+                         fisher = sapply(DE_Results, function(df) {sum(df$Fish < 0.05, na.rm=TRUE)}),
+                         freq50 = sapply(DE_Results, function(df) {
+                             sum(rowMeans(df[,substr(colnames(df), start=1, stop=7)=="P.Value"] < 0.05, na.rm=TRUE) > 0.5)
+                             }),
+                         maxp = sapply(DE_Results, function(df) {sum(df$Max < 0.05, na.rm=TRUE)})) 
+
+meta.paths <- data.frame(Comparison = c("Human | Stressed", "Rat | Stressed", "Mouse | Stressed",
+                                        "Rat | Unstressed", "Mouse | Unstressed"),
+                         type = "GSEA",
+                         fisher = sapply(GSEA_Results, function(df) {sum(df$Fish < 0.05, na.rm=TRUE)}),
+                         freq50 = sapply(GSEA_Results, function(df) {
+                             sum(rowMeans(df[,substr(colnames(df), start=1, stop=7)=="P.Value"] < 0.05, na.rm=TRUE) > 0.5)
+                             }),
+                         maxp = sapply(GSEA_Results, function(df) {sum(df$Max < 0.05, na.rm=TRUE)})) 
+
+
+```
+
+Make bargraphs
+
+```{r}
+
+meta.summary <- rbind(meta.genes, meta.paths)
+
+meta.summary %>% pivot_longer(-(Comparison:type), names_to = "Method", values_to = "Number") %>%
+  ggplot(aes(x = Number, y = Comparison, fill = Method)) +
+    geom_col(color = "black", position = "dodge") +
+    facet_wrap(~type, scales = "free_x") +
+    xlab("# Statistically Significant by Meta-Analysis") +
+    ylab("") +
+    theme_classic()
+ggsave("../Figures/Other_Figures/bar_TU-metaSummary.tiff", height = 3, width = 6)
+
+```
+
+
+```{r}
+  
+# Log10 scale
+meta.summary %>% pivot_longer(-(Comparison:type), names_to = "Method", values_to = "Number") %>% 
+  mutate(Number = ifelse(Number == 0, yes=NA, no = Number)) %>%
+    ggplot(aes(x = Number, y = Comparison, fill = Method)) +
+    geom_col(color = "black", position = "dodge") +
+    facet_wrap(~type, scales = "free_x") +
+    scale_x_log10() +
+    xlab("# Statistically Significant by Meta-Analysis") +
+    ylab("") +
+    theme_classic()
+ggsave("../Figures/Other_Figures/bar_TU-metaSummary-log.tiff", height = 3, width = 6)
+
+  
+
+```

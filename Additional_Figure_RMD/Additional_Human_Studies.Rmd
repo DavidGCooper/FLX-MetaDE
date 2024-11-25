@@ -1,0 +1,489 @@
+---
+title: "Compare Human Studies"
+author: "Caleb Class"
+date: "2024-11-01"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(plotly)
+
+source("../FLX RMD/read_cpdb_tab.R")
+reactome_hs <- readRDS("../FLX RMD/Reactome_HS_withTopLevel.rds")
+cpdb <- read_cpdb_tab("../FLX RMD/CPDB_pathways_genes_mouse.tab")
+#names(cpdb) <- gsub(" \\|.*| \\- Mus.*", "", names(cpdb))
+npgColors <- readRDS("../npgColors.rds")
+npgFill <- readRDS("../npgFill.rds")
+
+
+```
+
+
+# Response vs. Non-response
+## Treated
+
+Both datasets included R vs. NR comparisons: GSE146446 (Belzeaux/Fiori et al) includes duloxetine responders
+vs. non-responders after treatment, PMID26008736 (Jansen et al, 2015) includes 
+remitted vs. current MDD -- however, only a subset of patients from each
+group reported current antidepressant use (some may have previously).
+
+```{r}
+
+# Meta-analysis results
+dat <- readRDS("../MetaDE RDS/AllSFRNgsea.rds")
+pvals <- dat[,1:9]
+summariesRN <- dat[,10:15]
+
+# Fluoxetine results (GSE83386, included in meta-analysis)
+flxRN <- readRDS("../FLX_datasets/GSE83386/GSEA_ResVNon_GSE83386.rds")
+# Convert KEGG names to match those in meta-analysis
+flxRN$pathway <- gsub(" - Homo sapiens \\(human\\)", "", flxRN$pathway)
+
+# Duloxetine results (GSE146446)
+dlxRN <- readRDS("../AdditionalDatasets/GSEA_Dlx8hResponse_GSE146446.rds")
+dlxRN$pathway <- gsub(" - Homo sapiens \\(human\\)", "", dlxRN$pathway)
+
+# Large study results (Jansen et al, included SSRI, TCA, SNRI use)
+janRN <- readRDS("../AdditionalDatasets/GSEA_RemCurr_PMID26008736.rds")
+janRN$pathway <- gsub(" - Homo sapiens \\(human\\)", "", janRN$pathway)
+
+# Merge results (keep all from meta-analysis)
+mergedRN <- merge(summariesRN, flxRN, all.x = TRUE, 
+                  by.x = "Pathway", by.y = "pathway", 
+                  suffixes = c(".meta", ".flx"))
+
+mergedRN <- merge(mergedRN, dlxRN, all.x = TRUE, 
+                  by.x = "Pathway", by.y = "pathway", 
+                  suffixes = c(".flx", ""))
+
+mergedRN <- merge(mergedRN, janRN, all.x = TRUE, 
+                  by.x = "Pathway", by.y = "pathway", 
+                  suffixes = c(".dlx", ".jan"))
+
+```
+
+Venn diagrams overlapping w/ meta-analysis
+
+```{r}
+
+library(VennDiagram)
+library(ggvenn)
+
+fisherVenn <- list(Fisher=mergedRN$Pathway[mergedRN$Fish < 0.05 & !is.na(mergedRN$Fish)],
+                   Breitfeld=mergedRN$Pathway[mergedRN$padj.flx < 0.05 & !is.na(mergedRN$padj.flx)],
+                   Jansen=mergedRN$Pathway[mergedRN$padj.jan < 0.05 & !is.na(mergedRN$padj.jan)])
+
+venn.diagram(fisherVenn,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Fisher's\nMeta-analysis","Breitfeld et al.\n(Fluoxetine)","Jansen et al.\n(Naturalistic)"),
+             lty=rep("solid", 3), 
+             fill=c(alpha("#21B0FE",0.4), alpha("#ffca4e",0.4),alpha("#fc8c78",0.4)), 
+             col=c("#21B0FE", "#ffca4e","#fc8c78"),
+             cat.col=c("#21B0FE", "#ffca4e","#fc8c78"),
+             cex=2, 
+             cat.cex=2,
+             cat.dist=c(0.15,0.03,0.16),
+             cat.pos=c(200,160,0),
+             margin=0.1,
+             disable.logging=TRUE,
+             filename = "../Figures/ComparisonFigures/Fisher_Human_Studies.tiff")
+
+
+maxVenn <- list(MaxP=mergedRN$Pathway[mergedRN$Max < 0.05 & !is.na(mergedRN$Max)],
+                   Breitfeld=mergedRN$Pathway[mergedRN$padj.flx < 0.05 & !is.na(mergedRN$padj.flx)],
+                   Jansen=mergedRN$Pathway[mergedRN$padj.jan < 0.05 & !is.na(mergedRN$padj.jan)])
+
+venn.diagram(maxVenn,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Max-P\nMeta-analysis","Breitfeld et al.\n(Fluoxetine)","Jansen et al.\n(Naturalistic)"),
+             lty=rep("solid", 3), 
+             fill=c(alpha("#bf5747",0.4), alpha("#ffca4e",0.4),alpha("#fc8c78",0.4)), 
+             col=c("#bf5747", "#ffca4e","#fc8c78"),
+             cat.col=c("#bf5747", "#ffca4e","#fc8c78"),
+             cex=2, 
+             cat.cex=2,
+             cat.dist=c(0.2,0.03,0.07),
+             cat.pos=c(-20,180,20),
+             margin=0.1,
+             disable.logging=TRUE,
+             filename = "../Figures/ComparisonFigures/MaxP_Human_Studies.tiff")
+
+
+```
+
+Compare direction of enrichment
+
+```{r} 
+
+
+
+```
+
+
+Overlap differential expression results (none passed false discovery)
+
+```{r}
+
+library(limma)
+
+# Only 1 human study:  Fluoxetine results (GSE83386, included in meta-analysis)
+flxRN <- readRDS("../FLX_datasets/GSE83386/DE_ResVNon_GSE83386.rds")
+flxRN <- topTable(flxRN,coef = "FR - FNR",number = Inf) %>%
+  arrange(desc(AveExpr)) %>% filter(!duplicated(GENE_SYMBOL))
+
+# Duloxetine results (GSE146446)
+dlxRN <- readRDS("../AdditionalDatasets/DE_Response_GSE146446.rds")
+dlxRN <- topTable(dlxRN,coef = "DLX_T8_1 - DLX_T8_0",number = Inf) %>%
+  arrange(desc(AveExpr)) %>% filter(!duplicated(Symbol))
+
+# Large study results (Jansen et al, included SSRI, TCA, SNRI use)
+janRN <- readRDS("../AdditionalDatasets/PMID26008736DEtable.rds") %>%
+  arrange(desc(Mean_Remitted + Mean_Current)) %>% filter(!duplicated(Gene))
+
+# Merge results 
+mergedRN <- merge(flxRN, dlxRN, all.x = TRUE, 
+                  by.x = "GENE_SYMBOL", by.y = "Symbol", 
+                  suffixes = c(".flx", ".dlx"))
+
+mergedRN <- merge(mergedRN, janRN, all.x = TRUE, 
+                  by.x = "GENE_SYMBOL", by.y = "Gene", 
+                  suffixes = c(".dlx", ".jan"))
+
+mergedRN <- mergedRN %>% select(starts_with("GENE"), 
+                                starts_with("adj.P"), 
+                                starts_with("logFC"), 
+                                starts_with("FDR_"), 
+                                starts_with("B_"))
+
+
+```
+
+
+
+## Prior to treatment
+
+**See RvsN_preTreat report.**
+
+
+# Treated vs. Untreated
+
+Jansen et al. should not be used in this case, because their control group did not have MDD.
+
+
+```{r}
+
+datA <- readRDS("../MetaDE RDS/AllFTUgsea.rds")[,56:61]
+datS <- readRDS("../MetaDE RDS/AllSFTUgsea.rds")[,14:19]
+
+breitfeld <- readRDS("../FLX_datasets/GSE83386/GSEA_Pooled_GSE83386.rds")
+breitfeld$pathway <- gsub(" - Homo sapiens \\(human\\)", "", breitfeld$pathway)
+
+torres <- readRDS("../FLX_datasets/GSE128387/GSEA_GSE128387.rds")
+torres$pathway <- gsub(" - Homo sapiens \\(human\\)", "", torres$pathway)
+
+duloxetine <- readRDS("../AdditionalDatasets/GSEA_DlxTreatment_GSE146446.rds")
+duloxetine$pathway <- gsub(" - Homo sapiens \\(human\\)", "", duloxetine$pathway)
+
+mergedFTU <- merge(breitfeld, torres, all = TRUE, 
+                  by = "pathway", 
+                  suffixes = c(".breitfeldFLX", ""))
+
+mergedFTU <- merge(mergedFTU, duloxetine, all = TRUE,
+                   by = "pathway",
+                   suffixes = c(".torresFLX", ".fioriDLX"))
+
+mergedFTU <- mergedFTU[gsub(".*\\| ","", mergedFTU$pathway) %in% c("Reactome", "KEGG"),]
+
+
+```
+
+
+```{r}
+
+library(VennDiagram)
+library(ggvenn)
+
+mergeVenn <- list(Breitfeld=mergedFTU$pathway[mergedFTU$padj.breitfeldFLX < 0.05 & !is.na(mergedFTU$padj.breitfeldFLX)],
+                   Torres=mergedFTU$pathway[mergedFTU$padj.torresFLX < 0.05 & !is.na(mergedFTU$padj.torresFLX)],
+                   Duloxetine=mergedFTU$pathway[mergedFTU$padj.fioriDLX < 0.05 & !is.na(mergedFTU$padj.fioriDLX)])
+
+venn.diagram(mergeVenn,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Breitfeld et al.\n(Fluoxetine)", "Torres et al.\n(Fluoxetine)","Belzeaux et al.\n(Duloxetine)"),
+             lty=rep("solid", 3), 
+             fill=c(alpha("#bf5747",0.4), alpha("#ffca4e",0.4),alpha("#fc8c78",0.4)), 
+             col=c("#bf5747", "#ffca4e","#fc8c78"),
+             cat.col=c("#bf5747", "#ffca4e","#fc8c78"),
+             cex=2, 
+             cat.cex=2,
+             cat.dist=rep(0.12,3),
+             #cat.pos=c(200,160,0),
+             margin=0.1,
+             disable.logging=TRUE,
+             filename = "../Figures/ComparisonFigures/FTU_Human_Studies.tiff")
+
+
+
+
+```
+Summarize types of gene sets in overlap
+
+```{r}
+
+mergedFTU$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", mergedFTU$pathway), reactome_hs$Name)]
+mergedFTU$ReactomeTop <- reactome_hs$top_level_name[match(mergedFTU$ReactomeID, reactome_hs$ID)]
+mergedFTU$ReactomeTop[substr(mergedFTU$pathway, nchar(mergedFTU$pathway)-3, nchar(mergedFTU$pathway)) == "KEGG"] <- "KEGG Database"
+mergedFTU$ReactomeTop[!(mergedFTU$ReactomeTop %in% names(npgColors))] <- "Other Reactome"
+mergedFTU$ReactomeTop <- factor(mergedFTU$ReactomeTop)
+
+allCats <- table(mergedFTU$ReactomeTop)
+allCats
+
+```
+
+Compare pathways identified by the two human fluoxetine studies, plus, overlaps with the duloxetine study.
+
+```{r}
+
+percentSignif <- data.frame(Category = names(allCats),
+  Fluoxetine = as.numeric(table(mergedFTU$ReactomeTop[mergedFTU$padj.breitfeldFLX < 0.05 & mergedFTU$padj.torresFLX < 0.05]) / allCats * 100),
+ Both = as.numeric(table(mergedFTU$ReactomeTop[mergedFTU$padj.breitfeldFLX < 0.05 & mergedFTU$padj.torresFLX < 0.05 &
+                                                 mergedFTU$padj.fioriDLX < 0.05]) / allCats * 100)) %>%
+  arrange(desc(Fluoxetine))
+
+percentSignif <- filter(percentSignif, Fluoxetine > 1)
+percentSignif$Category <- factor(percentSignif$Category, levels = rev(percentSignif$Category))
+
+# Don't double-count "both"
+percentSignif$Fluoxetine <- percentSignif$Fluoxetine - percentSignif$Both
+
+percentSignif <- percentSignif %>% pivot_longer(-Category, names_to = "Treatment", values_to = "Percent")
+percentSignif$Treatment <- factor(percentSignif$Treatment, levels = c("Fluoxetine", "Both"))
+levels(percentSignif$Treatment)[2] <- "Fluoxetine & Duloxetine"
+
+ggplot(percentSignif, aes(x = Percent, y = Category, fill = Treatment)) +
+  geom_col(position = "stack", color = "black", linewidth = 1) +
+  theme_classic() +
+  theme(legend.position = c(0.7, 0.3)) +
+  scale_fill_manual(values = c("#A1DBFF", "#DBE866")) +
+  ylab("") + xlab("% of Pathways Enriched with q < 0.05")
+ggsave("../Figures/ComparisonFigures/FTU_Human_Studies_Summary.tiff", height = 4, width = 5)
+
+```
+
+
+
+
+Look @ agreement
+
+```{r}
+
+mergedSub <- mergedFTU[mergedFTU$padj.breitfeldFLX < 0.05 & mergedFTU$padj.torresFLX < 0.05 &
+                                                 mergedFTU$padj.fioriDLX < 0.05,]
+nes <- mergedSub[,c(6,13,20)]
+table(rowSums(nes > 0))
+
+```
+
+Compare w/ meta-analysis results. 
+
+```{r}
+
+mergeVenn <- list(AllFTU=datA$Pathway[datA$Fish < 0.05 & !is.na(datA$Fish)],
+                  SFTU=datS$Pathway[datS$Fish < 0.05 & !is.na(datS$Fish)],
+                  Breitfeld=mergedFTU$pathway[mergedFTU$padj.breitfeldFLX < 0.05 & !is.na(mergedFTU$padj.breitfeldFLX)],
+                   Torres=mergedFTU$pathway[mergedFTU$padj.torresFLX < 0.05 & !is.na(mergedFTU$padj.torresFLX)],
+                   Duloxetine=mergedFTU$pathway[mergedFTU$padj.fioriDLX < 0.05 & !is.na(mergedFTU$padj.fioriDLX)])
+
+venn.diagram(mergeVenn,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Meta-Analysis (All)", "Meta-Analysis (Stressed)", "Breitfeld et al.\n(Fluoxetine)", "Torres et al.\n(Fluoxetine)","Belzeaux et al.\n(Duloxetine)"),
+             lty=rep("solid", 5), 
+             fill=c(alpha("#21B0FE",0.4), alpha("#2172fe",0.4), alpha("#bf5747",0.4), alpha("#ffca4e",0.4),alpha("#fc8c78",0.4)), 
+             col=c("#21B0FE", "#2172fe", "#bf5747", "#ffca4e","#fc8c78"),
+             cat.col=c("#21B0FE", "#2172fe", "#bf5747", "#ffca4e","#fc8c78"),
+             cex=2, 
+             cat.cex=2,
+             cat.dist=rep(0.12,5),
+             #cat.pos=c(200,160,0),
+             margin=0.1,
+             disable.logging=TRUE,
+             filename = "../Figures/ComparisonFigures/FTU_Fisher_Additional_Studies.tiff")
+
+
+mergeVenn <- list(AllFTU=datA$Pathway[datA$Max < 0.05 & !is.na(datA$Max)],
+                  SFTU=datS$Pathway[datS$Max < 0.05 & !is.na(datS$Max)],
+                  Breitfeld=mergedFTU$pathway[mergedFTU$padj.breitfeldFLX < 0.05 & !is.na(mergedFTU$padj.breitfeldFLX)],
+                   Torres=mergedFTU$pathway[mergedFTU$padj.torresFLX < 0.05 & !is.na(mergedFTU$padj.torresFLX)],
+                   Duloxetine=mergedFTU$pathway[mergedFTU$padj.fioriDLX < 0.05 & !is.na(mergedFTU$padj.fioriDLX)])
+
+venn.diagram(mergeVenn,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Meta-Analysis (All)", "Meta-Analysis (Stressed)", "Breitfeld et al.\n(Fluoxetine)", "Torres et al.\n(Fluoxetine)","Belzeaux et al.\n(Duloxetine)"),
+             lty=rep("solid", 5), 
+             fill=c(alpha("#FED700",0.4), alpha("#FEE900",0.4), alpha("#bf5747",0.4), alpha("#ffca4e",0.4),alpha("#fc8c78",0.4)), 
+             col=c("#FED700", "#FEE900", "#bf5747", "#ffca4e","#fc8c78"),
+             cat.col=c("#FED700", "#FEE900", "#bf5747", "#ffca4e","#fc8c78"),
+             cex=2, 
+             cat.cex=2,
+             cat.dist=rep(0.12,5),
+             #cat.pos=c(200,160,0),
+             margin=0.1,
+             disable.logging=TRUE,
+             filename = "../Figures/ComparisonFigures/FTU_MaxP_Additional_Studies.tiff")
+
+
+
+```
+
+The 5-way venns are pretty messy, try with Stressed only.
+
+```{r}
+
+mergeVenn <- list(SFTU=datS$Pathway[datS$Fish < 0.05 & !is.na(datS$Fish)],
+                  Breitfeld=mergedFTU$pathway[mergedFTU$padj.breitfeldFLX < 0.05 & !is.na(mergedFTU$padj.breitfeldFLX)],
+                   Torres=mergedFTU$pathway[mergedFTU$padj.torresFLX < 0.05 & !is.na(mergedFTU$padj.torresFLX)],
+                   Duloxetine=mergedFTU$pathway[mergedFTU$padj.fioriDLX < 0.05 & !is.na(mergedFTU$padj.fioriDLX)])
+
+venn.diagram(mergeVenn,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Meta-Analysis\n(Fisher)", "Breitfeld et al.\n(Fluoxetine)", "Torres et al.\n(Fluoxetine)","Belzeaux et al.\n(Duloxetine)"),
+             lty=rep("solid", 4), 
+             fill=c(alpha("#21B0FE",0.4), alpha("#bf5747",0.4), alpha("#ffca4e",0.4),alpha("#fc8c78",0.4)), 
+             col=c("#21B0FE", "#bf5747", "#ffca4e","#fc8c78"),
+             cat.col=c("#21B0FE", "#bf5747", "#ffca4e","#fc8c78"),
+             cex=2, 
+             cat.cex=1.9,
+             cat.dist=c(0.25, 0.25, 0.16, 0.16),
+             cat.pos=c(310,50,340,20),
+             margin=0.22,
+             disable.logging=TRUE,
+             filename = "../Figures/ComparisonFigures/SFTU_Fisher_Additional_Studies.tiff")
+
+
+mergeVenn <- list(SFTU=datS$Pathway[datS$Max < 0.05 & !is.na(datS$Max)],
+                  Breitfeld=mergedFTU$pathway[mergedFTU$padj.breitfeldFLX < 0.05 & !is.na(mergedFTU$padj.breitfeldFLX)],
+                   Torres=mergedFTU$pathway[mergedFTU$padj.torresFLX < 0.05 & !is.na(mergedFTU$padj.torresFLX)],
+                   Duloxetine=mergedFTU$pathway[mergedFTU$padj.fioriDLX < 0.05 & !is.na(mergedFTU$padj.fioriDLX)])
+
+venn.diagram(mergeVenn,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Meta-Analysis\n(Max-P)", "Breitfeld et al.\n(Fluoxetine)", "Torres et al.\n(Fluoxetine)","Belzeaux et al.\n(Duloxetine)"),
+             lty=rep("solid", 4), 
+             fill=c(alpha("#FED700",0.4), alpha("#bf5747",0.4), alpha("#ffca4e",0.4),alpha("#fc8c78",0.4)), 
+             col=c("#FED700", "#bf5747", "#ffca4e","#fc8c78"),
+             cat.col=c("#FED700", "#bf5747", "#ffca4e","#fc8c78"),
+             cex=2, 
+             cat.cex=1.9,
+             cat.dist=c(0.25, 0.25, 0.16, 0.16),
+             cat.pos=c(310,50,340,20),
+             margin=0.22,
+             disable.logging=TRUE,
+             filename = "../Figures/ComparisonFigures/SFTU_MaxP_Additional_Studies.tiff")
+
+
+mergeVenn <- list(Fisher=datS$Pathway[datS$Fish < 0.05 & !is.na(datS$Fish)],
+                  MaxP=datS$Pathway[datS$Max < 0.05 & !is.na(datS$Max)],
+                   Duloxetine=mergedFTU$pathway[mergedFTU$padj.fioriDLX < 0.05 & !is.na(mergedFTU$padj.fioriDLX)])
+
+venn.diagram(mergeVenn,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Meta-Analysis\n(Fisher)", "Meta-Analysis\n(Max-P)", "Belzeaux et al.\n(Duloxetine)"),
+             lty=rep("solid", 3), 
+             fill=c(alpha("#21B0FE",0.4), alpha("#FED700",0.4), alpha("#fc8c78",0.4)), 
+             col=c("#21B0FE", "#FED700", "#fc8c78"),
+             cat.col=c("#21B0FE", "#FED700","#fc8c78"),
+             cex=2, 
+             cat.cex=2,
+             cat.dist=c(0.13,0.025,0.15),
+             cat.pos=c(200,160,0),
+             margin=0.1,
+             disable.logging=TRUE,
+             filename = "../Figures/ComparisonFigures/SFTU_Belzeaux_vsMeta.tiff")
+
+
+```
+
+```{r}
+
+# Identify pathways in common w/ Max-P
+mergedSFTU <- merge(datS, mergedFTU, by.x = "Pathway", by.y = "pathway", all = TRUE)
+mergedSFTU$Signif <- ifelse(mergedSFTU$Max < 0.05 & mergedSFTU$padj.fioriDLX < 0.05 & 
+                  !is.na(mergedSFTU$Max) & !is.na(mergedSFTU$padj.fioriDLX),
+                  yes = "Signif", no = "n.s.")
+mergedSignif <- mergedSFTU[mergedSFTU$Max < 0.05 & mergedSFTU$padj.fioriDLX < 0.05 & 
+                  !is.na(mergedSFTU$Max) & !is.na(mergedSFTU$padj.fioriDLX),]
+
+table(Vote=mergedSignif$Vote > 0,
+      Dlx = mergedSignif$NES.fioriDLX > 0)
+
+mergedLabel <- mergedSignif[mergedSignif$Vote %in% c(-6, -5, -4, 4) | grepl("FCGR", mergedSignif$Pathway),]
+# Shorten pathway names for labels
+
+mergedLabel$Pathway <- c(#"Epstein-Barr virus infection",
+                         "FCGR dependent phagocytosis",
+                         "Formation of free 40S subunits",
+                         #"Membrane Trafficking",
+                         "NMD independent of the EJC",
+                         "S Phase",
+                         "Signal Transduction",
+                         "Signaling by Rho GTPases",
+                         "Valine/Leucine/Isoleucine\ndegradation",
+                         "Vesicle-mediated transport")
+
+
+# Plot Vote vs. NES
+ggplot(mergedSFTU, aes(x = Vote, y = NES.fioriDLX)) +
+  geom_jitter(aes(alpha = Signif, color = Signif), height=0, width = 0.15) +
+  geom_hline(yintercept = 0, linetype="dashed") +
+  geom_vline(xintercept = 0, linetype="dashed") +
+  scale_color_manual(values = c("grey70", "red")) +
+  ggrepel::geom_text_repel(data=mergedLabel,
+                            aes(label = Pathway), hjust = 0) +
+  xlab("Expression Change Agreement\nAcross Fluoxetine Studies (Vote)") +
+  ylab("Normalized Enrichement Score (NES)\nfor Duloxetine Treatment vs. Control") +
+  theme_classic() +
+  guides(color = "none", alpha = "none")
+ggsave("../Figures/ComparisonFigures/Belzeaux_vs_SFTUmetaanalysis.tiff",height = 5,width = 6)
+
+
+```
+
+Remake the summary barplot using Meta-analysis vs. Duloxetine
+```{r}
+
+mergedSFTU$ReactomeID <- reactome_hs$ID[match(gsub(" \\|.*", "", mergedSFTU$Pathway), reactome_hs$Name)]
+mergedSFTU$ReactomeTop <- reactome_hs$top_level_name[match(mergedSFTU$ReactomeID, reactome_hs$ID)]
+mergedSFTU$ReactomeTop[substr(mergedSFTU$Pathway, nchar(mergedSFTU$Pathway)-3, nchar(mergedSFTU$Pathway)) == "KEGG"] <- "KEGG Database"
+mergedSFTU$ReactomeTop[!(mergedSFTU$ReactomeTop %in% names(npgColors))] <- "Other Reactome"
+mergedSFTU$ReactomeTop <- factor(mergedSFTU$ReactomeTop)
+
+allCats <- table(mergedSFTU$ReactomeTop)
+allCats
+
+percentSignif <- data.frame(Category = names(allCats),
+  Fluoxetine = as.numeric(table(mergedSFTU$ReactomeTop[mergedSFTU$Max < 0.05]) / allCats * 100),
+ Both = as.numeric(table(mergedSFTU$ReactomeTop[mergedSFTU$Max < 0.05 &
+                                                 mergedSFTU$padj.fioriDLX < 0.05]) / allCats * 100)) %>%
+  arrange(desc(Fluoxetine))
+
+percentSignif <- filter(percentSignif, Fluoxetine > 1)
+percentSignif$Category <- factor(percentSignif$Category, levels = rev(percentSignif$Category))
+
+# Don't double-count "both"
+percentSignif$Fluoxetine <- percentSignif$Fluoxetine - percentSignif$Both
+
+percentSignif <- percentSignif %>% pivot_longer(-Category, names_to = "Treatment", values_to = "Percent")
+percentSignif$Treatment <- factor(percentSignif$Treatment, levels = c("Fluoxetine", "Both"))
+levels(percentSignif$Treatment)[2] <- "Fluoxetine & Duloxetine"
+
+ggplot(percentSignif, aes(x = Percent, y = Category, fill = Treatment)) +
+  geom_col(position = "stack", color = "black", linewidth = 1) +
+  theme_classic() +
+  theme(legend.position = c(0.7, 0.3)) +
+  scale_fill_manual(values = c("#A1DBFF", "#DBE866")) +
+  ylab("") + xlab("% of Pathways Enriched with q < 0.05")
+ggsave("../Figures/ComparisonFigures/SFTU_vs_Belzeaux_Summary.tiff", height = 4, width = 5)
+
+```

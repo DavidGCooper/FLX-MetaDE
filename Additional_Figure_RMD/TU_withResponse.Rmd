@@ -87,11 +87,11 @@ Finally, we'll focus on those consistently affected in responders (q < 0.05 by M
 
 ```{r}
 
-summaries.signif <- summaries[summaries$Max.R < 0.05 & summaries$Fish.R < 0.05 & summaries$Fish.N >= 0.05 ,]
+summaries.signif <- summaries[summaries$Max.R < 0.05 & summaries$Fish.R < 0.05 & summaries$Fish.N >= 0.05 & summaries$Max.N >= 0.05,]
 
 summaries.signif <- summaries.signif %>% arrange(Max.R) 
 # Stretch this pathway name to 2 lines:
-summaries.signif$Pathway[5] <- "Activated PKN1 stimulates transcription of\nAR regulated genes KLK2 and KLK3"
+#summaries.signif$Pathway[4] <- "Activated PKN1 stimulates transcription of\nAR regulated genes KLK2 and KLK3"
 summaries.signif$Pathway <- gsub(" \\|.*", "", summaries.signif$Pathway)
 summaries.signif <- summaries.signif %>%
   mutate(Pathway = factor(Pathway, levels = rev(Pathway)),
@@ -116,3 +116,35 @@ ggsave("../Figures/ComparisonFigures/RTUonly_pmax_bar.tiff", width = 7.5, height
 
 
 ```
+
+Merge & overlap with R vs. NR meta-analysis
+
+```{r}
+
+datRN <- readRDS("../MetaDE RDS/AllSFRNgsea.rds")
+
+summaries.three <- merge(summaries, datRN[,10:15], by="Pathway")
+vennList <- list(RN = summaries.three$Pathway[summaries.three$Max < 0.05 & !is.na(summaries.three$Max)],
+                 RTU = summaries.three$Pathway[summaries.three$Max.R < 0.05 & !is.na(summaries.three$Max.R)],
+                 NTU = summaries.three$Pathway[summaries.three$Max.N < 0.05 & !is.na(summaries.three$Max.N)])
+
+venn.diagram(vennList,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Responders vs.\nNon-Responders", "Treatment vs. Control\n(Responders)","Treatment vs. Control\n(Non-Responders)"),
+             lty=rep("solid", 3), 
+             fill=c(alpha("#bf5747",0.4), alpha("#ffca4e",0.4),alpha("#fc8c78",0.4)), 
+             col=c("#bf5747", "#ffca4e","#fc8c78"),
+             cat.col=c("#bf5747", "#ffca4e","#fc8c78"),
+             cex=2, 
+             cat.cex=2,
+             cat.dist=rep(0.15,3),
+             cat.pos=c(340,0,180),
+             margin=0.1,
+             disable.logging=TRUE,
+             filename = "../Figures/ComparisonFigures/RN_RTU_NTU_Venn.tiff")
+
+
+
+```
+
+

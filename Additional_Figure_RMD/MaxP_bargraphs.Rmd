@@ -196,6 +196,7 @@ table(summariesX$ReactomeTop[summariesX$Max < 0.05])
 
 XTU.signif <- summariesX[summariesX$Max < 0.05, ]
 XTU.signif$ReactomeTop[is.na(XTU.signif$ReactomeTop)] <- "KEGG Database"
+XTU.signif$ReactomeTop[!(XTU.signif$ReactomeTop %in% names(npgColors))] <- "Other Reactome"
 XTU.signif$Pathway <- gsub(" \\|.*", "", XTU.signif$Pathway)
 
 XTU.ord <- XTU.signif %>% arrange(Max) %>%
@@ -205,16 +206,16 @@ XTU.ord <- XTU.signif %>% arrange(Max) %>%
 ggplot(XTU.ord, aes(x = -log10(Max), y = Pathway)) +
   geom_col(aes(fill = ReactomeTop), color = "black", size = 1) + 
   geom_vline(xintercept = -log10(0.05), linetype = "dashed", linewidth = 1, color = "#DC0000") +
-  geom_point(aes(x = -log10(Max) + 0.7, color = Vote), size = 6, show.legend = FALSE) +
-  geom_text(aes(x = -log10(Max) + 0.7, y = Pathway, label = Vote), size = 3, color = "white", fontface = "bold") +
+  geom_point(aes(x = -log10(Max) + 0.5, color = Vote), size = 6, show.legend = FALSE) +
+  geom_text(aes(x = -log10(Max) + 0.5, y = Pathway, label = Vote), size = 3, color = "white", fontface = "bold") +
   scale_color_gradient2(low = "blue",high = "red", mid = "gray30", breaks = c(-5, 0, 3), minor_breaks = -5:5) +
   xlab("-log10(q)") + ylab("") +
-  xlim(0, 3.2) +
+#  xlim(0, 3.2) +
   theme(axis.text.y = element_text(size = 8.5)) +
   npgFill +
   guides(fill = guide_legend(title = "Pathway Category")) +
   theme_classic()
-ggsave("../Figures/GSEA/AllXFTUgsea/AllXTU_pathways_pmax_bar.tiff", width = 6, height = 3)
+ggsave("../Figures/GSEA/AllXFTUgsea/AllXTU_pathways_pmax_bar.tiff", width = 9, height = 4)
 
 
 ```
@@ -239,6 +240,44 @@ venn.diagram(x = list("Full Set" = summariesCompare$Pathway[summariesCompare$Fis
              filename = "../Figures/ComparisonFigures/venn_TU-STU-XTU_fish.tiff",
              height=2500, width=2500)
 
+
+```
+
+Make another one that also includes Responder vs. Non-Responder
+
+```{r}
+
+summariesCompare <- merge(summariesCompare, summariesRN, by = "Pathway", all = FALSE)
+
+venn.diagram(x = list("R vs. NR" = summariesCompare$Pathway[summariesCompare$Max.y < 0.05],
+                      "Full Set" = summariesCompare$Pathway[summariesCompare$Max.full < 0.05],
+                      "Stressed Only" = summariesCompare$Pathway[summariesCompare$Max.stress < 0.05],
+                      "Unstressed Only" = summariesCompare$Pathway[summariesCompare$Max.x < 0.05]),
+             filename = "../Figures/ComparisonFigures/venn_RN-TU-STU-XTU_pmax.tiff",
+             height=2500, width=2500)
+venn.diagram(x = list("R vs. NR" = summariesCompare$Pathway[summariesCompare$Fish.y < 0.05],
+                      "Full Set" = summariesCompare$Pathway[summariesCompare$Fish.full < 0.05],
+                      "Stressed Only" = summariesCompare$Pathway[summariesCompare$Fish.stress < 0.05],
+                      "Unstressed Only" = summariesCompare$Pathway[summariesCompare$Fish.x < 0.05]),
+             filename = "../Figures/ComparisonFigures/venn_RN-TU-STU-XTU_fish.tiff",
+             height=2500, width=2500)
+
+
+# Easier to read without "Full Set" on this one
+
+venn.diagram(x = list("R vs. NR" = summariesCompare$Pathway[summariesCompare$Max.y < 0.05],
+                      "T vs. U (Stressed)" = summariesCompare$Pathway[summariesCompare$Max.stress < 0.05],
+                      "T vs. U (Untressed)" = summariesCompare$Pathway[summariesCompare$Max.x < 0.05]),
+             filename = "../Figures/ComparisonFigures/venn_RN-STU-XTU_pmax.tiff",
+             height=2500, width=2500)
+venn.diagram(x = list("R vs. NR" = summariesCompare$Pathway[summariesCompare$Fish.y < 0.05],
+                      "T vs. U (Stressed)" = summariesCompare$Pathway[summariesCompare$Fish.stress < 0.05],
+                      "T vs. U (Untressed)" = summariesCompare$Pathway[summariesCompare$Fish.x < 0.05]),
+             filename = "../Figures/ComparisonFigures/venn_RN-STU-XTU_fish.tiff",
+             height=2500, width=2500)
+
+# Pathways identified in RvsNR and TvsU (Stressed)
+summariesCompare$Pathway[summariesCompare$Max.y < 0.05 & summariesCompare$Max.stress < 0.05]
 
 ```
 

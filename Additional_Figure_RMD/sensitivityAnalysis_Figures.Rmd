@@ -1,0 +1,134 @@
+---
+title: "Sensitivity Analysis Figures"
+author: "Caleb Class"
+date: "2024-10-17"
+output: html_document
+---
+
+Number of pathways identified as statistically significant for the full meta-analysis of treated vs. untreated samples, as well as subset analyses of stressed rodents or depressed patients, and unstressed rodents
+
+```{r}
+
+library(VennDiagram)
+library(ggvenn)
+library(tidyverse)
+
+gseaFull <- readRDS("../MetaDE RDS/AllFTUgsea.rds")
+gseaStress <- readRDS("../MetaDE RDS/AllSFTUgsea.rds")
+gseaUnstress <- readRDS("../MetaDE RDS/AllXFTUgsea.rds")
+
+fisherVenn <- list(Full=gseaFull$Pathway[gseaFull$Fish < 0.05],
+                   Stress=gseaStress$Pathway[gseaStress$Fish < 0.05],
+                   Untress=gseaUnstress$Pathway[gseaUnstress$Fish < 0.05])
+
+maxVenn <- list(Full=gseaFull$Pathway[gseaFull$Max < 0.05],
+                   Stress=gseaStress$Pathway[gseaStress$Max < 0.05],
+                   Untress=gseaUnstress$Pathway[gseaUnstress$Max < 0.05])
+
+venn.diagram(fisherVenn,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Full Set","Stressed Only","Unstressed Only"),
+             lty=rep("solid", 3), 
+             cex=2, 
+             cat.cex=2,
+             cat.dist=c(0.07,0.03,0.07),
+             cat.pos=c(200,160,0),
+             margin=0.1,
+             disable.logging=TRUE,
+             filename = "../Figures/SensitivityAnalysis/Fisher_TU_Venn.tiff")
+
+
+venn.diagram(maxVenn,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Full Set","Stressed Only","Unstressed Only"),
+             lty=rep("solid", 3), 
+             cex=2, 
+             cat.cex=2,
+             cat.dist=c(0.07,0.03,0.07),
+             cat.pos=c(200,160,0),
+             margin=0.1,
+             disable.logging=TRUE,
+             filename = "../Figures/SensitivityAnalysis/MaxP_TU_Venn.tiff")
+
+```
+
+
+Sensitivity analysis removing DS19 (profiling of 27 brain regions by Rayan et al.). Gene and pathway-level analyses are presented. Dashed lines indicate q=0.05, diagonal line indicates y=x. Number in each quadrant indicates number of genes or pathways in that quadrant. Results of Fisher’s meta-analysi and Max-P. 
+
+
+```{r}
+
+geneFull <- readRDS("../MetaDE RDS/RatXFTUDE.rds")
+geneSA <- readRDS("../MetaDE RDS/SARatXFTUDE.rds")
+pathFull <- readRDS("../MetaDE RDS/AllXFTUgsea.rds")
+pathSA <- readRDS("../MetaDE RDS/SAAllXFTUgsea.rds")
+
+geneMerge <- merge(geneFull, geneSA, by="Gene",
+                   suffixes = c(".Full", ".SA"))
+
+table(Full = geneMerge$Fish.Full < 0.05,
+      SA = geneMerge$Fish.SA < 0.05 )
+table(Full = geneMerge$Max.Full < 0.05,
+      SA = geneMerge$Max.SA < 0.05 )
+
+pathMerge <- merge(pathFull, pathSA, by="Pathway",
+                   suffixes = c(".Full", ".SA"))
+
+table(Full = pathMerge$Fish.Full < 0.05,
+      SA = pathMerge$Fish.SA < 0.05 )
+table(Full = pathMerge$Max.Full < 0.05,
+      SA = pathMerge$Max.SA < 0.05 )
+
+
+```
+
+Gene-level, rat only:
+
+```{r}
+
+ggplot(geneMerge, aes(x=-log10(Fish.Full), y=-log10(Fish.SA))) +
+  geom_point(alpha = 0.2, color = "navy") +
+  geom_hline(yintercept = -log10(0.05), linetype="dashed") +
+  geom_vline(xintercept = -log10(0.05), linetype="dashed") +
+  xlab("Fisher -log10(q), Original") +
+  ylab("Fisher -log10(q), GSE194289 Removed") +
+  theme_classic() 
+ggsave("../Figures/SensitivityAnalysis/Fisher_GeneTU_SAscatter.tiff", height = 4, width = 4.5)
+
+
+ggplot(geneMerge, aes(x=-log10(Max.Full), y=-log10(Max.SA))) +
+  geom_point(alpha = 0.2, color = "navy") +
+  geom_hline(yintercept = -log10(0.05), linetype="dashed") +
+  geom_vline(xintercept = -log10(0.05), linetype="dashed") +
+  xlab("MaxP -log10(q), Original") +
+  ylab("MaxP -log10(q), GSE194289 Removed") +
+  theme_classic() 
+ggsave("../Figures/SensitivityAnalysis/MaxP_GeneTU_SAscatter.tiff", height = 4, width = 4.5)
+
+
+```
+
+
+```{r}
+
+ggplot(pathMerge, aes(x=-log10(Fish.Full), y=-log10(Fish.SA))) +
+  geom_point(alpha = 0.2, color = "navy") +
+  geom_hline(yintercept = -log10(0.05), linetype="dashed") +
+  geom_vline(xintercept = -log10(0.05), linetype="dashed") +
+  xlab("Fisher -log10(q), Original") +
+  ylab("Fisher -log10(q), GSE194289 Removed") +
+  theme_classic() 
+ggsave("../Figures/SensitivityAnalysis/Fisher_PathTU_SAscatter.tiff", height = 4, width = 4.5)
+
+
+ggplot(pathMerge, aes(x=-log10(Max.Full), y=-log10(Max.SA))) +
+  geom_point(alpha = 0.2, color = "navy") +
+  geom_hline(yintercept = -log10(0.05), linetype="dashed") +
+  geom_vline(xintercept = -log10(0.05), linetype="dashed") +
+  xlab("MaxP -log10(q), Original") +
+  ylab("MaxP -log10(q), GSE194289 Removed") +
+  theme_classic() 
+ggsave("../Figures/SensitivityAnalysis/MaxP_PathTU_SAscatter.tiff", height = 4, width = 4.5)
+
+
+```

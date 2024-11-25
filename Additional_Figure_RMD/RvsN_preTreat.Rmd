@@ -23,7 +23,7 @@ npgFill <- readRDS("../npgFill.rds")
 
 ## Loading Data
 
-Results of R vs N for pretreat samples. LCL data came from human patients with known response. Cortex data came from mouse models -- each strain was measured and summarized for response, but the ones included in this comparison were not actually treated (their response is inferred based on strain).
+Results of R vs N for pretreat samples. LCL data came from human patients with known response. Cortex data came from mouse models -- each strain was measured and summarized for response, but the ones included in this comparison were not actually treated (their response is inferred based on strain). Additionally, Fiori et al. conducted a clinical trial profiling peripheral tissue from MDD patients treated with duloxetine (DLX).
 
 ```{r}
 
@@ -39,12 +39,19 @@ humanLCL <- humanLCL %>% filter(db %in% c("Reactome", "KEGG"))
 humanLCL$pathway <- gsub(" - Homo sapiens \\(human\\)", "", humanLCL$pathway)
 humanLCL$DS <- "Human LCL"
 
+humanDLX <- readRDS("../AdditionalDatasets/GSEA_Dlx0hResponse_GSE146446.rds")
+humanDLX$db <- gsub(".*\\| ", "", humanDLX$pathway)
+humanDLX <- humanDLX %>% filter(db %in% c("Reactome", "KEGG"))
+humanDLX$pathway <- gsub(" - Homo sapiens \\(human\\)", "", humanDLX$pathway)
+humanDLX$DS <- "Human DLX"
+
 resMerged <- merge(mouseCor, humanLCL, by = "pathway", all = FALSE,
                    suffixes = c(".Mm", ".Hs"))
 dim(resMerged)
 
 ```
 
+## Comparing FLX studies
 
 Overall, the pathways increased or decreased between the two comparisons are not significantly correlated.
 
@@ -133,6 +140,58 @@ pheatmap::pheatmap(cpdb.mat, color = c("white", "black"),
 
 ```
 
+
+
+
+## Comparing with DLX study
+
+```{r}
+
+resThree <- merge(resMerged, humanDLX, by = "pathway", all = FALSE)
+colnames(resThree)[-(1:19)] <- paste0(colnames(resThree)[-(1:19)], ".DLX")
+
+
+
+```
+
+
+```{r}
+
+library(VennDiagram)
+library(ggvenn)
+
+mergeVenn <- list(Mouse=resThree$pathway[resThree$padj.Mm < 0.05 & !is.na(resThree$padj.Mm)],
+                  HumanFLX=resThree$pathway[resThree$padj.Hs < 0.05 & !is.na(resThree$padj.Hs)],
+                  HumanDLX=resThree$pathway[resThree$padj.DLX < 0.05 & !is.na(resThree$padj.DLX)])
+
+venn.diagram(mergeVenn,
+             euler.d = TRUE, scaled=TRUE, 
+             category=c("Mice|FLX", "Human|FLX","Human|DLX"),
+             lty=rep("solid", 3), 
+             fill=c(alpha("#bf5747",0.4), alpha("#ffca4e",0.4),alpha("#fc8c78",0.4)), 
+             col=c("#bf5747", "#ffca4e","#fc8c78"),
+             cat.col=c("#bf5747", "#ffca4e","#fc8c78"),
+             cex=2, 
+             cat.cex=2,
+             cat.dist=rep(0.12,3),
+             #cat.pos=c(200,160,0),
+             margin=0.1,
+             disable.logging=TRUE,
+             filename = "../Figures/ComparisonFigures/RvsN_Studies_pretreatVenn.tiff")
+
+```
+
+Compare agreement between studies. DLX studies show opposite direction of effect.
+
+```{r}
+
+resSignif <- resThree[rowSums(select(resThree, contains("padj")) < 0.05) == 3,]
+#resSignif <- resThree[resThree$padj.DLX < 0.05 & resThree$padj.Hs < 0.05,]
+
+ggplot(resThree, aes(x=NES.Hs, y=NES.DLX, color = padj.Hs < 0.05 & padj.DLX < 0.05)) + 
+  geom_point()
+
+```
 
 
 

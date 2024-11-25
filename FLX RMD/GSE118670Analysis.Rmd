@@ -153,7 +153,7 @@ write.table(t(plyr::ldply(PFC_DElist,rbind)),"../FLX_datasets/GSE118668/GSE11866
 write.table(PFC_DEbackground,"../FLX_datasets/GSE118668/GSE118668-PFC_DEbackground.txt",quote = FALSE,col.names = FALSE,row.names = FALSE)
 
 #DG GSEA
-DGStatsFilter=topTable(PFCfit2, coef = "Treatmenttreatment: fluoxetine", number = Inf)%>%filter(ID%in%UniqueGenes3$Loci)
+DGStatsFilter=topTable(DGfit2, coef = "Treatmenttreatment: fluoxetine", number = Inf)%>%filter(ID%in%UniqueGenes3$Loci)
 DGStatsFilter$MouseEnsembl=UniqueGenes3$MouseEnsembl[match(DGStatsFilter$ID,UniqueGenes3$Loci)]
 DG_DElist$XFTU=DGStatsFilter[DGStatsFilter$P.Value<0.05,]$Gene.Symbol
 DG_DEbackground=DGStatsFilter$Gene.Symbol
